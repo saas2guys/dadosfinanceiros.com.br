@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Redis service for channels and caching
+  redis:
+    image: redis:7-alpine
+    container_name: proxy_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Django proxy service
+  proxy:
+    build: .
+    container_name: django_proxy
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=your-production-secret-key-change-this
+      - REDIS_URL=redis://redis:6379
+      - MICROSERVICE_BASE_URL=http://your-microservice:8001
+      - MICROSERVICE_WS_URL=ws://your-microservice:8001/ws/stocks/
+      - PROXY_TIMEOUT=30
+      - ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+      - ./staticfiles:/app/staticfiles
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             daphne -b 0.0.0.0 -p 8000 proxy_project.asgi:application"
+
+  # Optional: Your microservice (replace with actual service)
+  # microservice:
+  #   image: your-microservice:latest
+  #   container_name: your_microservice
+  #   ports:
+  #     - "8001:8001"
+  #   environment:
+  #     - ENV=production
+  #   restart: unless-stopped
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  default:
+    name: proxy_network 
