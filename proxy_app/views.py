@@ -186,6 +186,9 @@ class PolygonProxyView(APIView):
 
             if data:
                 data = self._replace_polygon_urls(data, request)
+                
+                if "status" in data:
+                    del data["status"]
 
             return Response(data=data, status=response.status_code)
         except ValueError:
