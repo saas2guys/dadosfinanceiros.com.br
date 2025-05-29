@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r requirements.txt gunicorn
+    pip install -r requirements.txt
 
 # Copy the source code
 COPY . .
@@ -52,4 +52,4 @@ USER appuser
 EXPOSE 8080
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "proxy_project.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8080", "proxy_project.asgi:application"]
