@@ -8,7 +8,13 @@
 <div class="max-w-4xl mx-auto px-4 mb-12">
     <div class="text-center mb-12">
         <h1 class="text-4xl font-bold text-gray-800 mb-4">{% trans "Dados Financeiros API" %}</h1>
-        <p class="text-xl text-gray-600">{% trans "Acesse dados do mercado financeiro com facilidade e segurança" %}</p>
+        <p class="text-xl text-gray-600 mb-8">{% trans "Acesse dados do mercado financeiro com facilidade e segurança" %}</p>
+        <a href="{% url 'proxy_app:api_docs' %}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:text-lg">
+            {% trans "Ver Documentação Completa da API" %}
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -84,16 +90,28 @@
 <!-- Full width API Documentation section -->
 <div class="w-full bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">{% trans "API Reference Preview" %}</h2>
+            <p class="text-xl text-gray-600 mb-8">{% trans "Get a quick overview of our API endpoints" %}</p>
+            <a href="{% url 'proxy_app:api_docs' %}" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                {% trans "View Full Documentation" %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Sidebar Navigation -->
             <div class="lg:w-64 flex-shrink-0">
                 <div class="sticky top-4 bg-white rounded-lg shadow-sm p-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">{% trans "Referência da API" %}</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">{% trans "Quick Navigation" %}</h3>
                     <nav class="space-y-1">
-                        <a href="#authentication" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Autenticação" %}</a>
-                        <a href="#stocks" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Ações" %}</a>
+                        <a href="#authentication" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Authentication" %}</a>
+                        <a href="#stocks" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Stocks" %}</a>
                         <a href="#forex" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Forex" %}</a>
-                        <a href="#crypto" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Criptomoedas" %}</a>
+                        <a href="#crypto" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Crypto" %}</a>
+                        <a href="{% url 'proxy_app:api_docs' %}" class="block px-3 py-2 text-indigo-600 hover:bg-gray-100 rounded-md font-medium">{% trans "Full Documentation →" %}</a>
                     </nav>
                 </div>
             </div>
@@ -102,140 +120,70 @@
             <div class="flex-1">
                 <!-- Authentication Section -->
                 <section id="authentication" class="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Autenticação" %}</h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Authentication" %}</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#authentication" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                    </div>
                     <div class="prose max-w-none">
-                        <p class="text-gray-600 mb-4">{% trans "Todas as requisições à API devem incluir seu token de autenticação no cabeçalho HTTP." %}</p>
-                        <p class="text-gray-600 mb-4">{% trans "Mantenha seu token seguro e nunca compartilhe com terceiros." %}</p>
+                        <p class="text-gray-600 mb-4">{% trans "All API requests require authentication using JWT tokens." %}</p>
                         <div class="bg-gray-800 text-white p-4 rounded-md">
-                            <pre><code><span class="text-green-400">Authorization: Token</span> <span class="text-yellow-400">seu_token_aqui</span></code></pre>
+                            <pre><code>POST /api/token/
+
+{
+    "email": "your@email.com",
+    "password": "your_password"
+}</code></pre>
                         </div>
                     </div>
                 </section>
 
                 <!-- Stocks Section -->
                 <section id="stocks" class="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Cotação de Ações" %}</h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Stocks" %}</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#stocks" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                    </div>
                     <div class="space-y-6">
                         <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Requisição" %}</h3>
-                            <div class="bg-gray-800 text-white p-4 rounded-md">
-                                <pre><code><span class="text-purple-400">GET</span> <span class="text-green-400">/api/v1/stocks/</span><span class="text-yellow-400">{symbol}</span><span class="text-green-400">/quote</span></code></pre>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
+                                <span class="font-mono text-gray-800">/api/v1/stocks/tickers/</span>
                             </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Parâmetros" %}</h3>
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left py-2">Nome</th>
-                                        <th class="text-left py-2">Descrição</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="py-2">symbol</td>
-                                        <td class="py-2">{% trans "Símbolo da ação (ex: AAPL)" %}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Resposta" %}</h3>
-                            <div class="bg-gray-800 text-white p-4 rounded-md">
-                                <pre><code>{
-  <span class="text-purple-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
-  <span class="text-purple-400">"price"</span>: <span class="text-yellow-400">150.25</span>,
-  <span class="text-purple-400">"change"</span>: <span class="text-yellow-400">2.5</span>,
-  <span class="text-purple-400">"change_percent"</span>: <span class="text-yellow-400">1.67</span>
-}</code></pre>
-                            </div>
+                            <p class="text-gray-600 mb-4">{% trans "Get a list of all available stock tickers." %}</p>
                         </div>
                     </div>
                 </section>
 
                 <!-- Forex Section -->
                 <section id="forex" class="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Forex" %}</h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Forex" %}</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#forex" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                    </div>
                     <div class="space-y-6">
                         <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Requisição" %}</h3>
-                            <div class="bg-gray-800 text-white p-4 rounded-md">
-                                <pre><code><span class="text-purple-400">GET</span> <span class="text-green-400">/api/v1/forex/rate/</span><span class="text-yellow-400">{from}</span><span class="text-green-400">/</span><span class="text-yellow-400">{to}</span></code></pre>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
+                                <span class="font-mono text-gray-800">/api/v1/forex/pairs/</span>
                             </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Parâmetros" %}</h3>
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left py-2">Nome</th>
-                                        <th class="text-left py-2">Descrição</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="py-2">from</td>
-                                        <td class="py-2">{% trans "Moeda base (ex: EUR)" %}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-2">to</td>
-                                        <td class="py-2">{% trans "Moeda destino (ex: USD)" %}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Resposta" %}</h3>
-                            <div class="bg-gray-800 text-white p-4 rounded-md">
-                                <pre><code>{
-  <span class="text-purple-400">"from"</span>: <span class="text-green-400">"EUR"</span>,
-  <span class="text-purple-400">"to"</span>: <span class="text-green-400">"USD"</span>,
-  <span class="text-purple-400">"rate"</span>: <span class="text-yellow-400">1.0925</span>,
-  <span class="text-purple-400">"timestamp"</span>: <span class="text-green-400">"2024-03-20T12:00:00Z"</span>
-}</code></pre>
-                            </div>
+                            <p class="text-gray-600 mb-4">{% trans "Get a list of available forex currency pairs." %}</p>
                         </div>
                     </div>
                 </section>
 
                 <!-- Crypto Section -->
-                <section id="crypto" class="bg-white rounded-lg shadow-sm p-6">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Criptomoedas" %}</h2>
+                <section id="crypto" class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Crypto" %}</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#crypto" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                    </div>
                     <div class="space-y-6">
                         <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Requisição" %}</h3>
-                            <div class="bg-gray-800 text-white p-4 rounded-md">
-                                <pre><code><span class="text-purple-400">GET</span> <span class="text-green-400">/api/v1/crypto/price/</span><span class="text-yellow-400">{symbol}</span></code></pre>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
+                                <span class="font-mono text-gray-800">/api/v1/crypto/pairs/</span>
                             </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Parâmetros" %}</h3>
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left py-2">Nome</th>
-                                        <th class="text-left py-2">Descrição</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="py-2">symbol</td>
-                                        <td class="py-2">{% trans "Símbolo da criptomoeda (ex: BTC)" %}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2">{% trans "Resposta" %}</h3>
-                            <div class="bg-gray-800 text-white p-4 rounded-md">
-                                <pre><code>{
-  <span class="text-purple-400">"symbol"</span>: <span class="text-green-400">"BTC"</span>,
-  <span class="text-purple-400">"price"</span>: <span class="text-yellow-400">65000.00</span>,
-  <span class="text-purple-400">"change_24h"</span>: <span class="text-yellow-400">2.5</span>,
-  <span class="text-purple-400">"volume_24h"</span>: <span class="text-yellow-400">30000000000</span>,
-  <span class="text-purple-400">"timestamp"</span>: <span class="text-green-400">"2024-03-20T12:00:00Z"</span>
-}</code></pre>
-                            </div>
+                            <p class="text-gray-600 mb-4">{% trans "Get a list of available cryptocurrency trading pairs." %}</p>
                         </div>
                     </div>
                 </section>

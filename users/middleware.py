@@ -14,7 +14,7 @@ class RequestTokenMiddleware:
         
         # Frontend routes to skip token check
         frontend_routes = ['', 'login/', 'logout/', 'register/', 'profile/', 'regenerate-token/', 'update-token-settings/']
-        if path in frontend_routes or path.startswith(('admin/', 'api/token/', 'api/register/')):
+        if path in frontend_routes or path.startswith(('admin/', 'api/token/', 'api/register/', 'v1/docs/')):
             return self.get_response(request)
 
         # Check if the request is for static files

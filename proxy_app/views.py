@@ -7,8 +7,15 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.renderers import JSONRenderer
+from django.shortcuts import render
+from rest_framework.decorators import api_view, permission_classes
 
 logger = logging.getLogger(__name__)
+
+@permission_classes([AllowAny])
+def api_documentation(request):
+    """View for rendering the API documentation page."""
+    return render(request, 'api/docs.html')
 
 class PolygonProxyView(APIView):
     renderer_classes = [JSONRenderer]

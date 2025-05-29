@@ -59,7 +59,10 @@ ROOT_URLCONF = "proxy_project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "users" / "templates"],
+        "DIRS": [
+            BASE_DIR / "users" / "templates",
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -195,6 +198,13 @@ LOCALE_PATHS = [
 
 # Static files
 STATIC_URL = "/static/"
+
+# Additional locations of static files
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# The absolute path to the directory where collectstatic will collect static files for deployment
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
