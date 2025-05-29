@@ -129,3 +129,47 @@ class PolygonProxyView(APIView):
     
     def delete(self, request, path):
         return self._handle_request(request, path)
+
+    def get_polygon_url(self, path):
+        # Remove /v1/ prefix if present
+        if path.startswith('v1/'):
+            path = path[3:]
+        return f"{settings.POLYGON_BASE_URL}/{path}"
+
+    def process_request(self, request, *args, **kwargs):
+        # Get the path from kwargs
+        path = kwargs.get('path', '')
+        
+        # Build the Polygon.io URL
+        polygon_url = self.get_polygon_url(path)
+        
+        # Get query parameters
+        params = request.GET.dict()
+        
+        # Add the API key
+        params['apiKey'] = settings.POLYGON_API_KEY
+        
+        try:
+            # Make the request to Polygon.io
+            response = requests.get(polygon_url, params=params)
+            
+            # Log the request
+            logger.info(f"Proxy request to {polygon_url} by user {request.request_token_user.email}")
+            
+            # Return the response
+            return Response(
+                data=response.json(),
+                status=response.status_code
+            )
+        except requests.RequestException as e:
+            logger.error(f"Error proxying request to {polygon_url}: {str(e)}")
+            return Response(
+                {'error': 'Failed to proxy request to Polygon.io'},
+                status=status.HTTP_502_BAD_GATEWAY
+            )
+
+    def get(self, request, *args, **kwargs):
+        return self.process_request(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.process_request(request, *args, **kwargs)
