@@ -120,7 +120,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "users.middleware.RequestTokenMiddleware",  # Our custom middleware
     "django.middleware.locale.LocaleMiddleware",  # Add this line for language selection
 ]
 
@@ -216,6 +215,7 @@ ENV = os.environ.get("ENV", "local")
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "users.authentication.RequestTokenAuthentication",
     ),
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",

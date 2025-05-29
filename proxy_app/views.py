@@ -11,6 +11,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from users.authentication import RequestTokenAuthentication
+from users.permissions import DailyLimitPermission
+
 logger = logging.getLogger(__name__)
 
 
@@ -22,6 +25,8 @@ def api_documentation(request):
 
 class PolygonProxyView(APIView):
     renderer_classes = [JSONRenderer]
+    authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
+    permission_classes = [IsAuthenticated, DailyLimitPermission]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -29,13 +34,8 @@ class PolygonProxyView(APIView):
         self.api_key = settings.POLYGON_API_KEY
         self.timeout = getattr(settings, "PROXY_TIMEOUT", 30)
         self.session = requests.Session()
-        self._set_authentication()
-
-    def _set_authentication(self):
-        if settings.ENV != "local":
-            self.authentication_classes = [JWTAuthentication]
-            self.permission_classes = [IsAuthenticated]
-        else:
+        if settings.ENV == "local":
+            logger.info("Using no auth and no permissions for local environment!")
             self.authentication_classes = []
             self.permission_classes = [AllowAny]
 
@@ -43,31 +43,31 @@ class PolygonProxyView(APIView):
         version = "v3"
 
         if any(
-            endpoint in path
-            for endpoint in [
-                "aggs",
-                "snapshot/locale/us/markets",
-                "last/trade",
-                "last/nbbo",
-                "fed/vx/treasury-yields",
-                "benzinga/v1/ratings",
-                "grouped/locale/us/market",
-            ]
+                endpoint in path
+                for endpoint in [
+                    "aggs",
+                    "snapshot/locale/us/markets",
+                    "last/trade",
+                    "last/nbbo",
+                    "fed/vx/treasury-yields",
+                    "benzinga/v1/ratings",
+                    "grouped/locale/us/market",
+                ]
         ):
             version = "v2"
 
         elif any(
-            endpoint in path
-            for endpoint in [
-                "conversion",
-                "open-close",
-                "related-companies",
-                "meta/symbols",
-                "meta/exchanges",
-                "historic/trades",
-                "historic/quotes",
-                "last/currencies",
-            ]
+                endpoint in path
+                for endpoint in [
+                    "conversion",
+                    "open-close",
+                    "related-companies",
+                    "meta/symbols",
+                    "meta/exchanges",
+                    "historic/trades",
+                    "historic/quotes",
+                    "last/currencies",
+                ]
         ):
             version = "v1"
 
@@ -96,10 +96,15 @@ class PolygonProxyView(APIView):
                 k: v
                 for k, v in request.headers.items()
                 if k.lower()
-                not in ["host", "connection", "content-length", "authorization"]
+                   not in ["host", "connection", "content-length", "authorization", "x-request-token"]
             }
 
-            logger.info(f"Forwarding {request.method} request to: {target_url}")
+            # Log the request with user information if available
+            user_info = "anonymous"
+            if hasattr(request, 'user') and request.user.is_authenticated:
+                user_info = getattr(request.user, 'email', str(request.user))
+
+            logger.info(f"Forwarding {request.method} request to: {target_url} by user: {user_info}")
             logger.info(f"With params: {params}")
 
             response = self.session.request(
@@ -162,46 +167,3 @@ class PolygonProxyView(APIView):
 
     def delete(self, request, path):
         return self._handle_request(request, path)
-
-    def get_polygon_url(self, path):
-        # Remove /v1/ prefix if present
-        if path.startswith("v1/"):
-            path = path[3:]
-        return f"{settings.POLYGON_BASE_URL}/{path}"
-
-    def process_request(self, request, *args, **kwargs):
-        # Get the path from kwargs
-        path = kwargs.get("path", "")
-
-        # Build the Polygon.io URL
-        polygon_url = self.get_polygon_url(path)
-
-        # Get query parameters
-        params = request.GET.dict()
-
-        # Add the API key
-        params["apiKey"] = settings.POLYGON_API_KEY
-
-        try:
-            # Make the request to Polygon.io
-            response = requests.get(polygon_url, params=params)
-
-            # Log the request
-            logger.info(
-                f"Proxy request to {polygon_url} by user {request.request_token_user.email}"
-            )
-
-            # Return the response
-            return Response(data=response.json(), status=response.status_code)
-        except requests.RequestException as e:
-            logger.error(f"Error proxying request to {polygon_url}: {str(e)}")
-            return Response(
-                {"error": "Failed to proxy request to Polygon.io"},
-                status=status.HTTP_502_BAD_GATEWAY,
-            )
-
-    def get(self, request, *args, **kwargs):
-        return self.process_request(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.process_request(request, *args, **kwargs)

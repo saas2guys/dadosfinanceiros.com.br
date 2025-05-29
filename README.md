@@ -14,6 +14,174 @@ A simple and efficient Django REST API proxy service that forwards all HTTP requ
 - Support for all Polygon.io endpoints (v1, v2, v3)
 - Version-specific routing
 - Proper error handling
+- **Django REST Framework Authentication System**
+- **Custom Authentication and Permission Classes**
+- **Clean Separation of Concerns**
+
+## Architecture Overview
+
+### Django REST Framework Integration
+
+The service has been refactored to use Django REST Framework's built-in authentication and permission system instead of custom middleware. This provides:
+
+#### Benefits of the New Architecture:
+- **Separation of Concerns**: Authentication, permissions, and business logic are properly separated
+- **DRF Best Practices**: Uses standard DRF authentication and permission classes
+- **Maintainability**: Easier to maintain, test, and extend
+- **Performance**: More efficient than middleware-based authentication
+- **Flexibility**: Supports multiple authentication methods simultaneously
+- **Standards Compliance**: Follows Django and DRF conventions
+
+#### Authentication Classes:
+
+1. **`RequestTokenAuthentication`** (`users/authentication.py`):
+   - Custom DRF authentication class for request token validation
+   - Handles `X-Request-Token` header authentication
+   - Validates token expiration and user status
+   - Provides user context for authenticated requests
+
+2. **`JWTAuthentication`** (from DRF Simple JWT):
+   - Standard JWT token authentication
+   - Used for user management endpoints (`/api/*`)
+   - Bearer token authentication via Authorization header
+
+#### Permission Classes:
+
+1. **`DailyLimitPermission`** (`users/permissions.py`):
+   - Custom DRF permission class for daily request limits
+   - Checks if user has exceeded daily quota
+   - Automatically resets counters for new days
+   - Increments request count on successful requests
+
+2. **`IsAuthenticated`** (from DRF):
+   - Standard DRF permission for authenticated users
+   - Used in combination with custom permissions
+
+#### View Configuration:
+
+The `PolygonProxyView` now dynamically configures authentication based on environment:
+
+```python
+def _set_authentication(self):
+    """Set authentication and permission classes based on environment."""
+    if settings.ENV != "local":
+        # Production: Dual authentication support
+        self.authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
+        self.permission_classes = [IsAuthenticated, DailyLimitPermission]
+    else:
+        # Development: Open access
+        self.authentication_classes = []
+        self.permission_classes = [AllowAny]
+```
+
+#### What Was Removed:
+
+- **`RequestTokenMiddleware`**: All middleware logic moved to DRF authentication
+- **Custom Routing Logic**: Now handled by Django URL patterns and DRF views
+- **Manual Token Validation**: Now handled by DRF authentication classes
+- **Hardcoded Path Checking**: Replaced with proper view-level authentication
+
+#### Migration Benefits:
+
+1. **Code Quality**:
+   - Cleaner, more maintainable codebase
+   - Follows Django/DRF best practices
+   - Better error handling and debugging
+
+2. **Testability**:
+   - Easier to unit test authentication logic
+   - DRF test utilities for API testing
+   - Isolated authentication components
+
+3. **Flexibility**:
+   - Easy to add new authentication methods
+   - Configurable per-view authentication
+   - Support for different permission levels
+
+4. **Performance**:
+   - More efficient than middleware processing
+   - Only authenticates relevant requests
+   - Better caching of authentication results
+
+### Migration Guide
+
+#### For Existing Users
+
+If you're upgrading from a previous version that used `RequestTokenMiddleware`, here's what changed:
+
+##### What Remains the Same:
+- **API Endpoints**: All endpoints work exactly the same
+- **Authentication Headers**: Same headers (`X-Request-Token`, `Authorization: Bearer`)
+- **Token Management**: Same token generation and management features
+- **Daily Limits**: Same daily request limit functionality
+- **User Experience**: No changes to how you use the API
+
+##### What Changed (Internal):
+- **Middleware Removed**: `RequestTokenMiddleware` no longer exists
+- **DRF Integration**: Now uses Django REST Framework authentication classes
+- **Better Error Handling**: More consistent error responses
+- **Improved Testing**: Better test coverage and utilities
+
+##### No Action Required:
+- **Existing Tokens**: All existing request tokens continue to work
+- **Client Code**: No changes needed to your API client code
+- **Configuration**: Same environment variables and settings
+
+#### For Developers
+
+If you were customizing the authentication logic:
+
+##### Before (Middleware Approach):
+```python
+# users/middleware.py - REMOVED
+class RequestTokenMiddleware:
+    def __call__(self, request):
+        # Custom authentication logic in middleware
+        pass
+```
+
+##### After (DRF Approach):
+```python
+# users/authentication.py - NEW
+class RequestTokenAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        # Authentication logic in DRF class
+        return (user, token)
+
+# users/permissions.py - NEW  
+class DailyLimitPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        # Permission logic in DRF class
+        return True
+```
+
+##### Benefits for Developers:
+- **Testable**: Easier to unit test authentication logic
+- **Modular**: Clean separation between authentication and permissions
+- **Extensible**: Easy to add new authentication methods
+- **Standard**: Follows Django/DRF best practices
+- **Debuggable**: Better error messages and debugging tools
+
+#### Deployment Notes
+
+##### Production Deployment:
+1. **Update Code**: Pull the latest code with DRF authentication
+2. **Run Migrations**: `python manage.py migrate` (if any new migrations)
+3. **Restart Service**: Restart your Django application
+4. **Test**: Verify authentication works with existing tokens
+
+##### No Database Changes:
+- No database migrations required for this refactoring
+- All existing user accounts and tokens remain valid
+- No downtime required for the upgrade
+
+##### Environment Variables:
+All existing environment variables remain the same:
+- `POLYGON_API_KEY`
+- `SECRET_KEY` 
+- `DEBUG`
+- `ALLOWED_HOSTS`
+- `ENV`
 
 ## Prerequisites
 
@@ -56,18 +224,82 @@ The service uses the following environment variables:
 
 ## Authentication Flow
 
-The service uses a two-step authentication process:
+The service uses a two-step authentication process with Django REST Framework:
 
-1. **JWT Authentication** for user management:
-   - Used for registration, login, and profile management
-   - Required for accessing `/api/` endpoints
-   - Token lifetime: 60 minutes (configurable)
+### 1. JWT Authentication (User Management)
+- **Purpose**: User registration, login, and profile management
+- **Endpoints**: `/api/*` routes
+- **Method**: Bearer token in `Authorization` header
+- **Token Lifetime**: 60 minutes (configurable)
+- **Handled By**: `JWTAuthentication` class (DRF Simple JWT)
 
-2. **Request Token Authentication** for API access:
-   - Required for accessing `/v1/` endpoints
-   - Automatically generated upon registration
-   - Can be regenerated through the API
-   - Includes daily request limits
+### 2. Request Token Authentication (API Access)
+- **Purpose**: Accessing Polygon.io data via proxy endpoints
+- **Endpoints**: `/v1/*` routes (proxy endpoints)
+- **Method**: Custom token in `X-Request-Token` header
+- **Token Lifetime**: 30 days (configurable, with auto-renewal options)
+- **Handled By**: `RequestTokenAuthentication` class (custom DRF authentication)
+
+### Authentication Architecture
+
+#### Production Environment (`ENV != "local"`):
+```python
+# PolygonProxyView authentication configuration
+authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
+permission_classes = [IsAuthenticated, DailyLimitPermission]
+```
+
+- **Dual Authentication**: Supports both JWT and request tokens
+- **Daily Limits**: Enforced via `DailyLimitPermission`
+- **User Context**: Both authentication methods provide user context
+
+#### Development Environment (`ENV == "local"`):
+```python
+# PolygonProxyView authentication configuration  
+authentication_classes = []
+permission_classes = [AllowAny]
+```
+
+- **Open Access**: No authentication required for development
+- **Easy Testing**: Simplifies local development and testing
+
+### DRF Authentication Process
+
+1. **Request Reception**:
+   ```
+   Client Request → Django URLs → PolygonProxyView
+   ```
+
+2. **Authentication Phase**:
+   ```
+   DRF Authentication Classes:
+   ├── JWTAuthentication.authenticate(request)
+   └── RequestTokenAuthentication.authenticate(request)
+   ```
+
+3. **Permission Check**:
+   ```
+   DRF Permission Classes:
+   ├── IsAuthenticated.has_permission()
+   └── DailyLimitPermission.has_permission()
+   ```
+
+4. **Request Processing**:
+   ```
+   Authentication Success → Proxy to Polygon.io → Return Response
+   ```
+
+### Authentication Headers
+
+#### For JWT Authentication:
+```http
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+```
+
+#### For Request Token Authentication:
+```http
+X-Request-Token: 550e8400-e29b-41d4-a716-446655440000
+```
 
 ### Getting Started
 
@@ -647,6 +879,146 @@ The proxy service handles various error scenarios:
 - API keys are never exposed to clients
 - Secure headers configuration
 - Environment-based authentication
+
+## Testing the Authentication System
+
+### Unit Tests
+
+The project includes comprehensive tests for the new DRF authentication system:
+
+```bash
+# Run all authentication tests
+python manage.py test users.tests
+
+# Run specific test classes
+python manage.py test users.tests.RequestTokenAuthenticationTest
+python manage.py test users.tests.DailyLimitPermissionTest
+python manage.py test users.tests.AuthenticationIntegrationTest
+```
+
+### Test Coverage
+
+1. **RequestTokenAuthentication Tests**:
+   - Valid token authentication
+   - Invalid token handling
+   - Token expiration validation
+   - Missing token scenarios
+
+2. **DailyLimitPermission Tests**:
+   - Daily request counting
+   - Limit enforcement
+   - Counter reset logic
+   - Rate limiting responses
+
+3. **Integration Tests**:
+   - End-to-end authentication flow
+   - Multiple authentication methods
+   - Permission class interaction
+   - Frontend/API endpoint separation
+
+### Manual Testing
+
+#### 1. Test Request Token Authentication:
+```bash
+# Create a user and get request token
+curl -X POST http://localhost:8000/api/register/ \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "password": "testpass123", "password2": "testpass123"}'
+
+# Test API access with request token
+curl -X GET http://localhost:8000/v1/stocks/tickers/AAPL/ \
+  -H "X-Request-Token: YOUR_REQUEST_TOKEN"
+```
+
+#### 2. Test JWT Authentication:
+```bash
+# Get JWT token
+curl -X POST http://localhost:8000/api/token/ \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "password": "testpass123"}'
+
+# Test user management with JWT
+curl -X GET http://localhost:8000/api/profile/ \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+#### 3. Test Daily Limits:
+```bash
+# Make multiple requests to test daily limits
+for i in {1..5}; do
+  curl -X GET http://localhost:8000/v1/stocks/tickers/AAPL/ \
+    -H "X-Request-Token: YOUR_REQUEST_TOKEN"
+done
+```
+
+#### 4. Test Authentication Errors:
+```bash
+# Test invalid request token
+curl -X GET http://localhost:8000/v1/stocks/tickers/AAPL/ \
+  -H "X-Request-Token: invalid-token"
+
+# Test missing authentication
+curl -X GET http://localhost:8000/v1/stocks/tickers/AAPL/
+
+# Test expired JWT
+curl -X GET http://localhost:8000/api/profile/ \
+  -H "Authorization: Bearer expired_jwt_token"
+```
+
+### Authentication Development
+
+#### Adding New Authentication Methods:
+
+1. **Create Authentication Class** (`users/authentication.py`):
+```python
+from rest_framework import authentication
+from rest_framework import exceptions
+
+class CustomAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        # Your authentication logic here
+        return (user, token)
+```
+
+2. **Add to Settings** (`proxy_project/settings.py`):
+```python
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "users.authentication.RequestTokenAuthentication",
+        "users.authentication.CustomAuthentication",  # New auth class
+    ),
+}
+```
+
+3. **Update View Configuration** (`proxy_app/views.py`):
+```python
+def _set_authentication(self):
+    if settings.ENV != "local":
+        self.authentication_classes = [
+            JWTAuthentication, 
+            RequestTokenAuthentication,
+            CustomAuthentication  # Add new auth class
+        ]
+```
+
+#### Adding New Permission Classes:
+
+1. **Create Permission Class** (`users/permissions.py`):
+```python
+from rest_framework import permissions
+
+class CustomPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        # Your permission logic here
+        return True
+```
+
+2. **Use in Views**:
+```python
+class PolygonProxyView(APIView):
+    permission_classes = [IsAuthenticated, DailyLimitPermission, CustomPermission]
+```
 
 ## License
 
