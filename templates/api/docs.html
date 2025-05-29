@@ -54,6 +54,20 @@
     <div id="authentication" class="doc-section">
     <h2 class="text-2xl font-semibold mb-4">{% trans "Authentication" %}</h2>
     
+    <!-- Financial Education Section -->
+    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+      <h4 class="font-semibold text-blue-800 mb-2">{% trans "API Authentication in Financial Services" %}</h4>
+      <p class="text-blue-700 mb-3">
+        {% trans "Authentication in financial APIs ensures secure access to sensitive market data and maintains regulatory compliance across global financial markets. JWT (JSON Web Tokens) provide stateless authentication, essential for scalable financial systems handling thousands of concurrent requests. This token-based approach allows for granular access control, request tracking, and audit trails required by financial regulations like MiFID II, GDPR, and SOX compliance." %}
+      </p>
+      <p class="text-blue-700 mb-3">
+        {% trans "Financial institutions require robust authentication to protect proprietary trading strategies, client data, and market-sensitive information. The two-tier authentication system (JWT for user management, request tokens for data access) provides flexibility for different use cases while maintaining security. Rate limiting tied to authentication prevents market abuse and ensures fair access to financial data across all market participants." %}
+      </p>
+      <p class="text-blue-700">
+        <strong>{% trans "Compliance Applications:" %}</strong> {% trans "Regulatory reporting, audit trail generation, user access control, data licensing compliance, market surveillance, and risk management. Proper authentication is fundamental to any professional financial data operation and regulatory compliance framework." %}
+      </p>
+    </div>
+    
       <div class="endpoint-header mb-6">
         <div class="flex items-center gap-2 mb-2">
       <span class="endpoint-method">POST</span>
@@ -202,6 +216,21 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
     <!-- All Tickers Endpoint -->
       <div class="mb-8">
       <h3 class="text-xl mb-4">{% trans "All Tickers" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+          <h4 class="font-semibold text-blue-800 mb-2">{% trans "What are Stock Tickers?" %}</h4>
+          <p class="text-blue-700 mb-3">
+            {% trans "A stock ticker is a unique symbol assigned to publicly traded companies on stock exchanges. These abbreviated codes (typically 1-5 characters) serve as the universal identifier for securities trading. For example, AAPL represents Apple Inc., while MSFT represents Microsoft Corporation. Tickers are essential for trading, portfolio management, and financial analysis across all market participants." %}
+          </p>
+          <p class="text-blue-700 mb-3">
+            {% trans "In professional finance, tickers are used by traders for quick order entry, by analysts for building financial models, by portfolio managers for asset allocation, and by retail investors for tracking investments. The ticker system standardizes communication across global financial markets, ensuring that everyone refers to the same security using the same identifier." %}
+          </p>
+          <p class="text-blue-700">
+            <strong>{% trans "Common Applications:" %}</strong> {% trans "Stock screeners, market surveillance systems, portfolio tracking applications, trading platforms, financial news systems, and regulatory reporting. This endpoint returns comprehensive metadata including company names, exchange information, trading status, and market classifications." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
       <span class="endpoint-method">GET</span>
@@ -418,6 +447,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stock
     <!-- Stock Details Endpoint -->
       <div class="mb-8">
       <h3 class="text-xl mb-4">{% trans "Stock Details" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6">
+          <h4 class="font-semibold text-green-800 mb-2">{% trans "Understanding Stock Fundamentals" %}</h4>
+          <p class="text-green-700 mb-3">
+            {% trans "Stock details provide fundamental information about a company's securities, including corporate structure, market classification, and key identifiers. This data forms the foundation for all equity analysis and is crucial for investment decisions. Market capitalization, for instance, categorizes companies into large-cap, mid-cap, or small-cap segments, each with different risk-return profiles." %}
+          </p>
+          <p class="text-green-700 mb-3">
+            {% trans "Professional investors use this information for sector analysis, peer comparison, and portfolio construction. The primary exchange data indicates where the stock has the highest liquidity, while the security type (common stock, preferred stock, etc.) affects voting rights and dividend priorities. Currency information is essential for international investors managing foreign exchange exposure." %}
+          </p>
+          <p class="text-green-700">
+            <strong>{% trans "Investment Applications:" %}</strong> {% trans "Due diligence processes, compliance screening, risk assessment, portfolio diversification analysis, and automated trading system configuration. This endpoint provides the essential metadata required for any equity research or trading operation." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
       <span class="endpoint-method">GET</span>
@@ -608,6 +652,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/AAPL/?include
       <!-- Stock Aggregates Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Stock Aggregates" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-purple-50 border-l-4 border-purple-400 p-4 mb-6">
+          <h4 class="font-semibold text-purple-800 mb-2">{% trans "Understanding OHLCV Data and Market Aggregates" %}</h4>
+          <p class="text-purple-700 mb-3">
+            {% trans "Stock aggregates represent OHLCV data (Open, High, Low, Close, Volume) - the fundamental building blocks of technical analysis and price discovery. Open represents the first traded price in a period, High and Low show the price range, Close is the final price, and Volume indicates the number of shares traded. The Volume Weighted Average Price (VWAP) provides the average price weighted by trading volume, crucial for institutional trading." %}
+          </p>
+          <p class="text-purple-700 mb-3">
+            {% trans "These metrics are essential for technical analysis, algorithmic trading, and risk management. Traders use OHLC data to identify support and resistance levels, price patterns, and market trends. Volume analysis reveals market participation and liquidity, while VWAP serves as a benchmark for execution quality. Institutional investors often use VWAP as a performance measure for large trades." %}
+          </p>
+          <p class="text-purple-700">
+            <strong>{% trans "Trading Applications:" %}</strong> {% trans "Candlestick chart generation, technical indicator calculation (RSI, moving averages, Bollinger Bands), backtesting trading strategies, market impact analysis, and algorithmic execution. This data is fundamental for any quantitative trading system or technical analysis platform." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
             <span class="endpoint-method">GET</span>
@@ -854,6 +913,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/aggregates/?mult
       <!-- Stock Previous Close Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Stock Previous Close" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-orange-50 border-l-4 border-orange-400 p-4 mb-6">
+          <h4 class="font-semibold text-orange-800 mb-2">{% trans "The Importance of Previous Close in Trading" %}</h4>
+          <p class="text-orange-700 mb-3">
+            {% trans "The previous close price serves as a critical reference point for market participants, representing the last consensus price reached during regular trading hours. This price is used to calculate daily price changes, percentage moves, and gaps between trading sessions. It forms the baseline for pre-market and after-hours trading activities and is essential for determining market sentiment at the opening of the next trading session." %}
+          </p>
+          <p class="text-orange-700 mb-3">
+            {% trans "Professional traders rely on previous close data for gap analysis, which identifies price discontinuities between sessions that may signal significant news or market events. The data is crucial for calculating daily returns, volatility measures, and performance attribution. Market makers use this information to set opening indicative prices, while algorithmic trading systems use it as a reference for mean reversion strategies." %}
+          </p>
+          <p class="text-orange-700">
+            <strong>{% trans "Market Applications:" %}</strong> {% trans "Gap trading strategies, pre-market analysis, daily performance calculations, risk management systems, and market surveillance. This endpoint provides the essential baseline data needed for any trading day preparation or daily market analysis." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
             <span class="endpoint-method">GET</span>
@@ -1024,6 +1098,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/previous/?adjust
       <!-- Stock Trades Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Stock Trades" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+          <h4 class="font-semibold text-red-800 mb-2">{% trans "Understanding Trade-by-Trade Data and Market Microstructure" %}</h4>
+          <p class="text-red-700 mb-3">
+            {% trans "Individual trade data represents the granular view of market activity, showing each transaction with its price, size, timestamp, and execution venue. This tick-by-tick data reveals market microstructure dynamics, including how orders interact, price discovery mechanics, and liquidity provision patterns. Trade conditions indicate special circumstances like block trades, odd lots, or electronic vs. floor executions." %}
+          </p>
+          <p class="text-red-700 mb-3">
+            {% trans "Quantitative analysts use trade data for high-frequency analysis, market impact studies, and execution quality measurement. The data helps identify liquidity patterns, understand market maker behavior, and optimize trade execution strategies. Exchange routing information reveals where trades occur, which is crucial for understanding market fragmentation and best execution requirements under regulations like MiFID II and Reg NMS." %}
+          </p>
+          <p class="text-red-700">
+            <strong>{% trans "Research Applications:" %}</strong> {% trans "Market microstructure research, algorithmic trading development, transaction cost analysis, liquidity measurement, regulatory compliance monitoring, and high-frequency trading strategy backtesting. This granular data is essential for any sophisticated trading or market analysis operation." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
             <span class="endpoint-method">GET</span>
@@ -1221,6 +1310,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/trades/?timestam
       <!-- Stock Quotes Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Stock Quotes" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-indigo-50 border-l-4 border-indigo-400 p-4 mb-6">
+          <h4 class="font-semibold text-indigo-800 mb-2">{% trans "Understanding Bid-Ask Spreads and NBBO" %}</h4>
+          <p class="text-indigo-700 mb-3">
+            {% trans "Stock quotes represent the National Best Bid and Offer (NBBO), showing the highest price buyers are willing to pay (bid) and the lowest price sellers are willing to accept (ask). The bid-ask spread is a key indicator of liquidity and market efficiency - tighter spreads typically indicate more liquid markets. Quote sizes show the number of shares available at these prices, providing insight into market depth." %}
+          </p>
+          <p class="text-indigo-700 mb-3">
+            {% trans "Professional traders use quote data for order placement decisions, spread trading strategies, and market making activities. The NBBO ensures that retail investors receive the best available prices across all exchanges. Quote timestamps help identify market timing opportunities, while exchange information reveals where the best prices originate. This data is fundamental for understanding market liquidity and execution costs." %}
+          </p>
+          <p class="text-indigo-700">
+            <strong>{% trans "Trading Applications:" %}</strong> {% trans "Spread analysis, liquidity assessment, order optimization, market making strategies, best execution monitoring, and real-time trading decisions. Quote data is essential for any trading platform or portfolio management system requiring current market conditions." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
             <span class="endpoint-method">GET</span>
@@ -1432,6 +1536,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/quotes/?timestam
     <!-- Forex Pairs Endpoint -->
       <div class="mb-8">
       <h3 class="text-xl mb-4">{% trans "Forex Pairs" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+          <h4 class="font-semibold text-blue-800 mb-2">{% trans "Understanding Currency Pairs and Forex Markets" %}</h4>
+          <p class="text-blue-700 mb-3">
+            {% trans "Currency pairs represent the exchange rate between two currencies, where the first currency (base) is quoted against the second currency (quote). For example, EUR/USD shows how many US dollars one euro can buy. Major pairs involve the world's most traded currencies (USD, EUR, JPY, GBP, CHF, CAD, AUD), while minor and exotic pairs involve smaller economies. The forex market is the world's largest financial market, trading over $7 trillion daily." %}
+          </p>
+          <p class="text-blue-700 mb-3">
+            {% trans "Forex trading is essential for international business, central bank policy implementation, and speculative trading. Multinational corporations use forex markets to hedge currency exposure from international operations. Central banks intervene to influence their currency values for economic policy objectives. Hedge funds and proprietary trading firms engage in currency speculation and carry trades based on interest rate differentials between countries." %}
+          </p>
+          <p class="text-blue-700">
+            <strong>{% trans "Market Applications:" %}</strong> {% trans "International trade settlement, currency hedging, cross-border investment, central bank operations, and speculative trading. This endpoint provides real-time exchange rates essential for any global business operation or currency trading system." %}
+          </p>
+        </div>
+
         <div class="flex items-center gap-2 mb-4">
       <span class="endpoint-method">GET</span>
           <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/forex/pairs/</span>
@@ -1528,6 +1647,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/pairs/?base=EUR&quote=
       <!-- Currency Conversion Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Currency Conversion" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+          <h4 class="font-semibold text-blue-800 mb-2">{% trans "Currency Conversion and Cross-Border Transactions" %}</h4>
+          <p class="text-blue-700 mb-3">
+            {% trans "Currency conversion is the process of exchanging one currency for another at the prevailing exchange rate. This fundamental financial operation enables international commerce, travel, and investment. The conversion rate reflects relative economic strength, interest rate differentials, political stability, and market sentiment between countries. Real-time conversion rates are crucial for accurate pricing in global markets." %}
+          </p>
+          <p class="text-blue-700 mb-3">
+            {% trans "Businesses use currency conversion for pricing international products, calculating foreign revenue in home currency, and managing multi-currency portfolios. E-commerce platforms require real-time conversion for global customers, while financial institutions use it for foreign exchange services. Import/export companies rely on accurate conversion rates for cost calculations and profit margin analysis in international trade." %}
+          </p>
+          <p class="text-blue-700">
+            <strong>{% trans "Business Applications:" %}</strong> {% trans "E-commerce pricing, international invoicing, travel expense calculation, multi-currency accounting, financial reporting consolidation, and foreign investment valuation. This endpoint provides precise conversion calculations essential for any international business operation." %}
+          </p>
+        </div>
+
         <div class="flex items-center gap-2 mb-4">
           <span class="endpoint-method">GET</span>
           <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/forex/convert/</span>
@@ -1622,6 +1756,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/convert/?from=USD&to=E
       <!-- Forex Rates Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Forex Rates" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+          <h4 class="font-semibold text-blue-800 mb-2">{% trans "Exchange Rates and International Finance" %}</h4>
+          <p class="text-blue-700 mb-3">
+            {% trans "Exchange rates represent the relative value between currencies and are fundamental to international finance. These rates fluctuate based on economic indicators, central bank policies, political events, trade balances, and market speculation. The bid-ask spread in forex rates reflects market liquidity and transaction costs. Central banks often maintain reference rates for official transactions and policy implementation." %}
+          </p>
+          <p class="text-blue-700 mb-3">
+            {% trans "Financial institutions use exchange rates for foreign currency loans, international wire transfers, and currency trading operations. Multinational corporations monitor rates for earnings translation, hedge accounting, and subsidiary consolidation. Investment managers require accurate rates for international portfolio valuation and performance measurement. Government agencies use official rates for customs duties, tax calculations, and economic statistics." %}
+          </p>
+          <p class="text-blue-700">
+            <strong>{% trans "Financial Applications:" %}</strong> {% trans "Foreign exchange trading, international payment processing, portfolio valuation, financial statement consolidation, risk management, and regulatory compliance. This endpoint provides institutional-grade exchange rate data essential for professional financial operations." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
             <span class="endpoint-method">GET</span>
@@ -1802,6 +1951,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/rates/USD/EUR/?date=20
       <!-- Forex Historical Rates Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Forex Historical Rates" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+          <h4 class="font-semibold text-blue-800 mb-2">{% trans "Historical Exchange Rates and Currency Analysis" %}</h4>
+          <p class="text-blue-700 mb-3">
+            {% trans "Historical exchange rate data provides the foundation for currency analysis, forecasting, and risk management. This time series data reveals long-term trends, cyclical patterns, and volatility characteristics essential for understanding currency behavior. Historical rates enable backtesting of forex strategies, correlation analysis between currencies, and identification of major economic events' impact on exchange rates." %}
+          </p>
+          <p class="text-blue-700 mb-3">
+            {% trans "Financial analysts use historical forex data to build econometric models, calculate Value-at-Risk measures, and develop currency hedging strategies. Central banks analyze historical trends for policy formulation and intervention timing. Academic researchers study exchange rate dynamics, purchasing power parity, and international capital flows using long-term historical datasets. Investment managers rely on historical data for asset allocation and international diversification decisions." %}
+          </p>
+          <p class="text-blue-700">
+            <strong>{% trans "Analytical Applications:" %}</strong> {% trans "Currency forecasting models, risk measurement systems, academic research, policy analysis, investment strategy development, and regulatory stress testing. This endpoint provides comprehensive historical data essential for sophisticated currency analysis and research." %}
+          </p>
+        </div>
+
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
             <span class="endpoint-method">GET</span>
@@ -2019,6 +2183,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/historical/USD/EUR/?st
     <!-- Crypto Pairs Endpoint -->
       <div class="mb-8">
       <h3 class="text-xl mb-4">{% trans "Crypto Pairs" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+          <h4 class="font-semibold text-blue-800 mb-2">{% trans "Understanding Cryptocurrency Trading Pairs" %}</h4>
+          <p class="text-blue-700 mb-3">
+            {% trans "Cryptocurrency trading pairs represent the exchange rate between two digital assets, similar to forex pairs but within the digital asset ecosystem. Base cryptocurrencies like Bitcoin (BTC) and Ethereum (ETH) are often paired with other altcoins or stablecoins. The crypto market operates 24/7 across multiple global exchanges, creating unique arbitrage opportunities and liquidity patterns not found in traditional markets." %}
+          </p>
+          <p class="text-blue-700 mb-3">
+            {% trans "Crypto trading involves high volatility and regulatory considerations across different jurisdictions. Institutional investors increasingly use cryptocurrency for portfolio diversification, inflation hedging, and technological exposure. DeFi (Decentralized Finance) protocols rely on real-time crypto pricing for lending, borrowing, and yield farming operations. Market makers provide liquidity across fragmented crypto exchanges, requiring sophisticated risk management systems." %}
+          </p>
+          <p class="text-blue-700">
+            <strong>{% trans "Digital Asset Applications:" %}</strong> {% trans "Portfolio diversification, DeFi protocol integration, arbitrage trading, institutional treasury management, payment processing, and blockchain application development. This endpoint provides real-time crypto market data essential for any digital asset operation." %}
+          </p>
+        </div>
+
         <div class="flex items-center gap-2 mb-4">
       <span class="endpoint-method">GET</span>
           <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/crypto/pairs/</span>
@@ -2122,6 +2301,21 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/crypto/pairs/?base=BTC&quote
       <!-- Crypto OHLC Endpoint -->
       <div class="mb-8">
         <h3 class="text-xl mb-4">{% trans "Crypto OHLC Data" %}</h3>
+        
+        <!-- Financial Education Section -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+          <h4 class="font-semibold text-blue-800 mb-2">{% trans "Cryptocurrency OHLC Data and Digital Asset Analysis" %}</h4>
+          <p class="text-blue-700 mb-3">
+            {% trans "Cryptocurrency OHLC (Open, High, Low, Close) data provides the foundation for technical analysis in digital asset markets. Unlike traditional markets, crypto trades 24/7, creating continuous price discovery without market close gaps. This constant activity generates unique patterns and requires specialized analysis techniques. Volume data in crypto markets is particularly important due to market fragmentation across hundreds of exchanges worldwide." %}
+          </p>
+          <p class="text-blue-700 mb-3">
+            {% trans "Crypto traders use OHLC data for algorithmic trading strategies, arbitrage identification, and risk management in highly volatile markets. Institutional crypto funds rely on this data for quantitative analysis and systematic trading approaches. DeFi protocols use aggregated OHLC data for oracle price feeds, ensuring accurate asset valuations for lending and derivatives platforms. The 24/7 nature of crypto markets makes real-time data access critical for maintaining competitive advantage." %}
+          </p>
+          <p class="text-blue-700">
+            <strong>{% trans "Crypto Applications:" %}</strong> {% trans "Algorithmic trading systems, DeFi oracle integration, arbitrage detection, portfolio risk management, institutional research, and market making operations. This endpoint provides comprehensive crypto market data essential for professional digital asset trading and analysis." %}
+          </p>
+        </div>
+
         <div class="flex items-center gap-2 mb-4">
           <span class="endpoint-method">GET</span>
           <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/crypto/{symbol}/bars/</span>
