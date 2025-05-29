@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r requirements.txt gunicorn starlette==0.36.3
+    pip install -r requirements.txt gunicorn
 
 # Copy the source code
 COPY . .
