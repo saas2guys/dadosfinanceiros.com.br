@@ -40,6 +40,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Copy the source code
 COPY . .
 
+# Copy and set permissions for entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Create necessary directories and set permissions
 RUN mkdir -p /app/staticfiles /app/media \
     && chown -R appuser:appuser /app \
@@ -51,5 +55,5 @@ USER appuser
 # Expose the port the app runs on
 EXPOSE 80
 
-# Command to run the application
-CMD ["daphne", "-b", "0.0.0.0", "-p", "80", "proxy_project.asgi:application"]
+# Set the entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]

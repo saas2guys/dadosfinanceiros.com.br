@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -o errexit
 set -o pipefail
@@ -6,12 +6,12 @@ set -o nounset
 
 # Apply database migrations
 echo "Applying database migrations..."
-python manage.py migrate --noinput
+python manage.py migrate
 
-# Create cache table
-echo "Creating cache table..."
-python manage.py createcachetable
+# Collect static files
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
 
-# Start Gunicorn
-echo "Starting Gunicorn..."
-exec "$@" 
+# Start Daphne
+echo "Starting Daphne server..."
+exec daphne -b 0.0.0.0 -p 80 proxy_project.asgi:application 
