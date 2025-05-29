@@ -15,10 +15,6 @@ User = get_user_model()
 
 
 class StockMarketProxyConsumer(AsyncWebsocketConsumer):
-    """
-    WebSocket proxy consumer for stock market data.
-    Authenticates users via JWT and forwards messages to/from microservice.
-    """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -31,17 +27,14 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         """Handle WebSocket connection with JWT authentication"""
-        # Authenticate user via JWT token
         await self.authenticate_user()
 
         if not self.is_authenticated:
-            await self.close(code=4401)  # Custom code for unauthorized
+            await self.close(code=4401)
             return
 
-        # Accept the WebSocket connection
         await self.accept()
 
-        # Connect to microservice WebSocket
         await self.connect_to_microservice()
 
     async def disconnect(self, close_code):
@@ -61,14 +54,11 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
             return
 
         try:
-            # Parse and validate incoming message
             data = json.loads(text_data)
 
-            # Add user context to message for microservice
             data["user_id"] = self.user.id
             data["user_email"] = self.user.email
 
-            # Forward message to microservice
             await self.microservice_ws.send(json.dumps(data))
 
         except json.JSONDecodeError:
@@ -80,22 +70,16 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
             )
 
     async def authenticate_user(self):
-        """
-        Authenticate user using JWT token from query params or headers.
-        Supports: ws://host/ws/stocks/?token=jwt_token
-        """
         try:
             token = None
             query_string = self.scope.get("query_string", b"").decode()
 
-            # Try to get token from query parameters first
             if "token=" in query_string:
                 for param in query_string.split("&"):
                     if param.startswith("token="):
                         token = param.split("=", 1)[1]
                         break
 
-            # Try headers if no token in query params
             if not token:
                 headers = dict(self.scope.get("headers", []))
                 auth_header = headers.get(b"authorization", b"").decode()
@@ -130,22 +114,19 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
     async def connect_to_microservice(self):
         """Connect to the microservice WebSocket"""
         try:
-            # Add user context to microservice connection URL
             microservice_url = f"{self.microservice_url}?user_id={self.user.id}"
 
-            # Connect to microservice with user headers
             self.microservice_ws = await websockets.connect(
                 microservice_url,
                 extra_headers={
                     "X-User-ID": str(self.user.id),
                     "X-User-Email": self.user.email,
                 },
-                ping_interval=20,  # Keep connection alive
+                ping_interval=20,
                 ping_timeout=10,
                 close_timeout=10,
             )
 
-            # Start listening for messages from microservice
             asyncio.create_task(self.listen_to_microservice())
 
             logger.info(f"Connected to microservice WebSocket for user {self.user.id}")
@@ -163,7 +144,6 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
         """Listen for messages from microservice and forward to client"""
         try:
             async for message in self.microservice_ws:
-                # Forward message from microservice directly to client
                 await self.send(text_data=message)
 
         except websockets.exceptions.ConnectionClosed:
@@ -183,13 +163,7 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
 
 
 class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
-    """
-    High-performance WebSocket proxy with connection pooling.
-    Use this for scenarios with many concurrent WebSocket connections.
-    Reuses connections to microservice for better resource utilization.
-    """
 
-    # Shared connection pool for microservice connections
     _connection_pool = {}
     _pool_lock = None
 
@@ -219,7 +193,6 @@ class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
-        # Get or create connection from pool
         await self.get_pooled_connection()
 
     async def disconnect(self, close_code):
@@ -273,11 +246,9 @@ class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
                 logger.warning("No JWT token provided for WebSocket connection")
                 return
 
-            # Validate JWT token
             access_token = AccessToken(token)
             user_id = access_token["user_id"]
 
-            # Get user from database
             self.user = await self.get_user(user_id)
             if self.user:
                 self.is_authenticated = True

@@ -6,8 +6,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
-
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -53,7 +51,6 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):
-        # Set initial token expiration if not set and not a forever token
         if (
             self.request_token_created
             and not self.request_token_expires
@@ -65,14 +62,11 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
     def generate_new_request_token(self, save_old=True, never_expires=False):
-        """Generate a new request token with expiration."""
         if save_old and self.request_token:
-            # Mark the current token as inactive in TokenHistory
             TokenHistory.objects.filter(
                 user=self, token=str(self.request_token), is_active=True
             ).update(is_active=False)
 
-            # Save the old token with its expiry date
             old_tokens = self.previous_tokens or []
             old_tokens.append(
                 {
@@ -86,10 +80,8 @@ class User(AbstractUser):
                     "never_expires": self.token_never_expires,
                 }
             )
-            # Keep all tokens
             self.previous_tokens = old_tokens
 
-        # Generate new token
         self.request_token = uuid.uuid4()
         self.request_token_created = timezone.now()
         self.token_never_expires = never_expires
@@ -101,7 +93,6 @@ class User(AbstractUser):
                 days=self.token_validity_days
             )
 
-        # Create new TokenHistory record
         TokenHistory.objects.create(
             user=self,
             token=str(self.request_token),

@@ -1,1 +1,0 @@
-# Django proxy app package

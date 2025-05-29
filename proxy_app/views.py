@@ -1,4 +1,5 @@
 import logging
+import re
 
 import requests
 from django.conf import settings
@@ -19,7 +20,6 @@ logger = logging.getLogger(__name__)
 
 @permission_classes([AllowAny])
 def api_documentation(request):
-    """View for rendering the API documentation page."""
     return render(request, "api/docs.html")
 
 
@@ -34,6 +34,9 @@ class PolygonProxyView(APIView):
         self.api_key = settings.POLYGON_API_KEY
         self.timeout = getattr(settings, "PROXY_TIMEOUT", 30)
         self.session = requests.Session()
+        self.proxy_domain = getattr(
+            settings, "PROXY_DOMAIN", "api.dadosfinanceiros.com.br"
+        )
         if settings.ENV == "local":
             logger.info("Using no auth and no permissions for local environment!")
             self.authentication_classes = []
@@ -43,31 +46,31 @@ class PolygonProxyView(APIView):
         version = "v3"
 
         if any(
-                endpoint in path
-                for endpoint in [
-                    "aggs",
-                    "snapshot/locale/us/markets",
-                    "last/trade",
-                    "last/nbbo",
-                    "fed/vx/treasury-yields",
-                    "benzinga/v1/ratings",
-                    "grouped/locale/us/market",
-                ]
+            endpoint in path
+            for endpoint in [
+                "aggs",
+                "snapshot/locale/us/markets",
+                "last/trade",
+                "last/nbbo",
+                "fed/vx/treasury-yields",
+                "benzinga/v1/ratings",
+                "grouped/locale/us/market",
+            ]
         ):
             version = "v2"
 
         elif any(
-                endpoint in path
-                for endpoint in [
-                    "conversion",
-                    "open-close",
-                    "related-companies",
-                    "meta/symbols",
-                    "meta/exchanges",
-                    "historic/trades",
-                    "historic/quotes",
-                    "last/currencies",
-                ]
+            endpoint in path
+            for endpoint in [
+                "conversion",
+                "open-close",
+                "related-companies",
+                "meta/symbols",
+                "meta/exchanges",
+                "historic/trades",
+                "historic/quotes",
+                "last/currencies",
+            ]
         ):
             version = "v1"
 
@@ -88,6 +91,40 @@ class PolygonProxyView(APIView):
 
         return f"{self.base_url}/{polygon_version}/{clean_path}"
 
+    def _replace_polygon_urls(self, data, request):
+        if not isinstance(data, dict):
+            return data
+
+        pagination_fields = ["next_url", "previous_url", "next", "previous"]
+
+        for field in pagination_fields:
+            if (
+                field in data
+                and isinstance(data[field], str)
+                and "polygon.io" in data[field]
+            ):
+                original_url = data[field]
+
+                modified_url = re.sub(
+                    r"[?&]apikey=[^&]*&?", "", original_url, flags=re.IGNORECASE
+                )
+                modified_url = re.sub(r"[&?]+$", "", modified_url)
+                modified_url = re.sub(r"&+", "&", modified_url)
+
+                modified_url = modified_url.replace("api.polygon.io", self.proxy_domain)
+
+                if modified_url.startswith("http://"):
+                    modified_url = modified_url.replace("http://", "https://")
+                elif not modified_url.startswith("https://"):
+                    modified_url = f"https://{modified_url}"
+
+                modified_url = re.sub(r"/v[2-3]/", "/v1/", modified_url)
+
+                data[field] = modified_url
+                logger.debug(f"Replaced {field}: {original_url} -> {modified_url}")
+
+        return data
+
     def _handle_request(self, request, path):
         try:
             target_url = self._get_target_url(path)
@@ -96,15 +133,22 @@ class PolygonProxyView(APIView):
                 k: v
                 for k, v in request.headers.items()
                 if k.lower()
-                   not in ["host", "connection", "content-length", "authorization", "x-request-token"]
+                not in [
+                    "host",
+                    "connection",
+                    "content-length",
+                    "authorization",
+                    "x-request-token",
+                ]
             }
 
-            # Log the request with user information if available
             user_info = "anonymous"
-            if hasattr(request, 'user') and request.user.is_authenticated:
-                user_info = getattr(request.user, 'email', str(request.user))
+            if hasattr(request, "user") and request.user.is_authenticated:
+                user_info = getattr(request.user, "email", str(request.user))
 
-            logger.info(f"Forwarding {request.method} request to: {target_url} by user: {user_info}")
+            logger.info(
+                f"Forwarding {request.method} request to: {target_url} by user: {user_info}"
+            )
             logger.info(f"With params: {params}")
 
             response = self.session.request(
@@ -120,7 +164,7 @@ class PolygonProxyView(APIView):
 
             logger.info(f"Response status code: {response.status_code}")
 
-            return self._process_response(response)
+            return self._process_response(response, request)
         except requests.Timeout:
             return self._error_response(
                 "Gateway Timeout",
@@ -136,9 +180,13 @@ class PolygonProxyView(APIView):
                 "Internal Server Error", str(e), status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    def _process_response(self, response):
+    def _process_response(self, response, request):
         try:
             data = response.json() if response.content else {}
+
+            if data:
+                data = self._replace_polygon_urls(data, request)
+
             return Response(data=data, status=response.status_code)
         except ValueError:
             if response.status_code == 404:
