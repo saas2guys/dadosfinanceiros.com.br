@@ -42,7 +42,7 @@ class PolygonProxyView(APIView):
         "host", "connection", "content-length", "authorization", "x-request-token"
     }
     
-    PAGINATION_FIELDS = ["next_url", "previous_url", "next", "previous"]
+    PAGINATION_FIELDS = ["next_url", "previous_url", "next", "previous", "first_url", "last_url"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -173,7 +173,10 @@ class PolygonProxyView(APIView):
             
             if data:
                 data = self._replace_polygon_urls(data, request)
+                # Remove Polygon.io specific fields that shouldn't be exposed to users
                 data.pop("status", None)
+                data.pop("request_id", None)
+                data.pop("queryCount", None)
 
             return Response(data=data, status=response.status_code)
             
