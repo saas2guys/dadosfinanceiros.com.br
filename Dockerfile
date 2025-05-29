@@ -48,11 +48,11 @@ RUN mkdir -p /app/staticfiles /app/media \
 USER appuser
 
 # Expose the port
-EXPOSE 8000
+EXPOSE 8080
 
 # Run gunicorn with uvicorn workers
 CMD ["gunicorn", \
-     "--bind", "0.0.0.0:8000", \
+     "--bind", "0.0.0.0:8080", \
      "--workers", "4", \
      "--worker-class", "uvicorn.workers.UvicornWorker", \
      "--timeout", "300", \
