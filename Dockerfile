@@ -49,7 +49,7 @@ RUN mkdir -p /app/staticfiles /app/media \
 USER appuser
 
 # Expose the port the app runs on
-EXPOSE 8080
+EXPOSE 80
 
 # Command to run the application
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8080", "proxy_project.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "80", "proxy_project.asgi:application"]
