@@ -6,8 +6,7 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-ARG PYTHON_VERSION=3.11
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:3.11-slim
 
 # Prevents Python from writing pyc files and buffering stdout/stderr
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -33,51 +32,30 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Development stage
-FROM base as development
-
-# Install development dependencies
+# Install Python dependencies
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install -r requirements.txt
+    pip install -r requirements.txt gunicorn
 
 # Copy the source code
 COPY . .
 
-# Create necessary directories
+# Create necessary directories and set permissions
 RUN mkdir -p /app/staticfiles /app/media \
-    && chown -R appuser:appuser /app
+    && chown -R appuser:appuser /app \
+    && python manage.py collectstatic --noinput
 
 USER appuser
 
 # Expose the port
 EXPOSE 8000
 
-# Run the development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-# Production stage
-FROM base as production
-
-# Install production dependencies
-COPY requirements.txt .
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install -r requirements.txt gunicorn
-
-# Copy the source code
-COPY . .
-
-# Create necessary directories
-RUN mkdir -p /app/staticfiles /app/media \
-    && chown -R appuser:appuser /app
-
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
-USER appuser
-
-# Expose the port
-EXPOSE 8000
-
-# Run gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "dados_financeiros.wsgi:application"]
+# Run gunicorn with uvicorn workers
+CMD ["gunicorn", \
+     "--bind", "0.0.0.0:8000", \
+     "--workers", "4", \
+     "--worker-class", "uvicorn.workers.UvicornWorker", \
+     "--timeout", "300", \
+     "--keep-alive", "5", \
+     "--log-level", "info", \
+     "proxy_project.asgi:application"]
