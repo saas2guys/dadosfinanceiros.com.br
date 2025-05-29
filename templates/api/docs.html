@@ -20,7 +20,7 @@
     <h1>{% trans "API Documentation" %}</h1>
 
     <!-- Quick Links -->
-    <div class="doc-section">
+  <div class="doc-section">
       <h2>{% trans "Quick Links" %}</h2>
       <div class="quick-links-grid">
         <a href="#authentication" class="quick-link-card">
@@ -52,12 +52,12 @@
 
     <!-- Authentication Section -->
     <div id="authentication" class="doc-section">
-      <h2 class="text-2xl font-semibold mb-4">{% trans "Authentication" %}</h2>
-      
+    <h2 class="text-2xl font-semibold mb-4">{% trans "Authentication" %}</h2>
+    
       <div class="endpoint-header mb-6">
         <div class="flex items-center gap-2 mb-2">
-          <span class="endpoint-method">POST</span>
-          <span class="endpoint-path">/api/token/</span>
+      <span class="endpoint-method">POST</span>
+      <span class="endpoint-path">/api/token/</span>
         </div>
         <p class="endpoint-description mb-4">
           {% trans "Authenticate with the API using your email and password to obtain JWT tokens. The response includes both access and refresh tokens for maintaining authentication." %}
@@ -158,7 +158,7 @@
             </button>
           </div>
           <div class="code-example-content">
-            <div class="response-object">
+      <div class="response-object">
 curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
   -H "Content-Type: application/json" \
   -d '{
@@ -181,7 +181,7 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
             </button>
           </div>
           <div class="code-example-content">
-            <div class="response-object">
+      <div class="response-object">
 {
   "status": "OK",
   "request_id": "7c9d0e56-8c1a-4b5b-9d5e-3f2a8c6b4d9a",
@@ -192,19 +192,19 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
 }</div>
           </div>
         </div>
-      </div>
     </div>
+  </div>
 
-    <!-- Stocks Section -->
+  <!-- Stocks Section -->
     <div id="stocks" class="doc-section">
       <h2 class="text-2xl font-semibold mb-4">{% trans "Stocks API" %}</h2>
-      
-      <!-- All Tickers Endpoint -->
+    
+    <!-- All Tickers Endpoint -->
       <div class="mb-8">
-        <h3 class="text-xl mb-4">{% trans "All Tickers" %}</h3>
+      <h3 class="text-xl mb-4">{% trans "All Tickers" %}</h3>
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
-            <span class="endpoint-method">GET</span>
+      <span class="endpoint-method">GET</span>
             <span class="endpoint-path">/v1/stocks/tickers/</span>
           </div>
           <p class="endpoint-description mb-4">
@@ -223,18 +223,18 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
 
         <div class="parameters-section mb-6">
           <h4 class="font-semibold mb-4">{% trans "Query Parameters" %}</h4>
-          <table class="parameter-table">
-            <thead>
-              <tr>
-                <th>{% trans "Parameter" %}</th>
-                <th>{% trans "Type" %}</th>
+      <table class="parameter-table">
+        <thead>
+          <tr>
+            <th>{% trans "Parameter" %}</th>
+            <th>{% trans "Type" %}</th>
                 <th>{% trans "Required" %}</th>
                 <th>{% trans "Example" %}</th>
-                <th>{% trans "Description" %}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
+            <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
                 <td>market</td>
                 <td><span class="parameter-type">string</span></td>
                 <td><span class="parameter-optional">Optional</span></td>
@@ -248,9 +248,9 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                     <div><code>crypto</code>: {% trans "Cryptocurrencies" %}</div>
                   </div>
                 </td>
-              </tr>
-              <tr>
-                <td>active</td>
+          </tr>
+          <tr>
+            <td>active</td>
                 <td><span class="parameter-type">boolean</span></td>
                 <td><span class="parameter-optional">Optional</span></td>
                 <td><code>true</code></td>
@@ -268,14 +268,14 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                     <div><code>desc</code>: {% trans "Descending order" %}</div>
                   </div>
                 </td>
-              </tr>
-              <tr>
-                <td>limit</td>
+          </tr>
+          <tr>
+            <td>limit</td>
                 <td><span class="parameter-type">integer</span></td>
                 <td><span class="parameter-optional">Optional</span></td>
                 <td><code>100</code></td>
-                <td>{% trans "Number of results per page (default: 100, max: 1000)" %}</td>
-              </tr>
+            <td>{% trans "Number of results per page (default: 100, max: 1000)" %}</td>
+          </tr>
               <tr>
                 <td>sort</td>
                 <td><span class="parameter-type">string</span></td>
@@ -290,8 +290,8 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                   </div>
                 </td>
               </tr>
-            </tbody>
-          </table>
+        </tbody>
+      </table>
         </div>
 
         <div class="response-section mb-6">
@@ -380,14 +380,14 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stock
               </button>
             </div>
             <div class="code-example-content">
-              <div class="response-object">
+      <div class="response-object">
 {
   "status": "OK",
   "count": 2,
-  "results": [
-    {
+    "results": [
+        {
       "ticker": "AAPL",
-      "name": "Apple Inc.",
+            "name": "Apple Inc.",
       "market": "stocks",
       "locale": "us",
       "primary_exchange": "NASDAQ",
@@ -413,14 +413,14 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stock
             </div>
           </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Stock Details Endpoint -->
+    <!-- Stock Details Endpoint -->
       <div class="mb-8">
-        <h3 class="text-xl mb-4">{% trans "Stock Details" %}</h3>
+      <h3 class="text-xl mb-4">{% trans "Stock Details" %}</h3>
         <div class="endpoint-header mb-6">
           <div class="flex items-center gap-2 mb-2">
-            <span class="endpoint-method">GET</span>
+      <span class="endpoint-method">GET</span>
             <span class="endpoint-path">/v1/stocks/tickers/{symbol}/</span>
           </div>
           <p class="endpoint-description mb-4">
@@ -439,26 +439,26 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stock
 
         <div class="parameters-section mb-6">
           <h4 class="font-semibold mb-4">{% trans "Path Parameters" %}</h4>
-          <table class="parameter-table">
-            <thead>
-              <tr>
-                <th>{% trans "Parameter" %}</th>
-                <th>{% trans "Type" %}</th>
+      <table class="parameter-table">
+        <thead>
+          <tr>
+            <th>{% trans "Parameter" %}</th>
+            <th>{% trans "Type" %}</th>
                 <th>{% trans "Required" %}</th>
                 <th>{% trans "Example" %}</th>
-                <th>{% trans "Description" %}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>symbol</td>
+            <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>symbol</td>
                 <td><span class="parameter-type">string</span></td>
                 <td><span class="parameter-required">Required</span></td>
                 <td><code>AAPL</code></td>
                 <td>{% trans "Case-sensitive stock ticker symbol. For example, AAPL represents Apple Inc." %}</td>
-              </tr>
-            </tbody>
-          </table>
+          </tr>
+        </tbody>
+      </table>
 
           <h4 class="font-semibold mt-6 mb-4">{% trans "Query Parameters" %}</h4>
           <table class="parameter-table">
@@ -578,7 +578,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/AAPL/?include
               </button>
             </div>
             <div class="code-example-content">
-              <div class="response-object">
+      <div class="response-object">
 {
   "status": "OK",
   "request_id": "7c9d0e56-8c1a-4b5b-9d5e-3f2a8c6b4d9a",
@@ -1422,42 +1422,42 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/quotes/?timestam
             </div>
           </div>
         </div>
-      </div>
     </div>
+  </div>
 
-    <!-- Forex Section -->
+  <!-- Forex Section -->
     <div id="forex" class="doc-section">
       <h2 class="text-2xl font-semibold mb-4">{% trans "Forex API" %}</h2>
-      
-      <!-- Forex Pairs Endpoint -->
+    
+    <!-- Forex Pairs Endpoint -->
       <div class="mb-8">
-        <h3 class="text-xl mb-4">{% trans "Forex Pairs" %}</h3>
+      <h3 class="text-xl mb-4">{% trans "Forex Pairs" %}</h3>
         <div class="flex items-center gap-2 mb-4">
-          <span class="endpoint-method">GET</span>
+      <span class="endpoint-method">GET</span>
           <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/forex/pairs/</span>
         </div>
-
+      
         <p class="mb-4">{% trans "Get a list of available forex currency pairs." %}</p>
 
         <h4 class="font-semibold mt-6 mb-4">{% trans "Query Parameters" %}</h4>
-        <table class="parameter-table">
-          <thead>
-            <tr>
-              <th>{% trans "Parameter" %}</th>
-              <th>{% trans "Type" %}</th>
+      <table class="parameter-table">
+        <thead>
+          <tr>
+            <th>{% trans "Parameter" %}</th>
+            <th>{% trans "Type" %}</th>
               <th>{% trans "Required" %}</th>
-              <th>{% trans "Description" %}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>base</td>
+            <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>base</td>
               <td><span class="parameter-type">string</span></td>
               <td><span class="parameter-optional">Optional</span></td>
               <td>{% trans "Filter by base currency (e.g., USD, EUR)" %}</td>
-            </tr>
-            <tr>
-              <td>quote</td>
+          </tr>
+          <tr>
+            <td>quote</td>
               <td><span class="parameter-type">string</span></td>
               <td><span class="parameter-optional">Optional</span></td>
               <td>{% trans "Filter by quote currency (e.g., JPY, GBP)" %}</td>
@@ -1467,9 +1467,9 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/quotes/?timestam
               <td><span class="parameter-type">boolean</span></td>
               <td><span class="parameter-optional">Optional</span></td>
               <td>{% trans "Filter by active trading status (default: true)" %}</td>
-            </tr>
-          </tbody>
-        </table>
+          </tr>
+        </tbody>
+      </table>
 
         <div class="code-example mt-6">
           <div class="code-example-header">
@@ -1503,14 +1503,14 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/pairs/?base=EUR&quote=
             </button>
           </div>
           <div class="code-example-content">
-            <div class="response-object">
+      <div class="response-object">
 {
-  "pairs": [
-    {
-      "symbol": "EUR/USD",
-      "base": "EUR",
-      "quote": "USD",
-      "last_price": 1.0865,
+    "pairs": [
+        {
+            "symbol": "EUR/USD",
+            "base": "EUR",
+            "quote": "USD",
+            "last_price": 1.0865,
       "last_updated": "2024-03-21T12:00:00Z",
       "bid": 1.0864,
       "ask": 1.0866,
@@ -2004,53 +2004,53 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/historical/USD/EUR/?st
       "vwap": 0.9138,
       "trades": 4892
     }
-  ]
+    ]
 }</div>
             </div>
           </div>
         </div>
-      </div>
     </div>
+  </div>
 
-    <!-- Crypto Section -->
+  <!-- Crypto Section -->
     <div id="crypto" class="doc-section">
       <h2 class="text-2xl font-semibold mb-4">{% trans "Crypto API" %}</h2>
-      
-      <!-- Crypto Pairs Endpoint -->
+    
+    <!-- Crypto Pairs Endpoint -->
       <div class="mb-8">
-        <h3 class="text-xl mb-4">{% trans "Crypto Pairs" %}</h3>
+      <h3 class="text-xl mb-4">{% trans "Crypto Pairs" %}</h3>
         <div class="flex items-center gap-2 mb-4">
-          <span class="endpoint-method">GET</span>
+      <span class="endpoint-method">GET</span>
           <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/crypto/pairs/</span>
         </div>
-
+      
         <p class="mb-4">{% trans "Get a list of available cryptocurrency trading pairs." %}</p>
 
         <h4 class="font-semibold mt-6 mb-4">{% trans "Query Parameters" %}</h4>
-        <table class="parameter-table">
-          <thead>
-            <tr>
-              <th>{% trans "Parameter" %}</th>
-              <th>{% trans "Type" %}</th>
+      <table class="parameter-table">
+        <thead>
+          <tr>
+            <th>{% trans "Parameter" %}</th>
+            <th>{% trans "Type" %}</th>
               <th>{% trans "Required" %}</th>
-              <th>{% trans "Description" %}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>base</td>
+            <th>{% trans "Description" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>base</td>
               <td><span class="parameter-type">string</span></td>
               <td><span class="parameter-optional">Optional</span></td>
               <td>{% trans "Filter by base cryptocurrency (e.g., BTC, ETH)" %}</td>
-            </tr>
-            <tr>
-              <td>quote</td>
+          </tr>
+          <tr>
+            <td>quote</td>
               <td><span class="parameter-type">string</span></td>
               <td><span class="parameter-optional">Optional</span></td>
               <td>{% trans "Filter by quote currency (e.g., USD, EUR)" %}</td>
-            </tr>
-            <tr>
-              <td>exchange</td>
+          </tr>
+          <tr>
+            <td>exchange</td>
               <td><span class="parameter-type">string</span></td>
               <td><span class="parameter-optional">Optional</span></td>
               <td>{% trans "Filter by exchange (e.g., BINANCE, COINBASE)" %}</td>
@@ -2060,9 +2060,9 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/historical/USD/EUR/?st
               <td><span class="parameter-type">boolean</span></td>
               <td><span class="parameter-optional">Optional</span></td>
               <td>{% trans "Filter by active trading status (default: true)" %}</td>
-            </tr>
-          </tbody>
-        </table>
+          </tr>
+        </tbody>
+      </table>
 
         <div class="code-example mt-6">
           <div class="code-example-header">
@@ -2096,15 +2096,15 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/crypto/pairs/?base=BTC&quote
             </button>
           </div>
           <div class="code-example-content">
-            <div class="response-object">
+      <div class="response-object">
 {
-  "pairs": [
-    {
-      "symbol": "BTC/USD",
-      "base": "BTC",
-      "quote": "USD",
-      "exchange": "BINANCE",
-      "last_price": 65420.50,
+    "pairs": [
+        {
+            "symbol": "BTC/USD",
+            "base": "BTC",
+            "quote": "USD",
+            "exchange": "BINANCE",
+            "last_price": 65420.50,
       "last_updated": "2024-03-21T12:00:00Z",
       "bid": 65419.50,
       "ask": 65421.50,
@@ -2245,16 +2245,16 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/crypto/BTC-USD/bars/?interva
       "timestamp": "2024-01-02T00:00:00Z",
       "trades": 87654
     }
-  ]
+    ]
 }</div>
           </div>
         </div>
-      </div>
     </div>
+  </div>
 
-    <!-- Rate Limits Section -->
+  <!-- Rate Limits Section -->
     <div id="rate-limits" class="doc-section">
-      <h2 class="text-2xl font-semibold mb-4">{% trans "Rate Limits" %}</h2>
+    <h2 class="text-2xl font-semibold mb-4">{% trans "Rate Limits" %}</h2>
       <p class="mb-4">{% trans "API requests are subject to the following rate limits:" %}</p>
       <table class="parameter-table">
         <thead>

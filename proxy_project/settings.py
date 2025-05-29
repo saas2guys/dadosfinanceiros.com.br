@@ -18,10 +18,79 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = ['*']  # Allow all hosts in development
+# Production domain configuration
+ALLOWED_HOSTS = (
+    ["*"]
+    if DEBUG
+    else [
+        "dadosfinanceiros.com.br",
+        "www.dadosfinanceiros.com.br",
+        "api.dadosfinanceiros.com.br",
+        "localhost",
+        "127.0.0.1",
+    ]
+)
+
+# CSRF Protection Settings
+CSRF_TRUSTED_ORIGINS = (
+    [
+        "https://dadosfinanceiros.com.br",
+        "https://www.dadosfinanceiros.com.br",
+        "https://api.dadosfinanceiros.com.br",
+    ]
+    if not DEBUG
+    else [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
+)
+
+# Security settings for production
+if not DEBUG:
+    # HTTPS settings
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # Cookie security
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_HTTPONLY = True
+
+    # HSTS settings
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # Content type sniffing protection
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # XSS protection
+    SECURE_BROWSER_XSS_FILTER = True
+
+    # X-Frame-Options
+    X_FRAME_OPTIONS = "DENY"
+
+    # Secure referrer policy
+    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
+# CSRF Cookie settings
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_AGE = 31449600  # 1 year
+CSRF_COOKIE_DOMAIN = ".dadosfinanceiros.com.br" if not DEBUG else None
+CSRF_COOKIE_PATH = "/"
+CSRF_USE_SESSIONS = False
+
+# Session settings
+SESSION_COOKIE_NAME = "sessionid"
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
+SESSION_COOKIE_DOMAIN = ".dadosfinanceiros.com.br" if not DEBUG else None
+SESSION_COOKIE_PATH = "/"
+SESSION_SAVE_EVERY_REQUEST = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # Polygon.io API Configuration
-POLYGON_API_KEY = 'pl7iW76KJzDoNjg2ngpSeRcJQct4ESbo'
+POLYGON_API_KEY = "pl7iW76KJzDoNjg2ngpSeRcJQct4ESbo"
 POLYGON_BASE_URL = "https://api.polygon.io"
 
 # Application definition - optimized for proxy-only backend
@@ -47,12 +116,40 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",  # Required for admin
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",  # Disable if not needed
+    "django.middleware.csrf.CsrfViewMiddleware",  # Keep CSRF protection enabled
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "users.middleware.RequestTokenMiddleware",  # Our custom middleware
     "django.middleware.locale.LocaleMiddleware",  # Add this line for language selection
 ]
+
+# Additional production security settings
+if not DEBUG:
+    # Add CSP middleware in production
+    MIDDLEWARE.insert(1, "django_csp.middleware.CSPMiddleware")
+
+    # Content Security Policy settings
+    CSP_DEFAULT_SRC = ("'self'",)
+    CSP_SCRIPT_SRC = (
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.tailwindcss.com",
+        "https://cdnjs.cloudflare.com",
+    )
+    CSP_STYLE_SRC = (
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.tailwindcss.com",
+        "https://cdnjs.cloudflare.com",
+    )
+    CSP_IMG_SRC = ("'self'", "data:", "https:")
+    CSP_FONT_SRC = ("'self'", "https:")
+    CSP_CONNECT_SRC = ("'self'", "https://dadosfinanceiros.com.br")
+    CSP_FRAME_ANCESTORS = ("'none'",)
+
+    # Force HTTPS in production
+    USE_TLS = True
 
 ROOT_URLCONF = "proxy_project.urls"
 
@@ -113,49 +210,86 @@ CHANNEL_LAYERS = {
 }
 
 # Environment Configuration
-ENV = os.environ.get('ENV', 'local')
+ENV = os.environ.get("ENV", "local")
 
 # Django REST Framework Settings
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny' if ENV == 'local' else 'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSION_CLASSES": [
+        (
+            "rest_framework.permissions.AllowAny"
+            if ENV == "local"
+            else "rest_framework.permissions.IsAuthenticated"
+        ),
     ],
-    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+    "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
 }
 
 # Custom User Model
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 # JWT Settings
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
 }
 
 # CORS settings for frontend integration (if needed later)
 CORS_ALLOWED_ORIGINS = (
-    os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
-    if os.environ.get("CORS_ALLOWED_ORIGINS")
-    else []
+    [
+        "https://dadosfinanceiros.com.br",
+        "https://www.dadosfinanceiros.com.br",
+        "https://api.dadosfinanceiros.com.br",
+    ]
+    if not DEBUG
+    else [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://localhost:3000",  # For frontend development
+    ]
 )
+
 CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only for development
 CORS_ALLOW_CREDENTIALS = True
+
+# Additional CORS settings for production security
+if not DEBUG:
+    CORS_ALLOW_METHODS = [
+        "DELETE",
+        "GET",
+        "OPTIONS",
+        "PATCH",
+        "POST",
+        "PUT",
+    ]
+
+    CORS_ALLOW_HEADERS = [
+        "accept",
+        "accept-encoding",
+        "authorization",
+        "content-type",
+        "dnt",
+        "origin",
+        "user-agent",
+        "x-csrftoken",
+        "x-requested-with",
+        "x-request-token",  # For your custom token middleware
+    ]
 
 # PROXY MICROSERVICE CONFIGURATION - CHANGE THESE TO YOUR MICROSERVICE URLS
 MICROSERVICE_BASE_URL = os.environ.get("MICROSERVICE_BASE_URL", "http://localhost:8001")
@@ -177,9 +311,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = 'America/Sao_Paulo'
+TIME_ZONE = "America/Sao_Paulo"
 
 USE_I18N = True
 
@@ -188,12 +322,12 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ('en', 'English'),
-    ('pt-br', 'Português'),
+    ("en", "English"),
+    ("pt-br", "Português"),
 ]
 
 LOCALE_PATHS = [
-    BASE_DIR / 'locale',
+    BASE_DIR / "locale",
 ]
 
 # Static files
