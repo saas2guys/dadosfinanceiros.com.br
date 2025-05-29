@@ -18,7 +18,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = ['*']  # Allow all hosts in development
 
 # Polygon.io API Configuration
 POLYGON_API_KEY = 'pl7iW76KJzDoNjg2ngpSeRcJQct4ESbo'
@@ -26,7 +26,7 @@ POLYGON_BASE_URL = "https://api.polygon.io"
 
 # Application definition - optimized for proxy-only backend
 INSTALLED_APPS = [
-    "daphne",  # MUST BE FIRST for WebSocket support
+    # "daphne",  # MUST BE FIRST for WebSocket support - temporarily disabled
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
-    "channels",
+    # "channels",  # temporarily disabled
     "corsheaders",
     "proxy_app",  # Main proxy application
     "users",  # Add the users app
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "users.middleware.RequestTokenMiddleware",  # Our custom middleware
+    "django.middleware.locale.LocaleMiddleware",  # Add this line for language selection
 ]
 
 ROOT_URLCONF = "proxy_project.urls"
@@ -58,7 +59,7 @@ ROOT_URLCONF = "proxy_project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "users" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -171,10 +172,26 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
+LANGUAGE_CODE = 'pt-br'
+
+TIME_ZONE = 'America/Sao_Paulo'
+
 USE_I18N = True
+
+USE_L10N = True
+
 USE_TZ = True
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('pt-br', 'Português'),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
 
 # Static files
 STATIC_URL = "/static/"
