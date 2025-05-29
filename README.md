@@ -1,23 +1,21 @@
 # Django Polygon.io Proxy Service
 
-A high-performance Django REST API proxy service that forwards HTTP requests and WebSocket connections to Polygon.io API with JWT authentication.
+A simple and efficient Django REST API proxy service that forwards all HTTP requests to Polygon.io API with JWT authentication.
 
 ## Features
 
 - JWT Authentication
-- Async HTTP request forwarding
-- WebSocket connection proxying
-- Connection pooling
-- Redis integration
-- Comprehensive logging
-- Health checks
-- Docker support
-- Production-ready configuration
+- Direct request forwarding to Polygon.io
+- Preserves all query parameters
+- Maintains original response structure
+- Simple setup and configuration
+- Support for all Polygon.io endpoints (v1, v2, v3)
+- Version-specific routing
+- Proper error handling
 
 ## Prerequisites
 
 - Python 3.8+
-- Redis
 - UV (Python package installer)
 
 ## Installation
@@ -52,12 +50,13 @@ The service uses the following environment variables:
 - `SECRET_KEY`: Django secret key
 - `DEBUG`: Debug mode (True/False)
 - `ALLOWED_HOSTS`: Comma-separated list of allowed hosts
+- `ENV`: Environment (local/staging/production)
 
 ## Usage
 
 1. Start the development server:
 ```bash
-uv run ./manage.py runserver
+ENV=local uv run ./manage.py runserver
 ```
 
 2. Get a JWT token:
@@ -67,80 +66,206 @@ curl -X POST http://localhost:8000/api/token/ \
   -d '{"username": "your_username", "password": "your_password"}'
 ```
 
-3. Use the token to access endpoints:
+## Available Endpoints
 
-### REST API Endpoints
+All endpoints use the `/v1/` prefix and are automatically mapped to the appropriate Polygon.io API version internally.
 
-- List stocks:
+### Authentication Endpoints
+
 ```bash
-curl http://localhost:8000/api/v3/stocks/ \
-  -H "Authorization: Bearer YOUR_TOKEN"
+POST /api/token/              # Get JWT token
+POST /api/token/refresh/      # Refresh JWT token
+POST /api/token/verify/       # Verify JWT token
 ```
 
-- Get stock details:
+### Stocks Endpoints
+
+1. Reference Data:
 ```bash
-curl http://localhost:8000/api/v3/stocks/AAPL/ \
-  -H "Authorization: Bearer YOUR_TOKEN"
+GET /v1/reference/tickers
+    ?market=stocks
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker             # List all stock tickers
+
+GET /v1/reference/tickers/AAPL  # Get details for a specific ticker
+
+GET /v1/related-companies/AAPL  # Get related companies for a ticker
 ```
 
-- Get stock trades:
+2. Market Data:
 ```bash
-curl http://localhost:8000/api/v3/stocks/AAPL/trades/ \
-  -H "Authorization: Bearer YOUR_TOKEN"
+# Aggregates (OHLC)
+GET /v1/aggs/ticker/AAPL/range/1/day/2023-01-09/2023-02-10
+    ?adjusted=true
+    &sort=asc
+    &limit=120              # Get daily aggregates for AAPL
+
+GET /v1/aggs/ticker/AAPL/prev
+    ?adjusted=true          # Get previous day's data
+
+# Snapshots
+GET /v1/snapshot/stocks/tickers/AAPL  # Single stock snapshot
+GET /v1/snapshot/stocks/tickers       # Full market snapshot
+GET /v1/snapshot                      # Unified market snapshot
+GET /v1/snapshot/stocks/gainers       # Market gainers
+
+# Real-time Quotes
+GET /v1/trades/AAPL              # Get trades
+GET /v1/last/trade/AAPL         # Get last trade
+GET /v1/quotes/AAPL             # Get quotes
+GET /v1/last/nbbo/AAPL          # Get last quote
 ```
 
-- Generic proxy endpoint:
+### Options Endpoints
+
 ```bash
-curl http://localhost:8000/api/v3/proxy/reference/tickers \
-  -H "Authorization: Bearer YOUR_TOKEN"
+GET /v1/reference/options/contracts
+    ?order=asc
+    &limit=10
+    &sort=ticker             # List all option contracts
 ```
 
-### WebSocket Endpoints
+### Indices Endpoints
 
-Connect to WebSocket endpoints:
-```javascript
-const ws = new WebSocket('ws://localhost:8000/ws/stocks/?token=YOUR_JWT_TOKEN');
-```
-
-## Docker Deployment
-
-1. Build the image:
 ```bash
-docker-compose build
+GET /v1/reference/tickers
+    ?market=indices
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker             # List all indices
+
+GET /v1/reference/tickers/I:SPX  # Get details for S&P 500
 ```
 
-2. Start the services:
+### Forex Endpoints
+
 ```bash
-docker-compose up -d
+GET /v1/reference/tickers
+    ?market=fx
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker             # List all forex pairs
+
+GET /v1/conversion/AUD/USD
+    ?amount=100
+    &precision=2             # Currency conversion
 ```
 
-## Monitoring
+### Crypto Endpoints
 
-- Health check endpoint: `http://localhost:8000/health/`
-- Logs are stored in the `logs` directory
+```bash
+GET /v1/reference/tickers
+    ?market=crypto
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker             # List all crypto pairs
+```
 
-## Performance Optimization
+### Economy Endpoints
 
-The service includes several performance optimizations:
-- Async views for high concurrency
-- Connection pooling for HTTP and WebSocket connections
-- Redis caching
-- Streaming responses for large payloads
+```bash
+GET /v1/fed/vx/treasury-yields  # Get treasury yields data
+```
+
+### Partners Endpoints
+
+```bash
+GET /v1/benzinga/v1/ratings     # Get Benzinga analyst ratings
+```
+
+### Technical Indicators
+
+```bash
+GET /v1/indicators/rsi/AAPL
+    ?timespan=day
+    &window=14
+    &series_type=close       # Get RSI for AAPL
+```
+
+## Response Formats
+
+### Stocks Response Example
+```json
+{
+  "results": {
+    "ticker": "AAPL",
+    "name": "Apple Inc.",
+    "market": "stocks",
+    "locale": "us",
+    "primary_exchange": "XNAS",
+    "type": "CS",
+    "active": true,
+    "currency_name": "usd",
+    "cik": "0000320193",
+    "composite_figi": "BBG000B9XRY4",
+    "share_class_figi": "BBG001S5N8V8",
+    "market_cap": 2952828995600
+  },
+  "status": "OK",
+  "request_id": "6a7e466b6837652eca4def2f7b7adc56"
+}
+```
+
+### Aggregates Response Example
+```json
+{
+  "ticker": "AAPL",
+  "adjusted": true,
+  "queryCount": 23,
+  "resultsCount": 23,
+  "status": "OK",
+  "results": [
+    {
+      "v": 64285687,
+      "vw": 130.8365,
+      "o": 130.465,
+      "c": 130.73,
+      "h": 133.41,
+      "l": 129.89,
+      "t": 1673251200000,
+      "n": 691290
+    }
+  ]
+}
+```
+
+## Important Notes
+
+1. **API Key**: The proxy service automatically adds your configured API key to requests.
+
+2. **Authentication**: 
+   - All requests require a valid JWT token in the Authorization header in non-local environments
+   - In local environment (ENV=local), no authentication is required
+
+3. **Response Format**: The proxy service maintains Polygon.io's original response structure.
+
+4. **Version Mapping**: All endpoints use `/v1/` prefix which maps internally to:
+   - v3: Most modern endpoints (default)
+   - v2: Aggregates, snapshots, and some reference data
+   - v1: Legacy endpoints (open-close, meta/symbols, etc.)
+
+5. **Rate Limiting**: The service respects Polygon.io's rate limits.
+
+## Error Handling
+
+The proxy service handles various error scenarios:
+- 504: Gateway Timeout (when Polygon.io request times out)
+- 502: Bad Gateway (when unable to reach Polygon.io)
+- 500: Internal Server Error (for unexpected errors)
+- 404: Not Found (when endpoint doesn't exist)
+- 401: Unauthorized (when JWT token is invalid or missing)
 
 ## Security
 
-- JWT Authentication required for all endpoints
-- CORS configuration
-- Rate limiting
-- Secure headers
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- JWT Authentication required for all endpoints (except in local environment)
+- API keys are never exposed to clients
+- Secure headers configuration
+- Environment-based authentication
 
 ## License
 

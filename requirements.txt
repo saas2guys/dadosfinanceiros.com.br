@@ -14,3 +14,4 @@ PyJWT==2.8.0
 python-dotenv==1.0.0
 polygon-api-client==1.12.3
 setuptools<81.0.0  # Required for rest_framework_simplejwt 
+asgiref==3.8.1

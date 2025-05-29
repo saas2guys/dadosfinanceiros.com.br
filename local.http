@@ -1,0 +1,185 @@
+### Variables
+@baseUrl = http://localhost:8000
+@token = your_jwt_token_here
+
+### Get JWT Token
+POST {{baseUrl}}/api/token/
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "root"
+}
+
+### Verify JWT Token
+POST {{baseUrl}}/api/token/verify/
+Content-Type: application/json
+
+{
+    "token": "{{token}}"
+}
+
+### STOCKS ###
+
+### Get All Tickers
+GET {{baseUrl}}/v1/reference/tickers
+    ?market=stocks
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker
+#Authorization: Bearer {{token}}
+
+### Get Single Ticker Details (AAPL)
+GET {{baseUrl}}/v1/reference/tickers/AAPL
+#Authorization: Bearer {{token}}
+
+### Get Related Tickers (AAPL)
+GET {{baseUrl}}/v1/related-companies/AAPL
+#Authorization: Bearer {{token}}
+
+### Get Stock Aggregates (Daily for AAPL)
+GET {{baseUrl}}/v1/aggs/ticker/AAPL/range/1/day/2023-01-09/2023-02-10
+    ?adjusted=true
+    &sort=asc
+    &limit=120
+#Authorization: Bearer {{token}}
+
+### Get Previous Day Bar (AAPL)
+GET {{baseUrl}}/v1/aggs/ticker/AAPL/prev
+    ?adjusted=true
+#Authorization: Bearer {{token}}
+
+### Get Single Stock Snapshot (AAPL)
+GET {{baseUrl}}/v1/snapshot/stocks/tickers/AAPL
+#Authorization: Bearer {{token}}
+
+### Get Full Market Snapshot
+GET {{baseUrl}}/v1/snapshot/stocks/tickers
+#Authorization: Bearer {{token}}
+
+### Get Unified Snapshot
+GET {{baseUrl}}/v1/snapshot
+    ?order=asc
+    &limit=10
+    &sort=ticker
+#Authorization: Bearer {{token}}
+
+### Get Market Gainers
+GET {{baseUrl}}/v1/snapshot/stocks/gainers
+#Authorization: Bearer {{token}}
+
+### Get Stock Trades
+GET {{baseUrl}}/v1/trades/AAPL
+    ?order=asc
+    &limit=10
+    &sort=timestamp
+#Authorization: Bearer {{token}}
+
+### Get Last Trade
+GET {{baseUrl}}/v1/last/trade/AAPL
+#Authorization: Bearer {{token}}
+
+### Get Stock Quotes
+GET {{baseUrl}}/v1/quotes/AAPL
+    ?order=asc
+    &limit=10
+    &sort=timestamp
+#Authorization: Bearer {{token}}
+
+### Get Last Quote
+GET {{baseUrl}}/v1/last/nbbo/AAPL
+#Authorization: Bearer {{token}}
+
+### OPTIONS ###
+
+### Get All Option Contracts
+GET {{baseUrl}}/v1/reference/options/contracts
+    ?order=asc
+    &limit=10
+    &sort=ticker
+#Authorization: Bearer {{token}}
+
+### INDICES ###
+
+### Get All Indices
+GET {{baseUrl}}/v1/reference/tickers
+    ?market=indices
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker
+#Authorization: Bearer {{token}}
+
+### Get Index Details (SPX)
+GET {{baseUrl}}/v1/reference/tickers/I:SPX
+#Authorization: Bearer {{token}}
+
+### FOREX ###
+
+### Get All Forex Pairs
+GET {{baseUrl}}/v1/reference/tickers
+    ?market=fx
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker
+#Authorization: Bearer {{token}}
+
+### Get Currency Conversion
+GET {{baseUrl}}/v1/conversion/AUD/USD
+    ?amount=100
+    &precision=2
+#Authorization: Bearer {{token}}
+
+### CRYPTO ###
+
+### Get All Crypto Pairs
+GET {{baseUrl}}/v1/reference/tickers
+    ?market=crypto
+    &active=true
+    &order=asc
+    &limit=100
+    &sort=ticker
+#Authorization: Bearer {{token}}
+
+### ECONOMY ###
+
+### Get Treasury Yields
+GET {{baseUrl}}/v1/fed/vx/treasury-yields
+#Authorization: Bearer {{token}}
+
+### PARTNERS ###
+
+### Get Benzinga Analyst Ratings
+GET {{baseUrl}}/v1/benzinga/v1/ratings
+#Authorization: Bearer {{token}}
+
+### Get Stock News
+GET {{baseUrl}}/v1/reference/news
+    ?ticker=AAPL
+    &order=desc
+    &limit=10
+Authorization: Bearer {{token}}
+
+### Get Technical Indicators (RSI for AAPL)
+GET {{baseUrl}}/v1/indicators/rsi/AAPL
+    ?timespan=day
+    &window=14
+    &series_type=close
+Authorization: Bearer {{token}}
+
+### Health Check
+GET {{baseUrl}}/health/
+Authorization: Bearer {{token}}
+
+### Notes:
+# 1. Replace 'your_jwt_token_here' with an actual token from /api/token/ endpoint
+# 2. All endpoints require JWT authentication except in local environment
+# 3. The proxy preserves Polygon.io's original response structure
+# 4. Query parameters are passed through to Polygon.io API
+# 5. Our API uses /v1/ prefix which maps to appropriate Polygon.io API versions internally
+# 6. Version mapping:
+#    - Most endpoints use v3
+#    - Aggregates (aggs) use v2
+#    - Some legacy endpoints use v1 (open-close, meta/symbols, etc.) 
