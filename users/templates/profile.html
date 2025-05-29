@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Polygon.io Proxy Service{% endblock %}
+
+{% block content %}
+<!-- Toast Container -->
+<div id="toast" class="fixed top-4 right-4 z-50 transform transition-transform duration-300 translate-x-full">
+    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="toastMessage"></span>
+    </div>
+</div>
+
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Profile Information</h2>
+            <button id="editProfile" class="text-blue-500 hover:text-blue-600">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p class="text-gray-600">Email</p>
+                <p class="font-semibold">{{ user.email }}</p>
+            </div>
+            <div>
+                <p class="text-gray-600">Name</p>
+                <p class="font-semibold">{{ user.get_full_name }}</p>
+            </div>
+            <div>
+                <p class="text-gray-600">Daily Request Limit</p>
+                <p class="font-semibold">{{ user.daily_request_limit }}</p>
+            </div>
+            <div>
+                <p class="text-gray-600">Requests Made Today</p>
+                <p class="font-semibold">{{ user.daily_requests_made }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Current Token</h2>
+        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+            <div class="mb-4">
+                <p class="text-gray-600">Request Token</p>
+                <div class="flex items-center space-x-2">
+                    <code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono">{{ user.request_token }}</code>
+                    <button onclick="copyToClipboard('{{ user.request_token }}')" class="text-blue-500 hover:text-blue-600">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-600">Created</p>
+                    <p class="font-semibold">{{ user.request_token_created|date:"Y-m-d H:i:s" }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-600">Expires</p>
+                    <p class="font-semibold">
+                        {% if user.token_never_expires %}
+                            Never (Forever Token)
+                        {% else %}
+                            {{ user.request_token_expires|date:"Y-m-d H:i:s" }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flex space-x-4">
+            <form method="post" action="{% url 'regenerate_token' %}" class="inline">
+                {% csrf_token %}
+                <input type="hidden" name="never_expires" value="false">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    Generate New Token
+                </button>
+            </form>
+            <form method="post" action="{% url 'regenerate_token' %}" class="inline">
+                {% csrf_token %}
+                <input type="hidden" name="never_expires" value="true">
+                <button type="submit" class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600">
+                    Generate Forever Token
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Token History</h2>
+            <div class="text-sm text-gray-500">
+                Total Tokens: {{ token_history|length }}
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-50">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Token</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expires</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for token in token_history %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap font-mono text-sm">
+                            <div class="flex items-center space-x-2">
+                                <span>{{ token.token }}</span>
+                                <button onclick="copyToClipboard('{{ token.token }}')" class="text-blue-500 hover:text-blue-600">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ token.created_at|date:"Y-m-d H:i:s" }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            {% if token.never_expires %}
+                                <span class="text-purple-600">Never (Forever Token)</span>
+                            {% else %}
+                                {{ token.expires_at|date:"Y-m-d H:i:s" }}
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if token.is_active %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Active
+                            </span>
+                            {% else %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                Expired
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">No token history available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    toastMessage.textContent = message;
+    
+    // Show toast
+    toast.classList.remove('translate-x-full');
+    
+    // Hide toast after 3 seconds
+    setTimeout(() => {
+        toast.classList.add('translate-x-full');
+    }, 3000);
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        showToast('Token copied to clipboard!');
+    }).catch(function(err) {
+        showToast('Failed to copy token');
+        console.error('Failed to copy text: ', err);
+    });
+}
+</script>
+{% endblock %} 

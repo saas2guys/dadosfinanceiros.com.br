@@ -1,0 +1,273 @@
+# Brazilian Portuguese translation for Dados Financeiros API.
+# Copyright (C) 2024
+# This file is distributed under the same license as the Dados Financeiros API package.
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-20 12:00-0300\n"
+"PO-Revision-Date: 2024-03-20 12:00-0300\n"
+"Last-Translator: \n"
+"Language-Team: Portuguese (Brazil)\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Home - Dados Financeiros API"
+msgstr "Início - Dados Financeiros API"
+
+msgid "Dados Financeiros API"
+msgstr "Dados Financeiros API"
+
+msgid "Acesse dados do mercado financeiro com facilidade e segurança"
+msgstr "Acesse dados do mercado financeiro com facilidade e segurança"
+
+msgid "Recursos"
+msgstr "Recursos"
+
+msgid "Tokens de API com validade de 30 dias"
+msgstr "Tokens de API com validade de 30 dias"
+
+msgid "Tokens permanentes disponíveis"
+msgstr "Tokens permanentes disponíveis"
+
+msgid "Histórico completo de tokens"
+msgstr "Histórico completo de tokens"
+
+msgid "Limite diário de requisições"
+msgstr "Limite diário de requisições"
+
+msgid "Começar"
+msgstr "Começar"
+
+msgid "Crie uma conta para obter seu token de API e começar a fazer requisições."
+msgstr "Crie uma conta para obter seu token de API e começar a fazer requisições."
+
+msgid "Criar Conta"
+msgstr "Criar Conta"
+
+msgid "Entrar"
+msgstr "Entrar"
+
+msgid "Referência da API"
+msgstr "Referência da API"
+
+msgid "Autenticação"
+msgstr "Autenticação"
+
+msgid "Ações"
+msgstr "Ações"
+
+msgid "Forex"
+msgstr "Forex"
+
+msgid "Criptomoedas"
+msgstr "Criptomoedas"
+
+msgid "Todas as requisições à API devem incluir seu token de autenticação no cabeçalho HTTP."
+msgstr "Todas as requisições à API devem incluir seu token de autenticação no cabeçalho HTTP."
+
+msgid "Mantenha seu token seguro e nunca compartilhe com terceiros."
+msgstr "Mantenha seu token seguro e nunca compartilhe com terceiros."
+
+msgid "Cotação de Ações"
+msgstr "Cotação de Ações"
+
+msgid "Requisição"
+msgstr "Requisição"
+
+msgid "Parâmetros"
+msgstr "Parâmetros"
+
+msgid "Símbolo da ação (ex: AAPL)"
+msgstr "Símbolo da ação (ex: AAPL)"
+
+msgid "Resposta"
+msgstr "Resposta"
+
+msgid "Taxa de Câmbio"
+msgstr "Taxa de Câmbio"
+
+msgid "Moeda base (ex: EUR)"
+msgstr "Moeda base (ex: EUR)"
+
+msgid "Moeda destino (ex: USD)"
+msgstr "Moeda destino (ex: USD)"
+
+msgid "Preço de Criptomoeda"
+msgstr "Preço de Criptomoeda"
+
+msgid "Símbolo da criptomoeda (ex: BTC)"
+msgstr "Símbolo da criptomoeda (ex: BTC)"
+
+# Authentication messages
+msgid "Login - Dados Financeiros API"
+msgstr "Entrar - Dados Financeiros API"
+
+msgid "Entrar na sua conta"
+msgstr "Entrar na sua conta"
+
+msgid "Ou"
+msgstr "Ou"
+
+msgid "criar uma nova conta"
+msgstr "criar uma nova conta"
+
+msgid "Registro - Dados Financeiros API"
+msgstr "Registro - Dados Financeiros API"
+
+msgid "Criar uma nova conta"
+msgstr "Criar uma nova conta"
+
+msgid "entrar em uma conta existente"
+msgstr "entrar em uma conta existente"
+
+# Password reset messages
+msgid "Redefinir Senha - Dados Financeiros API"
+msgstr "Redefinir Senha - Dados Financeiros API"
+
+msgid "Redefinir sua senha"
+msgstr "Redefinir sua senha"
+
+msgid "Digite seu email para receber instruções de redefinição de senha"
+msgstr "Digite seu email para receber instruções de redefinição de senha"
+
+msgid "Email Enviado - Dados Financeiros API"
+msgstr "Email Enviado - Dados Financeiros API"
+
+msgid "Email enviado"
+msgstr "Email enviado"
+
+msgid "Enviamos instruções para redefinir sua senha por email. Você deve recebê-las em breve."
+msgstr "Enviamos instruções para redefinir sua senha por email. Você deve recebê-las em breve."
+
+msgid "Nova Senha - Dados Financeiros API"
+msgstr "Nova Senha - Dados Financeiros API"
+
+msgid "Digite sua nova senha"
+msgstr "Digite sua nova senha"
+
+msgid "Por favor, digite sua nova senha duas vezes para verificarmos se você a digitou corretamente."
+msgstr "Por favor, digite sua nova senha duas vezes para verificarmos se você a digitou corretamente."
+
+msgid "Senha Alterada - Dados Financeiros API"
+msgstr "Senha Alterada - Dados Financeiros API"
+
+msgid "Senha alterada com sucesso"
+msgstr "Senha alterada com sucesso"
+
+msgid "Sua senha foi alterada. Agora você pode fazer login com sua nova senha."
+msgstr "Sua senha foi alterada. Agora você pode fazer login com sua nova senha."
+
+msgid "Ir para Perfil"
+msgstr "Ir para Perfil"
+
+msgid "Registrar"
+msgstr "Registrar"
+
+msgid "Como Funciona"
+msgstr "Como Funciona"
+
+msgid "Registre-se com seu e-mail para começar."
+msgstr "Registre-se com seu e-mail para começar."
+
+msgid "Obter seu Token"
+msgstr "Obter seu Token"
+
+msgid "Receba seu token de requisição automaticamente após o registro."
+msgstr "Receba seu token de requisição automaticamente após o registro."
+
+msgid "Fazer Requisições API"
+msgstr "Fazer Requisições API"
+
+msgid "Use seu token para acessar dados financeiros através do nosso serviço."
+msgstr "Use seu token para acessar dados financeiros através do nosso serviço."
+
+msgid "Indicadores Técnicos"
+msgstr "Indicadores Técnicos"
+
+msgid "Câmbio"
+msgstr "Câmbio"
+
+msgid "Erros"
+msgstr "Erros"
+
+msgid "Cabeçalho HTTP"
+msgstr "Cabeçalho HTTP"
+
+msgid "Listar Ações"
+msgstr "Listar Ações"
+
+msgid "Retorna uma lista de ações com base no mercado e filtros especificados."
+msgstr "Retorna uma lista de ações com base no mercado e filtros especificados."
+
+msgid "Parâmetros de Consulta"
+msgstr "Parâmetros de Consulta"
+
+msgid "Parâmetro"
+msgstr "Parâmetro"
+
+msgid "Tipo"
+msgstr "Tipo"
+
+msgid "Descrição"
+msgstr "Descrição"
+
+msgid "Tipo de mercado: stocks, crypto, fx, indices"
+msgstr "Tipo de mercado: stocks, crypto, fx, indices"
+
+msgid "Filtrar por status ativo"
+msgstr "Filtrar por status ativo"
+
+msgid "Ordenar por: ticker, nome, mercado"
+msgstr "Ordenar por: ticker, nome, mercado"
+
+msgid "Exemplo de Requisição"
+msgstr "Exemplo de Requisição"
+
+msgid "Copiar"
+msgstr "Copiar"
+
+msgid "Códigos de Erro"
+msgstr "Códigos de Erro"
+
+msgid "Token inválido ou ausente"
+msgstr "Token inválido ou ausente"
+
+msgid "Token de requisição é necessário"
+msgstr "Token de requisição é necessário"
+
+msgid "Limite de requisições excedido"
+msgstr "Limite de requisições excedido"
+
+msgid "Perfil"
+msgstr "Perfil"
+
+msgid "Sair"
+msgstr "Sair"
+
+msgid "© 2024 Dados Financeiros API. Todos os direitos reservados."
+msgstr "© 2024 Dados Financeiros API. Todos os direitos reservados."
+
+msgid "Voltar para o login"
+msgstr "Voltar para o login"
+
+msgid "Nova Senha"
+msgstr "Nova Senha"
+
+msgid "Nova senha"
+msgstr "Nova senha"
+
+msgid "Confirmar Nova Senha"
+msgstr "Confirmar Nova Senha"
+
+msgid "Confirmar nova senha"
+msgstr "Confirmar nova senha"
+
+msgid "Alterar minha senha"
+msgstr "Alterar minha senha"
+
+msgid "Ir para o login"
+msgstr "Ir para o login"

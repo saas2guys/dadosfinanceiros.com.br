@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Home - Dados Financeiros API" %}{% endblock %}
+
+{% block content %}
+<!-- Main content with normal width -->
+<div class="max-w-4xl mx-auto px-4 mb-12">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">{% trans "Dados Financeiros API" %}</h1>
+        <p class="text-xl text-gray-600">{% trans "Acesse dados do mercado financeiro com facilidade e segurança" %}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">{% trans "Recursos" %}</h2>
+            <ul class="space-y-3">
+                <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>{% trans "Tokens de API com validade de 30 dias" %}</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>{% trans "Tokens permanentes disponíveis" %}</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>{% trans "Histórico completo de tokens" %}</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>{% trans "Limite diário de requisições" %}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">{% trans "Começar" %}</h2>
+            <p class="text-gray-600 mb-4">{% trans "Crie uma conta para obter seu token de API e começar a fazer requisições." %}</p>
+            <div class="space-x-4">
+                <a href="{% url 'register' %}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">{% trans "Criar Conta" %}</a>
+                <a href="{% url 'login' %}" class="inline-block text-indigo-600 hover:text-indigo-700">{% trans "Entrar" %}</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- How it Works Section -->
+    <div class="mb-12">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">{% trans "Como Funciona" %}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <span class="text-2xl">1</span>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">{% trans "Criar uma Conta" %}</h3>
+                <p class="text-gray-600">{% trans "Registre-se com seu e-mail para começar." %}</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <span class="text-2xl">2</span>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">{% trans "Obter seu Token" %}</h3>
+                <p class="text-gray-600">{% trans "Receba seu token de requisição automaticamente após o registro." %}</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <span class="text-2xl">3</span>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">{% trans "Fazer Requisições API" %}</h3>
+                <p class="text-gray-600">{% trans "Use seu token para acessar dados financeiros através do nosso serviço." %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Full width API Documentation section -->
+<div class="w-full bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <div class="lg:w-64 flex-shrink-0">
+                <div class="sticky top-4 bg-white rounded-lg shadow-sm p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">{% trans "Referência da API" %}</h3>
+                    <nav class="space-y-1">
+                        <a href="#authentication" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Autenticação" %}</a>
+                        <a href="#stocks" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Ações" %}</a>
+                        <a href="#forex" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Forex" %}</a>
+                        <a href="#crypto" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Criptomoedas" %}</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1">
+                <!-- Authentication Section -->
+                <section id="authentication" class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Autenticação" %}</h2>
+                    <div class="prose max-w-none">
+                        <p class="text-gray-600 mb-4">{% trans "Todas as requisições à API devem incluir seu token de autenticação no cabeçalho HTTP." %}</p>
+                        <p class="text-gray-600 mb-4">{% trans "Mantenha seu token seguro e nunca compartilhe com terceiros." %}</p>
+                        <div class="bg-gray-800 text-white p-4 rounded-md">
+                            <pre><code><span class="text-purple-400">Authorization:</span> <span class="text-green-400">Token</span> <span class="text-yellow-400">seu_token_aqui</span></code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stocks Section -->
+                <section id="stocks" class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Cotação de Ações" %}</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Requisição" %}</h3>
+                            <div class="bg-gray-800 text-white p-4 rounded-md">
+                                <pre><code><span class="text-purple-400">GET</span> <span class="text-green-400">/api/v1/stocks/</span><span class="text-yellow-400">{symbol}</span><span class="text-green-400">/quote/</span></code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Parâmetros" %}</h3>
+                            <table class="min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left py-2">Nome</th>
+                                        <th class="text-left py-2">Descrição</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2">symbol</td>
+                                        <td class="py-2">{% trans "Símbolo da ação (ex: AAPL)" %}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Resposta" %}</h3>
+                            <div class="bg-gray-800 text-white p-4 rounded-md">
+                                <pre><code>{
+  <span class="text-purple-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+  <span class="text-purple-400">"price"</span>: <span class="text-yellow-400">150.25</span>,
+  <span class="text-purple-400">"change"</span>: <span class="text-yellow-400">2.5</span>,
+  <span class="text-purple-400">"change_percent"</span>: <span class="text-yellow-400">1.67</span>
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Forex Section -->
+                <section id="forex" class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Forex" %}</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Requisição" %}</h3>
+                            <div class="bg-gray-800 text-white p-4 rounded-md">
+                                <pre><code><span class="text-purple-400">GET</span> <span class="text-green-400">/api/v1/forex/rate/</span><span class="text-yellow-400">{from}</span><span class="text-green-400">/</span><span class="text-yellow-400">{to}</span><span class="text-green-400">/</span></code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Parâmetros" %}</h3>
+                            <table class="min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left py-2">Nome</th>
+                                        <th class="text-left py-2">Descrição</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2">from</td>
+                                        <td class="py-2">{% trans "Moeda base (ex: EUR)" %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">to</td>
+                                        <td class="py-2">{% trans "Moeda destino (ex: USD)" %}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Resposta" %}</h3>
+                            <div class="bg-gray-800 text-white p-4 rounded-md">
+                                <pre><code>{
+  <span class="text-purple-400">"from"</span>: <span class="text-green-400">"EUR"</span>,
+  <span class="text-purple-400">"to"</span>: <span class="text-green-400">"USD"</span>,
+  <span class="text-purple-400">"rate"</span>: <span class="text-yellow-400">1.0925</span>,
+  <span class="text-purple-400">"timestamp"</span>: <span class="text-green-400">"2024-03-20T12:00:00Z"</span>
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Crypto Section -->
+                <section id="crypto" class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{% trans "Criptomoedas" %}</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Requisição" %}</h3>
+                            <div class="bg-gray-800 text-white p-4 rounded-md">
+                                <pre><code><span class="text-purple-400">GET</span> <span class="text-green-400">/api/v1/crypto/price/</span><span class="text-yellow-400">{symbol}</span><span class="text-green-400">/</span></code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Parâmetros" %}</h3>
+                            <table class="min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left py-2">Nome</th>
+                                        <th class="text-left py-2">Descrição</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2">symbol</td>
+                                        <td class="py-2">{% trans "Símbolo da criptomoeda (ex: BTC)" %}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">{% trans "Resposta" %}</h3>
+                            <div class="bg-gray-800 text-white p-4 rounded-md">
+                                <pre><code>{
+  <span class="text-purple-400">"symbol"</span>: <span class="text-green-400">"BTC"</span>,
+  <span class="text-purple-400">"price"</span>: <span class="text-yellow-400">65000.00</span>,
+  <span class="text-purple-400">"change_24h"</span>: <span class="text-yellow-400">2.5</span>,
+  <span class="text-purple-400">"volume_24h"</span>: <span class="text-yellow-400">30000000000</span>,
+  <span class="text-purple-400">"timestamp"</span>: <span class="text-green-400">"2024-03-20T12:00:00Z"</span>
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyCode(elementId) {
+    const codeBlock = document.getElementById(elementId);
+    const code = codeBlock.textContent;
+    
+    navigator.clipboard.writeText(code).then(() => {
+        Toastify({
+            text: "{% trans 'Código copiado!' %}",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#48BB78",
+        }).showToast();
+    }).catch(() => {
+        Toastify({
+            text: "{% trans 'Erro ao copiar código' %}",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#F56565",
+        }).showToast();
+    });
+}
+</script>
+{% endblock %} 
