@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r requirements.txt gunicorn
+    pip install -r requirements.txt gunicorn starlette==0.36.3
 
 # Copy the source code
 COPY . .
@@ -43,19 +43,13 @@ COPY . .
 # Create necessary directories and set permissions
 RUN mkdir -p /app/staticfiles /app/media \
     && chown -R appuser:appuser /app \
-    && python manage.py collectstatic --noinput
+    && chmod -R 755 /app
 
+# Switch to non-privileged user
 USER appuser
 
-# Expose the port
+# Expose the port the app runs on
 EXPOSE 8080
 
-# Run gunicorn with uvicorn workers
-CMD ["gunicorn", \
-     "--bind", "0.0.0.0:8080", \
-     "--workers", "4", \
-     "--worker-class", "uvicorn.workers.UvicornWorker", \
-     "--timeout", "300", \
-     "--keep-alive", "5", \
-     "--log-level", "info", \
-     "proxy_project.asgi:application"]
+# Command to run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "proxy_project.asgi:application"]
