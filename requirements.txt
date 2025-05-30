@@ -131,7 +131,9 @@ redis==5.0.1
     #   channels-redis
     #   django-redis
 requests==2.32.3
-    # via proxy-project (pyproject.toml)
+    # via
+    #   proxy-project (pyproject.toml)
+    #   stripe
 service-identity==24.2.0
     # via twisted
 setuptools==80.9.0
@@ -146,12 +148,16 @@ sqlparse==0.5.3
     # via django
 starlette==0.46.2
     # via proxy-project (pyproject.toml)
+stripe==12.2.0
+    # via proxy-project (pyproject.toml)
 twisted==24.11.0
     # via daphne
 txaio==23.1.1
     # via autobahn
 typing-extensions==4.13.2
-    # via twisted
+    # via
+    #   stripe
+    #   twisted
 urllib3==2.4.0
     # via
     #   polygon-api-client
@@ -162,6 +168,8 @@ websockets==14.2
     # via
     #   proxy-project (pyproject.toml)
     #   polygon-api-client
+whitenoise==6.9.0
+    # via proxy-project (pyproject.toml)
 yarl==1.20.0
     # via aiohttp
 zope-interface==7.2

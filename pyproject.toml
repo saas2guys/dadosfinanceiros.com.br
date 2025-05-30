@@ -32,6 +32,7 @@ dependencies = [
     "starlette>=0.46.2",
     "setuptools>=80.9.0",
     "whitenoise>=6.9.0",
+    "stripe>=12.2.0",
 ]
 
 [project.optional-dependencies]
