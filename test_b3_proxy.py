@@ -9,50 +9,67 @@ to ensure the market selector parameter works correctly.
 import requests
 import json
 import sys
+import logging
 from datetime import datetime, timedelta
 
 BASE_URL = "http://localhost:8000/v1"
 
-def test_endpoint(url, description):
+# Configure logging to be quiet by default
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+def test_endpoint(url, description, verbose=False):
     """Test a single endpoint and return result"""
-    print(f"\n🧪 Testing: {description}")
-    print(f"📡 URL: {url}")
+    if verbose:
+        logger.info(f"Testing: {description}")
+        logger.info(f"URL: {url}")
     
     try:
         response = requests.get(url, timeout=10)
-        print(f"✅ Status: {response.status_code}")
+        if verbose:
+            logger.info(f"Status: {response.status_code}")
         
         if response.status_code == 200:
             data = response.json()
-            print(f"📊 Response keys: {list(data.keys())}")
-            
-            # Show sample data structure
-            if 'results' in data:
-                results = data['results']
-                if isinstance(results, list) and len(results) > 0:
-                    print(f"📈 Sample result keys: {list(results[0].keys())}")
-                elif isinstance(results, dict):
-                    print(f"📈 Result keys: {list(results.keys())}")
+            if verbose:
+                logger.info(f"Response keys: {list(data.keys())}")
+                
+                # Show sample data structure
+                if 'results' in data:
+                    results = data['results']
+                    if isinstance(results, list) and len(results) > 0:
+                        logger.info(f"Sample result keys: {list(results[0].keys())}")
+                    elif isinstance(results, dict):
+                        logger.info(f"Result keys: {list(results.keys())}")
             
             return True
         else:
-            print(f"❌ Error: {response.text}")
+            if verbose:
+                logger.error(f"Error: {response.text}")
             return False
             
     except requests.exceptions.Timeout:
-        print("⏰ Request timed out")
+        if verbose:
+            logger.error("Request timed out")
         return False
     except requests.exceptions.RequestException as e:
-        print(f"🚫 Request failed: {e}")
+        if verbose:
+            logger.error(f"Request failed: {e}")
         return False
     except Exception as e:
-        print(f"💥 Unexpected error: {e}")
+        if verbose:
+            logger.error(f"Unexpected error: {e}")
         return False
 
 def main():
     """Run all tests"""
-    print("🚀 Testing Unified Polygon/B3 Proxy")
-    print("=" * 50)
+    # Check if verbose mode is requested
+    verbose = '--verbose' in sys.argv or '-v' in sys.argv
+    
+    if verbose:
+        logging.getLogger().setLevel(logging.INFO)
+        logger.info("Testing Unified Polygon/B3 Proxy")
+        logger.info("=" * 50)
     
     # Calculate date range for testing
     end_date = datetime.now().strftime('%Y-%m-%d')
@@ -109,19 +126,21 @@ def main():
     total = len(test_cases)
     
     for test_case in test_cases:
-        if test_endpoint(test_case["url"], test_case["description"]):
+        if test_endpoint(test_case["url"], test_case["description"], verbose=verbose):
             passed += 1
     
     # Summary
-    print("\n" + "=" * 50)
-    print(f"📊 Test Results: {passed}/{total} passed")
+    if verbose:
+        logger.info("=" * 50)
+        logger.info(f"Test Results: {passed}/{total} passed")
+        
+        if passed == total:
+            logger.info("All tests passed!")
+        else:
+            logger.warning(f"{total - passed} tests failed")
     
-    if passed == total:
-        print("🎉 All tests passed!")
-        sys.exit(0)
-    else:
-        print(f"⚠️  {total - passed} tests failed")
-        sys.exit(1)
+    # Exit with appropriate code
+    sys.exit(0 if passed == total else 1)
 
 if __name__ == "__main__":
     main() 

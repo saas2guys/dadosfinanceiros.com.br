@@ -1,6 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 import logging
+import json
 
 import stripe
 from django.conf import settings
@@ -407,93 +408,49 @@ def reactivate_subscription(request):
 
 
 @csrf_exempt
-@require_POST
 def stripe_webhook(request):
-    """Handle Stripe webhooks"""
+    """Handle Stripe webhooks."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST method allowed'}, status=405)
+    
     # Validate content type
     if request.content_type != 'application/json':
-        return HttpResponse(status=400)
-        
+        return JsonResponse({'error': 'Content-Type must be application/json'}, status=400)
+    
+    # Check if webhook secret is configured
+    webhook_secret = getattr(settings, 'STRIPE_WEBHOOK_SECRET', None)
+    if not webhook_secret:
+        return JsonResponse({'error': 'Webhook secret not configured'}, status=400)
+    
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
     
-    # Check if webhook secret is configured
-    if not getattr(settings, 'STRIPE_WEBHOOK_SECRET', None):
-        return HttpResponse(status=400)
-    
     try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+        # Verify webhook signature
+        stripe.Webhook.construct_event(
+            payload, sig_header, webhook_secret
         )
     except ValueError:
         # Invalid payload
-        return HttpResponse(status=400)
+        return JsonResponse({'error': 'Invalid payload'}, status=400)
     except stripe.error.SignatureVerificationError:
         # Invalid signature
-        return HttpResponse(status=400)
-    except AttributeError:
-        # Missing webhook secret
-        return HttpResponse(status=400)
+        return JsonResponse({'error': 'Invalid signature'}, status=400)
     
-    # Simple replay attack protection - check if we've already processed this event
-    event_id = event.get('id')
-    if event_id and cache.get(f'stripe_event_{event_id}'):
-        return HttpResponse(status=200)  # Already processed, return success
-    
-    # Mark event as processed (cache for 24 hours)
-    if event_id:
-        cache.set(f'stripe_event_{event_id}', True, timeout=86400)
-    
-    # Handle the event
     try:
-        if event['type'] == 'checkout.session.completed':
-            # Check if event has required data structure
-            if 'data' not in event or 'object' not in event['data']:
-                return HttpResponse(status=400)
-                
-            session = event['data']['object']
-            # Only handle successful payments
-            if session.get('payment_status') == 'paid':
-                try:
-                    StripeService.handle_successful_payment(session)
-                except Exception as e:
-                    # Log the error but don't fail the webhook
-                    print(f"Unexpected error handling successful payment: {e}")
-                    return HttpResponse(status=200)
-            
-        elif event['type'] == 'customer.subscription.updated':
-            if 'data' not in event or 'object' not in event['data']:
-                return HttpResponse(status=400)
-            subscription = event['data']['object']
-            StripeService.handle_subscription_updated(subscription)
-            
-        elif event['type'] == 'customer.subscription.deleted':
-            if 'data' not in event or 'object' not in event['data']:
-                return HttpResponse(status=400)
-            subscription = event['data']['object']
-            StripeService.handle_subscription_deleted(subscription)
-            
-        elif event['type'] == 'customer.subscription.created':
-            if 'data' not in event or 'object' not in event['data']:
-                return HttpResponse(status=400)
-            subscription = event['data']['object']
-            StripeService.handle_subscription_updated(subscription)
-            
-        elif event['type'] == 'customer.subscription.trial_will_end':
-            if 'data' not in event or 'object' not in event['data']:
-                return HttpResponse(status=400)
-            subscription = event['data']['object']
-            StripeService.handle_subscription_updated(subscription)
-            
-    except KeyError:
-        # Missing required event data
-        return HttpResponse(status=400)
-    except Exception as e:
-        # Log unexpected errors but still return success to Stripe
-        print(f"Unexpected error in webhook: {e}")
-        return HttpResponse(status=200)
+        # Parse the event
+        event = json.loads(payload)
         
-    return HttpResponse(status=200)
+        # Process the event
+        stripe_service = StripeService()
+        result = stripe_service.process_webhook_event(event)
+        
+        return JsonResponse({'status': 'success', 'processed': result is not None})
+        
+    except Exception as e:
+        # Log instead of print
+        logger.error(f"Unexpected error in webhook: {e}")
+        return JsonResponse({'status': 'error'}, status=500)
 
 
 # API Views for subscription management
