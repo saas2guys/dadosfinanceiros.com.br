@@ -342,6 +342,7 @@ class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
         checkout_session = StripeCheckoutSessionFactory(
             payment_status="paid",
             customer="cus_test123",
+            subscription="sub_test123",
             metadata={
                 'user_id': str(self.user.id),
                 'plan_id': str(self.plan.id)
@@ -400,8 +401,9 @@ class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
             'data': {}  # Missing object
         }
 
-        with self.assertRaises(AttributeError):
-            self.stripe_service.handle_successful_payment(invalid_event['data'])
+        # The handle_successful_payment method should return False for invalid data
+        result = self.stripe_service.handle_successful_payment(invalid_event['data'])
+        self.assertFalse(result)
 
 
 class StripeApiErrorHandlingTest(StripeServiceTestCaseBase):

@@ -29,8 +29,9 @@ class StripeService:
                     'metadata': {'user_id': user.id}
                 })
             else:
-                if email:
-                    customer_data['email'] = email
+                if email is None or email == "":
+                    raise ValueError("Email is required and cannot be None or empty")
+                customer_data['email'] = email
                 if name:
                     customer_data['name'] = name
             
@@ -72,10 +73,13 @@ class StripeService:
             else:
                 raise ValueError("Either user or customer_id must be provided")
             
+            # Get mode from kwargs or default to subscription
+            mode = kwargs.pop('mode', 'subscription')
+            
             session_data = {
                 'customer': customer_id_to_use,
                 'payment_method_types': ['card'],
-                'mode': 'subscription',
+                'mode': mode,
                 'success_url': success_url,
                 'cancel_url': cancel_url,
             }
@@ -89,6 +93,13 @@ class StripeService:
                     'user_id': user.id if user else '',
                     'plan_id': plan.id,
                 }
+            elif 'price_id' in kwargs:
+                # Handle direct price_id parameter
+                price_id = kwargs.pop('price_id')
+                session_data['line_items'] = [{
+                    'price': price_id,
+                    'quantity': 1,
+                }]
             
             # Add any additional kwargs
             session_data.update(kwargs)
@@ -97,6 +108,15 @@ class StripeService:
             return session
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error creating checkout session: {e}")
+            raise
+    
+    @staticmethod
+    def get_checkout_session(session_id):
+        """Get a Stripe checkout session by ID"""
+        try:
+            return stripe.checkout.Session.retrieve(session_id)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error retrieving checkout session: {e}")
             raise
     
     @staticmethod

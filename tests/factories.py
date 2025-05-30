@@ -19,6 +19,14 @@ class StripeObject(dict):
     Supports both dictionary-style and attribute-style access.
     """
     def __init__(self, *args, **kwargs):
+        # If we're passed a single StripeObject, just return a copy of it
+        if args and len(args) == 1 and isinstance(args[0], StripeObject) and not kwargs:
+            existing_obj = args[0]
+            super().__init__(existing_obj)
+            for key, value in existing_obj.items():
+                setattr(self, key, value)
+            return
+        
         # Handle the case where we're passed an object with attributes
         if args and len(args) == 1 and hasattr(args[0], '__dict__') and not kwargs:
             obj = args[0]

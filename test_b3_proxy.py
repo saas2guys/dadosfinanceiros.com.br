@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+"""
+Test script for the unified Polygon/B3 proxy with market selection.
+
+This script tests both US (Polygon.io) and Brazilian (B3) market endpoints
+to ensure the market selector parameter works correctly.
+"""
+
+import requests
+import json
+import sys
+from datetime import datetime, timedelta
+
+BASE_URL = "http://localhost:8000/v1"
+
+def test_endpoint(url, description):
+    """Test a single endpoint and return result"""
+    print(f"\n🧪 Testing: {description}")
+    print(f"📡 URL: {url}")
+    
+    try:
+        response = requests.get(url, timeout=10)
+        print(f"✅ Status: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"📊 Response keys: {list(data.keys())}")
+            
+            # Show sample data structure
+            if 'results' in data:
+                results = data['results']
+                if isinstance(results, list) and len(results) > 0:
+                    print(f"📈 Sample result keys: {list(results[0].keys())}")
+                elif isinstance(results, dict):
+                    print(f"📈 Result keys: {list(results.keys())}")
+            
+            return True
+        else:
+            print(f"❌ Error: {response.text}")
+            return False
+            
+    except requests.exceptions.Timeout:
+        print("⏰ Request timed out")
+        return False
+    except requests.exceptions.RequestException as e:
+        print(f"🚫 Request failed: {e}")
+        return False
+    except Exception as e:
+        print(f"💥 Unexpected error: {e}")
+        return False
+
+def main():
+    """Run all tests"""
+    print("🚀 Testing Unified Polygon/B3 Proxy")
+    print("=" * 50)
+    
+    # Calculate date range for testing
+    end_date = datetime.now().strftime('%Y-%m-%d')
+    start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+    
+    test_cases = [
+        # US Market Tests (Polygon.io)
+        {
+            "url": f"{BASE_URL}/us/v2/last/trade/AAPL",
+            "description": "US Last Trade - AAPL"
+        },
+        {
+            "url": f"{BASE_URL}/us/v2/last/nbbo/MSFT", 
+            "description": "US Last Quote - MSFT"
+        },
+        {
+            "url": f"{BASE_URL}/us/v2/aggs/ticker/AAPL/range/1/day/{start_date}/{end_date}",
+            "description": "US Aggregates - AAPL (30 days)"
+        },
+        
+        # Brazilian Market Tests (B3)
+        {
+            "url": f"{BASE_URL}/br/v2/last/trade/PETR4",
+            "description": "BR Last Trade - PETR4"
+        },
+        {
+            "url": f"{BASE_URL}/br/v2/last/nbbo/VALE3",
+            "description": "BR Last Quote - VALE3"
+        },
+        {
+            "url": f"{BASE_URL}/br/v2/aggs/ticker/PETR4/range/1/day/{start_date}/{end_date}",
+            "description": "BR Aggregates - PETR4 (30 days)"
+        },
+        
+        # Ticker Conversion Tests
+        {
+            "url": f"{BASE_URL}/br/v2/last/trade/AAPL",
+            "description": "BR Ticker Conversion - AAPL→AAPL34"
+        },
+        {
+            "url": f"{BASE_URL}/br/v2/last/trade/TSLA",
+            "description": "BR Ticker Conversion - TSLA→TSLA34"
+        },
+        
+        # Backward Compatibility Tests
+        {
+            "url": f"{BASE_URL}/v2/last/trade/AAPL",
+            "description": "Legacy Format (should redirect to US)"
+        },
+    ]
+    
+    # Run tests
+    passed = 0
+    total = len(test_cases)
+    
+    for test_case in test_cases:
+        if test_endpoint(test_case["url"], test_case["description"]):
+            passed += 1
+    
+    # Summary
+    print("\n" + "=" * 50)
+    print(f"📊 Test Results: {passed}/{total} passed")
+    
+    if passed == total:
+        print("🎉 All tests passed!")
+        sys.exit(0)
+    else:
+        print(f"⚠️  {total - passed} tests failed")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main() 

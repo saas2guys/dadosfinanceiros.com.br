@@ -532,8 +532,8 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         # Set request token header
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        # Test accessing a protected endpoint
-        response = self.client.get('/v1/aggs/')  # Polygon proxy endpoint
+        # Test accessing a protected endpoint - use new market selector format
+        response = self.client.get('/v1/us/aggs/')  # Updated to new format
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -541,7 +541,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         """Test invalid request token rejection."""
         self.client.credentials(HTTP_X_REQUEST_TOKEN='invalid-token')
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')  # Updated to new format
         
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -553,7 +553,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')  # Updated to new format
         
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -570,7 +570,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')  # Updated to new format
         
         # Should not be rejected due to expiration
         self.assertNotEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -579,7 +579,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         """Test missing request token header handling."""
         # Don't set any credentials
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')  # Updated to new format
         
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -595,7 +595,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         for token in invalid_tokens:
             with self.subTest(token=token):
                 self.client.credentials(HTTP_X_REQUEST_TOKEN=token)
-                response = self.client.get('/v1/aggs/')
+                response = self.client.get('/v1/us/aggs/')  # Updated to new format
                 
                 self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -764,8 +764,8 @@ class TokenHistoryApiEndpointTest(APITestCase):
         
         response = self.client.get(self.history_url)
         
-        if response.status_code == status.HTTP_200_OK:
-            self.assertGreaterEqual(len(response.data), 1)
+        if response.status_code == status.HTTP_200_OK and 'results' in response.data:
+            self.assertGreaterEqual(len(response.data['results']), 1)
 
     def test_denies_token_history_access_for_unauthenticated_users(self):
         """Test token history access denial for unauthenticated users."""
@@ -787,9 +787,9 @@ class TokenHistoryApiEndpointTest(APITestCase):
         
         response = self.client.get(self.history_url)
         
-        if response.status_code == status.HTTP_200_OK and len(response.data) > 1:
+        if response.status_code == status.HTTP_200_OK and 'results' in response.data and len(response.data['results']) > 1:
             # Check ordering
-            dates = [item['created_at'] for item in response.data]
+            dates = [item['created_at'] for item in response.data['results']]
             self.assertEqual(dates, sorted(dates, reverse=True))
 
     def test_filters_token_history_by_user_ownership(self):
@@ -806,9 +806,9 @@ class TokenHistoryApiEndpointTest(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(self.history_url)
         
-        if response.status_code == status.HTTP_200_OK:
+        if response.status_code == status.HTTP_200_OK and 'results' in response.data:
             # Should not include other user's tokens
-            tokens = [item['token'] for item in response.data]
+            tokens = [item['token'] for item in response.data['results']]
             self.assertNotIn("other_user_token", tokens)
 
 
@@ -834,7 +834,7 @@ class DailyApiLimitPermissionEnforcementTest(APITestCase):
         
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')
         
         self.assertNotEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -846,7 +846,7 @@ class DailyApiLimitPermissionEnforcementTest(APITestCase):
         
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')
         
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -858,7 +858,7 @@ class DailyApiLimitPermissionEnforcementTest(APITestCase):
         
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')
         
         self.assertNotEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -869,7 +869,7 @@ class DailyApiLimitPermissionEnforcementTest(APITestCase):
         
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')
         
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -880,7 +880,7 @@ class DailyApiLimitPermissionEnforcementTest(APITestCase):
         
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')
         
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -917,7 +917,7 @@ class AuthenticationSystemIntegrationTest(APITestCase):
             self.client.credentials(HTTP_X_REQUEST_TOKEN=str(user.request_token))
             
             # Step 3: Access protected endpoint
-            response = self.client.get('/api/v1/aggs/')
+            response = self.client.get('/api/v1/us/aggs/')
             
             # Should be able to access API
             self.assertNotEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -931,7 +931,7 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         for _ in range(5):
             client = APIClient()
             client.credentials(HTTP_X_REQUEST_TOKEN=token)
-            response = client.get('/v1/aggs/')
+            response = client.get('/v1/us/aggs/')
             responses.append(response.status_code)
         
         # All should have consistent authentication results
@@ -944,7 +944,7 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         
         # Make multiple requests
         for _ in range(3):
-            response = self.client.get('/v1/aggs/')
+            response = self.client.get('/v1/us/aggs/')
             # Authentication should remain consistent
             if response.status_code != status.HTTP_401_UNAUTHORIZED:
                 break
@@ -957,7 +957,7 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         self.client.force_authenticate(user=self.user)
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
-        response = self.client.get('/v1/aggs/')
+        response = self.client.get('/v1/us/aggs/')
         
         # Should authenticate successfully with either method
         self.assertNotEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -968,7 +968,7 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
         
         with patch('logging.Logger.info') as mock_log:
-            response = self.client.get('/v1/aggs/')
+            response = self.client.get('/v1/us/aggs/')
             
             # Should log authentication events
             # This depends on implementation

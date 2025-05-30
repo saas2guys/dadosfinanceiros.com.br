@@ -78,6 +78,19 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 POLYGON_BASE_URL = os.environ.get("POLYGON_BASE_URL", "https://api.polygon.io")
 POLYGON_API_KEY = os.environ.get("POLYGON_API_KEY")
 
+# Brazilian Market Configuration  
+B3_BASE_URL = os.environ.get("B3_BASE_URL", "https://api-marketdata.b3.com.br")
+B3_API_KEY = os.environ.get("B3_API_KEY")
+
+# Brazilian Market Fallback APIs
+CEDRO_BASE_URL = os.environ.get("CEDRO_BASE_URL", "https://api.cedrotech.com")
+CEDRO_API_KEY = os.environ.get("CEDRO_API_KEY")
+
+B3_HISTORICAL_URL = os.environ.get(
+    "B3_HISTORICAL_URL", 
+    "https://cvscarlos.github.io/b3-api-dados-historicos/api/v1"
+)
+
 PROXY_TIMEOUT = int(os.environ.get("PROXY_TIMEOUT", "30"))
 PROXY_DOMAIN = os.environ.get("PROXY_DOMAIN", "api.dadosfinanceiros.com.br")
 
