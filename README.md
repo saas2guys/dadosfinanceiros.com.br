@@ -22,7 +22,7 @@ This repository now includes **automated DNS management** for DigitalOcean App P
 2. Add these repository secrets:
 
 ```
-DO_TOKEN = dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE
+DO_TOKEN = asdasdasdasd
 APP_DOMAIN = dadosfinanceiros-com-br-vsxtw.ondigitalocean.app
 ```
 
