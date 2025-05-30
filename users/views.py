@@ -147,6 +147,7 @@ def regenerate_token(request):
 
 
 @api_view(["GET", "POST"])
+@permission_classes([permissions.AllowAny])
 def register_user(request):
     if request.content_type == "application/json":
 

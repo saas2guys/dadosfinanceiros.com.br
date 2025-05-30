@@ -62,13 +62,15 @@ if not DEBUG:
 
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_AGE = 31449600
-CSRF_COOKIE_DOMAIN = ".dadosfinanceiros.com.br" if not DEBUG else None
+CSRF_COOKIE_DOMAIN = "dadosfinanceiros.com.br" if not DEBUG else None
 CSRF_COOKIE_PATH = "/"
 CSRF_USE_SESSIONS = False
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_HTTPONLY = False  # CSRF token needs to be accessible to JavaScript
 
 SESSION_COOKIE_NAME = "sessionid"
 SESSION_COOKIE_AGE = 1209600
-SESSION_COOKIE_DOMAIN = ".dadosfinanceiros.com.br" if not DEBUG else None
+SESSION_COOKIE_DOMAIN = "dadosfinanceiros.com.br" if not DEBUG else None
 SESSION_COOKIE_PATH = "/"
 SESSION_SAVE_EVERY_REQUEST = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
