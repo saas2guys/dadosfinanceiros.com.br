@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-Test script for the unified Polygon/B3 proxy with market selection.
+Test script for the Polygon.io proxy.
 
-This script tests both US (Polygon.io) and Brazilian (B3) market endpoints
-to ensure the market selector parameter works correctly.
+This script tests US market endpoints via Polygon.io API.
 """
 
 import json
@@ -71,7 +70,7 @@ def main():
 
     if verbose:
         logging.getLogger().setLevel(logging.INFO)
-        logger.info("Testing Unified Polygon/B3 Proxy")
+        logger.info("Testing Polygon.io Proxy")
         logger.info("=" * 50)
 
     # Calculate date range for testing
@@ -81,43 +80,32 @@ def main():
     test_cases = [
         # US Market Tests (Polygon.io)
         {
-            "url": f"{BASE_URL}/us/v2/last/trade/AAPL",
+            "url": f"{BASE_URL}/v2/last/trade/AAPL",
             "description": "US Last Trade - AAPL",
         },
         {
-            "url": f"{BASE_URL}/us/v2/last/nbbo/MSFT",
+            "url": f"{BASE_URL}/v2/last/nbbo/MSFT",
             "description": "US Last Quote - MSFT",
         },
         {
-            "url": f"{BASE_URL}/us/v2/aggs/ticker/AAPL/range/1/day/{start_date}/{end_date}",
+            "url": f"{BASE_URL}/v2/aggs/ticker/AAPL/range/1/day/{start_date}/{end_date}",
             "description": "US Aggregates - AAPL (30 days)",
         },
-        # Brazilian Market Tests (B3)
         {
-            "url": f"{BASE_URL}/br/v2/last/trade/PETR4",
-            "description": "BR Last Trade - PETR4",
+            "url": f"{BASE_URL}/v2/last/trade/GOOGL",
+            "description": "US Last Trade - GOOGL",
         },
         {
-            "url": f"{BASE_URL}/br/v2/last/nbbo/VALE3",
-            "description": "BR Last Quote - VALE3",
+            "url": f"{BASE_URL}/v2/last/nbbo/TSLA",
+            "description": "US Last Quote - TSLA",
         },
         {
-            "url": f"{BASE_URL}/br/v2/aggs/ticker/PETR4/range/1/day/{start_date}/{end_date}",
-            "description": "BR Aggregates - PETR4 (30 days)",
-        },
-        # Ticker Conversion Tests
-        {
-            "url": f"{BASE_URL}/br/v2/last/trade/AAPL",
-            "description": "BR Ticker Conversion - AAPL→AAPL34",
+            "url": f"{BASE_URL}/v3/reference/tickers",
+            "description": "US Tickers Reference",
         },
         {
-            "url": f"{BASE_URL}/br/v2/last/trade/TSLA",
-            "description": "BR Ticker Conversion - TSLA→TSLA34",
-        },
-        # Backward Compatibility Tests
-        {
-            "url": f"{BASE_URL}/v2/last/trade/AAPL",
-            "description": "Legacy Format (should redirect to US)",
+            "url": f"{BASE_URL}/v1/marketstatus/now",
+            "description": "US Market Status",
         },
     ]
 

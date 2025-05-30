@@ -46,7 +46,7 @@ class RequestTokenAuthenticationFlowTest(APITestCase):
 
         with patch("proxy_app.views.PolygonProxyView._handle_request") as mock_handle:
             mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
-            response = self.client.get("/v1/us/stocks/AAPL/")
+            response = self.client.get("/v1/stocks/AAPL/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -57,7 +57,7 @@ class RequestTokenAuthenticationFlowTest(APITestCase):
         # Set invalid token
         self.client.credentials(HTTP_X_REQUEST_TOKEN="invalid-token")
 
-        response = self.client.get("/v1/us/stocks/AAPL/")
+        response = self.client.get("/v1/stocks/AAPL/")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         mock_handle.assert_not_called()
@@ -67,7 +67,7 @@ class RequestTokenAuthenticationFlowTest(APITestCase):
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
 
         # No token set
-        response = self.client.get("/v1/us/stocks/AAPL/")
+        response = self.client.get("/v1/stocks/AAPL/")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         mock_handle.assert_not_called()
@@ -106,7 +106,7 @@ class DailyApiLimitEnforcementTest(APITestCase):
         mock_handle.return_value = Response({"status": "OK"}, status=status.HTTP_200_OK)
 
         initial_count = self.user.daily_requests_made
-        response = self.client.get("/v1/us/stocks/AAPL/")
+        response = self.client.get("/v1/stocks/AAPL/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.user.refresh_from_db()
@@ -121,7 +121,7 @@ class DailyApiLimitEnforcementTest(APITestCase):
         self.user.last_request_date = timezone.now().date()
         self.user.save()
 
-        response = self.client.get("/v1/us/stocks/AAPL/")
+        response = self.client.get("/v1/stocks/AAPL/")
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -148,7 +148,7 @@ class ApiAuthenticationIntegrationTest(APITestCase):
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
 
         # Test API endpoint without authentication
-        response = self.client.get("/v1/us/stocks/AAPL/")
+        response = self.client.get("/v1/stocks/AAPL/")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         # Mock handle should not be called if authentication fails

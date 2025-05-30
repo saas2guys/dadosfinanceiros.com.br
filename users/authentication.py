@@ -40,11 +40,7 @@ class RequestTokenAuthentication(authentication.BaseAuthentication):
             else:
                 raise exceptions.AuthenticationFailed("Token has expired.")
 
-        return (user, token)
+        return user, token
 
     def authenticate_header(self, request):
         return self.keyword
-
-    @property
-    def model(self):
-        return User

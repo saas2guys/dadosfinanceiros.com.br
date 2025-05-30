@@ -1,76 +1,76 @@
 ######### Polygon API HTTP Requests (Localhost Version)
 
 ## All Tickers
-GET http://localhost:8000/api/reference/tickers?market=stocks&active=true&order=asc&limit=100&sort=ticker
+GET http://localhost:8000/api/v1/reference/tickers?market=stocks&active=true&order=asc&limit=100&sort=ticker
 
 ### Ticker Overview
-GET http://localhost:8000/api/reference/tickers/AAPL
+GET http://localhost:8000/api/v1/reference/tickers/AAPL
 
 ### Ticker Types
-GET http://localhost:8000/api/reference/tickers/types
+GET http://localhost:8000/api/v1/reference/tickers/types
 
 ### Related Tickers
-GET http://localhost:8000/api/meta/symbols/AAPL/company
+GET http://localhost:8000/api/v1/meta/symbols/AAPL/company
 
 ### Aggregate Bars (OHLC)
-GET http://localhost:8000/api/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-10?adjusted=true&sort=asc&limit=120
+GET http://localhost:8000/api/v1/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-10?adjusted=true&sort=asc&limit=120
 
 ### Daily Market Summary
-GET http://localhost:8000/api/open-close/stocks/2023-01-09
+GET http://localhost:8000/api/v1/open-close/stocks/2023-01-09
 
 ### Daily Ticker Summary
-GET http://localhost:8000/api/open-close/AAPL/2023-01-09?adjusted=true
+GET http://localhost:8000/api/v1/open-close/AAPL/2023-01-09?adjusted=true
 
 ### Previous Day Bar
-GET http://localhost:8000/api/aggs/ticker/AAPL/prev?adjusted=true
+GET http://localhost:8000/api/v1/aggs/ticker/AAPL/prev?adjusted=true
 
 ### Single Ticker Snapshot
-GET http://localhost:8000/api/snapshot/locale/us/markets/stocks/tickers/AAPL
+GET http://localhost:8000/api/v1/snapshot/locale/us/markets/stocks/tickers/AAPL
 
 ### Full Market Snapshot
-GET http://localhost:8000/api/snapshot/locale/us/markets/stocks/tickers?tickers=AAPL,MSFT,AMZN
+GET http://localhost:8000/api/v1/snapshot/locale/us/markets/stocks/tickers?tickers=AAPL,MSFT,AMZN
 
 ### Unified Snapshot
-GET http://localhost:8000/api/snapshot?ticker.any_of=AAPL,O:AAPL230616C00190000,C:BTCUSD,FX:EURUSD
+GET http://localhost:8000/api/v1/snapshot?ticker.any_of=AAPL,O:AAPL230616C00190000,C:BTCUSD,FX:EURUSD
 
 ### Top Market Movers
-GET http://localhost:8000/api/snapshot/locale/us/markets/stocks/gainers?include_otc=false
+GET http://localhost:8000/api/v1/snapshot/locale/us/markets/stocks/gainers?include_otc=false
 
 ### Trades
-GET http://localhost:8000/api/trades/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
+GET http://localhost:8000/api/v1/trades/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
 
 ### Last Trade
-GET http://localhost:8000/api/last/trade/AAPL
+GET http://localhost:8000/api/v1/last/trade/AAPL
 
 ### Quotes
-GET http://localhost:8000/api/quotes/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
+GET http://localhost:8000/api/v1/quotes/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
 
 ### Last Quote
-GET http://localhost:8000/api/last/nbbo/AAPL
+GET http://localhost:8000/api/v1/last/nbbo/AAPL
 
 ### All Option Contracts
-GET http://localhost:8000/api/reference/options/contracts?underlying_ticker=AAPL&contract_type=call&expiration_date.gte=2023-06-01&order=asc&limit=10&sort=ticker
+GET http://localhost:8000/api/v1/reference/options/contracts?underlying_ticker=AAPL&contract_type=call&expiration_date.gte=2023-06-01&order=asc&limit=10&sort=ticker
 
 ### Option Contract Overview
-GET http://localhost:8000/api/reference/options/contracts/O:AAPL230616C00190000
+GET http://localhost:8000/api/v1/reference/options/contracts/O:AAPL230616C00190000
 
 ### All Indices
-GET http://localhost:8000/api/reference/indices?market=indices&order=asc&limit=10&sort=ticker
+GET http://localhost:8000/api/v1/reference/indices?market=indices&order=asc&limit=10&sort=ticker
 
 ### Index Overview
-GET http://localhost:8000/api/reference/indices/I:SPX
+GET http://localhost:8000/api/v1/reference/indices/I:SPX
 
 ### All Forex Tickers
-GET http://localhost:8000/api/reference/tickers?market=fx&active=true&order=asc&limit=10&sort=ticker
+GET http://localhost:8000/api/v1/reference/tickers?market=fx&active=true&order=asc&limit=10&sort=ticker
 
 ### Currency Conversion
-GET http://localhost:8000/api/conversion/USD/EUR?amount=100&precision=2
+GET http://localhost:8000/api/v1/conversion/USD/EUR?amount=100&precision=2
 
 ### All Crypto Tickers
-GET http://localhost:8000/api/reference/tickers?market=crypto&active=true&order=asc&limit=10&sort=ticker
+GET http://localhost:8000/api/v1/reference/tickers?market=crypto&active=true&order=asc&limit=10&sort=ticker
 
 ### Treasury Yields
-GET http://localhost:8000/api/indicators/treasury-yields?ticker=US10Y&from=2023-01-01&to=2023-01-31&order=asc&limit=10
+GET http://localhost:8000/api/v1/indicators/treasury-yields?ticker=US10Y&from=2023-01-01&to=2023-01-31&order=asc&limit=10
 
 ### Analyst Ratings
-GET http://localhost:8000/api/meta/symbols/AAPL/analysts
+GET http://localhost:8000/api/v1/meta/symbols/AAPL/analysts
