@@ -79,6 +79,12 @@ POLYGON_API_KEY = os.environ.get("POLYGON_API_KEY")
 PROXY_TIMEOUT = int(os.environ.get("PROXY_TIMEOUT", "30"))
 PROXY_DOMAIN = os.environ.get("PROXY_DOMAIN", "api.dadosfinanceiros.com.br")
 
+# Stripe Configuration
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
+STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

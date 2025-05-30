@@ -76,8 +76,13 @@ class PolygonProxyView(APIView):
     def _build_target_url(self, path):
         clean_path = path.replace("v1/", "")
         
+        # Handle fed and benzinga endpoints with potential additional path components
         if clean_path.startswith(("fed/", "benzinga/")):
             return f"{self.base_url}/{clean_path}"
+            
+        # Check if this is a treasury yields endpoint that should use v2
+        if "fed/vx/treasury-yields" in clean_path:
+            return f"{self.base_url}/v2/{clean_path}"
         
         version = self._get_polygon_version(clean_path)
         
@@ -193,14 +198,29 @@ class PolygonProxyView(APIView):
         logger.error(f"{error}: {message}")
         return Response({"error": error, "message": message}, status=status_code)
 
+    def _increment_user_request_count(self, request, response):
+        """Increment user's daily request count for successful responses"""
+        if (hasattr(request, 'user') and 
+            request.user.is_authenticated and 
+            200 <= response.status_code < 400):  # Success status codes
+            request.user.increment_request_count()
+
     def get(self, request, path):
-        return self._handle_request(request, path)
+        response = self._handle_request(request, path)
+        self._increment_user_request_count(request, response)
+        return response
 
     def post(self, request, path):
-        return self._handle_request(request, path)
+        response = self._handle_request(request, path)
+        self._increment_user_request_count(request, response)
+        return response
 
     def put(self, request, path):
-        return self._handle_request(request, path)
+        response = self._handle_request(request, path)
+        self._increment_user_request_count(request, response)
+        return response
 
     def delete(self, request, path):
-        return self._handle_request(request, path)
+        response = self._handle_request(request, path)
+        self._increment_user_request_count(request, response)
+        return response

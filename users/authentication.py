@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from rest_framework import authentication, exceptions
 
@@ -11,11 +12,16 @@ class RequestTokenAuthentication(authentication.BaseAuthentication):
     model = User
 
     def authenticate(self, request):
-        request_token = self.get_token_from_request(request)
+        request_token = request.META.get('HTTP_X_REQUEST_TOKEN')
+        
         if not request_token:
             return None
-
-        return self.authenticate_credentials(request_token)
+        
+        try:
+            return self.authenticate_credentials(request_token)
+        except (ValidationError, ValueError):
+            # Handle invalid UUID format gracefully
+            return None
 
     def get_token_from_request(self, request):
         return request.META.get("HTTP_X_REQUEST_TOKEN")
@@ -23,19 +29,23 @@ class RequestTokenAuthentication(authentication.BaseAuthentication):
     def authenticate_credentials(self, token):
         try:
             user = self.model.objects.get(request_token=token)
-        except self.model.DoesNotExist:
-            raise exceptions.AuthenticationFailed("Invalid request token.")
+        except (self.model.DoesNotExist, ValidationError):
+            return None
 
         if not user.is_active:
-            raise exceptions.AuthenticationFailed("User inactive or deleted.")
+            return None
 
         if user.request_token_expires and user.request_token_expires < timezone.now():
             if user.token_auto_renew:
                 user.generate_new_request_token()
             else:
-                raise exceptions.AuthenticationFailed("Request token has expired.")
+                return None
 
         return (user, token)
 
     def authenticate_header(self, request):
         return self.keyword
+
+    @property
+    def model(self):
+        return User
