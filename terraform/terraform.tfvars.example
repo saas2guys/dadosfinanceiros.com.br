@@ -2,7 +2,7 @@
 # DO NOT commit terraform.tfvars to git - it contains sensitive information
 
 # DigitalOcean API token - get this from https://cloud.digitalocean.com/account/api/tokens
-do_token = "dop_v1_a679a980ac1921aaacd5d9a0422922ef51f180a5a349e4923c0637680242713c"
+do_token = "dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE"
 
 # Your DigitalOcean App Platform domain
 # This will be automatically resolved to get current IPs

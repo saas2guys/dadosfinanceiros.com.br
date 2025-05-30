@@ -8,7 +8,7 @@ This repository now includes automated DNS management for your DigitalOcean App 
 
 Go to your repository settings and add these secrets:
 
-- **`DO_TOKEN`**: `dop_v1_a679a980ac1921aaacd5d9a0422922ef51f180a5a349e4923c0637680242713c`
+- **`DO_TOKEN`**: `dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE`
 - **`APP_DOMAIN`**: `dadosfinanceiros-com-br-bbce29b0.ondigitalocean.app` (optional)
 
 **Steps:**

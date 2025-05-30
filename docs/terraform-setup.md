@@ -53,7 +53,7 @@ The following secrets must be configured in your GitHub repository:
 1. Go to your repository: https://github.com/saas2guys/dadosfinanceiros.com.br
 2. Navigate to: **Settings** → **Secrets and variables** → **Actions**
 3. Click **"New repository secret"** for each:
-   - **Name**: `DO_TOKEN`, **Value**: `dop_v1_a679a980ac1921aaacd5d9a0422922ef51f180a5a349e4923c0637680242713c`
+   - **Name**: `DO_TOKEN`, **Value**: `dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE`
    - **Name**: `APP_DOMAIN`, **Value**: `dadosfinanceiros-com-br-bbce29b0.ondigitalocean.app` (adjust as needed)
 
 ## Local Development
@@ -72,7 +72,7 @@ The following secrets must be configured in your GitHub repository:
 
 2. **Edit `terraform.tfvars`** with your actual values:
    ```hcl
-   do_token = "dop_v1_a679a980ac1921aaacd5d9a0422922ef51f180a5a349e4923c0637680242713c"
+   do_token = "dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE"
    app_domain = "dadosfinanceiros-com-br-bbce29b0.ondigitalocean.app"
    ```
 
