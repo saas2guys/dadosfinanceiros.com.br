@@ -1,0 +1,38 @@
+# Copy this file to terraform.tfvars for local development
+# DO NOT commit terraform.tfvars to git - it contains sensitive information
+
+# DigitalOcean API token - get this from https://cloud.digitalocean.com/account/api/tokens
+do_token = "dop_v1_a679a980ac1921aaacd5d9a0422922ef51f180a5a349e4923c0637680242713c"
+
+# Your DigitalOcean App Platform domain
+# This will be automatically resolved to get current IPs
+app_domain = "dadosfinanceiros-com-br-vsxtw.ondigitalocean.app"
+
+# ========================================
+# How IP Detection Works:
+# ========================================
+#
+# 1. If app_domain is provided:
+#    - Resolves domain via DNS to get current IPs
+#    - Uses detected IPs for all DNS records
+#
+# 2. If app_domain is empty:
+#    - Uses DigitalOcean's static App Platform IPs
+#    - IPv4: 162.159.140.98, 172.66.0.96
+#    - IPv6: 2606:4700:7::60, 2a06:98c1:58::60
+#
+# Benefits:
+# ✅ Simple configuration
+# ✅ Automatic IP detection
+# ✅ No external dependencies
+# ✅ Reliable fallback to static IPs
+
+# ========================================
+# Testing Your Configuration:
+# ========================================
+#
+# Test DNS resolution manually:
+# dig dadosfinanceiros-com-br-vsxtw.ondigitalocean.app A +short
+#
+# View detection results after terraform apply:
+# terraform output detected_ips

@@ -2,21 +2,481 @@
 
 A simple and efficient Django REST API proxy service that forwards all HTTP requests to Polygon.io API with JWT authentication and request token validation.
 
-## Features
+## 🚀 NEW: Automated DNS Management with Terraform
 
-- JWT Authentication for user management
-- Request Token authentication for API access
-- Daily request limits per user
-- Direct request forwarding to Polygon.io
-- Preserves all query parameters
-- Maintains original response structure
-- Simple setup and configuration
-- Support for all Polygon.io endpoints (v1, v2, v3)
-- Version-specific routing
-- Proper error handling
-- **Django REST Framework Authentication System**
-- **Custom Authentication and Permission Classes**
-- **Clean Separation of Concerns**
+This repository now includes **automated DNS management** for DigitalOcean App Platform deployments using Terraform and GitHub Actions. This system automatically manages DNS records for multiple domains with high availability and load balancing.
+
+### 🎯 What the DNS Automation Does
+
+- **Manages 4 domains**: `financialdata.online`, `financialdata.digital`, `dadosfinanceiros.com`, `dadosfinanceiros.com.br`
+- **High Availability**: Uses DigitalOcean's static ingress IPs with redundancy
+- **IPv6 Support**: Full IPv4 and IPv6 DNS records for modern browsers
+- **Auto-deployment**: Changes deploy automatically when you push code
+- **Production Ready**: Based on DigitalOcean's official App Platform documentation
+
+### 📋 Quick Implementation Guide
+
+#### Step 1: Set Up GitHub Secrets
+
+1. Go to your repository: [Settings → Secrets](https://github.com/saas2guys/dadosfinanceiros.com.br/settings/secrets/actions)
+2. Add these repository secrets:
+
+```
+DO_TOKEN = dop_v1_a679a980ac1921aaacd5d9a0422922ef51f180a5a349e4923c0637680242713c
+APP_DOMAIN = dadosfinanceiros-com-br-vsxtw.ondigitalocean.app
+```
+
+#### Step 2: Commit and Push the Terraform Files
+
+The Terraform files are already created in your repository:
+
+```bash
+# All files are ready - just commit and push
+git add .
+git commit -m "Add Terraform DNS automation"
+git push origin main
+```
+
+#### Step 3: Monitor the Automation
+
+1. **GitHub Actions**: Check the [Actions tab](https://github.com/saas2guys/dadosfinanceiros.com.br/actions) for deployment status
+2. **DigitalOcean DNS**: Check [Networking → Domains](https://cloud.digitalocean.com/networking/domains) for created records
+
+#### Step 4: Add Domains to App Platform
+
+After DNS records are created, add domains to your [App Platform app](https://cloud.digitalocean.com/apps/bbce29b0-3bff-4306-a11b-e6a539beef04):
+
+1. **Settings** → **Domains** → **Edit**
+2. Add each domain:
+   - `financialdata.online`
+   - `www.financialdata.online`
+   - `financialdata.digital`
+   - `www.financialdata.digital`
+   - `dadosfinanceiros.com`
+   - `www.dadosfinanceiros.com`
+   - `dadosfinanceiros.com.br`
+   - `www.dadosfinanceiros.com.br`
+
+### 🔄 How the Automation Works
+
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant Git as GitHub Repo
+    participant GHA as GitHub Actions
+    participant TF as Terraform
+    participant DO as DigitalOcean API
+    participant DNS as DO DNS Servers
+    participant User as End User
+    participant App as DO App Platform
+
+    Note over Dev, App: Development & DNS Configuration Flow
+
+    %% Development Phase
+    Dev->>Git: 1. Push DNS changes to main.tf
+    Note over Dev, Git: Changes to domains/records configuration
+
+    %% CI/CD Pipeline Trigger
+    Git->>GHA: 2. Webhook trigger on push to main
+    Note over GHA: Workflow: terraform.yml starts
+
+    %% GitHub Actions Workflow
+    GHA->>GHA: 3. Setup Terraform environment
+    GHA->>TF: 4. terraform init
+    TF-->>GHA: Initialize working directory
+
+    GHA->>TF: 5. terraform validate
+    TF-->>GHA: Configuration valid
+
+    GHA->>TF: 6. terraform plan
+    Note over TF: Compare current state vs desired state
+    TF->>DO: 7. Query current DNS records
+    DO-->>TF: Current DNS configuration
+    TF-->>GHA: Show planned changes
+
+    GHA->>TF: 8. terraform apply (if main branch)
+    Note over TF: Apply DNS changes
+
+    %% Terraform applies changes to DigitalOcean
+    TF->>DO: 9. Create/Update DNS records
+    Note over DO: API calls for each domain/record
+    
+    loop For each domain
+        TF->>DO: Create domain (if not exists)
+        TF->>DO: Create/Update A records (@, www)
+        TF->>DO: Create/Update API subdomain
+        TF->>DO: Create/Update MX records
+        TF->>DO: Create/Update TXT records (SPF, DMARC)
+        TF->>DO: Create/Update AAAA records (IPv6)
+    end
+
+    DO-->>TF: Confirm DNS changes applied
+    TF-->>GHA: Apply complete, output domain info
+    
+    %% DNS Propagation
+    DO->>DNS: 10. Update authoritative DNS servers
+    Note over DNS: DNS records propagated globally
+
+    GHA-->>Dev: 11. Workflow completion notification
+    Note over Dev: Email/Slack notification of success/failure
+
+    Note over Dev, App: User Access Flow
+
+    %% User tries to access the application
+    User->>DNS: 12. DNS query for financialdata.online
+    DNS-->>User: Return IP address from A record
+
+    User->>App: 13. HTTP request to resolved IP
+    Note over App: DigitalOcean App Platform serves application
+    App-->>User: Application response
+
+    %% API Access Flow
+    User->>DNS: 14. DNS query for api.dadosfinanceiros.com
+    DNS-->>User: Return same IP address
+    User->>App: 15. API request to resolved IP
+    App-->>User: API response
+
+    Note over Dev, App: Multiple Domain Access
+
+    %% Other domains follow same pattern
+    par All domains resolve to same server
+        User->>DNS: Query financialdata.digital
+        DNS-->>User: Same IP address
+    and
+        User->>DNS: Query dadosfinanceiros.com
+        DNS-->>User: Same IP address  
+    and
+        User->>DNS: Query dadosfinanceiros.com.br
+        DNS-->>User: Same IP address
+    end
+
+    %% Email flow (using MX records)
+    Note over User, App: Email Flow
+    User->>DNS: 16. MX query for dadosfinanceiros.com
+    DNS-->>User: Return mail.dadosfinanceiros.com
+    User->>App: 17. Connect to mail server
+    App-->>User: Email service response
+
+    %% Monitoring and Updates
+    Note over Dev, App: Ongoing Maintenance
+    
+    rect rgb(240, 248, 255)
+        Note over Dev: Developer makes DNS changes
+        Dev->>Git: Update TTL, add new subdomain, etc.
+        Git->>GHA: Trigger automation
+        GHA->>TF: Apply changes
+        TF->>DO: Update DNS records
+        DO->>DNS: Propagate changes
+    end
+
+    %% Error Handling Flow
+    rect rgb(255, 240, 240)
+        Note over GHA, DO: Error Scenario
+        alt Terraform Apply Fails
+            TF->>DO: Invalid API call
+            DO-->>TF: Error response
+            TF-->>GHA: Apply failed
+            GHA-->>Dev: Failure notification
+            Note over Dev: Fix configuration and retry
+        end
+    end
+```
+
+### 📋 Detailed Step-by-Step Explanation
+
+#### 🚀 **Development & Configuration Phase**
+
+**Step 1: Developer Push**
+```bash
+# Developer modifies DNS configuration
+vim terraform/main.tf  # Add new domain or modify records
+git add terraform/
+git commit -m "Add new subdomain for API v2"
+git push origin main   # This triggers the automation
+```
+- **What happens**: Developer edits Terraform configuration files
+- **Triggers**: Any change to files in `terraform/` directory
+- **Files involved**: `main.tf`, `variables.tf`, or new `.tf` files
+- **Best practices**: Use descriptive commit messages for DNS changes
+
+**Step 2: GitHub Webhook Trigger**
+```yaml
+# .github/workflows/terraform.yml
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'terraform/**' ]  # Only triggers on terraform changes
+```
+- **What happens**: GitHub detects push to main branch affecting terraform files
+- **Trigger condition**: Changes in `terraform/` directory only
+- **Performance**: Avoids unnecessary runs when only app code changes
+- **Security**: Only runs on main branch for production safety
+
+#### ⚙️ **GitHub Actions Workflow Execution**
+
+**Step 3: Environment Setup**
+```bash
+# GitHub Actions runner executes:
+- uses: actions/checkout@v4           # Download repository code
+- uses: hashicorp/setup-terraform@v3  # Install Terraform CLI
+  with:
+    terraform_version: "1.5.7"       # Specific version for consistency
+```
+- **What happens**: Clean Ubuntu environment prepared with tools
+- **Security**: Secrets loaded from GitHub repository settings
+- **Consistency**: Same Terraform version used every time
+
+**Step 4: Terraform Initialization**
+```bash
+terraform init
+```
+- **What happens**: Downloads DigitalOcean provider plugins
+- **State management**: Configures remote state storage (if configured)
+- **Provider verification**: Validates provider signature and version
+- **Dependencies**: Downloads required modules and providers
+
+**Step 5: Configuration Validation**
+```bash
+terraform validate
+```
+- **What happens**: Syntax and logic validation of `.tf` files
+- **Checks performed**:
+  - Valid HCL syntax
+  - Required variables defined
+  - Resource dependencies correct
+  - Provider configuration valid
+- **Benefits**: Catches errors before expensive API calls
+
+**Step 6-7: Planning Phase**
+```bash
+terraform plan -input=false
+```
+- **What happens**: Terraform queries current state vs desired state
+- **API calls made**:
+  - `GET /v2/domains` - List existing domains
+  - `GET /v2/domains/{domain}/records` - Current DNS records
+- **Output**: Detailed plan showing additions, changes, deletions
+- **Safety**: No changes made yet, only planning
+
+**Step 8: Apply Changes (Production Only)**
+```bash
+terraform apply -auto-approve -input=false
+```
+- **Conditions**: Only runs on main branch pushes (not PRs)
+- **What happens**: Executes the planned changes
+- **Safety features**:
+  - Automatic approval for main branch
+  - Manual approval required for PRs
+  - Rollback possible via Git revert
+
+#### 🌐 **DNS Infrastructure Changes**
+
+**Step 9: Domain and Record Creation**
+For each of the 4 domains, Terraform makes these API calls:
+
+```bash
+# Domain Creation (if new)
+POST /v2/domains
+{
+  "name": "financialdata.online",
+  "ip_address": "162.159.140.98"
+}
+
+# A Records (IPv4)
+POST /v2/domains/financialdata.online/records
+{
+  "type": "A",
+  "name": "@",      # Root domain
+  "data": "162.159.140.98",
+  "ttl": 300
+}
+
+POST /v2/domains/financialdata.online/records
+{
+  "type": "A",
+  "name": "www",    # www subdomain
+  "data": "162.159.140.98",
+  "ttl": 300
+}
+
+# AAAA Records (IPv6)
+POST /v2/domains/financialdata.online/records
+{
+  "type": "AAAA",
+  "name": "@",
+  "data": "2606:4700:7::60",
+  "ttl": 300
+}
+
+# API Subdomain (for API access)
+POST /v2/domains/financialdata.online/records
+{
+  "type": "A",
+  "name": "api",
+  "data": "162.159.140.98",
+  "ttl": 300
+}
+```
+
+**Records Created for Each Domain**:
+- **Root domain** (`@`): A and AAAA records
+- **www subdomain**: A and AAAA records  
+- **API subdomain**: A record for API access
+- **Redundancy**: Multiple IP addresses for high availability
+
+**Step 10: DNS Propagation**
+```bash
+# DigitalOcean authoritative servers update
+ns1.digitalocean.com  # Primary nameserver
+ns2.digitalocean.com  # Secondary nameserver  
+ns3.digitalocean.com  # Tertiary nameserver
+```
+- **Timeline**: Immediate on DigitalOcean servers
+- **Global propagation**: 5 minutes to 48 hours depending on TTL
+- **TTL impact**: 300-second TTL means faster updates
+- **Verification**: Can check with `dig @ns1.digitalocean.com domain.com`
+
+#### 👥 **End User Experience**
+
+**Step 12-13: Website Access**
+```bash
+# User types: https://financialdata.online
+1. Browser DNS query → 162.159.140.98
+2. Browser HTTPS request → App Platform
+3. App Platform routes → Django application
+4. Django responds → User sees website
+```
+
+**Step 14-15: API Access**
+```bash
+# API client makes request
+curl -X GET https://api.dadosfinanceiros.com/v1/stocks/AAPL \
+  -H "X-Request-Token: your_token"
+
+# Flow:
+1. DNS resolves api.dadosfinanceiros.com → 162.159.140.98
+2. HTTPS request to App Platform
+3. App Platform SSL termination
+4. Route to Django API endpoint
+5. JWT/Token authentication
+6. Proxy request to Polygon.io
+7. Return financial data
+```
+
+**Step 16: Multiple Domain Support**
+All domains resolve to the same IP addresses:
+- **financialdata.online** → 162.159.140.98, 172.66.0.96
+- **financialdata.digital** → Same IPs
+- **dadosfinanceiros.com** → Same IPs
+- **dadosfinanceiros.com.br** → Same IPs
+
+**Benefits**:
+- **Brand flexibility**: Multiple branded access points
+- **Geographic preferences**: Local domain extensions
+- **Redundancy**: If one domain has issues, others work
+- **SEO**: Different domains for different markets
+
+#### 📧 **Email Integration (Optional)**
+
+**Step 17: MX Records for Email**
+```bash
+# MX record creation (if configured)
+POST /v2/domains/dadosfinanceiros.com/records
+{
+  "type": "MX",
+  "name": "@",
+  "data": "mail.dadosfinanceiros.com.",
+  "priority": 10,
+  "ttl": 300
+}
+```
+- **Purpose**: Enable email for your domains
+- **Configuration**: Can point to Google Workspace, Office 365, or custom mail server
+- **Security**: SPF, DKIM, and DMARC records for email authentication
+
+#### 🔄 **Ongoing Maintenance**
+
+**Continuous Updates**:
+```bash
+# Developer workflow for updates
+1. Edit terraform/main.tf           # Add new subdomain
+2. git commit -m "Add blog subdomain"
+3. git push origin main             # Triggers automation
+4. Monitor GitHub Actions           # Watch deployment
+5. Verify DNS changes              # Test new subdomain
+```
+
+**Common Changes**:
+- **New subdomains**: api.domain.com, blog.domain.com
+- **TTL adjustments**: Faster or slower DNS updates
+- **IP address changes**: Point to different servers
+- **Record modifications**: Update existing DNS records
+
+#### ❌ **Error Handling & Recovery**
+
+**Common Error Scenarios**:
+
+1. **API Token Issues**:
+```bash
+Error: DigitalOcean API Error: 401 Unauthorized
+Solution: Check DO_TOKEN secret in GitHub
+```
+
+2. **Domain Already Exists**:
+```bash
+Error: Domain already exists in DigitalOcean
+Solution: Import existing domain or use different name
+```
+
+3. **Invalid Configuration**:
+```bash
+Error: Invalid IP address format
+Solution: Fix IP format in main.tf and push again
+```
+
+**Recovery Process**:
+1. **GitHub Actions fails** → Developer gets notification
+2. **Review error logs** → Identify root cause
+3. **Fix configuration** → Edit Terraform files
+4. **Push fix** → Automation retries automatically
+5. **Verify success** → Check DNS resolution
+
+#### 🔧 **Monitoring & Verification**
+
+**Automated Verification**:
+```bash
+# DNS resolution check
+dig financialdata.online A +short
+# Expected: 162.159.140.98
+
+# IPv6 check  
+dig financialdata.online AAAA +short
+# Expected: 2606:4700:7::60
+
+# Multiple domain check
+for domain in financialdata.online financialdata.digital dadosfinanceiros.com dadosfinanceiros.com.br; do
+  echo "Testing $domain:"
+  dig $domain A +short
+done
+```
+
+**Application Health Check**:
+```bash
+# Verify application responds on all domains
+curl -I https://financialdata.online/api/health/
+curl -I https://www.dadosfinanceiros.com.br/v1/stocks/AAPL
+```
+
+**Performance Monitoring**:
+- **DNS resolution time**: Monitor with tools like dig
+- **HTTPS response time**: Monitor application performance
+- **Global accessibility**: Check from different geographic locations
+- **Certificate validity**: Monitor SSL certificate expiration
+```
+
+# Django REST Framework Authentication System
+# Custom Authentication and Permission Classes
+# Clean Separation of Concerns
 
 ## Architecture Overview
 
@@ -1020,411 +1480,75 @@ class PolygonProxyView(APIView):
     permission_classes = [IsAuthenticated, DailyLimitPermission, CustomPermission]
 ```
 
-## License
+### 🤖 **NEW: Automated IP Detection**
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Instead of hardcoding DigitalOcean App Platform IPs, the system now **automatically detects** them using multiple methods:
 
-### Additional Examples
+#### **🔄 How IP Automation Works**
 
-#### Stock Market Data
+```mermaid
+graph TD
+    A[Terraform Starts] --> B{DNS Method Enabled?}
+    B -->|Yes| C[Resolve app domain via DNS]
+    B -->|No| D[Use Static IPs]
+    C --> E{IPs Found?}
+    E -->|Yes| F[Use Detected IPs]
+    E -->|No| G[Try External Script]
+    G --> H{Script Success?}
+    H -->|Yes| F
+    H -->|No| I[Try API Method]
+    I --> J{API Success?}
+    J -->|Yes| F
+    J -->|No| K[Fallback to Static IPs]
+    F --> L[Create DNS Records]
+    D --> L
+    K --> L
+    L --> M[Output Detection Results]
+```
 
-1. Get Daily OHLC Data:
+#### **✅ Automatic Detection Results**
+
+Your current app domain **automatically resolves** to:
 ```bash
-# Request
-curl -X GET "http://localhost:8000/v1/aggs/ticker/AAPL/range/1/day/2024-01-01/2024-03-20" \
-  -H "X-Request-Token: 550e8400-e29b-41d4-a716-446655440000"
+# IPv4 Addresses (detected live)
+dadosfinanceiros-com-br-vsxtw.ondigitalocean.app → 162.159.140.98, 172.66.0.96
 
-# Response
-{
-    "ticker": "AAPL",
-    "queryCount": 55,
-    "resultsCount": 55,
-    "adjusted": true,
-    "results": [
-        {
-            "v": 77922437,
-            "vw": 185.8751,
-            "o": 184.22,
-            "c": 185.92,
-            "h": 186.74,
-            "l": 184.18,
-            "t": 1704067200000,
-            "n": 703219
-        }
-    ],
-    "status": "OK",
-    "request_id": "6a7e466b6837652eca4def2f7b7adc56"
-}
+# IPv6 Addresses (detected live)  
+dadosfinanceiros-com-br-vsxtw.ondigitalocean.app → 2606:4700:7::60, 2a06:98c1:58::60
 ```
 
-2. Get Real-time Quote:
+#### **🎯 IP Automation Benefits**
+
+- **🔄 Always Current**: IPs detected in real-time on every deployment
+- **🛡️ Zero Maintenance**: No manual updates when DigitalOcean changes IPs  
+- **🔗 Multiple Methods**: DNS → Script → API → Static fallbacks
+- **📊 Transparent**: See which detection method was used
+- **⚡ Performance**: Cached during Terraform execution
+
+#### **📋 Configuration Options**
+
+```hcl
+# terraform.tfvars
+app_domain = "dadosfinanceiros-com-br-vsxtw.ondigitalocean.app"  # ✅ Already set
+enable_ip_automation = true   # ✅ Enabled by default
+
+# Optional: For API-based detection
+app_id = "bbce29b0-3bff-4306-a11b-e6a539beef04"  # Your app ID
+```
+
+#### **🧪 Test IP Detection**
+
 ```bash
-# Request
-curl -X GET "http://localhost:8000/v1/last/trade/AAPL" \
-  -H "X-Request-Token: 550e8400-e29b-41d4-a716-446655440000"
+# Test DNS resolution manually
+dig dadosfinanceiros-com-br-vsxtw.ondigitalocean.app A +short
+# Returns: 162.159.140.98, 172.66.0.96
 
-# Response
-{
-    "status": "OK",
-    "results": {
-        "T": "AAPL",
-        "p": 185.92,
-        "s": 100,
-        "t": 1710979199999,
-        "c": ["@", "T"],
-        "i": "12345"
-    }
-}
+# Test the automation script
+echo '{"app_domain":"dadosfinanceiros-com-br-vsxtw.ondigitalocean.app","do_token":""}' | \
+  ./terraform/scripts/get-app-ips.sh
+
+# View detection results after terraform apply
+terraform output detected_ips
 ```
 
-#### Forex Data
-
-1. Currency Conversion:
-```bash
-# Request
-curl -X GET "http://localhost:8000/v1/conversion/EUR/USD?amount=100" \
-  -H "X-Request-Token: 550e8400-e29b-41d4-a716-446655440000"
-
-# Response
-{
-    "status": "OK",
-    "results": {
-        "from": "EUR",
-        "to": "USD",
-        "initialAmount": 100,
-        "converted": 108.75,
-        "rate": 1.0875,
-        "lastUpdated": "2024-03-20T15:30:00Z"
-    }
-}
-```
-
-#### Crypto Data
-
-1. Get Crypto OHLC:
-```bash
-# Request
-curl -X GET "http://localhost:8000/v1/aggs/ticker/X:BTCUSD/range/1/day/2024-03-19/2024-03-20" \
-  -H "X-Request-Token: 550e8400-e29b-41d4-a716-446655440000"
-
-# Response
-{
-    "ticker": "X:BTCUSD",
-    "queryCount": 2,
-    "resultsCount": 2,
-    "adjusted": true,
-    "results": [
-        {
-            "v": 25361.42,
-            "vw": 63521.8909,
-            "o": 62891.23,
-            "c": 64234.56,
-            "h": 64890.12,
-            "l": 62780.34,
-            "t": 1710806400000,
-            "n": 482910
-        }
-    ],
-    "status": "OK"
-}
-```
-
-#### Technical Indicators
-
-1. Get RSI for Stock:
-```bash
-# Request
-curl -X GET "http://localhost:8000/v1/indicators/rsi/AAPL?timespan=day&window=14&series_type=close" \
-  -H "X-Request-Token: 550e8400-e29b-41d4-a716-446655440000"
-
-# Response
-{
-    "status": "OK",
-    "results": {
-        "underlying": {
-            "aggregates": [
-                {
-                    "T": "AAPL",
-                    "v": 77922437,
-                    "vw": 185.8751,
-                    "o": 184.22,
-                    "c": 185.92,
-                    "h": 186.74,
-                    "l": 184.18,
-                    "t": 1704067200000
-                }
-            ]
-        },
-        "values": [
-            {
-                "timestamp": 1704067200000,
-                "value": 65.42
-            }
-        ]
-    }
-}
-```
-
-#### Additional Error Scenarios
-
-1. Rate Limit Warning (90% of daily limit):
-```json
-{
-    "status": "OK",
-    "results": { ... },
-    "warning": {
-        "message": "You have used 90% of your daily request limit",
-        "requests_remaining": 10
-    }
-}
-```
-
-2. Invalid Endpoint:
-```json
-{
-    "error": "Not Found",
-    "message": "The requested endpoint does not exist",
-    "status": 404
-}
-```
-
-3. Invalid Query Parameters:
-```json
-{
-    "error": "Bad Request",
-    "message": "Invalid date format. Expected format: YYYY-MM-DD",
-    "status": 400
-}
-```
-
-4. Polygon.io Service Error:
-```json
-{
-    "error": "Bad Gateway",
-    "message": "Failed to proxy request to Polygon.io",
-    "status": 502
-}
-```
-
-#### JWT Token Management
-
-1. Refresh JWT Token:
-```bash
-# Request
-curl -X POST http://localhost:8000/api/token/refresh/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
-  }'
-
-# Response
-{
-    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
-}
-```
-
-2. Update User Profile:
-```bash
-# Request
-curl -X PATCH http://localhost:8000/api/profile/ \
-  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "first_name": "John Updated",
-    "last_name": "Doe Updated"
-  }'
-
-# Response
-{
-    "id": 1,
-    "email": "your.email@example.com",
-    "first_name": "John Updated",
-    "last_name": "Doe Updated",
-    "request_token": "550e8400-e29b-41d4-a716-446655440000",
-    "daily_request_limit": 100,
-    "daily_requests_made": 5,
-    "last_request_date": "2024-03-20"
-}
-```
-
-### Token Management Features
-
-The service includes advanced token management capabilities:
-
-1. **Token Expiration**:
-   - Configurable validity period (default 30 days)
-   - Automatic expiration checking
-   - Optional auto-renewal
-   - Graceful expiration handling
-
-2. **Token History**:
-   - Tracks previous tokens
-   - Stores creation and expiration dates
-   - Maintains history of last 5 tokens
-   - Audit trail for security
-
-3. **Token Settings**:
-   - Auto-renewal configuration
-   - Customizable validity period
-   - Option to save or discard old tokens
-   - Per-user configuration
-
-#### Token Management Examples
-
-1. Generate new token with custom settings:
-```bash
-# Request
-curl -X POST http://localhost:8000/api/regenerate-token/ \
-  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "save_old": true,
-    "auto_renew": true,
-    "validity_days": 60
-  }'
-
-# Response
-{
-    "request_token": "661f9511-f3ab-52e5-b827-557766551111",
-    "created": "2024-03-20T10:30:00Z",
-    "expires": "2024-05-19T10:30:00Z",
-    "auto_renew": true,
-    "validity_days": 60,
-    "previous_tokens": [
-        {
-            "token": "550e8400-e29b-41d4-a716-446655440000",
-            "created": "2024-02-20T10:30:00Z",
-            "expired": "2024-03-20T10:30:00Z"
-        }
-    ]
-}
-```
-
-2. View token history:
-```bash
-# Request
-curl -X GET http://localhost:8000/api/token-history/ \
-  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
-
-# Response
-{
-    "tokens": [
-        {
-            "token": "tk_123abc...",
-            "created_at": "2024-03-15T10:00:00Z",
-            "expires_at": "2024-04-14T10:00:00Z",
-            "is_active": true,
-            "daily_requests_remaining": 85
-        },
-        {
-            "token": "tk_456def...",
-            "created_at": "2024-02-15T10:00:00Z",
-            "expires_at": "2024-03-14T10:00:00Z",
-            "is_active": false,
-            "daily_requests_remaining": 0
-        }
-    ]
-}
-```
-
-3. Update token settings:
-```bash
-# Request
-curl -X PATCH http://localhost:8000/api/profile/ \
-  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "auto_renew_token": true,
-    "token_validity_days": 60,
-    "keep_token_history": true
-  }'
-
-# Response
-{
-    "message": "Profile settings updated successfully",
-    "settings": {
-        "auto_renew_token": true,
-        "token_validity_days": 60,
-        "keep_token_history": true
-    }
-}
-```
-
-### API Endpoints Reference
-
-#### Authentication Endpoints
-
-1. `/api/register/`
-   - Method: POST
-   - Purpose: Create new user account
-   - Returns: User details and initial request token
-
-2. `/api/token/`
-   - Method: POST
-   - Purpose: Get JWT authentication tokens
-   - Returns: Access and refresh tokens
-
-3. `/api/token/refresh/`
-   - Method: POST
-   - Purpose: Refresh JWT token
-   - Returns: New access token
-
-#### Token Management Endpoints
-
-1. `/api/regenerate-token/`
-   - Method: POST
-   - Purpose: Generate new request token
-   - Configurable settings for validity and auto-renewal
-
-2. `/api/token-history/`
-   - Method: GET
-   - Purpose: View token history
-   - Shows last 5 tokens with details
-
-3. `/api/profile/`
-   - Method: GET/PATCH
-   - Purpose: View/update token settings
-   - Manage auto-renewal and validity period
-
-#### Polygon.io Proxy Endpoints
-
-All Polygon.io endpoints are accessible through `/v1/*` with your request token:
-
-1. Stock Data:
-   ```bash
-   curl -X GET "http://localhost:8000/v1/stocks/AAPL/trades" \
-     -H "X-Request-Token: your_request_token"
-   ```
-
-2. Crypto Data:
-   ```bash
-   curl -X GET "http://localhost:8000/v1/crypto/BTC/USD/trades" \
-     -H "X-Request-Token: your_request_token"
-   ```
-
-3. Forex Data:
-   ```bash
-   curl -X GET "http://localhost:8000/v1/forex/EUR/USD/trades" \
-     -H "X-Request-Token: your_request_token"
-   ```
-
-### Best Practices
-
-1. Token Management:
-   - Enable auto-renewal for uninterrupted service
-   - Keep token history for audit purposes
-   - Monitor daily usage patterns
-   - Set appropriate validity periods
-
-2. Security:
-   - Store tokens securely
-   - Never share tokens
-   - Rotate tokens periodically
-   - Monitor for unusual activity
-
-3. Rate Limiting:
-   - Track daily usage
-   - Plan for limit increases
-   - Handle rate limit errors gracefully
-   - Implement request queuing if needed
+**📚 [Complete IP Automation Guide](docs/ip-automation.md)** - Detailed documentation with all methods and troubleshooting.
