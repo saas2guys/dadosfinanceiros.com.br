@@ -1,10 +1,14 @@
 import stripe
 from django.conf import settings
 from django.utils import timezone
-from datetime import timedelta
+from datetime import datetime, timedelta
 import logging
+from django.contrib.auth import get_user_model
+
+from .models import Plan
 
 logger = logging.getLogger(__name__)
+User = get_user_model()
 
 # Configure Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -13,16 +17,32 @@ class StripeService:
     """Service class for handling Stripe operations"""
     
     @staticmethod
-    def create_customer(user):
-        """Create a Stripe customer for the user"""
+    def create_customer(email=None, name=None, user=None, **kwargs):
+        """Create a Stripe customer"""
         try:
-            customer = stripe.Customer.create(
-                email=user.email,
-                name=f"{user.first_name} {user.last_name}".strip(),
-                metadata={'user_id': user.id}
-            )
-            user.stripe_customer_id = customer.id
-            user.save()
+            customer_data = {}
+            
+            if user:
+                customer_data.update({
+                    'email': user.email,
+                    'name': f"{user.first_name} {user.last_name}".strip(),
+                    'metadata': {'user_id': user.id}
+                })
+            else:
+                if email:
+                    customer_data['email'] = email
+                if name:
+                    customer_data['name'] = name
+            
+            # Add any additional kwargs
+            customer_data.update(kwargs)
+            
+            customer = stripe.Customer.create(**customer_data)
+            
+            if user:
+                user.stripe_customer_id = customer.id
+                user.save()
+            
             return customer
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error creating customer: {e}")
@@ -38,44 +58,99 @@ class StripeService:
                 # Customer doesn't exist, create new one
                 pass
         
-        return StripeService.create_customer(user)
+        return StripeService.create_customer(user=user)
     
     @staticmethod
-    def create_checkout_session(user, plan, success_url, cancel_url):
+    def create_checkout_session(user=None, plan=None, success_url=None, cancel_url=None, customer_id=None, **kwargs):
         """Create a Stripe checkout session for subscription"""
         try:
-            customer = StripeService.get_or_create_customer(user)
+            if customer_id:
+                customer_id_to_use = customer_id
+            elif user:
+                customer = StripeService.get_or_create_customer(user)
+                customer_id_to_use = customer.id
+            else:
+                raise ValueError("Either user or customer_id must be provided")
             
-            session = stripe.checkout.Session.create(
-                customer=customer.id,
-                payment_method_types=['card'],
-                line_items=[{
+            session_data = {
+                'customer': customer_id_to_use,
+                'payment_method_types': ['card'],
+                'mode': 'subscription',
+                'success_url': success_url,
+                'cancel_url': cancel_url,
+            }
+            
+            if plan and hasattr(plan, 'stripe_price_id'):
+                session_data['line_items'] = [{
                     'price': plan.stripe_price_id,
                     'quantity': 1,
-                }],
-                mode='subscription',
-                success_url=success_url,
-                cancel_url=cancel_url,
-                metadata={
-                    'user_id': user.id,
+                }]
+                session_data['metadata'] = {
+                    'user_id': user.id if user else '',
                     'plan_id': plan.id,
                 }
-            )
+            
+            # Add any additional kwargs
+            session_data.update(kwargs)
+            
+            session = stripe.checkout.Session.create(**session_data)
             return session
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error creating checkout session: {e}")
             raise
     
     @staticmethod
+    def create_subscription(customer_id, price_id, **kwargs):
+        """Create a Stripe subscription"""
+        try:
+            subscription_data = {
+                'customer': customer_id,
+                'items': [{'price': price_id}],
+            }
+            subscription_data.update(kwargs)
+            
+            return stripe.Subscription.create(**subscription_data)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error creating subscription: {e}")
+            raise
+    
+    @staticmethod
+    def get_subscription(subscription_id):
+        """Get a Stripe subscription"""
+        try:
+            return stripe.Subscription.retrieve(subscription_id)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error retrieving subscription: {e}")
+            raise
+    
+    @staticmethod
+    def update_subscription(subscription_id, **kwargs):
+        """Update a Stripe subscription"""
+        try:
+            return stripe.Subscription.modify(subscription_id, **kwargs)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error updating subscription: {e}")
+            raise
+    
+    @staticmethod
     def cancel_subscription(subscription_id):
-        """Cancel a Stripe subscription"""
+        """Cancel a Stripe subscription immediately"""
+        try:
+            return stripe.Subscription.cancel(subscription_id)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error canceling subscription: {e}")
+            raise
+    
+    @staticmethod
+    def cancel_subscription_at_period_end(subscription_id):
+        """Cancel a Stripe subscription at period end"""
         try:
             return stripe.Subscription.modify(
                 subscription_id,
                 cancel_at_period_end=True
             )
         except stripe.error.StripeError as e:
-            logger.error(f"Stripe error canceling subscription: {e}")
+            logger.error(f"Stripe error canceling subscription at period end: {e}")
             raise
     
     @staticmethod
@@ -91,13 +166,46 @@ class StripeService:
             raise
     
     @staticmethod
+    def retrieve_event(event_id):
+        """Retrieve a Stripe event"""
+        try:
+            return stripe.Event.retrieve(event_id)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error retrieving event: {e}")
+            raise
+    
+    @staticmethod
+    def process_webhook_event(event):
+        """Process a webhook event"""
+        try:
+            event_type = event.get('type', '')
+            
+            if event_type == 'checkout.session.completed':
+                session = event.get('data', {}).get('object', {})
+                if session.get('payment_status') == 'paid':
+                    return StripeService.handle_successful_payment(session)
+            elif event_type == 'customer.subscription.updated':
+                subscription = event.get('data', {}).get('object', {})
+                return StripeService.handle_subscription_updated(subscription)
+            elif event_type == 'customer.subscription.deleted':
+                subscription = event.get('data', {}).get('object', {})
+                return StripeService.handle_subscription_deleted(subscription)
+            
+            # For unknown event types, return None (ignored)
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error processing webhook event: {e}")
+            return False
+    
+    @staticmethod
     def handle_successful_payment(session):
         """Handle successful payment from webhook"""
         from .models import User, Plan
         
         try:
-            user_id = session.metadata.get('user_id')
-            plan_id = session.metadata.get('plan_id')
+            user_id = session.get('metadata', {}).get('user_id')
+            plan_id = session.get('metadata', {}).get('plan_id')
             
             if not user_id or not plan_id:
                 logger.error("Missing user_id or plan_id in session metadata")
@@ -107,17 +215,19 @@ class StripeService:
             plan = Plan.objects.get(id=plan_id)
             
             # Get the subscription from Stripe
-            subscription = stripe.Subscription.retrieve(session.subscription)
-            
-            # Update user subscription
-            user.current_plan = plan
-            user.subscription_status = 'active'
-            user.stripe_subscription_id = subscription.id
-            user.subscription_started_at = timezone.now()
-            user.subscription_expires_at = timezone.datetime.fromtimestamp(
-                subscription.current_period_end, tz=timezone.utc
-            )
-            user.save()
+            subscription_id = session.get('subscription')
+            if subscription_id:
+                subscription = stripe.Subscription.retrieve(subscription_id)
+                
+                # Update user subscription
+                user.current_plan = plan
+                user.subscription_status = 'active'
+                user.stripe_subscription_id = subscription.id
+                user.subscription_started_at = timezone.now()
+                user.subscription_expires_at = timezone.make_aware(
+                    datetime.fromtimestamp(subscription.current_period_end)
+                )
+                user.save()
             
             logger.info(f"User {user.email} successfully subscribed to {plan.name}")
             return True
@@ -135,7 +245,8 @@ class StripeService:
         from .models import User
         
         try:
-            user = User.objects.get(stripe_subscription_id=subscription.id)
+            subscription_id = subscription.get('id') if isinstance(subscription, dict) else subscription.id
+            user = User.objects.get(stripe_subscription_id=subscription_id)
             
             # Update subscription status
             status_mapping = {
@@ -148,17 +259,29 @@ class StripeService:
                 'unpaid': 'inactive',
             }
             
-            user.subscription_status = status_mapping.get(subscription.status, 'inactive')
-            user.subscription_expires_at = timezone.datetime.fromtimestamp(
-                subscription.current_period_end, tz=timezone.utc
-            )
+            subscription_status = subscription.get('status') if isinstance(subscription, dict) else subscription.status
+            current_period_end = subscription.get('current_period_end') if isinstance(subscription, dict) else subscription.current_period_end
+            current_period_start = subscription.get('current_period_start') if isinstance(subscription, dict) else subscription.current_period_start
+            
+            user.subscription_status = status_mapping.get(subscription_status, 'inactive')
+            if current_period_end:
+                user.subscription_expires_at = timezone.make_aware(
+                    datetime.fromtimestamp(current_period_end)
+                )
+                user.current_period_end = timezone.make_aware(
+                    datetime.fromtimestamp(current_period_end)
+                )
+            if current_period_start:
+                user.current_period_start = timezone.make_aware(
+                    datetime.fromtimestamp(current_period_start)
+                )
             user.save()
             
-            logger.info(f"Updated subscription for user {user.email}: {subscription.status}")
+            logger.info(f"Updated subscription for user {user.email}: {subscription_status}")
             return True
             
         except User.DoesNotExist:
-            logger.error(f"User not found for subscription {subscription.id}")
+            logger.error(f"User not found for subscription {subscription_id}")
             return False
         except Exception as e:
             logger.error(f"Error handling subscription update: {e}")
@@ -170,7 +293,8 @@ class StripeService:
         from .models import User
         
         try:
-            user = User.objects.get(stripe_subscription_id=subscription.id)
+            subscription_id = subscription.get('id') if isinstance(subscription, dict) else subscription.id
+            user = User.objects.get(stripe_subscription_id=subscription_id)
             user.subscription_status = 'canceled'
             user.save()
             
@@ -178,8 +302,35 @@ class StripeService:
             return True
             
         except User.DoesNotExist:
-            logger.error(f"User not found for deleted subscription {subscription.id}")
+            logger.error(f"User not found for deleted subscription {subscription_id}")
             return False
         except Exception as e:
             logger.error(f"Error handling subscription deletion: {e}")
-            return False 
+            return False
+
+    @staticmethod
+    def get_customer(customer_id):
+        """Get a Stripe customer by ID"""
+        try:
+            return stripe.Customer.retrieve(customer_id)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error retrieving customer: {e}")
+            raise
+
+    @staticmethod
+    def update_customer(customer_id, **kwargs):
+        """Update a Stripe customer"""
+        try:
+            return stripe.Customer.modify(customer_id, **kwargs)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error updating customer: {e}")
+            raise
+
+    @staticmethod
+    def delete_customer(customer_id):
+        """Delete a Stripe customer"""
+        try:
+            return stripe.Customer.delete(customer_id)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error deleting customer: {e}")
+            raise 

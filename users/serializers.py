@@ -59,7 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
             "token_auto_renew",
             "token_validity_days",
         )
-        read_only_fields = ("token_info", "daily_requests_made", "last_request_date")
+        read_only_fields = ("id", "email", "token_info", "daily_requests_made", "last_request_date")
 
     def get_token_info(self, obj):
         return obj.get_token_info()

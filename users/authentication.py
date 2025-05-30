@@ -30,16 +30,16 @@ class RequestTokenAuthentication(authentication.BaseAuthentication):
         try:
             user = self.model.objects.get(request_token=token)
         except (self.model.DoesNotExist, ValidationError):
-            return None
+            raise exceptions.AuthenticationFailed('Invalid token.')
 
         if not user.is_active:
-            return None
+            raise exceptions.AuthenticationFailed('User inactive or deleted.')
 
         if user.request_token_expires and user.request_token_expires < timezone.now():
             if user.token_auto_renew:
                 user.generate_new_request_token()
             else:
-                return None
+                raise exceptions.AuthenticationFailed('Token has expired.')
 
         return (user, token)
 

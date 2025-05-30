@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Subscription Success" %}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-16">
+    <div class="text-center">
+        <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+            <svg class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{% trans "Subscription Successful!" %}</h1>
+        
+        <p class="text-lg text-gray-600 mb-8">
+            {% trans "Thank you for subscribing! Your payment has been processed successfully and your new plan is now active." %}
+        </p>
+        
+        <div class="space-y-4">
+            <a href="{% url 'profile' %}" 
+               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                {% trans "View Profile" %}
+            </a>
+            
+            <div class="block">
+                <a href="{% url 'plans' %}" 
+                   class="text-blue-600 hover:text-blue-500 font-medium">
+                    {% trans "Manage Subscription" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -455,11 +455,11 @@ class PolygonUrlTransformationComprehensiveTest(PolygonProxyTestCaseBase):
 
         result = self.view._replace_polygon_urls(test_data, request)
 
-        # Nested URLs should be replaced
-        expected_info_url = "https://api.dadosfinanceiros.com.br/v1/meta/symbols/AAPL/company"
+        # Only pagination URLs should be replaced, not nested URLs in data
         expected_next_url = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=next"
-
-        self.assertEqual(result["results"][0]["metadata"]["info_url"], expected_info_url)
+        
+        # Nested URLs should NOT be replaced by this method
+        self.assertEqual(result["results"][0]["metadata"]["info_url"], "https://api.polygon.io/v1/meta/symbols/AAPL/company?apikey=test")
         self.assertEqual(result["pagination"]["next_url"], expected_next_url)
 
 

@@ -1,12 +1,13 @@
 from datetime import timedelta
 from decimal import Decimal
+import logging
 
 import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -30,8 +31,9 @@ from .serializers import (
 )
 from .stripe_service import StripeService
 
-# Configure Stripe
+# Configure Stripe and logger
 stripe.api_key = settings.STRIPE_SECRET_KEY
+logger = logging.getLogger(__name__)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -249,14 +251,13 @@ class PlansListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
 
-@login_required
 def plans_view(request):
     """Display available plans and user's current subscription"""
     plans = Plan.objects.filter(is_active=True).order_by('price_monthly')
     context = {
         'plans': plans,
-        'user': request.user,
-        'current_plan': request.user.current_plan,
+        'user': request.user if request.user.is_authenticated else None,
+        'current_plan': request.user.current_plan if request.user.is_authenticated else None,
         'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY,
     }
     return render(request, 'subscription/plans.html', context)
@@ -267,18 +268,38 @@ def plans_view(request):
 def create_checkout_session(request):
     """Create Stripe checkout session for subscription"""
     try:
-        plan_id = request.POST.get('plan_id')
+        # Check if this is a JSON API request
+        is_api_request = request.content_type == 'application/json'
+        
+        if is_api_request:
+            import json
+            data = json.loads(request.body)
+            plan_id = data.get('plan_id')
+        else:
+            plan_id = request.POST.get('plan_id')
+            
         plan = get_object_or_404(Plan, id=plan_id, is_active=True)
         
         if plan.is_free:
             # Handle free plan upgrade directly
             request.user.upgrade_to_plan(plan)
-            messages.success(request, f"Successfully upgraded to {plan.name} plan!")
-            return redirect('profile')
+            if is_api_request:
+                return JsonResponse({
+                    'success': True,
+                    'message': f'Successfully upgraded to {plan.name} plan!'
+                })
+            else:
+                messages.success(request, f"Successfully upgraded to {plan.name} plan!")
+                return redirect('profile')
         
         if not plan.stripe_price_id:
-            messages.error(request, "This plan is not available for purchase.")
-            return redirect('plans')
+            if is_api_request:
+                return JsonResponse({
+                    'error': 'This plan is not available for purchase.'
+                }, status=400)
+            else:
+                messages.error(request, "This plan is not available for purchase.")
+                return redirect('plans')
         
         # Create Stripe checkout session
         success_url = request.build_absolute_uri(reverse('subscription_success'))
@@ -291,17 +312,55 @@ def create_checkout_session(request):
             cancel_url=cancel_url
         )
         
-        return redirect(session.url, code=303)
+        if is_api_request:
+            return JsonResponse({
+                'checkout_url': session.url,
+                'session_id': session.id
+            })
+        else:
+            return redirect(session.url, code=303)
         
+    except stripe.error.APIConnectionError as e:
+        if is_api_request:
+            return JsonResponse({
+                'error': 'Service temporarily unavailable. Please try again later.'
+            }, status=503)
+        else:
+            messages.error(request, "Service temporarily unavailable. Please try again later.")
+            return redirect('plans')
+    except stripe.error.AuthenticationError as e:
+        if is_api_request:
+            return JsonResponse({
+                'error': 'Authentication error with payment service.'
+            }, status=500)
+        else:
+            messages.error(request, "Payment service error. Please try again later.")
+            return redirect('plans')
+    except stripe.error.StripeError as e:
+        if is_api_request:
+            return JsonResponse({
+                'error': f'Payment service error: {str(e)}'
+            }, status=400)
+        else:
+            messages.error(request, f"Payment error: {str(e)}")
+            return redirect('plans')
+    except Http404:
+        # Re-raise Http404 to let Django handle it properly
+        raise
     except Exception as e:
-        messages.error(request, f"Error creating checkout session: {str(e)}")
-        return redirect('plans')
+        if is_api_request:
+            return JsonResponse({
+                'error': str(e)
+            }, status=400)
+        else:
+            messages.error(request, f"Error creating checkout session: {str(e)}")
+            return redirect('plans')
 
 
 @login_required
 def subscription_success(request):
     """Handle successful subscription payment"""
-    return render(request, 'subscription/success.html')
+    return render(request, 'subscription_success.html')
 
 
 @login_required
@@ -378,7 +437,7 @@ def stripe_webhook(request):
     # Simple replay attack protection - check if we've already processed this event
     event_id = event.get('id')
     if event_id and cache.get(f'stripe_event_{event_id}'):
-        return HttpResponse(status=400)  # Already processed
+        return HttpResponse(status=200)  # Already processed, return success
     
     # Mark event as processed (cache for 24 hours)
     if event_id:
@@ -477,7 +536,7 @@ def create_checkout_session_api(request):
             }, status=status.HTTP_400_BAD_REQUEST)
         
         success_url = request.data.get('success_url', 
-                                      request.build_absolute_uri(reverse('subscription_success')))
+                                      request.build_absolute_uri(reverse('subscription-success')))
         cancel_url = request.data.get('cancel_url', 
                                      request.build_absolute_uri(reverse('plans')))
         
@@ -493,6 +552,18 @@ def create_checkout_session_api(request):
             'session_id': session.id
         })
         
+    except stripe.error.APIConnectionError as e:
+        return Response({
+            'error': 'Service temporarily unavailable. Please try again later.'
+        }, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+    except stripe.error.AuthenticationError as e:
+        return Response({
+            'error': 'Authentication error with payment service.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except stripe.error.StripeError as e:
+        return Response({
+            'error': f'Payment service error: {str(e)}'
+        }, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({
             'error': str(e)

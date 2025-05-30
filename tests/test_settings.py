@@ -60,9 +60,10 @@ PASSWORD_HASHERS = [
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
 # Test-specific Stripe settings
-STRIPE_TEST_PUBLISHABLE_KEY = 'pk_test_fake_key_for_testing'
-STRIPE_TEST_SECRET_KEY = 'sk_test_fake_key_for_testing'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_fake_key_for_testing'
+STRIPE_SECRET_KEY = 'sk_test_fake_key_for_testing'
 STRIPE_WEBHOOK_SECRET = 'whsec_fake_webhook_secret_for_testing'
+STRIPE_LIVE_MODE = False
 
 # Disable CSRF for API tests
 REST_FRAMEWORK = {
@@ -83,4 +84,7 @@ SECRET_KEY = 'test-secret-key-for-testing-only-not-for-production'
 SECURE_SSL_REDIRECT = False
 SECURE_HSTS_SECONDS = 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-SECURE_HSTS_PRELOAD = False 
+SECURE_HSTS_PRELOAD = False
+
+# Set environment to test to enable authentication
+ENV = 'test' 

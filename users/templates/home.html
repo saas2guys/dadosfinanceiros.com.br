@@ -8,6 +8,12 @@
 <div class="max-w-4xl mx-auto px-4 mb-12">
     <div class="text-center mb-12">
         <h1 class="text-4xl font-bold text-gray-800 mb-4">{% trans "Dados Financeiros API" %}</h1>
+        
+        <!-- WhiteNoise Static Files Test -->
+        <div class="whitenoise-test">
+            <h3>✅ WhiteNoise Active - Static Files Served Locally</h3>
+        </div>
+        
         <p class="text-xl text-gray-600 mb-8">{% trans "Acesse dados do mercado financeiro com facilidade e segurança" %}</p>
         <a href="{% url 'proxy_app:api_docs' %}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:text-lg">
             {% trans "Ver Documentação Completa da API" %}

@@ -103,6 +103,8 @@ class User(AbstractUser):
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
     subscription_started_at = models.DateTimeField(null=True, blank=True)
     subscription_expires_at = models.DateTimeField(null=True, blank=True)
+    current_period_start = models.DateTimeField(null=True, blank=True)
+    current_period_end = models.DateTimeField(null=True, blank=True)
     
     # API usage tracking
     daily_requests_made = models.IntegerField(default=0)
@@ -131,6 +133,10 @@ class User(AbstractUser):
                 self.current_plan = free_plan
             except Plan.DoesNotExist:
                 pass
+        
+        # Ensure request_token_created is set if not already
+        if not self.request_token_created:
+            self.request_token_created = timezone.now()
                 
         # Only set expiration if token doesn't never expire and no expiration is set
         if (
@@ -152,7 +158,7 @@ class User(AbstractUser):
         """Get daily request limit from current plan"""
         if self.current_plan:
             return self.current_plan.daily_request_limit
-        return 100  # Default fallback
+        return 0  # No plan means no requests allowed
 
     @property
     def is_subscription_active(self):
@@ -227,6 +233,9 @@ class User(AbstractUser):
             old_tokens = self.previous_tokens or []
             # Store just the token string for backward compatibility with tests
             old_tokens.append(str(self.request_token))
+            # Limit history to last 20 tokens
+            if len(old_tokens) > 20:
+                old_tokens = old_tokens[-20:]
             self.previous_tokens = old_tokens
 
         self.request_token = uuid.uuid4()

@@ -350,8 +350,8 @@ class UserModelBusinessLogicTest(TestCase):
         user.generate_new_request_token(save_old=True)
         
         self.assertNotEqual(str(user.request_token), old_token)
-        # Check that old token is saved in previous_tokens with the correct structure
-        self.assertTrue(any(token_info['token'] == old_token for token_info in user.previous_tokens))
+        # Check that old token is saved in previous_tokens
+        self.assertIn(old_token, user.previous_tokens)
 
     def test_resets_daily_request_counter_to_zero(self):
         """Test resetting daily requests."""
@@ -487,6 +487,6 @@ class TokenHistoryAuditTrailTest(TestCase):
         old_token = TokenHistoryFactory(user=user)
         new_token = TokenHistoryFactory(user=user)
         
-        tokens = user.tokenhistory_set.all()
+        tokens = user.token_history.all()
         self.assertEqual(tokens.first(), new_token)
         self.assertEqual(tokens.last(), old_token) 

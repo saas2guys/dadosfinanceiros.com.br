@@ -2,6 +2,7 @@
 Comprehensive tests for permission classes and daily limit enforcement.
 Tests all permission scenarios, edge cases, and security aspects.
 """
+import time
 from decimal import Decimal
 from datetime import datetime, timedelta
 from django.test import TestCase, RequestFactory
@@ -13,6 +14,7 @@ from rest_framework.test import APITestCase, APIRequestFactory
 from rest_framework import status
 
 from users.permissions import DailyLimitPermission
+from users.models import Plan
 from proxy_app.views import PolygonProxyView
 from .factories import (
     UserFactory, ActiveSubscriberUserFactory, TrialingUserFactory,
@@ -355,6 +357,8 @@ class DailyLimitPermissionLogicTest(TestCase):
         user = Mock()
         user.is_authenticated = True
         user.id = 1
+        user.can_make_request.return_value = (False, "Database error")
+        user.last_request_date = timezone.now().date()
         
         request = self.factory.get('/api/test')
         request.user = user
@@ -687,9 +691,9 @@ class PermissionEdgeCaseHandlingTest(TestCase):
     def test_plan_deletion_during_request_handled(self):
         """Permission should handle plan deletion during request processing"""
         plan = Plan.objects.create(
-            name="Temporary Plan",
-            slug="temporary-plan",
-            daily_request_limit=100,
+            name="Test Plan", 
+            slug="test-plan",
+            daily_request_limit=100, 
             price_monthly=Decimal('10.00')
         )
         
@@ -698,10 +702,12 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         user.subscription_status = 'active'
         user.save()
         
-        # Delete the plan
-        plan.delete()
+        # Set user's plan to None before deleting the plan to avoid ProtectedError
         user.current_plan = None
         user.save()
+        
+        # Now delete the plan
+        plan.delete()
         
         request = self.factory.get('/api/test')
         request.user = user

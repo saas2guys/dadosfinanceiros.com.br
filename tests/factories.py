@@ -13,6 +13,42 @@ from users.models import Plan, TokenHistory
 User = get_user_model()
 
 
+class StripeObject(dict):
+    """
+    Mock Stripe object that behaves like real Stripe objects.
+    Supports both dictionary-style and attribute-style access.
+    """
+    def __init__(self, *args, **kwargs):
+        # Handle the case where we're passed an object with attributes
+        if args and len(args) == 1 and hasattr(args[0], '__dict__') and not kwargs:
+            obj = args[0]
+            # Convert object attributes to dictionary
+            obj_dict = {}
+            for attr_name in dir(obj):
+                if not attr_name.startswith('_'):
+                    try:
+                        obj_dict[attr_name] = getattr(obj, attr_name)
+                    except AttributeError:
+                        pass
+            super().__init__(obj_dict)
+            for key, value in obj_dict.items():
+                setattr(self, key, value)
+        else:
+            # Standard dictionary initialization
+            super().__init__(*args, **kwargs)
+            for key, value in dict(*args, **kwargs).items():
+                setattr(self, key, value)
+    
+    def __getattr__(self, key):
+        try:
+            return self[key]
+        except KeyError:
+            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{key}'")
+    
+    def __setattr__(self, key, value):
+        self[key] = value
+
+
 class PlanFactory(factory.django.DjangoModelFactory):
     """Factory for creating Plan instances with various configurations."""
     
@@ -90,7 +126,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     
     # Subscription fields
     current_plan = factory.SubFactory(FreePlanFactory)
-    subscription_status = 'inactive'
+    subscription_status = 'active'
     stripe_customer_id = None
     stripe_subscription_id = None
     subscription_started_at = None
@@ -171,8 +207,48 @@ class StripeCustomerFactory(factory.DictFactory):
     livemode = False
 
 
-class StripeSubscriptionFactory(factory.DictFactory):
-    """Factory for Stripe subscription response."""
+class UserWithSubscriptionFactory(UserFactory):
+    """Factory for user with subscription data (for webhook tests)."""
+    current_plan = factory.SubFactory(BasicPlanFactory)
+    subscription_status = 'active'
+    stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
+    stripe_subscription_id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
+    subscription_started_at = factory.LazyFunction(lambda: timezone.now() - timedelta(days=30))
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() + timedelta(days=30))
+
+
+class StripeSubscriptionFactory(factory.django.DjangoModelFactory):
+    """Factory for creating User instances with subscription data for webhook tests."""
+    
+    class Meta:
+        model = User
+    
+    email = factory.Sequence(lambda n: f"subscriber{n}@example.com")
+    first_name = factory.Faker('first_name')
+    last_name = factory.Faker('last_name')
+    is_active = True
+    
+    # Subscription fields - these are what the tests expect to access
+    current_plan = factory.SubFactory(BasicPlanFactory)
+    subscription_status = 'active'
+    stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
+    stripe_subscription_id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
+    subscription_started_at = factory.LazyFunction(lambda: timezone.now() - timedelta(days=30))
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() + timedelta(days=30))
+    
+    # API usage
+    daily_requests_made = 0
+    last_request_date = None
+    
+    # Token fields
+    request_token = factory.LazyFunction(uuid.uuid4)
+    token_auto_renew = False
+    token_validity_days = 30
+    token_never_expires = False
+
+
+class StripeMockSubscriptionFactory(factory.DictFactory):
+    """Factory for Stripe subscription API response data."""
     id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
     object = "subscription"
     customer = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
@@ -198,8 +274,11 @@ class StripePriceFactory(factory.DictFactory):
     }
 
 
-class StripeCheckoutSessionFactory(factory.DictFactory):
+class StripeCheckoutSessionFactory(factory.Factory):
     """Factory for Stripe checkout session response."""
+    class Meta:
+        model = StripeObject
+    
     id = factory.LazyFunction(lambda: f"cs_{uuid.uuid4().hex[:16]}")
     object = "checkout.session"
     url = factory.LazyFunction(lambda: f"https://checkout.stripe.com/pay/cs_{uuid.uuid4().hex[:16]}")

@@ -81,7 +81,7 @@
                             </span>
                             
                             {% if user.subscription_status == 'active' and not current_plan.is_free %}
-                                <form method="post" action="{% url 'cancel_subscription' %}" class="mt-4">
+                                <form method="post" action="{% url 'cancel-subscription' %}" class="mt-4">
                                     {% csrf_token %}
                                     <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm"
                                             onclick="return confirm('{% trans 'Are you sure you want to cancel your subscription?' %}')">
@@ -89,7 +89,7 @@
                                     </button>
                                 </form>
                             {% elif user.subscription_status == 'canceled' %}
-                                <form method="post" action="{% url 'reactivate_subscription' %}" class="mt-4">
+                                <form method="post" action="{% url 'reactivate-subscription' %}" class="mt-4">
                                     {% csrf_token %}
                                     <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm">
                                         {% trans "Reactivate Subscription" %}
@@ -98,7 +98,7 @@
                             {% endif %}
                         </div>
                     {% else %}
-                        <form method="post" action="{% url 'create_checkout_session' %}">
+                        <form method="post" action="{% url 'create-checkout-session' %}">
                             {% csrf_token %}
                             <input type="hidden" name="plan_id" value="{{ plan.id }}">
                             <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 font-medium">
