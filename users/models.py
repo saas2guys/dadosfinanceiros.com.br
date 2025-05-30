@@ -10,39 +10,36 @@ from django.utils.translation import gettext_lazy as _
 
 class Plan(models.Model):
     """Subscription plans with different features and pricing"""
+
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
     daily_request_limit = models.IntegerField(help_text="Daily API request limit")
     price_monthly = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
-        default=Decimal('0.00'),
-        help_text="Monthly price in USD"
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        help_text="Monthly price in USD",
     )
     stripe_price_id = models.CharField(
-        max_length=255, 
-        blank=True, 
-        null=True,
-        help_text="Stripe Price ID for this plan"
+        max_length=255, blank=True, null=True, help_text="Stripe Price ID for this plan"
     )
     features = models.JSONField(
-        default=dict,
-        help_text="Additional features for this plan"
+        default=dict, help_text="Additional features for this plan"
     )
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
-        ordering = ['price_monthly']
-        
+        ordering = ["price_monthly"]
+
     def __str__(self):
         return f"{self.name} - ${self.price_monthly}/month"
-    
+
     @property
     def is_free(self):
         return self.price_monthly == 0
-    
+
     def get_feature(self, feature_name, default=None):
         """Get a specific feature value"""
         return self.features.get(feature_name, default)
@@ -74,30 +71,28 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractUser):
     # Subscription status choices
     SUBSCRIPTION_STATUS_CHOICES = [
-        ('active', 'Active'),
-        ('inactive', 'Inactive'),
-        ('past_due', 'Past Due'),
-        ('canceled', 'Canceled'),
-        ('trialing', 'Trialing'),
+        ("active", "Active"),
+        ("inactive", "Inactive"),
+        ("past_due", "Past Due"),
+        ("canceled", "Canceled"),
+        ("trialing", "Trialing"),
     ]
 
     username = None
     email = models.EmailField(_("email address"), unique=True)
-    
+
     # Plan and subscription fields
     current_plan = models.ForeignKey(
-        Plan, 
-        on_delete=models.PROTECT, 
-        null=True, 
+        Plan,
+        on_delete=models.PROTECT,
+        null=True,
         blank=True,
-        help_text="Current subscription plan"
+        help_text="Current subscription plan",
     )
     subscription_status = models.CharField(
-        max_length=20,
-        choices=SUBSCRIPTION_STATUS_CHOICES,
-        default='inactive'
+        max_length=20, choices=SUBSCRIPTION_STATUS_CHOICES, default="inactive"
     )
-    
+
     # Stripe integration fields
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
@@ -105,11 +100,11 @@ class User(AbstractUser):
     subscription_expires_at = models.DateTimeField(null=True, blank=True)
     current_period_start = models.DateTimeField(null=True, blank=True)
     current_period_end = models.DateTimeField(null=True, blank=True)
-    
+
     # API usage tracking
     daily_requests_made = models.IntegerField(default=0)
     last_request_date = models.DateField(null=True, blank=True)
-    
+
     # Token management
     request_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     request_token_created = models.DateTimeField(auto_now_add=True)
@@ -129,15 +124,15 @@ class User(AbstractUser):
         # Set default plan for new users
         if not self.current_plan_id:
             try:
-                free_plan = Plan.objects.get(slug='free')
+                free_plan = Plan.objects.get(slug="free")
                 self.current_plan = free_plan
             except Plan.DoesNotExist:
                 pass
-        
+
         # Ensure request_token_created is set if not already
         if not self.request_token_created:
             self.request_token_created = timezone.now()
-                
+
         # Only set expiration if token doesn't never expire and no expiration is set
         if (
             self.request_token_created
@@ -150,7 +145,7 @@ class User(AbstractUser):
         # If token should never expire, ensure expiration is None
         elif self.token_never_expires:
             self.request_token_expires = None
-            
+
         super().save(*args, **kwargs)
 
     @property
@@ -165,18 +160,18 @@ class User(AbstractUser):
         """Check if user has an active subscription"""
         if not self.current_plan:
             return False
-        
+
         # Even free plans should respect subscription status
-        if self.subscription_status not in ['active', 'trialing']:
+        if self.subscription_status not in ["active", "trialing"]:
             return False
-            
+
         # For paid plans, also check expiration
         if not self.current_plan.is_free:
             return (
-                not self.subscription_expires_at or 
-                self.subscription_expires_at > timezone.now()
+                not self.subscription_expires_at
+                or self.subscription_expires_at > timezone.now()
             )
-        
+
         return True
 
     @property
@@ -191,30 +186,33 @@ class User(AbstractUser):
         """Check if user can make an API request"""
         if not self.is_subscription_active:
             return False, "subscription not active"
-        
+
         if self.has_reached_daily_limit():
             return False, "daily request limit reached"
-        
+
         return True, "OK"
 
     def upgrade_to_plan(self, plan):
         """Upgrade user to a new plan"""
         self.current_plan = plan
         if plan.is_free:
-            self.subscription_status = 'active'
+            self.subscription_status = "active"
             self.subscription_expires_at = None
         self.save()
 
     def cancel_subscription(self):
         """Cancel user's subscription"""
-        self.subscription_status = 'canceled'
+        self.subscription_status = "canceled"
         # Keep current plan until expiration
         self.save()
 
     def reactivate_subscription(self):
         """Reactivate a canceled subscription"""
-        if self.subscription_expires_at and self.subscription_expires_at > timezone.now():
-            self.subscription_status = 'active'
+        if (
+            self.subscription_expires_at
+            and self.subscription_expires_at > timezone.now()
+        ):
+            self.subscription_status = "active"
             self.save()
             return True
         return False

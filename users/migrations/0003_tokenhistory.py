@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("users", "0002_user_previous_tokens_user_token_auto_renew_and_more"),
     ]

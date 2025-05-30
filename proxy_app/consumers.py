@@ -15,7 +15,6 @@ User = get_user_model()
 
 
 class StockMarketProxyConsumer(AsyncWebsocketConsumer):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.microservice_ws = None
@@ -163,7 +162,6 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
 
 
 class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
-
     _connection_pool = {}
     _pool_lock = None
 

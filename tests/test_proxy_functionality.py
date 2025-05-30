@@ -1,22 +1,22 @@
-from unittest.mock import MagicMock, patch
 from decimal import Decimal
+from unittest.mock import MagicMock, patch
 
 from django.test import TestCase
 from django.test.client import RequestFactory
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from proxy_app.views import PolygonProxyView
 from users.models import Plan, User
-from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class PolygonApiResponseTransformationTest(TestCase):
     """
     Test suite for the Polygon API response transformation functionality.
-    
+
     Covers URL replacement, pagination field handling, response filtering,
     and all data transformation logic for proxying Polygon.io API responses.
     """
-    
+
     def setUp(self):
         self.factory = RequestFactory()
         self.view = PolygonProxyView()
@@ -100,7 +100,7 @@ class PolygonApiResponseTransformationTest(TestCase):
 
     def test_removes_polygon_internal_status_field_from_response(self):
         request = self.factory.get("/test/")
-        
+
         mock_response = MagicMock()
         mock_response.content = True
         mock_response.status_code = 200
@@ -108,11 +108,11 @@ class PolygonApiResponseTransformationTest(TestCase):
             "status": "OK",
             "count": 1,
             "results": [{"ticker": "AAPL", "price": 150.25}],
-            "request_id": "test123"
+            "request_id": "test123",
         }
 
         result = self.view._process_response(mock_response, request)
-        
+
         self.assertEqual(result.status_code, 200)
         # Both status and request_id should be removed
         self.assertNotIn("status", result.data)
@@ -122,7 +122,7 @@ class PolygonApiResponseTransformationTest(TestCase):
 
     def test_removes_internal_fields_while_preserving_pagination_urls(self):
         request = self.factory.get("/test/")
-        
+
         mock_response = MagicMock()
         mock_response.content = True
         mock_response.status_code = 200
@@ -130,32 +130,34 @@ class PolygonApiResponseTransformationTest(TestCase):
             "status": "OK",
             "count": 1,
             "next_url": "https://api.polygon.io/v3/reference/tickers?cursor=test123&apikey=secret",
-            "results": [{"ticker": "AAPL", "price": 150.25}]
+            "results": [{"ticker": "AAPL", "price": 150.25}],
         }
 
         result = self.view._process_response(mock_response, request)
-        
+
         self.assertEqual(result.status_code, 200)
         self.assertNotIn("status", result.data)
         self.assertIn("count", result.data)
         self.assertIn("results", result.data)
         self.assertIn("next_url", result.data)
-        expected_next_url = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=test123"
+        expected_next_url = (
+            "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=test123"
+        )
         self.assertEqual(result.data["next_url"], expected_next_url)
 
     def test_handles_responses_without_internal_status_fields(self):
         request = self.factory.get("/test/")
-        
+
         mock_response = MagicMock()
         mock_response.content = True
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "count": 1,
-            "results": [{"ticker": "AAPL", "price": 150.25}]
+            "results": [{"ticker": "AAPL", "price": 150.25}],
         }
 
         result = self.view._process_response(mock_response, request)
-        
+
         self.assertEqual(result.status_code, 200)
         self.assertNotIn("status", result.data)
         self.assertIn("count", result.data)
@@ -165,36 +167,35 @@ class PolygonApiResponseTransformationTest(TestCase):
 class ProxyViewTestCaseBase(TestCase):
     """
     Base test case class for proxy view tests.
-    
+
     Provides common setup including user creation, plan assignment,
     authentication tokens, and factory methods for testing proxy functionality.
     """
-    
+
     def setUp(self):
         self.factory = RequestFactory()
         self.view = PolygonProxyView()
-        
+
         # Create a plan first
         self.plan = Plan.objects.create(
             name="Test Plan",
             slug="test-plan",
             daily_request_limit=1000,
-            price_monthly=Decimal('9.99')
+            price_monthly=Decimal("9.99"),
         )
-        
+
         # Create user without daily_request_limit parameter
         self.user = User.objects.create_user(
-            email='test@example.com',
-            password='testpass123'
+            email="test@example.com", password="testpass123"
         )
-        
+
         # Assign the plan to the user
         self.user.current_plan = self.plan
-        self.user.subscription_status = 'active'
+        self.user.subscription_status = "active"
         self.user.save()
-        
+
         self.request_token = str(self.user.request_token)
-        
+
         # For JWT authentication
         self.refresh = RefreshToken.for_user(self.user)
-        self.access_token = str(self.refresh.access_token) 
+        self.access_token = str(self.refresh.access_token)

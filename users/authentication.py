@@ -7,16 +7,15 @@ User = get_user_model()
 
 
 class RequestTokenAuthentication(authentication.BaseAuthentication):
-
     keyword = "X-Request-Token"
     model = User
 
     def authenticate(self, request):
-        request_token = request.META.get('HTTP_X_REQUEST_TOKEN')
-        
+        request_token = request.META.get("HTTP_X_REQUEST_TOKEN")
+
         if not request_token:
             return None
-        
+
         try:
             return self.authenticate_credentials(request_token)
         except (ValidationError, ValueError):
@@ -30,16 +29,16 @@ class RequestTokenAuthentication(authentication.BaseAuthentication):
         try:
             user = self.model.objects.get(request_token=token)
         except (self.model.DoesNotExist, ValidationError):
-            raise exceptions.AuthenticationFailed('Invalid token.')
+            raise exceptions.AuthenticationFailed("Invalid token.")
 
         if not user.is_active:
-            raise exceptions.AuthenticationFailed('User inactive or deleted.')
+            raise exceptions.AuthenticationFailed("User inactive or deleted.")
 
         if user.request_token_expires and user.request_token_expires < timezone.now():
             if user.token_auto_renew:
                 user.generate_new_request_token()
             else:
-                raise exceptions.AuthenticationFailed('Token has expired.')
+                raise exceptions.AuthenticationFailed("Token has expired.")
 
         return (user, token)
 

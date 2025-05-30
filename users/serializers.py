@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import TokenHistory, Plan
+from .models import Plan, TokenHistory
 
 User = get_user_model()
 
@@ -59,7 +59,13 @@ class UserSerializer(serializers.ModelSerializer):
             "token_auto_renew",
             "token_validity_days",
         )
-        read_only_fields = ("id", "email", "token_info", "daily_requests_made", "last_request_date")
+        read_only_fields = (
+            "id",
+            "email",
+            "token_info",
+            "daily_requests_made",
+            "last_request_date",
+        )
 
     def get_token_info(self, obj):
         return obj.get_token_info()
@@ -80,15 +86,16 @@ class TokenHistorySerializer(serializers.ModelSerializer):
 
 class PlanSerializer(serializers.ModelSerializer):
     """Serializer for subscription plans"""
+
     class Meta:
         model = Plan
         fields = (
-            'id',
-            'name', 
-            'slug',
-            'daily_request_limit',
-            'price_monthly',
-            'features',
-            'is_active'
+            "id",
+            "name",
+            "slug",
+            "daily_request_limit",
+            "price_monthly",
+            "features",
+            "is_active",
         )
-        read_only_fields = ('id', 'slug', 'is_active')
+        read_only_fields = ("id", "slug", "is_active")

@@ -1,5 +1,5 @@
-from unittest.mock import MagicMock, patch
 from decimal import Decimal
+from unittest.mock import MagicMock, patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -17,7 +17,7 @@ User = get_user_model()
 class RequestTokenAuthenticationFlowTest(APITestCase):
     """
     Test suite for the request token authentication system.
-    
+
     Validates that the custom request token authentication works correctly,
     including token validation, invalid token handling, and unauthenticated access.
     Tests the core authentication mechanism used for API access.
@@ -29,46 +29,46 @@ class RequestTokenAuthenticationFlowTest(APITestCase):
             name="Test Plan",
             slug="test-plan",
             daily_request_limit=100,
-            price_monthly=Decimal('10.00')
+            price_monthly=Decimal("10.00"),
         )
-        
+
         self.user = User.objects.create_user(
             email="test@example.com", password="testpass123"
         )
         self.user.current_plan = self.plan
-        self.user.subscription_status = 'active'
+        self.user.subscription_status = "active"
         self.user.save()
-        
+
         self.client = APIClient()
 
     def test_valid_request_token_allows_api_access(self):
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
-        
+
         with patch("proxy_app.views.PolygonProxyView._handle_request") as mock_handle:
             mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
             response = self.client.get("/v1/us/stocks/AAPL/")
-            
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     @patch("proxy_app.views.PolygonProxyView._handle_request")
     def test_invalid_request_token_returns_unauthorized(self, mock_handle):
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
-        
+
         # Set invalid token
         self.client.credentials(HTTP_X_REQUEST_TOKEN="invalid-token")
-        
+
         response = self.client.get("/v1/us/stocks/AAPL/")
-        
+
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         mock_handle.assert_not_called()
 
     @patch("proxy_app.views.PolygonProxyView._handle_request")
     def test_missing_request_token_returns_unauthorized(self, mock_handle):
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
-        
+
         # No token set
         response = self.client.get("/v1/us/stocks/AAPL/")
-        
+
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         mock_handle.assert_not_called()
 
@@ -76,7 +76,7 @@ class RequestTokenAuthenticationFlowTest(APITestCase):
 class DailyApiLimitEnforcementTest(APITestCase):
     """
     Test suite for daily API request limit enforcement.
-    
+
     Validates the permission system that tracks and enforces daily request limits
     based on user subscription plans. Tests request counting, limit enforcement,
     and proper handling of limit violations.
@@ -85,19 +85,19 @@ class DailyApiLimitEnforcementTest(APITestCase):
     def setUp(self):
         # Create a plan first
         self.plan = Plan.objects.create(
-            name="Test Plan", 
+            name="Test Plan",
             slug="test-plan",
             daily_request_limit=2,
-            price_monthly=Decimal('10.00')
+            price_monthly=Decimal("10.00"),
         )
-        
+
         self.user = User.objects.create_user(
             email="test@example.com", password="testpass123"
         )
         self.user.current_plan = self.plan
-        self.user.subscription_status = 'active'
+        self.user.subscription_status = "active"
         self.user.save()
-        
+
         self.client = APIClient()
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
@@ -129,7 +129,7 @@ class DailyApiLimitEnforcementTest(APITestCase):
 class ApiAuthenticationIntegrationTest(APITestCase):
     """
     Test suite for overall API authentication integration.
-    
+
     Validates the complete authentication flow including frontend page access
     without authentication and API endpoint protection. Tests the integration
     between different authentication components.
@@ -142,15 +142,15 @@ class ApiAuthenticationIntegrationTest(APITestCase):
         """Frontend pages should be accessible without API authentication"""
         response = self.client.get("/")
         self.assertIn(response.status_code, [200, 302])  # Allow redirects
-        
+
     @patch("proxy_app.views.PolygonProxyView._handle_request")
     def test_api_endpoints_require_valid_authentication(self, mock_handle):
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
-        
+
         # Test API endpoint without authentication
         response = self.client.get("/v1/us/stocks/AAPL/")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        
+
         # Mock handle should not be called if authentication fails
         mock_handle.assert_not_called()
 
@@ -158,7 +158,7 @@ class ApiAuthenticationIntegrationTest(APITestCase):
 class RequestTokenAuthenticationUnitTest(TestCase):
     """
     Test suite for request token authentication component isolation.
-    
+
     Unit tests for the authentication classes and permissions in isolation,
     ensuring proper imports and class definitions exist. Tests the individual
     components without integration dependencies.
@@ -171,6 +171,7 @@ class RequestTokenAuthenticationUnitTest(TestCase):
         """Verify authentication class exists and can be imported"""
         try:
             from users.authentication import RequestTokenAuthentication
+
             self.assertTrue(True, "Authentication class imported successfully")
         except ImportError:
             self.fail("RequestTokenAuthentication class could not be imported")
@@ -179,6 +180,7 @@ class RequestTokenAuthenticationUnitTest(TestCase):
         """Verify permission class exists and can be imported"""
         try:
             from users.permissions import DailyLimitPermission
+
             self.assertTrue(True, "Permission class imported successfully")
         except ImportError:
-            self.fail("DailyLimitPermission class could not be imported") 
+            self.fail("DailyLimitPermission class could not be imported")

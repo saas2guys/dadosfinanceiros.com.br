@@ -4,27 +4,21 @@
 {% block title %}Profile - Polygon.io Proxy Service{% endblock %}
 
 {% block content %}
-<!-- Toast Container -->
-<div id="toast" class="fixed top-4 right-4 z-50 transform transition-transform duration-300 translate-x-full">
-    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-        </svg>
-        <span id="toastMessage"></span>
-    </div>
-</div>
-
 <div class="max-w-4xl mx-auto">
+    <!-- Profile Information Section -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">Profile Information</h2>
-            <button id="editProfile" class="text-blue-500 hover:text-blue-600">
+            <button id="editProfile" class="text-blue-500 hover:text-blue-600 flex items-center space-x-1">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                 </svg>
+                <span>{% trans "Edit Profile" %}</span>
             </button>
         </div>
-        <div class="grid grid-cols-2 gap-4">
+        
+        <!-- Profile Display Mode -->
+        <div id="profileDisplay" class="grid grid-cols-2 gap-4">
             <div>
                 <p class="text-gray-600">Email</p>
                 <p class="font-semibold">{{ user.email }}</p>
@@ -41,6 +35,31 @@
                 <p class="text-gray-600">Requests Made Today</p>
                 <p class="font-semibold">{{ user.daily_requests_made }}</p>
             </div>
+        </div>
+        
+        <!-- Profile Edit Mode (Initially Hidden) -->
+        <div id="profileEdit" class="hidden">
+            <form id="profileEditForm" class="grid grid-cols-2 gap-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-gray-600 mb-2">First Name</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-gray-600 mb-2">Last Name</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="col-span-2 flex space-x-4 mt-4">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        {% trans "Save Changes" %}
+                    </button>
+                    <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                        {% trans "Cancel" %}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -70,9 +89,11 @@
                     <div class="flex-1 bg-gray-200 rounded-full h-2">
                         {% with usage_percentage=user.daily_requests_made|floatformat:0|add:0 %}
                         {% with limit=user.daily_request_limit|floatformat:0|add:0 %}
+                        {% if limit > 0 %}
                         {% with percentage=usage_percentage|mul:100|div:limit %}
-                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ percentage|floatformat:1 }}%"></div>
+                        <div class="bg-blue-600 h-2 rounded-full" data-width="{{ percentage|floatformat:1 }}"></div>
                         {% endwith %}
+                        {% endif %}
                         {% endwith %}
                         {% endwith %}
                     </div>
@@ -81,7 +102,9 @@
                     </span>
                 </div>
                 <p class="text-sm text-gray-500 mt-2">
-                    {{ user.daily_request_limit|add:user.daily_requests_made|add:"-"|add:user.daily_requests_made }} {% trans "requests remaining" %}
+                    {% with remaining=user.daily_request_limit|add:user.daily_requests_made|add:"-"|add:user.daily_requests_made %}
+                    {{ remaining }} {% trans "requests remaining" %}
+                    {% endwith %}
                 </p>
             </div>
         </div>
@@ -143,6 +166,7 @@
         {% endif %}
     </div>
 
+    <!-- Current Token Section -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Current Token</h2>
         <div class="bg-gray-50 p-4 rounded-lg mb-4">
@@ -192,6 +216,7 @@
         </div>
     </div>
 
+    <!-- Token History Section -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">Token History</h2>
@@ -252,29 +277,77 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_js %}
 <script>
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    toastMessage.textContent = message;
-    
-    // Show toast
-    toast.classList.remove('translate-x-full');
-    
-    // Hide toast after 3 seconds
-    setTimeout(() => {
-        toast.classList.add('translate-x-full');
-    }, 3000);
-}
+// Profile editing functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Set progress bar width
+    const progressBar = document.querySelector('[data-width]');
+    if (progressBar) {
+        const width = progressBar.getAttribute('data-width');
+        progressBar.style.width = width + '%';
+    }
 
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
-        showToast('Token copied to clipboard!');
-    }).catch(function(err) {
-        showToast('Failed to copy token');
-        console.error('Failed to copy text: ', err);
-    });
-}
+    const editButton = document.getElementById('editProfile');
+    const profileDisplay = document.getElementById('profileDisplay');
+    const profileEdit = document.getElementById('profileEdit');
+    const cancelButton = document.getElementById('cancelEdit');
+    const editForm = document.getElementById('profileEditForm');
+
+    if (editButton) {
+        editButton.addEventListener('click', function() {
+            profileDisplay.classList.add('hidden');
+            profileEdit.classList.remove('hidden');
+        });
+    }
+
+    if (cancelButton) {
+        cancelButton.addEventListener('click', function() {
+            profileEdit.classList.add('hidden');
+            profileDisplay.classList.remove('hidden');
+        });
+    }
+
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(editForm);
+            const data = {
+                'first_name': formData.get('first_name'),
+                'last_name': formData.get('last_name')
+            };
+            
+            // Use the global helper function
+            fetch('{% url "api:api_profile" %}', {
+                method: 'PATCH',
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.first_name !== undefined) {
+                    showGlobalToast('{% trans "Profile updated successfully!" %}');
+                    // Refresh the page to show updated data
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showGlobalToast('{% trans "Error updating profile" %}', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showGlobalToast('{% trans "Error updating profile" %}', 'error');
+            });
+        });
+    }
+});
 </script>
 {% endblock %} 

@@ -1,185 +1,76 @@
-### Variables
-@baseUrl = http://localhost:8000
-@token = your_jwt_token_here
+######### Polygon API HTTP Requests (Localhost Version)
 
-### Get JWT Token
-POST {{baseUrl}}/api/token/
-Content-Type: application/json
+## All Tickers
+GET http://localhost:8000/api/reference/tickers?market=stocks&active=true&order=asc&limit=100&sort=ticker
 
-{
-    "username": "root",
-    "password": "root"
-}
+### Ticker Overview
+GET http://localhost:8000/api/reference/tickers/AAPL
 
-### Verify JWT Token
-POST {{baseUrl}}/api/token/verify/
-Content-Type: application/json
+### Ticker Types
+GET http://localhost:8000/api/reference/tickers/types
 
-{
-    "token": "{{token}}"
-}
+### Related Tickers
+GET http://localhost:8000/api/meta/symbols/AAPL/company
 
-### STOCKS ###
+### Aggregate Bars (OHLC)
+GET http://localhost:8000/api/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-10?adjusted=true&sort=asc&limit=120
 
-### Get All Tickers
-GET {{baseUrl}}/v1/reference/tickers
-    ?market=stocks
-    &active=true
-    &order=asc
-    &limit=100
-    &sort=ticker
-#Authorization: Bearer {{token}}
+### Daily Market Summary
+GET http://localhost:8000/api/open-close/stocks/2023-01-09
 
-### Get Single Ticker Details (AAPL)
-GET {{baseUrl}}/v1/reference/tickers/AAPL
-#Authorization: Bearer {{token}}
+### Daily Ticker Summary
+GET http://localhost:8000/api/open-close/AAPL/2023-01-09?adjusted=true
 
-### Get Related Tickers (AAPL)
-GET {{baseUrl}}/v1/related-companies/AAPL
-#Authorization: Bearer {{token}}
+### Previous Day Bar
+GET http://localhost:8000/api/aggs/ticker/AAPL/prev?adjusted=true
 
-### Get Stock Aggregates (Daily for AAPL)
-GET {{baseUrl}}/v1/aggs/ticker/AAPL/range/1/day/2023-01-09/2023-02-10
-    ?adjusted=true
-    &sort=asc
-    &limit=120
-#Authorization: Bearer {{token}}
+### Single Ticker Snapshot
+GET http://localhost:8000/api/snapshot/locale/us/markets/stocks/tickers/AAPL
 
-### Get Previous Day Bar (AAPL)
-GET {{baseUrl}}/v1/aggs/ticker/AAPL/prev
-    ?adjusted=true
-#Authorization: Bearer {{token}}
+### Full Market Snapshot
+GET http://localhost:8000/api/snapshot/locale/us/markets/stocks/tickers?tickers=AAPL,MSFT,AMZN
 
-### Get Single Stock Snapshot (AAPL)
-GET {{baseUrl}}/v1/snapshot/stocks/tickers/AAPL
-#Authorization: Bearer {{token}}
+### Unified Snapshot
+GET http://localhost:8000/api/snapshot?ticker.any_of=AAPL,O:AAPL230616C00190000,C:BTCUSD,FX:EURUSD
 
-### Get Full Market Snapshot
-GET {{baseUrl}}/v1/snapshot/stocks/tickers
-#Authorization: Bearer {{token}}
+### Top Market Movers
+GET http://localhost:8000/api/snapshot/locale/us/markets/stocks/gainers?include_otc=false
 
-### Get Unified Snapshot
-GET {{baseUrl}}/v1/snapshot
-    ?order=asc
-    &limit=10
-    &sort=ticker
-#Authorization: Bearer {{token}}
+### Trades
+GET http://localhost:8000/api/trades/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
 
-### Get Market Gainers
-GET {{baseUrl}}/v1/snapshot/stocks/gainers
-#Authorization: Bearer {{token}}
+### Last Trade
+GET http://localhost:8000/api/last/trade/AAPL
 
-### Get Stock Trades
-GET {{baseUrl}}/v1/trades/AAPL
-    ?order=asc
-    &limit=10
-    &sort=timestamp
-#Authorization: Bearer {{token}}
+### Quotes
+GET http://localhost:8000/api/quotes/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
 
-### Get Last Trade
-GET {{baseUrl}}/v1/last/trade/AAPL
-#Authorization: Bearer {{token}}
+### Last Quote
+GET http://localhost:8000/api/last/nbbo/AAPL
 
-### Get Stock Quotes
-GET {{baseUrl}}/v1/quotes/AAPL
-    ?order=asc
-    &limit=10
-    &sort=timestamp
-#Authorization: Bearer {{token}}
+### All Option Contracts
+GET http://localhost:8000/api/reference/options/contracts?underlying_ticker=AAPL&contract_type=call&expiration_date.gte=2023-06-01&order=asc&limit=10&sort=ticker
 
-### Get Last Quote
-GET {{baseUrl}}/v1/last/nbbo/AAPL
-#Authorization: Bearer {{token}}
+### Option Contract Overview
+GET http://localhost:8000/api/reference/options/contracts/O:AAPL230616C00190000
 
-### OPTIONS ###
+### All Indices
+GET http://localhost:8000/api/reference/indices?market=indices&order=asc&limit=10&sort=ticker
 
-### Get All Option Contracts
-GET {{baseUrl}}/v1/reference/options/contracts
-    ?order=asc
-    &limit=10
-    &sort=ticker
-#Authorization: Bearer {{token}}
+### Index Overview
+GET http://localhost:8000/api/reference/indices/I:SPX
 
-### INDICES ###
+### All Forex Tickers
+GET http://localhost:8000/api/reference/tickers?market=fx&active=true&order=asc&limit=10&sort=ticker
 
-### Get All Indices
-GET {{baseUrl}}/v1/reference/tickers
-    ?market=indices
-    &active=true
-    &order=asc
-    &limit=100
-    &sort=ticker
-#Authorization: Bearer {{token}}
+### Currency Conversion
+GET http://localhost:8000/api/conversion/USD/EUR?amount=100&precision=2
 
-### Get Index Details (SPX)
-GET {{baseUrl}}/v1/reference/tickers/I:SPX
-#Authorization: Bearer {{token}}
+### All Crypto Tickers
+GET http://localhost:8000/api/reference/tickers?market=crypto&active=true&order=asc&limit=10&sort=ticker
 
-### FOREX ###
+### Treasury Yields
+GET http://localhost:8000/api/indicators/treasury-yields?ticker=US10Y&from=2023-01-01&to=2023-01-31&order=asc&limit=10
 
-### Get All Forex Pairs
-GET {{baseUrl}}/v1/reference/tickers
-    ?market=fx
-    &active=true
-    &order=asc
-    &limit=100
-    &sort=ticker
-#Authorization: Bearer {{token}}
-
-### Get Currency Conversion
-GET {{baseUrl}}/v1/conversion/AUD/USD
-    ?amount=100
-    &precision=2
-#Authorization: Bearer {{token}}
-
-### CRYPTO ###
-
-### Get All Crypto Pairs
-GET {{baseUrl}}/v1/reference/tickers
-    ?market=crypto
-    &active=true
-    &order=asc
-    &limit=100
-    &sort=ticker
-#Authorization: Bearer {{token}}
-
-### ECONOMY ###
-
-### Get Treasury Yields
-GET {{baseUrl}}/v1/fed/vx/treasury-yields
-#Authorization: Bearer {{token}}
-
-### PARTNERS ###
-
-### Get Benzinga Analyst Ratings
-GET {{baseUrl}}/v1/benzinga/v1/ratings
-#Authorization: Bearer {{token}}
-
-### Get Stock News
-GET {{baseUrl}}/v1/reference/news
-    ?ticker=AAPL
-    &order=desc
-    &limit=10
-Authorization: Bearer {{token}}
-
-### Get Technical Indicators (RSI for AAPL)
-GET {{baseUrl}}/v1/indicators/rsi/AAPL
-    ?timespan=day
-    &window=14
-    &series_type=close
-Authorization: Bearer {{token}}
-
-### Health Check
-GET {{baseUrl}}/health/
-Authorization: Bearer {{token}}
-
-### Notes:
-# 1. Replace 'your_jwt_token_here' with an actual token from /api/token/ endpoint
-# 2. All endpoints require JWT authentication except in local environment
-# 3. The proxy preserves Polygon.io's original response structure
-# 4. Query parameters are passed through to Polygon.io API
-# 5. Our API uses /v1/ prefix which maps to appropriate Polygon.io API versions internally
-# 6. Version mapping:
-#    - Most endpoints use v3
-#    - Aggregates (aggs) use v2
-#    - Some legacy endpoints use v1 (open-close, meta/symbols, etc.) 
+### Analyst Ratings
+GET http://localhost:8000/api/meta/symbols/AAPL/analysts
