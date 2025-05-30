@@ -1,20 +1,16 @@
 import json
 import logging
 from datetime import timedelta
-from decimal import Decimal
 
 import stripe
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.core.cache import cache
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.decorators import method_decorator
-from django.views.csrf import csrf_failure
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
 from rest_framework import generics, permissions, status
@@ -33,7 +29,6 @@ from .serializers import (
 )
 from .stripe_service import StripeService
 
-# Configure Stripe and logger
 stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
@@ -91,7 +86,6 @@ class TokenHistoryView(APIView):
     def get(self, request):
         user = request.user
 
-        # Get token history data
         token_history = user.token_history.all()
         serializer = TokenHistorySerializer(token_history, many=True)
 
@@ -242,9 +236,6 @@ def token_history(request):
     return Response(response_data, status=status.HTTP_200_OK)
 
 
-# Subscription and Plan Management Views
-
-
 class PlansListView(generics.ListAPIView):
     """List all available subscription plans"""
 
@@ -272,7 +263,6 @@ def plans_view(request):
 def create_checkout_session(request):
     """Create Stripe checkout session for subscription"""
     try:
-        # Check if this is a JSON API request
         is_api_request = request.content_type == "application/json"
 
         if is_api_request:
@@ -286,7 +276,6 @@ def create_checkout_session(request):
         plan = get_object_or_404(Plan, id=plan_id, is_active=True)
 
         if plan.is_free:
-            # Handle free plan upgrade directly
             request.user.upgrade_to_plan(plan)
             if is_api_request:
                 return JsonResponse(
@@ -308,7 +297,6 @@ def create_checkout_session(request):
                 messages.error(request, "This plan is not available for purchase.")
                 return redirect("plans")
 
-        # Create Stripe checkout session
         success_url = request.build_absolute_uri(reverse("subscription_success"))
         cancel_url = request.build_absolute_uri(reverse("plans"))
 
@@ -349,7 +337,6 @@ def create_checkout_session(request):
             messages.error(request, f"Payment error: {str(e)}")
             return redirect("plans")
     except Http404:
-        # Re-raise Http404 to let Django handle it properly
         raise
     except Exception as e:
         if is_api_request:
@@ -415,13 +402,11 @@ def stripe_webhook(request):
     if request.method != "POST":
         return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
-    # Validate content type
     if request.content_type != "application/json":
         return JsonResponse(
             {"error": "Content-Type must be application/json"}, status=400
         )
 
-    # Check if webhook secret is configured
     webhook_secret = getattr(settings, "STRIPE_WEBHOOK_SECRET", None)
     if not webhook_secret:
         return JsonResponse({"error": "Webhook secret not configured"}, status=400)
@@ -430,32 +415,23 @@ def stripe_webhook(request):
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
 
     try:
-        # Verify webhook signature
         stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
     except ValueError:
-        # Invalid payload
         return JsonResponse({"error": "Invalid payload"}, status=400)
     except stripe.error.SignatureVerificationError:
-        # Invalid signature
         return JsonResponse({"error": "Invalid signature"}, status=400)
 
     try:
-        # Parse the event
         event = json.loads(payload)
 
-        # Process the event
         stripe_service = StripeService()
         result = stripe_service.process_webhook_event(event)
 
         return JsonResponse({"status": "success", "processed": result is not None})
 
     except Exception as e:
-        # Log instead of print
         logger.error(f"Unexpected error in webhook: {e}")
         return JsonResponse({"status": "error"}, status=500)
-
-
-# API Views for subscription management
 
 
 @api_view(["GET"])
