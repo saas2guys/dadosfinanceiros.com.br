@@ -246,15 +246,12 @@ def token_history(request):
 
 
 class PlansListView(generics.ListAPIView):
-    """List all available subscription plans"""
-
     queryset = Plan.objects.filter(is_active=True)
     serializer_class = PlanSerializer
     permission_classes = permissions_
 
 
 def plans_view(request):
-    """Display available plans and user's current subscription"""
     plans = Plan.objects.filter(is_active=True).order_by("price_monthly")
     context = {
         "plans": plans,
@@ -270,7 +267,6 @@ def plans_view(request):
 @login_required
 @require_POST
 def create_checkout_session(request):
-    """Create Stripe checkout session for subscription"""
     try:
         is_api_request = request.content_type == "application/json"
 
@@ -357,14 +353,12 @@ def create_checkout_session(request):
 
 @login_required
 def subscription_success(request):
-    """Handle successful subscription payment"""
     return render(request, "subscription_success.html")
 
 
 @login_required
 @require_POST
 def cancel_subscription(request):
-    """Cancel user's subscription"""
     try:
         if not request.user.stripe_subscription_id:
             messages.error(request, "No active subscription to cancel.")
@@ -386,7 +380,6 @@ def cancel_subscription(request):
 @login_required
 @require_POST
 def reactivate_subscription(request):
-    """Reactivate a canceled subscription"""
     try:
         if not request.user.stripe_subscription_id:
             messages.error(request, "No subscription to reactivate.")
@@ -407,7 +400,6 @@ def reactivate_subscription(request):
 
 @csrf_exempt
 def stripe_webhook(request):
-    """Handle Stripe webhooks."""
     if request.method != "POST":
         return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
@@ -446,7 +438,6 @@ def stripe_webhook(request):
 @api_view(["GET"])
 @permission_classes(permissions_)
 def user_subscription(request):
-    """Get user's current subscription details"""
     user = request.user
     data = {
         "current_plan": PlanSerializer(user.current_plan).data
@@ -468,7 +459,6 @@ def user_subscription(request):
 @api_view(["POST"])
 @permission_classes(permissions_)
 def create_checkout_session_api(request):
-    """Create Stripe checkout session via API"""
     try:
         plan_id = request.data.get("plan_id")
         plan = get_object_or_404(Plan, id=plan_id, is_active=True)
@@ -521,7 +511,6 @@ def create_checkout_session_api(request):
 
 
 def csrf_failure_view(request, reason=""):
-    """Custom CSRF failure view for better error handling"""
     if request.content_type == "application/json":
         return JsonResponse(
             {

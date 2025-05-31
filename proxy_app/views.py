@@ -19,19 +19,11 @@ from users.permissions import DailyLimitPermission
 logger = logging.getLogger(__name__)
 
 def get_permission_classes():
-    """
-    Returns the appropriate permission classes based on the environment.
-    In local development, allow any user; otherwise, use IsAuthenticated.
-    """
     if settings.ENV == "local":
         return [AllowAny]
     return [IsAuthenticated, DailyLimitPermission]
 
 def get_authentication_classes():
-    """
-    Returns the appropriate authentication classes based on the environment.
-    In local development, disable authentication.
-    """
     if settings.ENV == "local":
         return []
     return [JWTAuthentication, RequestTokenAuthentication]
@@ -45,16 +37,11 @@ def api_documentation(request):
 
 
 class PolygonProxyView(APIView):
-    """
-    Simplified proxy view for Polygon.io API.
-    Forwards requests with clean /v1/ URLs to appropriate Polygon.io API versions.
-    """
 
     renderer_classes = [JSONRenderer]
     authentication_classes = _authentications
     permission_classes = _permissions
 
-    # Version mapping patterns - order matters (most specific first)
     VERSION_PATTERNS = {
         "v3": [
             "reference/tickers/types",
@@ -89,22 +76,17 @@ class PolygonProxyView(APIView):
         )
         self.session = requests.Session()
 
-        # Completely disable authentication and permissions in local development
         if settings.ENV == "local":
             self.authentication_classes = []
             self.permission_classes = [AllowAny]
 
     def _proxy_request(self, request, path):
-        """Handle the complete proxy request lifecycle"""
         try:
-            # Clean path and determine version
             clean_path = path[3:] if path.startswith("v1/") else path
             version = self._get_version(clean_path)
 
-            # Build target URL
             target_url = f"{self.base_url}/{version}/{clean_path}"
 
-            # Prepare request
             params = {**request.GET.dict(), "apiKey": self.api_key}
             headers = {
                 k: v
@@ -122,7 +104,6 @@ class PolygonProxyView(APIView):
                 request.data if request.method in ["POST", "PUT", "PATCH"] else None
             )
 
-            # Make request
             response = self.session.request(
                 method=request.method,
                 url=target_url,
@@ -132,11 +113,9 @@ class PolygonProxyView(APIView):
                 timeout=self.timeout,
             )
 
-            # Process response
             try:
                 data = response.json() if response.content else {}
                 if data:
-                    # Transform pagination URLs and clean internal fields
                     data = self._clean_response(data)
                 return Response(data=data, status=response.status_code)
             except ValueError:
@@ -154,30 +133,24 @@ class PolygonProxyView(APIView):
             return Response({"error": "Internal Server Error"}, status=500)
 
     def _get_version(self, path):
-        """Determine Polygon.io API version from path"""
-        # Handle unified snapshot special case
         if path == "snapshot" or (path.startswith("snapshot?")):
             return "v3"
 
-        # Check version patterns
         for version, patterns in self.VERSION_PATTERNS.items():
             for pattern in patterns:
                 if (pattern.endswith("/") and path.startswith(pattern)) or (
                     path == pattern or path.startswith(pattern + "/")
                 ):
                     return version
-        return "v3"  # Default
+        return "v3"
 
     def _clean_response(self, data):
-        """Clean response data and transform pagination URLs"""
         if not isinstance(data, dict):
             return data
 
-        # Remove internal Polygon.io fields
         for field in ["status", "request_id", "queryCount"]:
             data.pop(field, None)
 
-        # Transform pagination URLs
         for field in ["next_url", "previous_url", "next", "previous"]:
             if (
                 field in data
@@ -186,7 +159,7 @@ class PolygonProxyView(APIView):
             ):
                 url = data[field].replace("api.polygon.io", self.proxy_domain)
                 url = re.sub(r"[?&]apikey=[^&]*&?", "", url, flags=re.IGNORECASE)
-                url = re.sub(r"/v[1-3]/", "/v1/", url)  # Normalize to /v1/
+                url = re.sub(r"/v[1-3]/", "/v1/", url)
                 url = re.sub(r"[&?]+$", "", url)
                 if not url.startswith("https://"):
                     url = (
@@ -196,7 +169,6 @@ class PolygonProxyView(APIView):
                     )
                 data[field] = url
 
-        # Recursively process nested objects
         for key, value in data.items():
             if isinstance(value, dict):
                 data[key] = self._clean_response(value)
@@ -208,19 +180,14 @@ class PolygonProxyView(APIView):
 
         return data
 
-    # Single method to handle all HTTP methods
     def get(self, request, path):
-        """Handle GET requests"""
         return self._proxy_request(request, path)
 
     def post(self, request, path):
-        """Handle POST requests"""
         return self._proxy_request(request, path)
 
     def put(self, request, path):
-        """Handle PUT requests"""
         return self._proxy_request(request, path)
 
     def delete(self, request, path):
-        """Handle DELETE requests"""
         return self._proxy_request(request, path)

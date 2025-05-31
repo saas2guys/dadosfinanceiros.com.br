@@ -5,23 +5,14 @@ logger = logging.getLogger(__name__)
 
 
 class UserRequestCountMiddleware(MiddlewareMixin):
-    """
-    Middleware to increment user's daily request count for successful API responses.
-    Only applies to authenticated users and successful responses (2xx/3xx status codes).
-    """
 
     def process_response(self, request, response):
-        """
-        Increment user's request count for successful proxy API calls.
-        """
-        # Only count requests to proxy endpoints
         if self._is_proxy_request(request):
             self._increment_user_requests(request, response)
         
         return response
 
     def _is_proxy_request(self, request):
-        """Check if this is a request to a proxy endpoint"""
         return (
             request.path.startswith('/v1/') or 
             request.path.startswith('/api/v1/') or
@@ -29,7 +20,6 @@ class UserRequestCountMiddleware(MiddlewareMixin):
         )
 
     def _increment_user_requests(self, request, response):
-        """Increment user's daily request count for successful responses"""
         try:
             if (
                 hasattr(request, "user")
