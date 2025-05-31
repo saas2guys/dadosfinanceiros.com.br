@@ -16,20 +16,45 @@ const CACHE = {
 export default {
   async fetch(request, env, ctx) {
     const BACKEND = env.BACKEND_URL || 'https://api.financialdata.online'
+    const VERSION = env.VERSION || 'unknown'
+    const ENVIRONMENT = env.ENVIRONMENT || 'unknown'
     
     const url = new URL(request.url)
 
     if (request.method === 'OPTIONS') return corsResponse()
-    if (url.pathname === '/health') return Response.json({status: 'ok'})
+    
+    // Enhanced health endpoint with version info
+    if (url.pathname === '/health') {
+      return Response.json({
+        status: 'ok',
+        version: VERSION,
+        environment: ENVIRONMENT,
+        timestamp: new Date().toISOString(),
+        backend: BACKEND
+      })
+    }
+
+    // Add version header to all responses
+    const addVersionHeaders = (response) => {
+      const newResponse = new Response(response.body, response)
+      newResponse.headers.set('x-worker-version', VERSION)
+      newResponse.headers.set('x-worker-environment', ENVIRONMENT)
+      return newResponse
+    }
 
     if (request.method !== 'GET' || url.searchParams.has('nocache')) {
-      return proxy(request, BACKEND)
+      const response = await proxy(request, BACKEND)
+      return addVersionHeaders(response)
     }
 
     const ttl = getCacheTTL(url.pathname, url.searchParams)
-    if (ttl === CACHE.NONE) return proxy(request, BACKEND)
+    if (ttl === CACHE.NONE) {
+      const response = await proxy(request, BACKEND)
+      return addVersionHeaders(response)
+    }
 
-    return getCachedResponse(request, ttl, BACKEND)
+    const response = await getCachedResponse(request, ttl, BACKEND)
+    return addVersionHeaders(response)
   }
 }
 

@@ -1,0 +1,31 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "financialdata-cache-worker-production",
+	"main": "src/index.js",
+	"compatibility_date": "2025-05-31",
+	"observability": {
+		"enabled": true
+	},
+	"placement": { 
+		"mode": "smart" 
+	},
+	"vars": {
+		"ENVIRONMENT": "production",
+		"VERSION": "v1.0.0"
+	}
+	
+	/**
+	 * Production Environment Configuration
+	 * 
+	 * Add your Account ID when ready to deploy:
+	 * "account_id": "YOUR_ACCOUNT_ID_HERE",
+	 * 
+	 * For custom domain routing:
+	 * "routes": [
+	 *   {
+	 *     "pattern": "cache.financialdata.online/*",
+	 *     "zone_id": "YOUR_ZONE_ID_HERE"
+	 *   }
+	 * ]
+	 */
+} 

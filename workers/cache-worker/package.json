@@ -1,12 +1,18 @@
 {
 	"name": "cache-worker",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
+		"deploy:dev": "./deploy-versioned.sh -e dev",
+		"deploy:staging": "./deploy-versioned.sh -e staging",
+		"deploy:production": "./deploy-versioned.sh -e production",
+		"deploy:version": "./deploy-versioned.sh -e production -a",
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
-		"test": "vitest"
+		"test": "vitest",
+		"rollback": "./rollback.sh",
+		"status": "wrangler status"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
