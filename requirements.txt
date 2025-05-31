@@ -58,10 +58,13 @@ django==4.2.7
     #   proxy-project (pyproject.toml)
     #   channels
     #   django-cors-headers
+    #   django-csp
     #   django-redis
     #   djangorestframework
     #   djangorestframework-simplejwt
 django-cors-headers==4.7.0
+    # via proxy-project (pyproject.toml)
+django-csp==4.0
     # via proxy-project (pyproject.toml)
 django-redis==5.4.0
     # via proxy-project (pyproject.toml)
@@ -103,6 +106,8 @@ multidict==6.4.4
     # via
     #   aiohttp
     #   yarl
+packaging==25.0
+    # via django-csp
 polygon-api-client==1.14.5
     # via proxy-project (pyproject.toml)
 propcache==0.3.1
@@ -121,6 +126,8 @@ pyjwt==2.8.0
     # via djangorestframework-simplejwt
 pyopenssl==25.1.0
     # via twisted
+python-decouple==3.8
+    # via proxy-project (pyproject.toml)
 python-dotenv==1.0.0
     # via proxy-project (pyproject.toml)
 pytz==2025.2
