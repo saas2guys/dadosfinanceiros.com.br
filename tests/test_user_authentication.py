@@ -464,7 +464,7 @@ class JwtAuthenticationIntegrationTest(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         # Test accessing a protected endpoint
-        response = self.client.get("/api/profile/")  # Adjust URL as needed
+        response = self.client.get("/v1/aggs/")  # Clean /v1/ URL
 
         # Should not return 401 if JWT auth is working
         self.assertNotEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -474,7 +474,7 @@ class JwtAuthenticationIntegrationTest(APITestCase):
         # Set invalid token
         self.client.credentials(HTTP_AUTHORIZATION="Bearer invalid_token")
 
-        response = self.client.get("/api/profile/")
+        response = self.client.get("/v1/aggs/")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -485,7 +485,7 @@ class JwtAuthenticationIntegrationTest(APITestCase):
             mock_decode.side_effect = jwt.ExpiredSignatureError()
 
             self.client.credentials(HTTP_AUTHORIZATION="Bearer expired_token")
-            response = self.client.get("/api/profile/")
+            response = self.client.get("/v1/aggs/")
 
             self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -500,7 +500,7 @@ class JwtAuthenticationIntegrationTest(APITestCase):
         for header in malformed_headers:
             with self.subTest(header=header):
                 self.client.credentials(HTTP_AUTHORIZATION=header)
-                response = self.client.get("/api/profile/")
+                response = self.client.get("/v1/aggs/")
 
                 self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -530,8 +530,8 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         # Set request token header
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
-        # Test accessing a protected endpoint - use new market selector format
-        response = self.client.get("/v1/aggs/")  # Updated to new format
+        # Test accessing a protected endpoint
+        response = self.client.get("/v1/aggs/")  # Clean /v1/ URL
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -539,7 +539,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         """Test invalid request token rejection."""
         self.client.credentials(HTTP_X_REQUEST_TOKEN="invalid-token")
 
-        response = self.client.get("/v1/aggs/")  # Updated to new format
+        response = self.client.get("/v1/aggs/")  # Clean /v1/ URL
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -551,7 +551,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
 
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
-        response = self.client.get("/v1/aggs/")  # Updated to new format
+        response = self.client.get("/v1/aggs/")  # Clean /v1/ URL
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -569,7 +569,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
 
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
-        response = self.client.get("/v1/aggs/")  # Updated to new format
+        response = self.client.get("/v1/aggs/")  # Clean /v1/ URL
 
         # Should not be rejected due to expiration
         self.assertNotEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -578,7 +578,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         """Test missing request token header handling."""
         # Don't set any credentials
 
-        response = self.client.get("/v1/aggs/")  # Updated to new format
+        response = self.client.get("/v1/aggs/")  # Clean /v1/ URL
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -594,7 +594,7 @@ class RequestTokenAuthenticationSystemTest(APITestCase):
         for token in invalid_tokens:
             with self.subTest(token=token):
                 self.client.credentials(HTTP_X_REQUEST_TOKEN=token)
-                response = self.client.get("/v1/aggs/")  # Updated to new format
+                response = self.client.get("/v1/aggs/")  # Clean /v1/ URL
 
                 self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 

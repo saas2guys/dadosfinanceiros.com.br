@@ -18,67 +18,69 @@ from users.permissions import DailyLimitPermission
 
 logger = logging.getLogger(__name__)
 
+def get_permission_classes():
+    """
+    Returns the appropriate permission classes based on the environment.
+    In local development, allow any user; otherwise, use IsAuthenticated.
+    """
+    if settings.ENV == "local":
+        return [AllowAny]
+    return [IsAuthenticated, DailyLimitPermission]
 
-@permission_classes([AllowAny])
+def get_authentication_classes():
+    """
+    Returns the appropriate authentication classes based on the environment.
+    In local development, disable authentication.
+    """
+    if settings.ENV == "local":
+        return []
+    return [JWTAuthentication, RequestTokenAuthentication]
+
+_permissions = get_permission_classes()
+_authentications = get_authentication_classes()
+
+@permission_classes(_permissions)
 def api_documentation(request):
     return render(request, "api/docs.html")
 
 
 class PolygonProxyView(APIView):
     """
-    Proxy view for US market data via Polygon.io API.
-    
-    Forwards requests to Polygon.io and transforms responses for the frontend.
-    Handles authentication, rate limiting, and URL rewriting for pagination.
+    Simplified proxy view for Polygon.io API.
+    Forwards requests with clean /v1/ URLs to appropriate Polygon.io API versions.
     """
+
     renderer_classes = [JSONRenderer]
-    authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
-    permission_classes = [IsAuthenticated, DailyLimitPermission]
+    authentication_classes = _authentications
+    permission_classes = _permissions
 
-    V2_ENDPOINTS = [
-        "aggs",
-        "snapshot/locale/us/markets",
-        "last/trade",
-        "last/nbbo",
-        "fed/vx/treasury-yields",
-        "benzinga/v1/ratings",
-        "grouped/locale/us/market",
-    ]
-
-    V1_ENDPOINTS = [
-        "conversion",
-        "open-close",
-        "related-companies",
-        "meta/symbols",
-        "meta/exchanges",
-        "historic/trades",
-        "historic/quotes",
-        "last/currencies",
-    ]
-
-    EXCLUDED_HEADERS = {
-        "host",
-        "connection",
-        "content-length",
-        "authorization",
-        "x-request-token",
+    # Version mapping patterns - order matters (most specific first)
+    VERSION_PATTERNS = {
+        "v3": [
+            "reference/tickers/types",
+            "reference/tickers/",
+            "reference/tickers",
+            "reference/options/",
+            "reference/indices/",
+            "trades/",
+            "quotes/",
+        ],
+        "v2": [
+            "aggs/",
+            "snapshot/locale/us/markets/",
+            "last/trade/",
+            "last/nbbo/",
+        ],
+        "v1": [
+            "open-close/",
+            "conversion/",
+            "indicators/",
+            "meta/symbols/",
+        ],
     }
-
-    PAGINATION_FIELDS = [
-        "next_url",
-        "previous_url",
-        "next",
-        "previous",
-        "first_url",
-        "last_url",
-    ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._setup_configuration()
-        self._setup_local_environment()
-
-    def _setup_configuration(self):
         self.base_url = settings.POLYGON_BASE_URL
         self.api_key = settings.POLYGON_API_KEY
         self.timeout = getattr(settings, "PROXY_TIMEOUT", 30)
@@ -87,220 +89,138 @@ class PolygonProxyView(APIView):
         )
         self.session = requests.Session()
 
-    def _setup_local_environment(self):
+        # Completely disable authentication and permissions in local development
         if settings.ENV == "local":
-            logger.info("Using no auth and no permissions for local environment!")
             self.authentication_classes = []
             self.permission_classes = [AllowAny]
 
-    def generate_request_id(self):
-        """Generate unique request ID"""
-        return f"proxy_{datetime.now().timestamp()}"
-
-    def _get_polygon_version(self, path):
-        for endpoint in self.V2_ENDPOINTS:
-            if endpoint in path:
-                return "v2"
-
-        for endpoint in self.V1_ENDPOINTS:
-            if endpoint in path:
-                return "v1"
-
-        return "v3"
-
-    def _build_target_url(self, path):
-        clean_path = path.replace("v1/", "")
-
-        # Handle fed and benzinga endpoints with potential additional path components
-        if clean_path.startswith(("fed/", "benzinga/")):
-            return f"{self.base_url}/{clean_path}"
-
-        # Check if this is a treasury yields endpoint that should use v2
-        if "fed/vx/treasury-yields" in clean_path:
-            return f"{self.base_url}/v2/{clean_path}"
-
-        version = self._get_polygon_version(clean_path)
-
-        if self._needs_snapshot_prefix(clean_path):
-            clean_path = (
-                f"snapshot/locale/us/markets/{clean_path.split('snapshot/')[-1]}"
-            )
-
-        return f"{self.base_url}/{version}/{clean_path}"
-
-    def _needs_snapshot_prefix(self, path):
-        return "snapshot" in path and not path.startswith("snapshot/locale")
-
-    def _clean_headers(self, request_headers):
-        return {
-            k: v
-            for k, v in request_headers.items()
-            if k.lower() not in self.EXCLUDED_HEADERS
-        }
-
-    def _get_user_info(self, request):
-        if hasattr(request, "user") and request.user.is_authenticated:
-            return getattr(request.user, "email", str(request.user))
-        return "anonymous"
-
-    def _replace_polygon_urls(self, data, request):
-        if not isinstance(data, dict):
-            return data
-
-        # Process top-level pagination fields
-        for field in self.PAGINATION_FIELDS:
-            if self._has_polygon_url(data, field):
-                data[field] = self._transform_url(data[field])
-                logger.debug(f"Replaced {field}: {data[field]}")
-
-        # Process nested objects that might contain pagination URLs
-        for key, value in data.items():
-            if isinstance(value, dict):
-                # Recursively process nested dictionaries
-                data[key] = self._replace_polygon_urls(value, request)
-            elif isinstance(value, list):
-                # Process lists that might contain dictionaries with URLs
-                for i, item in enumerate(value):
-                    if isinstance(item, dict):
-                        value[i] = self._replace_polygon_urls(item, request)
-
-        return data
-
-    def _has_polygon_url(self, data, field):
-        return (
-            field in data
-            and isinstance(data[field], str)
-            and "polygon.io" in data[field]
-        )
-
-    def _transform_url(self, url):
-        # Remove API key
-        url = re.sub(r"[?&]apikey=[^&]*&?", "", url, flags=re.IGNORECASE)
-        url = re.sub(r"[&?]+$", "", url)
-        url = re.sub(r"&+", "&", url)
-
-        # Replace domain
-        url = url.replace("api.polygon.io", self.proxy_domain)
-
-        # Ensure HTTPS
-        url = self._ensure_https(url)
-
-        # Convert Polygon version paths to our legacy format for backward compatibility
-        # Transform /v2/path or /v3/path to /v1/path
-        url = re.sub(r"/v[2-3]/", "/v1/", url)
-
-        return url
-
-    def _ensure_https(self, url):
-        if url.startswith("http://"):
-            return url.replace("http://", "https://")
-        elif not url.startswith("https://"):
-            return f"https://{url}"
-        return url
-
-    def _make_request(self, method, url, params, headers, data=None):
-        return self.session.request(
-            method=method,
-            url=url,
-            params=params,
-            headers=headers,
-            json=data,
-            timeout=self.timeout,
-        )
-
-    def _handle_request(self, request, path):
+    def _proxy_request(self, request, path):
+        """Handle the complete proxy request lifecycle"""
         try:
-            user_info = self._get_user_info(request)
+            # Clean path and determine version
+            clean_path = path[3:] if path.startswith("v1/") else path
+            version = self._get_version(clean_path)
 
-            logger.info(
-                f"Forwarding {request.method} request to: {path} by user: {user_info}"
-            )
+            # Build target URL
+            target_url = f"{self.base_url}/{version}/{clean_path}"
 
-            # Build target URL for Polygon.io
-            target_url = self._build_target_url(path)
+            # Prepare request
             params = {**request.GET.dict(), "apiKey": self.api_key}
-            headers = self._clean_headers(request.headers)
-
+            headers = {
+                k: v
+                for k, v in request.headers.items()
+                if k.lower()
+                not in {
+                    "host",
+                    "connection",
+                    "content-length",
+                    "authorization",
+                    "x-request-token",
+                }
+            }
             json_data = (
                 request.data if request.method in ["POST", "PUT", "PATCH"] else None
             )
-            response = self._make_request(
-                request.method, target_url, params, headers, json_data
+
+            # Make request
+            response = self.session.request(
+                method=request.method,
+                url=target_url,
+                params=params,
+                headers=headers,
+                json=json_data,
+                timeout=self.timeout,
             )
 
-            logger.info(f"Polygon.io response status code: {response.status_code}")
-            return self._process_response(response, request)
+            # Process response
+            try:
+                data = response.json() if response.content else {}
+                if data:
+                    # Transform pagination URLs and clean internal fields
+                    data = self._clean_response(data)
+                return Response(data=data, status=response.status_code)
+            except ValueError:
+                return Response(
+                    {"error": "Invalid JSON response", "content": response.text},
+                    status=response.status_code,
+                )
 
         except requests.Timeout:
-            return self._error_response(
-                "Gateway Timeout",
-                "The request timed out",
-                status.HTTP_504_GATEWAY_TIMEOUT,
-            )
+            return Response({"error": "Gateway Timeout"}, status=504)
         except requests.RequestException as e:
-            return self._error_response(
-                "Bad Gateway", str(e), status.HTTP_502_BAD_GATEWAY
-            )
+            return Response({"error": "Bad Gateway", "message": str(e)}, status=502)
         except Exception as e:
             logger.error(f"Proxy error: {str(e)}")
-            return self._error_response(
-                "Internal Server Error", str(e), status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            return Response({"error": "Internal Server Error"}, status=500)
 
-    def _process_response(self, response, request):
-        try:
-            data = response.json() if response.content else {}
+    def _get_version(self, path):
+        """Determine Polygon.io API version from path"""
+        # Handle unified snapshot special case
+        if path == "snapshot" or (path.startswith("snapshot?")):
+            return "v3"
 
-            if data:
-                data = self._replace_polygon_urls(data, request)
-                # Remove Polygon.io specific fields that shouldn't be exposed to users
-                data.pop("status", None)
-                data.pop("request_id", None)
-                data.pop("queryCount", None)
+        # Check version patterns
+        for version, patterns in self.VERSION_PATTERNS.items():
+            for pattern in patterns:
+                if (pattern.endswith("/") and path.startswith(pattern)) or (
+                    path == pattern or path.startswith(pattern + "/")
+                ):
+                    return version
+        return "v3"  # Default
 
-            return Response(data=data, status=response.status_code)
+    def _clean_response(self, data):
+        """Clean response data and transform pagination URLs"""
+        if not isinstance(data, dict):
+            return data
 
-        except ValueError:
-            if response.status_code == 404:
-                return self._error_response(
-                    "Not Found",
-                    "The requested resource was not found",
-                    status.HTTP_404_NOT_FOUND,
-                )
-            return Response(
-                data={"error": "Invalid JSON response", "content": response.text},
-                status=response.status_code,
-            )
+        # Remove internal Polygon.io fields
+        for field in ["status", "request_id", "queryCount"]:
+            data.pop(field, None)
 
-    def _error_response(self, error, message, status_code):
-        logger.error(f"{error}: {message}")
-        return Response({"error": error, "message": message}, status=status_code)
+        # Transform pagination URLs
+        for field in ["next_url", "previous_url", "next", "previous"]:
+            if (
+                field in data
+                and isinstance(data[field], str)
+                and "polygon.io" in data[field]
+            ):
+                url = data[field].replace("api.polygon.io", self.proxy_domain)
+                url = re.sub(r"[?&]apikey=[^&]*&?", "", url, flags=re.IGNORECASE)
+                url = re.sub(r"/v[1-3]/", "/v1/", url)  # Normalize to /v1/
+                url = re.sub(r"[&?]+$", "", url)
+                if not url.startswith("https://"):
+                    url = (
+                        f"https://{url}"
+                        if not url.startswith("http")
+                        else url.replace("http://", "https://")
+                    )
+                data[field] = url
 
-    def _increment_user_request_count(self, request, response):
-        """Increment user's daily request count for successful responses"""
-        if (
-            hasattr(request, "user")
-            and request.user.is_authenticated
-            and 200 <= response.status_code < 400
-        ):  # Success status codes
-            request.user.increment_request_count()
+        # Recursively process nested objects
+        for key, value in data.items():
+            if isinstance(value, dict):
+                data[key] = self._clean_response(value)
+            elif isinstance(value, list):
+                data[key] = [
+                    self._clean_response(item) if isinstance(item, dict) else item
+                    for item in value
+                ]
 
+        return data
+
+    # Single method to handle all HTTP methods
     def get(self, request, path):
-        response = self._handle_request(request, path)
-        self._increment_user_request_count(request, response)
-        return response
+        """Handle GET requests"""
+        return self._proxy_request(request, path)
 
     def post(self, request, path):
-        response = self._handle_request(request, path)
-        self._increment_user_request_count(request, response)
-        return response
+        """Handle POST requests"""
+        return self._proxy_request(request, path)
 
     def put(self, request, path):
-        response = self._handle_request(request, path)
-        self._increment_user_request_count(request, response)
-        return response
+        """Handle PUT requests"""
+        return self._proxy_request(request, path)
 
     def delete(self, request, path):
-        response = self._handle_request(request, path)
-        self._increment_user_request_count(request, response)
-        return response
+        """Handle DELETE requests"""
+        return self._proxy_request(request, path)

@@ -3,17 +3,15 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-load_dotenv()
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY", "django-proxy-secret-key-change-in-production"
+SECRET_KEY = config(
+    "SECRET_KEY", default="django-proxy-secret-key-change-in-production"
 )
 
-DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
+DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = (
     ["*"]
@@ -79,17 +77,17 @@ SESSION_SAVE_EVERY_REQUEST = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_SAMESITE = "Lax"
 
-POLYGON_BASE_URL = os.environ.get("POLYGON_BASE_URL", "https://api.polygon.io")
-POLYGON_API_KEY = os.environ.get("POLYGON_API_KEY")
+POLYGON_BASE_URL = config("POLYGON_BASE_URL", default="https://api.polygon.io")
+POLYGON_API_KEY = config("POLYGON_API_KEY", default="your-polygon-api-key-here")
 
-PROXY_TIMEOUT = int(os.environ.get("PROXY_TIMEOUT", "30"))
-PROXY_DOMAIN = os.environ.get("PROXY_DOMAIN", "api.dadosfinanceiros.com.br")
+PROXY_TIMEOUT = config("PROXY_TIMEOUT", default=30, cast=int)
+PROXY_DOMAIN = config("PROXY_DOMAIN", default="api.dadosfinanceiros.com.br")
 
 # Stripe Configuration
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
-STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
-STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
+STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
+STRIPE_LIVE_MODE = config("STRIPE_LIVE_MODE", default=False, cast=bool)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -113,6 +111,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "users.middleware.UserRequestCountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -177,7 +176,7 @@ DATABASES = {
     }
 }
 
-REDIS_URL = os.environ.get("REDIS_URL", "redis://127.0.0.1:6379")
+REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 
 CACHES = {
     "default": {
@@ -201,7 +200,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-ENV = os.environ.get("ENV", "local")
+ENV = config("ENV", default="local")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -278,9 +277,9 @@ if not DEBUG:
         "x-request-token",
     ]
 
-MICROSERVICE_BASE_URL = os.environ.get("MICROSERVICE_BASE_URL", "http://localhost:8001")
-MICROSERVICE_WS_URL = os.environ.get(
-    "MICROSERVICE_WS_URL", "ws://localhost:8001/ws/stocks/"
+MICROSERVICE_BASE_URL = config("MICROSERVICE_BASE_URL", default="http://localhost:8001")
+MICROSERVICE_WS_URL = config(
+    "MICROSERVICE_WS_URL", default="ws://localhost:8001/ws/stocks/"
 )
 
 AUTH_PASSWORD_VALIDATORS = [

@@ -15,7 +15,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -33,9 +32,19 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
 
+def get_permission_classes():
+    if settings.DEBUG:
+        logger.info("DEBUG mode is on. Allowing all requests.")
+        return [permissions.AllowAny]
+    return [permissions.IsAuthenticated]
+
+
+permissions_ = get_permission_classes()
+
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = permissions_
     serializer_class = UserRegistrationSerializer
 
     def create(self, request, *args, **kwargs):
@@ -46,7 +55,7 @@ class RegisterView(generics.CreateAPIView):
 
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = permissions_
     serializer_class = UserSerializer
 
     def get_object(self):
@@ -54,7 +63,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
 
 class RegenerateRequestTokenView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = permissions_
     serializer_class = TokenRegenerationSerializer
 
     def post(self, request):
@@ -81,7 +90,7 @@ class RegenerateRequestTokenView(APIView):
 
 
 class TokenHistoryView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = permissions_
 
     def get(self, request):
         user = request.user
@@ -181,7 +190,7 @@ def register_user(request):
 
 
 @api_view(["GET", "PATCH"])
-@permission_classes([IsAuthenticated])
+@permission_classes(permissions_)
 def user_profile(request):
     if request.method == "GET":
         serializer = UserSerializer(request.user)
@@ -195,7 +204,7 @@ def user_profile(request):
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes(permissions_)
 def regenerate_request_token(request):
     try:
         save_old = request.data.get("save_old", True)
@@ -222,7 +231,7 @@ def regenerate_request_token(request):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes(permissions_)
 def token_history(request):
     history = TokenHistory.objects.filter(user=request.user).order_by("-created_at")[:5]
     serializer = TokenHistorySerializer(history, many=True)
@@ -241,7 +250,7 @@ class PlansListView(generics.ListAPIView):
 
     queryset = Plan.objects.filter(is_active=True)
     serializer_class = PlanSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = permissions_
 
 
 def plans_view(request):
@@ -435,7 +444,7 @@ def stripe_webhook(request):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes(permissions_)
 def user_subscription(request):
     """Get user's current subscription details"""
     user = request.user
@@ -457,7 +466,7 @@ def user_subscription(request):
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes(permissions_)
 def create_checkout_session_api(request):
     """Create Stripe checkout session via API"""
     try:

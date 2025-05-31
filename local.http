@@ -1,76 +1,253 @@
-######### Polygon API HTTP Requests (Localhost Version)
+######### Financial Data API HTTP Requests (Local Development)
+### Base URL: http://localhost:8000
+### 
+### Authentication Options:
+### 1. JWT Token: Authorization: Bearer <jwt_token>
+### 2. Request Token: X-Request-Token: <user_request_token>
+###
+### Note: In DEBUG mode, authentication is optional for testing
+### 
+### API Key Configuration:
+### - POLYGON_API_KEY is required for all endpoints to return real data
+### - Set POLYGON_API_KEY environment variable before starting the server
+### - Without API key, requests will return 401 Unauthorized errors
+### - Get your API key from: https://polygon.io/
 
-## All Tickers
-GET http://localhost:8000/api/v1/reference/tickers?market=stocks&active=true&order=asc&limit=100&sort=ticker
+#################### AUTHENTICATION & USER MANAGEMENT ####################
 
-### Ticker Overview
-GET http://localhost:8000/api/v1/reference/tickers/AAPL
+### User Registration (JSON)
+POST http://localhost:8000/api/register/
+Content-Type: application/json
 
-### Ticker Types
-GET http://localhost:8000/api/v1/reference/tickers/types
+{
+  "email": "testuser@example.com",
+  "password": "securepassword123",
+  "password2": "securepassword123",
+  "first_name": "Test",
+  "last_name": "User"
+}
 
-### Related Tickers
-GET http://localhost:8000/api/v1/meta/symbols/AAPL/company
+### User Registration (Form)
+POST http://localhost:8000/api/register/
+Content-Type: application/x-www-form-urlencoded
 
-### Aggregate Bars (OHLC)
-GET http://localhost:8000/api/v1/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-10?adjusted=true&sort=asc&limit=120
+email=testuser@example.com&password=securepassword123&password2=securepassword123&first_name=Test&last_name=User
 
-### Daily Market Summary
-GET http://localhost:8000/api/v1/open-close/stocks/2023-01-09
+### User Profile (Get)
+GET http://localhost:8000/api/profile/
+X-Request-Token: your-request-token-here
 
-### Daily Ticker Summary
-GET http://localhost:8000/api/v1/open-close/AAPL/2023-01-09?adjusted=true
+### User Profile (Update)
+PATCH http://localhost:8000/api/profile/
+Content-Type: application/json
+X-Request-Token: your-request-token-here
+
+{
+  "first_name": "Updated",
+  "last_name": "Name"
+}
+
+### Get User Subscription Details
+GET http://localhost:8000/api/subscription/
+X-Request-Token: your-request-token-here
+
+#################### TOKEN MANAGEMENT ####################
+
+### Regenerate Request Token
+POST http://localhost:8000/api/regenerate-token/
+Content-Type: application/json
+X-Request-Token: your-request-token-here
+
+{
+  "save_old": true,
+  "auto_renew": true,
+  "validity_days": 90
+}
+
+### Get Token History
+GET http://localhost:8000/api/token-history/
+X-Request-Token: your-request-token-here
+
+#################### SUBSCRIPTION MANAGEMENT ####################
+
+### List Available Plans
+GET http://localhost:8000/api/plans/
+
+### Create Checkout Session
+POST http://localhost:8000/api/checkout/
+Content-Type: application/json
+X-Request-Token: your-request-token-here
+
+{
+  "plan_id": 1
+}
+
+### Cancel Subscription
+POST http://localhost:8000/cancel-subscription/
+Content-Type: application/x-www-form-urlencoded
+X-Request-Token: your-request-token-here
+
+### Reactivate Subscription
+POST http://localhost:8000/reactivate-subscription/
+Content-Type: application/x-www-form-urlencoded
+X-Request-Token: your-request-token-here
+
+#################### POLYGON.IO PROXY ENDPOINTS (US Market) ####################
+### All endpoints use clean /v1/ URLs but map to appropriate Polygon.io versions internally
+### Authentication required in production (optional in DEBUG mode)
+### Configure POLYGON_API_KEY environment variable for real data
+
+### Reference Data - All Tickers
+GET http://localhost:8000/v1/reference/tickers?market=stocks&active=true&order=asc&limit=100&sort=ticker
+X-Request-Token: your-request-token-here
+
+### Reference Data - Ticker Overview  
+GET http://localhost:8000/v1/reference/tickers/AAPL
+X-Request-Token: your-request-token-here
+
+### Reference Data - Ticker Types
+GET http://localhost:8000/v1/reference/tickers/types
+X-Request-Token: your-request-token-here
+
+### Reference Data - Related Companies
+GET http://localhost:8000/v1/meta/symbols/AAPL/company
+X-Request-Token: your-request-token-here
+
+### Aggregates (OHLC Bars) - Custom Range
+GET http://localhost:8000/v1/aggs/ticker/AAPL/range/1/day/2024-01-01/2024-01-31?adjusted=true&sort=asc&limit=120
+X-Request-Token: your-request-token-here
 
 ### Previous Day Bar
-GET http://localhost:8000/api/v1/aggs/ticker/AAPL/prev?adjusted=true
+GET http://localhost:8000/v1/aggs/ticker/AAPL/prev?adjusted=true
+X-Request-Token: your-request-token-here
 
-### Single Ticker Snapshot
-GET http://localhost:8000/api/v1/snapshot/locale/us/markets/stocks/tickers/AAPL
+### Daily Open/Close - Ticker
+GET http://localhost:8000/v1/open-close/AAPL/2024-01-09?adjusted=true
+X-Request-Token: your-request-token-here
 
-### Full Market Snapshot
-GET http://localhost:8000/api/v1/snapshot/locale/us/markets/stocks/tickers?tickers=AAPL,MSFT,AMZN
-
-### Unified Snapshot
-GET http://localhost:8000/api/v1/snapshot?ticker.any_of=AAPL,O:AAPL230616C00190000,C:BTCUSD,FX:EURUSD
-
-### Top Market Movers
-GET http://localhost:8000/api/v1/snapshot/locale/us/markets/stocks/gainers?include_otc=false
-
-### Trades
-GET http://localhost:8000/api/v1/trades/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
+### Daily Open/Close - Market
+GET http://localhost:8000/v1/open-close/stocks/2025-02-10?adjusted=true
+X-Request-Token: your-request-token-here
 
 ### Last Trade
-GET http://localhost:8000/api/v1/last/trade/AAPL
+GET http://localhost:8000/v1/last/trade/AAPL
+X-Request-Token: your-request-token-here
 
-### Quotes
-GET http://localhost:8000/api/v1/quotes/AAPL?timestamp.gte=2023-01-09T09:30:00Z&timestamp.lte=2023-01-09T16:00:00Z&limit=10
+### Last Quote (NBBO)
+GET http://localhost:8000/v1/last/nbbo/AAPL
+X-Request-Token: your-request-token-here
 
-### Last Quote
-GET http://localhost:8000/api/v1/last/nbbo/AAPL
+### Trades (Historical)
+GET http://localhost:8000/v1/trades/AAPL?timestamp.gte=2024-01-09T09:30:00Z&timestamp.lte=2024-01-09T16:00:00Z&limit=10
+X-Request-Token: your-request-token-here
 
-### All Option Contracts
-GET http://localhost:8000/api/v1/reference/options/contracts?underlying_ticker=AAPL&contract_type=call&expiration_date.gte=2023-06-01&order=asc&limit=10&sort=ticker
+### Quotes (Historical)
+GET http://localhost:8000/v1/quotes/AAPL?timestamp.gte=2024-01-09T09:30:00Z&timestamp.lte=2024-01-09T16:00:00Z&limit=10
+X-Request-Token: your-request-token-here
 
-### Option Contract Overview
-GET http://localhost:8000/api/v1/reference/options/contracts/O:AAPL230616C00190000
+### Market Snapshot - Single Ticker
+GET http://localhost:8000/v1/snapshot/locale/us/markets/stocks/tickers/AAPL
+X-Request-Token: your-request-token-here
+
+### Market Snapshot - Multiple Tickers
+GET http://localhost:8000/v1/snapshot/locale/us/markets/stocks/tickers?tickers=AAPL,MSFT,GOOGL
+X-Request-Token: your-request-token-here
+
+### Unified Snapshot (Cross-market)
+GET http://localhost:8000/v1/snapshot?ticker.any_of=AAPL,O:AAPL240621C00190000
+X-Request-Token: your-request-token-here
+
+### Market Gainers
+GET http://localhost:8000/v1/snapshot/locale/us/markets/stocks/gainers?include_otc=false
+X-Request-Token: your-request-token-here
+
+### Market Losers
+GET http://localhost:8000/v1/snapshot/locale/us/markets/stocks/losers?include_otc=false
+X-Request-Token: your-request-token-here
+
+#################### OPTIONS DATA ####################
+
+### Options Contracts - All
+GET http://localhost:8000/v1/reference/options/contracts?underlying_ticker=AAPL&contract_type=call&expiration_date.gte=2024-06-01&order=asc&limit=10
+X-Request-Token: your-request-token-here
+
+### Option Contract Details
+GET http://localhost:8000/v1/reference/options/contracts/O:AAPL240621C00190000
+X-Request-Token: your-request-token-here
+
+#################### INDICES DATA ####################
 
 ### All Indices
-GET http://localhost:8000/api/v1/reference/indices?market=indices&order=asc&limit=10&sort=ticker
+GET http://localhost:8000/v1/reference/indices?market=indices&order=asc&limit=10&sort=ticker
+X-Request-Token: your-request-token-here
 
 ### Index Overview
-GET http://localhost:8000/api/v1/reference/indices/I:SPX
+GET http://localhost:8000/v1/reference/indices/I:SPX
+X-Request-Token: your-request-token-here
 
-### All Forex Tickers
-GET http://localhost:8000/api/v1/reference/tickers?market=fx&active=true&order=asc&limit=10&sort=ticker
+#################### FOREX & CRYPTO ####################
+
+### Forex Tickers
+GET http://localhost:8000/v1/reference/tickers?market=fx&active=true&order=asc&limit=10&sort=ticker
+X-Request-Token: your-request-token-here
 
 ### Currency Conversion
-GET http://localhost:8000/api/v1/conversion/USD/EUR?amount=100&precision=2
+GET http://localhost:8000/v1/conversion/USD/EUR?amount=100&precision=2
+X-Request-Token: your-request-token-here
 
-### All Crypto Tickers
-GET http://localhost:8000/api/v1/reference/tickers?market=crypto&active=true&order=asc&limit=10&sort=ticker
+### Crypto Tickers
+GET http://localhost:8000/v1/reference/tickers?market=crypto&active=true&order=asc&limit=10&sort=ticker
+X-Request-Token: your-request-token-here
+
+#################### ECONOMIC DATA ####################
 
 ### Treasury Yields
-GET http://localhost:8000/api/v1/indicators/treasury-yields?ticker=US10Y&from=2023-01-01&to=2023-01-31&order=asc&limit=10
+GET http://localhost:8000/v1/indicators/treasury-yields?ticker=US10Y&from=2024-01-01&to=2024-01-31&order=asc&limit=10
+X-Request-Token: your-request-token-here
+
+#################### ANALYST DATA ####################
 
 ### Analyst Ratings
-GET http://localhost:8000/api/v1/meta/symbols/AAPL/analysts
+GET http://localhost:8000/v1/meta/symbols/AAPL/analysts
+X-Request-Token: your-request-token-here
+
+#################### FRONTEND PAGES ####################
+### These don't require authentication
+
+### Home Page
+GET http://localhost:8000/
+
+### Login Page
+GET http://localhost:8000/login/
+
+### Registration Page
+GET http://localhost:8000/register/
+
+### User Profile Page (requires browser login)
+GET http://localhost:8000/profile/
+
+### Subscription Plans
+GET http://localhost:8000/plans/
+
+### API Documentation
+GET http://localhost:8000/api/docs/
+
+#################### TESTING ENDPOINTS ####################
+
+### Test with Invalid Token (Should return 401)
+GET http://localhost:8000/v1/last/trade/AAPL
+X-Request-Token: invalid-token
+
+### Test without Authentication (Should return 401 in production, 200 in DEBUG)
+GET http://localhost:8000/v1/last/trade/AAPL
+
+### Test Daily Limit (Make multiple requests to test rate limiting)
+GET http://localhost:8000/v1/last/trade/AAPL
+X-Request-Token: your-request-token-here
+
+### Test CSRF (for frontend forms)
+POST http://localhost:8000/regenerate-token/
+Content-Type: application/x-www-form-urlencoded
+X-CSRFToken: csrf-token-here
+
+never_expires=false
