@@ -2,6 +2,7 @@ import os
 import sys
 from datetime import timedelta
 from pathlib import Path
+import dj_database_url
 
 from decouple import config
 
@@ -172,12 +173,26 @@ TEMPLATES = [
 
 ASGI_APPLICATION = "proxy_project.asgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+# Database configuration with PostgreSQL support
+DATABASE_URL = config("DATABASE_URL", default=None)
+
+if DATABASE_URL:
+    # Use PostgreSQL from DATABASE_URL
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600, conn_health_checks=True)
     }
-}
+    # Ensure SSL settings for production PostgreSQL
+    DATABASES["default"]["OPTIONS"] = {
+        "sslmode": "require",
+    }
+else:
+    # Fallback to SQLite for development
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 
