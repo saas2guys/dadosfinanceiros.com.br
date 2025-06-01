@@ -18,18 +18,22 @@ from users.permissions import DailyLimitPermission
 
 logger = logging.getLogger(__name__)
 
+
 def get_permission_classes():
     if settings.ENV == "local":
         return [AllowAny]
     return [IsAuthenticated, DailyLimitPermission]
+
 
 def get_authentication_classes():
     if settings.ENV == "local":
         return []
     return [JWTAuthentication, RequestTokenAuthentication]
 
+
 _permissions = get_permission_classes()
 _authentications = get_authentication_classes()
+
 
 @permission_classes(_permissions)
 def api_documentation(request):
@@ -37,7 +41,6 @@ def api_documentation(request):
 
 
 class PolygonProxyView(APIView):
-
     renderer_classes = [JSONRenderer]
     authentication_classes = _authentications
     permission_classes = _permissions

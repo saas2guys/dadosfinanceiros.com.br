@@ -18,8 +18,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Plan, TokenHistory, User, WaitingList
 from .forms import WaitingListForm
+from .models import Plan, TokenHistory, User, WaitingList
 from .serializers import (
     PlanSerializer,
     TokenHistorySerializer,
@@ -155,33 +155,33 @@ def regenerate_token(request):
 @permission_classes([permissions.AllowAny])
 def register_user(request):
     # Temporarily redirect all registration attempts to waiting list
-    return redirect('waiting_list')
+    return redirect("waiting_list")
 
 
 def waiting_list(request):
     """Handle waiting list registration form"""
-    if request.method == 'POST':
+    if request.method == "POST":
         form = WaitingListForm(request.POST)
         if form.is_valid():
             try:
                 form.save()
                 messages.success(
-                    request, 
+                    request,
                     "Thank you for your interest! You've been added to our waiting list. "
-                    "We'll notify you as soon as the API becomes available."
+                    "We'll notify you as soon as the API becomes available.",
                 )
-                return redirect('waiting_list_success')
+                return redirect("waiting_list_success")
             except Exception as e:
-                if 'UNIQUE constraint failed' in str(e) or 'duplicate key' in str(e):
+                if "UNIQUE constraint failed" in str(e) or "duplicate key" in str(e):
                     messages.info(
                         request,
                         "This email is already on our waiting list. "
-                        "We'll notify you when the API becomes available!"
+                        "We'll notify you when the API becomes available!",
                     )
                 else:
                     messages.error(
                         request,
-                        "There was an issue adding you to the waiting list. Please try again."
+                        "There was an issue adding you to the waiting list. Please try again.",
                     )
         else:
             for field, errors in form.errors.items():
@@ -189,13 +189,13 @@ def waiting_list(request):
                     messages.error(request, f"{field}: {error}")
     else:
         form = WaitingListForm()
-    
-    return render(request, 'waiting_list.html', {'form': form})
+
+    return render(request, "waiting_list.html", {"form": form})
 
 
 def waiting_list_success(request):
     """Success page after joining waiting list"""
-    return render(request, 'waiting_list_success.html')
+    return render(request, "waiting_list_success.html")
 
 
 @api_view(["GET", "PATCH"])

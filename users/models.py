@@ -1,5 +1,6 @@
 import uuid
-from datetime import datetime, timedelta, timezone as tz
+from datetime import datetime, timedelta
+from datetime import timezone as tz
 from enum import Enum
 
 from django.contrib.auth.models import AbstractUser
@@ -72,7 +73,7 @@ class User(AbstractUser):
     current_period_start = models.DateTimeField(null=True, blank=True)
     current_period_end = models.DateTimeField(null=True, blank=True)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     def save(self, *args, **kwargs):

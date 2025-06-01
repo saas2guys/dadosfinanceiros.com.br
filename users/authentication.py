@@ -6,7 +6,6 @@ User = get_user_model()
 
 
 class RequestTokenAuthentication(BaseAuthentication):
-
     def authenticate(self, request):
         token = request.META.get("HTTP_X_REQUEST_TOKEN")
 

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns, set_language
 from django.contrib import admin
 from django.urls import include, path
@@ -6,7 +7,6 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-from django.conf import settings
 
 urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
@@ -27,6 +27,7 @@ urlpatterns += i18n_patterns(
 if settings.DEBUG:
     try:
         import debug_toolbar
+
         urlpatterns = [
             path("__debug__/", include(debug_toolbar.urls)),
         ] + urlpatterns

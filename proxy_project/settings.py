@@ -2,8 +2,8 @@ import os
 import sys
 from datetime import timedelta
 from pathlib import Path
-import dj_database_url
 
+import dj_database_url
 from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,30 +20,30 @@ if DEBUG:
         "127.0.0.1",
         "localhost",
     ]
-    
+
     # Django Debug Toolbar settings
     DEBUG_TOOLBAR_CONFIG = {
-        'SHOW_TOOLBAR_CALLBACK': lambda request: True,  # Always show toolbar in DEBUG mode
-        'INSERT_BEFORE': '</body>',
-        'HIDE_DJANGO_SQL': False,
-        'TAG': 'div',
-        'ENABLE_STACKTRACES': True,
+        "SHOW_TOOLBAR_CALLBACK": lambda request: True,  # Always show toolbar in DEBUG mode
+        "INSERT_BEFORE": "</body>",
+        "HIDE_DJANGO_SQL": False,
+        "TAG": "div",
+        "ENABLE_STACKTRACES": True,
     }
-    
+
     DEBUG_TOOLBAR_PANELS = [
-        'debug_toolbar.panels.history.HistoryPanel',
-        'debug_toolbar.panels.versions.VersionsPanel',
-        'debug_toolbar.panels.timer.TimerPanel',
-        'debug_toolbar.panels.settings.SettingsPanel',
-        'debug_toolbar.panels.headers.HeadersPanel',
-        'debug_toolbar.panels.request.RequestPanel',
-        'debug_toolbar.panels.sql.SQLPanel',
-        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-        'debug_toolbar.panels.templates.TemplatesPanel',
-        'debug_toolbar.panels.cache.CachePanel',
-        'debug_toolbar.panels.signals.SignalsPanel',
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-        'debug_toolbar.panels.profiling.ProfilingPanel',
+        "debug_toolbar.panels.history.HistoryPanel",
+        "debug_toolbar.panels.versions.VersionsPanel",
+        "debug_toolbar.panels.timer.TimerPanel",
+        "debug_toolbar.panels.settings.SettingsPanel",
+        "debug_toolbar.panels.headers.HeadersPanel",
+        "debug_toolbar.panels.request.RequestPanel",
+        "debug_toolbar.panels.sql.SQLPanel",
+        "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+        "debug_toolbar.panels.templates.TemplatesPanel",
+        "debug_toolbar.panels.cache.CachePanel",
+        "debug_toolbar.panels.signals.SignalsPanel",
+        "debug_toolbar.panels.redirects.RedirectsPanel",
+        "debug_toolbar.panels.profiling.ProfilingPanel",
     ]
 
 ALLOWED_HOSTS = (
@@ -146,54 +146,56 @@ if DEBUG:
     # Only add development apps if they're actually available
     try:
         import django_extensions
+
         INSTALLED_APPS += ["django_extensions"]
-        
+
         # Django Extensions shell_plus configuration
         SHELL_PLUS_PRE_IMPORTS = [
-            ('pprint', ['pprint', 'pformat']),
-            ('datetime', ['datetime', 'date', 'time', 'timedelta']),
+            ("pprint", ["pprint", "pformat"]),
+            ("datetime", ["datetime", "date", "time", "timedelta"]),
         ]
-        
+
         # Additional shell_plus settings
         SHELL_PLUS_PRINT_SQL = True  # Show SQL queries in shell_plus
         SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000  # Truncate long SQL queries
     except ImportError:
         # django_extensions not available
         pass
-    
+
     try:
         import debug_toolbar
+
         INSTALLED_APPS += ["debug_toolbar"]
-        
+
         # Django Debug Toolbar configuration (development only)
         INTERNAL_IPS = [
             "127.0.0.1",
             "localhost",
         ]
-        
+
         # Django Debug Toolbar settings
         DEBUG_TOOLBAR_CONFIG = {
-            'SHOW_TOOLBAR_CALLBACK': lambda request: True,  # Always show toolbar in DEBUG mode
-            'INSERT_BEFORE': '</body>',
-            'HIDE_DJANGO_SQL': False,
-            'TAG': 'div',
-            'ENABLE_STACKTRACES': True,
+            "SHOW_TOOLBAR_CALLBACK": lambda request: True,  # Always show toolbar in DEBUG mode
+            "INSERT_BEFORE": "</body>",
+            "HIDE_DJANGO_SQL": False,
+            "TAG": "div",
+            "ENABLE_STACKTRACES": True,
         }
-        
+
         DEBUG_TOOLBAR_PANELS = [
-            'debug_toolbar.panels.history.HistoryPanel',
-            'debug_toolbar.panels.versions.VersionsPanel',
-            'debug_toolbar.panels.timer.TimerPanel',
-            'debug_toolbar.panels.settings.SettingsPanel',
-            'debug_toolbar.panels.headers.HeadersPanel',
-            'debug_toolbar.panels.request.RequestPanel',
-            'debug_toolbar.panels.sql.SQLPanel',
-            'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-            'debug_toolbar.panels.templates.TemplatesPanel',
-            'debug_toolbar.panels.cache.CachePanel',
-            'debug_toolbar.panels.signals.SignalsPanel',
-            'debug_toolbar.panels.redirects.RedirectsPanel',
-            'debug_toolbar.panels.profiling.ProfilingPanel',
+            "debug_toolbar.panels.history.HistoryPanel",
+            "debug_toolbar.panels.versions.VersionsPanel",
+            "debug_toolbar.panels.timer.TimerPanel",
+            "debug_toolbar.panels.settings.SettingsPanel",
+            "debug_toolbar.panels.headers.HeadersPanel",
+            "debug_toolbar.panels.request.RequestPanel",
+            "debug_toolbar.panels.sql.SQLPanel",
+            "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+            "debug_toolbar.panels.templates.TemplatesPanel",
+            "debug_toolbar.panels.cache.CachePanel",
+            "debug_toolbar.panels.signals.SignalsPanel",
+            "debug_toolbar.panels.redirects.RedirectsPanel",
+            "debug_toolbar.panels.profiling.ProfilingPanel",
         ]
     except ImportError:
         # debug_toolbar not available
@@ -217,6 +219,7 @@ MIDDLEWARE = [
 if DEBUG:
     try:
         import debug_toolbar
+
         MIDDLEWARE += [
             "debug_toolbar.middleware.DebugToolbarMiddleware",
         ]
@@ -282,7 +285,9 @@ DATABASE_URL = config("DATABASE_URL", default=None)
 if DATABASE_URL:
     # Use PostgreSQL from DATABASE_URL
     DATABASES = {
-        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600, conn_health_checks=True)
+        "default": dj_database_url.parse(
+            DATABASE_URL, conn_max_age=600, conn_health_checks=True
+        )
     }
     # Ensure SSL settings for production PostgreSQL
     DATABASES["default"]["OPTIONS"] = {

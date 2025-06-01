@@ -32,9 +32,13 @@ urlpatterns = [
         "login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"
     ),
     path("logout/", auth_views.LogoutView.as_view(next_page="home"), name="logout"),
-    path("register/", views.register_user, name="register"),  # Now redirects to waiting list
+    path(
+        "register/", views.register_user, name="register"
+    ),  # Now redirects to waiting list
     path("waiting-list/", views.waiting_list, name="waiting_list"),
-    path("waiting-list/success/", views.waiting_list_success, name="waiting_list_success"),
+    path(
+        "waiting-list/success/", views.waiting_list_success, name="waiting_list_success"
+    ),
     path("regenerate-token/", views.regenerate_token, name="regenerate_token"),
     # Password reset URLs
     path(
