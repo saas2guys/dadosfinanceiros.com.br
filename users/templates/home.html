@@ -1,213 +1,163 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Home - Financial Data API{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
-<!-- Main content with normal width -->
-<div class="max-w-4xl mx-auto px-4 mb-12">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">Financial Data API</h1>
-        
-        <!-- WhiteNoise Static Files Test -->
-        <div class="whitenoise-test">
-            <h3>✅ WhiteNoise Active - Static Files Served Locally</h3>
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+    <!-- Hero Section -->
+    <div class="pt-16 pb-20 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- API Coming Soon Notice -->
+            <div class="mb-8 inline-flex items-center px-6 py-3 rounded-full bg-yellow-900 border border-yellow-700">
+                <svg class="h-5 w-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="text-sm font-medium text-yellow-300">API Coming Soon - Join Our Waiting List</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                Financial Data API
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Access comprehensive financial market data with our powerful, reliable, and easy-to-use API. 
+                Get real-time stocks, forex, crypto, and more.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200">
+                    Join Waiting List
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="bg-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-200">
+                        Go to Dashboard
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
+                        Sign In
+                    </a>
+                {% endif %}
+            </div>
         </div>
-        
-        <p class="text-xl text-gray-600 mb-8">Access financial market data with ease and security</p>
-        <a href="{% url 'proxy_app:api_docs' %}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:text-lg">
-            View Complete API Documentation
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-        </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Features</h2>
-            <ul class="space-y-3">
-                <li class="flex items-start">
-                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>API tokens with 30-day validity</span>
-                </li>
-                <li class="flex items-start">
-                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Permanent tokens available</span>
-                </li>
-                <li class="flex items-start">
-                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Complete token history</span>
-                </li>
-                <li class="flex items-start">
-                    <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Daily request limits</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Get Started</h2>
-            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-4">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+    <!-- Features Section -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">Powerful Features</h2>
+                <p class="text-lg text-gray-400">Everything you need for financial data integration</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <div class="bg-indigo-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-blue-700">
-                            <strong>API Coming Soon!</strong> We're currently in beta testing. Join our waiting list to get early access and be notified when we launch.
-                        </p>
+                    <h3 class="text-xl font-semibold text-white mb-2">Real-time Data</h3>
+                    <p class="text-gray-400">Get live market data with minimal latency for stocks, forex, and cryptocurrencies.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <div class="bg-green-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">99.9% Uptime</h3>
+                    <p class="text-gray-400">Reliable infrastructure ensures your applications always have access to data.</p>
                 </div>
-            </div>
-            <p class="text-gray-600 mb-4">Join our waiting list to get priority access when we launch our comprehensive financial data API.</p>
-            <div class="space-x-4">
-                <a href="{% url 'waiting_list' %}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Join Waiting List</a>
-                <a href="{% url 'login' %}" class="inline-block text-indigo-600 hover:text-indigo-700">Login</a>
+                
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <div class="bg-blue-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Secure & Compliant</h3>
+                    <p class="text-gray-400">Enterprise-grade security with authentication and rate limiting.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <div class="bg-purple-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Easy Integration</h3>
+                    <p class="text-gray-400">RESTful API with comprehensive documentation and code examples.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <div class="bg-yellow-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">High Performance</h3>
+                    <p class="text-gray-400">Optimized for speed with global CDN and caching infrastructure.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <div class="bg-red-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">24/7 Support</h3>
+                    <p class="text-gray-400">Get help when you need it with our dedicated support team.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- How it Works Section -->
-    <div class="mb-12">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">How It Works</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center">
-                <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
-                    <span class="text-2xl">1</span>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">Join the Waiting List</h3>
-                <p class="text-gray-600">Sign up to be notified when we launch and get priority access.</p>
+    <!-- How It Works Section -->
+    <div class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">How It Works</h2>
+                <p class="text-lg text-gray-400">Get started with our waiting list in three simple steps</p>
             </div>
-            <div class="text-center">
-                <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
-                    <span class="text-2xl">2</span>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-indigo-400">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Join Waiting List</h3>
+                    <p class="text-gray-400">Sign up for our waiting list to be notified when the API launches.</p>
                 </div>
-                <h3 class="text-xl font-semibold mb-2">Get Notified</h3>
-                <p class="text-gray-600">We'll email you as soon as the API is ready for public access.</p>
-            </div>
-            <div class="text-center">
-                <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
-                    <span class="text-2xl">3</span>
+                
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-indigo-400">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Get Early Access</h3>
+                    <p class="text-gray-400">Receive exclusive early access and special pricing when we launch.</p>
                 </div>
-                <h3 class="text-xl font-semibold mb-2">Start Building</h3>
-                <p class="text-gray-600">Create your account, get your API token, and start accessing financial data.</p>
+                
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-indigo-400">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Start Building</h3>
+                    <p class="text-gray-400">Begin integrating financial data into your applications immediately.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Full width API Documentation section -->
-<div class="w-full bg-gray-50 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 py-12">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">API Reference Preview</h2>
-            <p class="text-xl text-gray-600 mb-8">Get a quick overview of our API endpoints</p>
-            <a href="{% url 'proxy_app:api_docs' %}" class="text-indigo-600 hover:text-indigo-700 font-medium">
-                View Full Documentation
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
+    <!-- CTA Section -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
+            <p class="text-lg text-gray-400 mb-8">
+                Join thousands of developers who are waiting for our powerful financial data API.
+            </p>
+            <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200">
+                Join Waiting List Now
             </a>
-        </div>
-
-        <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Sidebar Navigation -->
-            <div class="lg:w-64 flex-shrink-0">
-                <div class="sticky top-4 bg-white rounded-lg shadow-sm p-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Navigation</h3>
-                    <nav class="space-y-1">
-                        <a href="#authentication" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Authentication</a>
-                        <a href="#stocks" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Stocks</a>
-                        <a href="#forex" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Forex</a>
-                        <a href="#crypto" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Crypto</a>
-                        <a href="{% url 'proxy_app:api_docs' %}" class="block px-3 py-2 text-indigo-600 hover:bg-gray-100 rounded-md font-medium">Full Documentation →</a>
-                    </nav>
-                </div>
-            </div>
-
-            <!-- Main Content -->
-            <div class="flex-1">
-                <!-- Authentication Section -->
-                <section id="authentication" class="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">Authentication</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#authentication" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
-                    </div>
-                    <div class="prose max-w-none">
-                        <p class="text-gray-600 mb-4">All API requests require authentication using JWT tokens.</p>
-                        <div class="bg-gray-800 text-white p-4 rounded-md">
-                            <pre><code>POST /api/token/
-
-{
-    "email": "your@email.com",
-    "password": "your_password"
-}</code></pre>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Stocks Section -->
-                <section id="stocks" class="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">Stocks</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#stocks" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
-                                <span class="font-mono text-gray-800">/api/v1/stocks/tickers/</span>
-                            </div>
-                            <p class="text-gray-600 mb-4">Get a list of all available stock tickers.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Forex Section -->
-                <section id="forex" class="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">Forex</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#forex" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
-                                <span class="font-mono text-gray-800">/api/v1/forex/pairs/</span>
-                            </div>
-                            <p class="text-gray-600 mb-4">Get a list of available forex currency pairs.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Crypto Section -->
-                <section id="crypto" class="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">Crypto</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#crypto" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
-                                <span class="font-mono text-gray-800">/api/v1/crypto/pairs/</span>
-                            </div>
-                            <p class="text-gray-600 mb-4">Get a list of available cryptocurrency trading pairs.</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
         </div>
     </div>
 </div>
