@@ -145,6 +145,16 @@ if DEBUG:
         "django_extensions",
         "debug_toolbar",
     ]
+    
+    # Django Extensions shell_plus configuration
+    SHELL_PLUS_PRE_IMPORTS = [
+        ('pprint', ['pprint', 'pformat']),
+        ('datetime', ['datetime', 'date', 'time', 'timedelta']),
+    ]
+    
+    # Additional shell_plus settings
+    SHELL_PLUS_PRINT_SQL = True  # Show SQL queries in shell_plus
+    SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000  # Truncate long SQL queries
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
