@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Join Waiting List - Financial Data API{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-indigo-100 mb-4">
+                <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Financial Data API</h1>
+            <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Coming Soon</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                We're putting the finishing touches on our comprehensive financial data API. 
+                Join our waiting list to be the first to know when we launch and get exclusive early access.
+            </p>
+        </div>
+
+        <!-- Features Preview -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">What to Expect</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-medium text-gray-900">Real-time Stock Data</h4>
+                        <p class="text-sm text-gray-600">Live market data for stocks, indices, and ETFs</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-medium text-gray-900">Forex & Crypto</h4>
+                        <p class="text-sm text-gray-600">Currency exchange rates and cryptocurrency data</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-medium text-gray-900">Enterprise-grade API</h4>
+                        <p class="text-sm text-gray-600">Reliable, scalable, and secure infrastructure</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-medium text-gray-900">Flexible Pricing</h4>
+                        <p class="text-sm text-gray-600">Plans for individual developers to enterprises</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Waiting List Form -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Join the Waiting List</h3>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-4 rounded-md {% if message.tags == 'error' %}bg-red-100 border border-red-400 text-red-700{% elif message.tags == 'success' %}bg-green-100 border border-green-400 text-green-700{% elif message.tags == 'info' %}bg-blue-100 border border-blue-400 text-blue-700{% else %}bg-gray-100 border border-gray-400 text-gray-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.first_name.label }}
+                        </label>
+                        {{ form.first_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.last_name.label }}
+                        </label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+
+                <div>
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.email.label }} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.email }}
+                </div>
+
+                <div>
+                    <label for="{{ form.company.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.company.label }}
+                    </label>
+                    {{ form.company }}
+                </div>
+
+                <div>
+                    <label for="{{ form.use_case.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.use_case.label }}
+                    </label>
+                    {{ form.use_case }}
+                    <p class="mt-2 text-sm text-gray-500">
+                        Help us understand your needs so we can prioritize features that matter to you.
+                    </p>
+                </div>
+
+                <div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 font-medium text-lg transition duration-150 ease-in-out">
+                        Join Waiting List
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account? 
+                    <a href="{% url 'login' %}" class="text-indigo-600 hover:text-indigo-500 font-medium">Sign in here</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="mt-12 text-center">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">Launch Timeline</h3>
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-green-100 rounded-full p-3 mb-2">
+                            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h4 class="font-medium text-gray-900">API Development</h4>
+                        <p class="text-sm text-gray-600">Completed</p>
+                    </div>
+                    <div class="hidden md:block w-8 h-px bg-gray-300"></div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-yellow-100 rounded-full p-3 mb-2">
+                            <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="font-medium text-gray-900">Testing & Optimization</h4>
+                        <p class="text-sm text-gray-600">In Progress</p>
+                    </div>
+                    <div class="hidden md:block w-8 h-px bg-gray-300"></div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-100 rounded-full p-3 mb-2">
+                            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="font-medium text-gray-900">Public Launch</h4>
+                        <p class="text-sm text-gray-600">Coming Soon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

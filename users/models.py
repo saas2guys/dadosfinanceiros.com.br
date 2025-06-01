@@ -45,6 +45,8 @@ class Plan(models.Model):
 
 
 class User(AbstractUser):
+    username = models.CharField(max_length=150, null=True, blank=True)
+    email = models.EmailField(unique=True)
     request_token = models.UUIDField(default=uuid.uuid4, unique=True)
     request_token_created = models.DateTimeField(auto_now_add=True)
     request_token_expires = models.DateTimeField(null=True, blank=True)
@@ -52,7 +54,7 @@ class User(AbstractUser):
     token_validity_days = models.PositiveIntegerField(default=30)
     token_never_expires = models.BooleanField(default=False)
     daily_requests_made = models.PositiveIntegerField(default=0)
-    last_request_reset = models.DateField(auto_now_add=True)
+    last_request_date = models.DateField(null=True, blank=True)
     previous_tokens = models.JSONField(default=list)
     keep_token_history = models.BooleanField(default=True)
 
@@ -69,6 +71,9 @@ class User(AbstractUser):
     subscription_expires_at = models.DateTimeField(null=True, blank=True)
     current_period_start = models.DateTimeField(null=True, blank=True)
     current_period_end = models.DateTimeField(null=True, blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def save(self, *args, **kwargs):
         if not self.current_plan:
@@ -98,10 +103,10 @@ class User(AbstractUser):
 
     def reset_daily_requests_if_needed(self):
         today = timezone.now().date()
-        if self.last_request_reset < today:
+        if self.last_request_date is None or self.last_request_date < today:
             self.daily_requests_made = 0
-            self.last_request_reset = today
-            self.save(update_fields=["daily_requests_made", "last_request_reset"])
+            self.last_request_date = today
+            self.save(update_fields=["daily_requests_made", "last_request_date"])
 
     def increment_request_count(self):
         self.reset_daily_requests_if_needed()
@@ -125,7 +130,7 @@ class User(AbstractUser):
                 "token": str(self.request_token),
                 "created": self.request_token_created.isoformat()
                 if self.request_token_created
-                else None,
+                else timezone.now(),
                 "expires": self.request_token_expires.isoformat()
                 if self.request_token_expires
                 else None,
@@ -137,13 +142,10 @@ class User(AbstractUser):
                 TokenHistory.objects.create(
                     user=self,
                     token=old_token_data["token"],
-                    created_at=datetime.fromisoformat(old_token_data["created"])
-                    if old_token_data["created"]
-                    else timezone.now(),
                     expires_at=datetime.fromisoformat(old_token_data["expires"])
                     if old_token_data["expires"]
                     else None,
-                    revoked_at=datetime.fromisoformat(old_token_data["revoked_at"]),
+                    is_active=False,
                     never_expires=old_token_data["never_expires"],
                 )
 
@@ -250,9 +252,9 @@ class TokenHistory(models.Model):
         User, on_delete=models.CASCADE, related_name="token_history"
     )
     token = models.CharField(max_length=255)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(null=True, blank=True)
-    revoked_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
     never_expires = models.BooleanField(default=False)
 
     class Meta:
@@ -260,4 +262,23 @@ class TokenHistory(models.Model):
         verbose_name_plural = "Token histories"
 
     def __str__(self):
-        return f"Token for {self.user.username} - {self.token[:8]}..."
+        return f"Token {self.token[:8]}... for {self.user.email}"
+
+
+class WaitingList(models.Model):
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    company = models.CharField(max_length=100, blank=True)
+    use_case = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_notified = models.BooleanField(default=False)
+    notified_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["created_at"]
+        verbose_name = "Waiting List Entry"
+        verbose_name_plural = "Waiting List Entries"
+
+    def __str__(self):
+        return f"{self.email} - {self.created_at.strftime('%Y-%m-%d')}"

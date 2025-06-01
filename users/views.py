@@ -18,7 +18,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Plan, TokenHistory, User
+from .models import Plan, TokenHistory, User, WaitingList
+from .forms import WaitingListForm
 from .serializers import (
     PlanSerializer,
     TokenHistorySerializer,
@@ -153,40 +154,48 @@ def regenerate_token(request):
 @api_view(["GET", "POST"])
 @permission_classes([permissions.AllowAny])
 def register_user(request):
-    if request.content_type == "application/json":
-        serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
+    # Temporarily redirect all registration attempts to waiting list
+    return redirect('waiting_list')
 
-            user.request_token_created = timezone.now()
-            user.request_token_expires = user.request_token_created + timedelta(
-                days=user.token_validity_days
-            )
-            user.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        if request.method == "GET":
-            return render(request, "register.html")
-        elif request.method == "POST":
-            serializer = UserRegistrationSerializer(data=request.POST)
-            if serializer.is_valid():
-                user = serializer.save()
 
-                user.request_token_created = timezone.now()
-                user.request_token_expires = user.request_token_created + timedelta(
-                    days=user.token_validity_days
+def waiting_list(request):
+    """Handle waiting list registration form"""
+    if request.method == 'POST':
+        form = WaitingListForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(
+                    request, 
+                    "Thank you for your interest! You've been added to our waiting list. "
+                    "We'll notify you as soon as the API becomes available."
                 )
-                user.save()
-                login(request, user)
-                messages.success(request, "Registration successful! Welcome!")
-                return redirect("profile")
-            else:
-                for field, errors in serializer.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field}: {error}")
-                return render(request, "register.html")
-        return None
+                return redirect('waiting_list_success')
+            except Exception as e:
+                if 'UNIQUE constraint failed' in str(e) or 'duplicate key' in str(e):
+                    messages.info(
+                        request,
+                        "This email is already on our waiting list. "
+                        "We'll notify you when the API becomes available!"
+                    )
+                else:
+                    messages.error(
+                        request,
+                        "There was an issue adding you to the waiting list. Please try again."
+                    )
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = WaitingListForm()
+    
+    return render(request, 'waiting_list.html', {'form': form})
+
+
+def waiting_list_success(request):
+    """Success page after joining waiting list"""
+    return render(request, 'waiting_list_success.html')
 
 
 @api_view(["GET", "PATCH"])
