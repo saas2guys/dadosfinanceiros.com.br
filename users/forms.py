@@ -9,7 +9,7 @@ class WaitingListForm(forms.ModelForm):
         widgets = {
             'email': forms.EmailInput(attrs={
                 'class': 'mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50',
-                'placeholder': 'your.email@example.com'
+                'placeholder': 'your.email@company.com'
             }),
             'first_name': forms.TextInput(attrs={
                 'class': 'mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50',
