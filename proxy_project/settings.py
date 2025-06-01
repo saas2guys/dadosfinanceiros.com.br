@@ -35,6 +35,9 @@ CSRF_TRUSTED_ORIGINS = (
     else [
         "http://localhost:8000",
         "http://127.0.0.1:8000",
+        "https://financialdata.online",
+        "https://www.financialdata.online",
+        "https://api.financialdata.online",
     ]
 )
 
