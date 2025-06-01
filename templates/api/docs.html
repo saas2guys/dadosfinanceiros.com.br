@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{% trans "API Documentation" %}{% endblock %}
+{% block title %}API Documentation{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/api_docs.css' %}">
@@ -12,59 +12,59 @@
 <div class="api-docs">
   <div class="container">
     <div class="breadcrumb">
-      <a href="{% url 'home' %}">{% trans "Home" %}</a>
+      <a href="{% url 'home' %}">Home</a>
       <span class="breadcrumb-separator">/</span>
-      <span>{% trans "API Documentation" %}</span>
+      <span>API Documentation</span>
     </div>
 
-    <h1>{% trans "API Documentation" %}</h1>
+    <h1>API Documentation</h1>
 
     <!-- Quick Links -->
   <div class="doc-section">
-      <h2>{% trans "Quick Links" %}</h2>
+      <h2>Quick Links</h2>
       <div class="quick-links-grid">
         <a href="#authentication" class="quick-link-card">
-          <h3 class="quick-link-title">{% trans "Authentication" %}</h3>
-          <p class="quick-link-description">{% trans "Get started with API tokens" %}</p>
+          <h3 class="quick-link-title">Authentication</h3>
+          <p class="quick-link-description">Get started with API tokens</p>
         </a>
         <a href="#stocks" class="quick-link-card">
-          <h3 class="quick-link-title">{% trans "Stocks API" %}</h3>
-          <p class="quick-link-description">{% trans "Access stock market data" %}</p>
+          <h3 class="quick-link-title">Stocks API</h3>
+          <p class="quick-link-description">Access stock market data</p>
         </a>
         <a href="#forex" class="quick-link-card">
-          <h3 class="quick-link-title">{% trans "Forex API" %}</h3>
-          <p class="quick-link-description">{% trans "Foreign exchange rates" %}</p>
+          <h3 class="quick-link-title">Forex API</h3>
+          <p class="quick-link-description">Foreign exchange rates</p>
         </a>
         <a href="#crypto" class="quick-link-card">
-          <h3 class="quick-link-title">{% trans "Crypto API" %}</h3>
-          <p class="quick-link-description">{% trans "Cryptocurrency data" %}</p>
+          <h3 class="quick-link-title">Crypto API</h3>
+          <p class="quick-link-description">Cryptocurrency data</p>
         </a>
         <a href="#indices" class="quick-link-card">
-          <h3 class="quick-link-title">{% trans "Indices API" %}</h3>
-          <p class="quick-link-description">{% trans "Market indices data" %}</p>
+          <h3 class="quick-link-title">Indices API</h3>
+          <p class="quick-link-description">Market indices data</p>
         </a>
         <a href="#rate-limits" class="quick-link-card">
-          <h3 class="quick-link-title">{% trans "Rate Limits" %}</h3>
-          <p class="quick-link-description">{% trans "API usage limits" %}</p>
+          <h3 class="quick-link-title">Rate Limits</h3>
+          <p class="quick-link-description">API usage limits</p>
         </a>
       </div>
     </div>
 
     <!-- Authentication Section -->
     <div id="authentication" class="doc-section">
-    <h2 class="text-2xl font-semibold mb-4">{% trans "Authentication" %}</h2>
+    <h2 class="text-2xl font-semibold mb-4">Authentication</h2>
     
     <!-- Financial Education Section -->
     <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-      <h4 class="font-semibold text-blue-800 mb-2">{% trans "API Authentication in Financial Services" %}</h4>
+      <h4 class="font-semibold text-blue-800 mb-2">API Authentication in Financial Services</h4>
       <p class="text-blue-700 mb-3">
-        {% trans "Authentication in financial APIs ensures secure access to sensitive market data and maintains regulatory compliance across global financial markets. JWT (JSON Web Tokens) provide stateless authentication, essential for scalable financial systems handling thousands of concurrent requests. This token-based approach allows for granular access control, request tracking, and audit trails required by financial regulations like MiFID II, GDPR, and SOX compliance." %}
+        Authentication in financial APIs ensures secure access to sensitive market data and maintains regulatory compliance across global financial markets. JWT (JSON Web Tokens) provide stateless authentication, essential for scalable financial systems handling thousands of concurrent requests. This token-based approach allows for granular access control, request tracking, and audit trails required by financial regulations like MiFID II, GDPR, and SOX compliance.
       </p>
       <p class="text-blue-700 mb-3">
-        {% trans "Financial institutions require robust authentication to protect proprietary trading strategies, client data, and market-sensitive information. The two-tier authentication system (JWT for user management, request tokens for data access) provides flexibility for different use cases while maintaining security. Rate limiting tied to authentication prevents market abuse and ensures fair access to financial data across all market participants." %}
+        Financial institutions require robust authentication to protect proprietary trading strategies, client data, and market-sensitive information. The two-tier authentication system (JWT for user management, request tokens for data access) provides flexibility for different use cases while maintaining security. Rate limiting tied to authentication prevents market abuse and ensures fair access to financial data across all market participants.
       </p>
       <p class="text-blue-700">
-        <strong>{% trans "Compliance Applications:" %}</strong> {% trans "Regulatory reporting, audit trail generation, user access control, data licensing compliance, market surveillance, and risk management. Proper authentication is fundamental to any professional financial data operation and regulatory compliance framework." %}
+        <strong>Compliance Applications:</strong> Regulatory reporting, audit trail generation, user access control, data licensing compliance, market surveillance, and risk management. Proper authentication is fundamental to any professional financial data operation and regulatory compliance framework.
       </p>
     </div>
     
@@ -74,29 +74,29 @@
       <span class="endpoint-path">/api/token/</span>
         </div>
         <p class="endpoint-description mb-4">
-          {% trans "Authenticate with the API using your email and password to obtain JWT tokens. The response includes both access and refresh tokens for maintaining authentication." %}
+          Authenticate with the API using your email and password to obtain JWT tokens. The response includes both access and refresh tokens for maintaining authentication.
         </p>
         <div class="use-cases mb-4">
-          <h4 class="font-semibold mb-2">{% trans "Use Cases" %}:</h4>
+          <h4 class="font-semibold mb-2">Use Cases:</h4>
           <ul class="list-disc list-inside text-gray-700">
-            <li>{% trans "Initial API authentication" %}</li>
-            <li>{% trans "Obtaining fresh access tokens" %}</li>
-            <li>{% trans "Implementing secure API access" %}</li>
-            <li>{% trans "Setting up automated API clients" %}</li>
+            <li>Initial API authentication</li>
+            <li>Obtaining fresh access tokens</li>
+            <li>Implementing secure API access</li>
+            <li>Setting up automated API clients</li>
           </ul>
         </div>
       </div>
 
       <div class="parameters-section mb-6">
-        <h4 class="font-semibold mb-4">{% trans "Request Body Parameters" %}</h4>
+        <h4 class="font-semibold mb-4">Request Body Parameters</h4>
         <table class="parameter-table">
           <thead>
             <tr>
-              <th>{% trans "Parameter" %}</th>
-              <th>{% trans "Type" %}</th>
-              <th>{% trans "Required" %}</th>
-              <th>{% trans "Example" %}</th>
-              <th>{% trans "Description" %}</th>
+              <th>Parameter</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Example</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
@@ -105,28 +105,28 @@
               <td><span class="parameter-type">string</span></td>
               <td><span class="parameter-required">Required</span></td>
               <td><code>user@example.com</code></td>
-              <td>{% trans "Your registered email address used for authentication" %}</td>
+              <td>Your registered email address used for authentication</td>
             </tr>
             <tr>
               <td>password</td>
               <td><span class="parameter-type">string</span></td>
               <td><span class="parameter-required">Required</span></td>
               <td><code>your_secure_password</code></td>
-              <td>{% trans "Your account password" %}</td>
+              <td>Your account password</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <div class="response-section mb-6">
-        <h4 class="font-semibold mb-4">{% trans "Response Attributes" %}</h4>
+        <h4 class="font-semibold mb-4">Response Attributes</h4>
         <table class="parameter-table">
           <thead>
             <tr>
-              <th>{% trans "Attribute" %}</th>
-              <th>{% trans "Type" %}</th>
-              <th>{% trans "Optional" %}</th>
-              <th>{% trans "Description" %}</th>
+              <th>Attribute</th>
+              <th>Type</th>
+              <th>Optional</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
@@ -135,10 +135,10 @@
               <td><span class="parameter-type">string</span></td>
               <td>No</td>
               <td>
-                {% trans "JWT access token used for API authentication" %}
+                JWT access token used for API authentication
                 <div class="nested-attributes mt-2">
-                  <div>{% trans "Valid for 24 hours" %}</div>
-                  <div>{% trans "Must be included in Authorization header" %}</div>
+                  <div>Valid for 24 hours</div>
+                  <div>Must be included in Authorization header</div>
                 </div>
               </td>
             </tr>
@@ -147,10 +147,10 @@
               <td><span class="parameter-type">string</span></td>
               <td>No</td>
               <td>
-                {% trans "JWT refresh token for obtaining new access tokens" %}
+                JWT refresh token for obtaining new access tokens
                 <div class="nested-attributes mt-2">
-                  <div>{% trans "Valid for 7 days" %}</div>
-                  <div>{% trans "Use with /api/token/refresh/ endpoint" %}</div>
+                  <div>Valid for 7 days</div>
+                  <div>Use with /api/token/refresh/ endpoint</div>
                 </div>
               </td>
             </tr>
@@ -162,7 +162,7 @@
         <div class="code-example mt-6">
           <div class="code-example-header">
             <div class="code-example-tabs">
-              <div class="code-example-tab active">{% trans "Example Request" %}</div>
+              <div class="code-example-tab active">Example Request</div>
             </div>
             <button class="copy-button">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -173,7 +173,7 @@
           </div>
           <div class="code-example-content">
       <div class="response-object">
-curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
+curl -X POST "https://api.financialdata.online/api/token/" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "your.email@example.com",
@@ -185,7 +185,7 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
         <div class="code-example mt-6">
           <div class="code-example-header">
             <div class="code-example-tabs">
-              <div class="code-example-tab active">{% trans "Example Response" %}</div>
+              <div class="code-example-tab active">Example Response</div>
             </div>
             <button class="copy-button">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -211,23 +211,23 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
 
   <!-- Stocks Section -->
     <div id="stocks" class="doc-section">
-      <h2 class="text-2xl font-semibold mb-4">{% trans "Stocks API" %}</h2>
+      <h2 class="text-2xl font-semibold mb-4">Stocks API</h2>
     
     <!-- All Tickers Endpoint -->
       <div class="mb-8">
-      <h3 class="text-xl mb-4">{% trans "All Tickers" %}</h3>
+      <h3 class="text-xl mb-4">All Tickers</h3>
         
         <!-- Financial Education Section -->
         <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-          <h4 class="font-semibold text-blue-800 mb-2">{% trans "What are Stock Tickers?" %}</h4>
+          <h4 class="font-semibold text-blue-800 mb-2">What are Stock Tickers?</h4>
           <p class="text-blue-700 mb-3">
-            {% trans "A stock ticker is a unique symbol assigned to publicly traded companies on stock exchanges. These abbreviated codes (typically 1-5 characters) serve as the universal identifier for securities trading. For example, AAPL represents Apple Inc., while MSFT represents Microsoft Corporation. Tickers are essential for trading, portfolio management, and financial analysis across all market participants." %}
+            A stock ticker is a unique symbol assigned to publicly traded companies on stock exchanges. These abbreviated codes (typically 1-5 characters) serve as the universal identifier for securities trading. For example, AAPL represents Apple Inc., while MSFT represents Microsoft Corporation. Tickers are essential for trading, portfolio management, and financial analysis across all market participants.
           </p>
           <p class="text-blue-700 mb-3">
-            {% trans "In professional finance, tickers are used by traders for quick order entry, by analysts for building financial models, by portfolio managers for asset allocation, and by retail investors for tracking investments. The ticker system standardizes communication across global financial markets, ensuring that everyone refers to the same security using the same identifier." %}
+            In professional finance, tickers are used by traders for quick order entry, by analysts for building financial models, by portfolio managers for asset allocation, and by retail investors for tracking investments. The ticker system standardizes communication across global financial markets, ensuring that everyone refers to the same security using the same identifier.
           </p>
           <p class="text-blue-700">
-            <strong>{% trans "Common Applications:" %}</strong> {% trans "Stock screeners, market surveillance systems, portfolio tracking applications, trading platforms, financial news systems, and regulatory reporting. This endpoint returns comprehensive metadata including company names, exchange information, trading status, and market classifications." %}
+            <strong>Common Applications:</strong> Stock screeners, market surveillance systems, portfolio tracking applications, trading platforms, financial news systems, and regulatory reporting. This endpoint returns comprehensive metadata including company names, exchange information, trading status, and market classifications.
           </p>
         </div>
 
@@ -237,29 +237,29 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
             <span class="endpoint-path">/v1/stocks/tickers/</span>
           </div>
           <p class="endpoint-description mb-4">
-            {% trans "Retrieve a comprehensive list of stock tickers with detailed information. This endpoint provides access to all available stock symbols along with their associated metadata, including market information, trading status, and basic company details." %}
+            Retrieve a comprehensive list of stock tickers with detailed information. This endpoint provides access to all available stock symbols along with their associated metadata, including market information, trading status, and basic company details.
           </p>
           <div class="use-cases mb-4">
-            <h4 class="font-semibold mb-2">{% trans "Use Cases" %}:</h4>
+            <h4 class="font-semibold mb-2">Use Cases:</h4>
             <ul class="list-disc list-inside text-gray-700">
-              <li>{% trans "Building stock screeners and watchlists" %}</li>
-              <li>{% trans "Market analysis and research tools" %}</li>
-              <li>{% trans "Portfolio tracking applications" %}</li>
-              <li>{% trans "Data synchronization with trading platforms" %}</li>
+              <li>Building stock screeners and watchlists</li>
+              <li>Market analysis and research tools</li>
+              <li>Portfolio tracking applications</li>
+              <li>Data synchronization with trading platforms</li>
             </ul>
           </div>
         </div>
 
         <div class="parameters-section mb-6">
-          <h4 class="font-semibold mb-4">{% trans "Query Parameters" %}</h4>
+          <h4 class="font-semibold mb-4">Query Parameters</h4>
       <table class="parameter-table">
         <thead>
           <tr>
-            <th>{% trans "Parameter" %}</th>
-            <th>{% trans "Type" %}</th>
-                <th>{% trans "Required" %}</th>
-                <th>{% trans "Example" %}</th>
-            <th>{% trans "Description" %}</th>
+            <th>Parameter</th>
+            <th>Type</th>
+                <th>Required</th>
+                <th>Example</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
@@ -269,12 +269,12 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                 <td><span class="parameter-optional">Optional</span></td>
                 <td><code>stocks</code></td>
                 <td>
-                  {% trans "Filter by market type" %}
+                  Filter by market type
                   <div class="nested-attributes mt-2">
-                    <div><code>stocks</code>: {% trans "Equity markets" %}</div>
-                    <div><code>indices</code>: {% trans "Market indices" %}</div>
-                    <div><code>forex</code>: {% trans "Foreign exchange" %}</div>
-                    <div><code>crypto</code>: {% trans "Cryptocurrencies" %}</div>
+                    <div><code>stocks</code>: Equity markets</div>
+                    <div><code>indices</code>: Market indices</div>
+                    <div><code>forex</code>: Foreign exchange</div>
+                    <div><code>crypto</code>: Cryptocurrencies</div>
                   </div>
                 </td>
           </tr>
@@ -283,7 +283,7 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                 <td><span class="parameter-type">boolean</span></td>
                 <td><span class="parameter-optional">Optional</span></td>
                 <td><code>true</code></td>
-                <td>{% trans "Filter by active trading status (default: true)" %}</td>
+                <td>Filter by active trading status (default: true)</td>
               </tr>
               <tr>
                 <td>order</td>
@@ -291,10 +291,10 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                 <td><span class="parameter-optional">Optional</span></td>
                 <td><code>asc</code></td>
                 <td>
-                  {% trans "Sort order direction" %}
+                  Sort order direction
                   <div class="nested-attributes mt-2">
-                    <div><code>asc</code>: {% trans "Ascending order" %}</div>
-                    <div><code>desc</code>: {% trans "Descending order" %}</div>
+                    <div><code>asc</code>: Ascending order</div>
+                    <div><code>desc</code>: Descending order</div>
                   </div>
                 </td>
           </tr>
@@ -303,7 +303,7 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                 <td><span class="parameter-type">integer</span></td>
                 <td><span class="parameter-optional">Optional</span></td>
                 <td><code>100</code></td>
-            <td>{% trans "Number of results per page (default: 100, max: 1000)" %}</td>
+            <td>Number of results per page (default: 100, max: 1000)</td>
           </tr>
               <tr>
                 <td>sort</td>
@@ -311,11 +311,11 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                 <td><span class="parameter-optional">Optional</span></td>
                 <td><code>ticker</code></td>
                 <td>
-                  {% trans "Field to sort results by" %}
+                  Field to sort results by
                   <div class="nested-attributes mt-2">
-                    <div><code>ticker</code>: {% trans "Sort by symbol" %}</div>
-                    <div><code>name</code>: {% trans "Sort by company name" %}</div>
-                    <div><code>market</code>: {% trans "Sort by market type" %}</div>
+                    <div><code>ticker</code>: Sort by symbol</div>
+                    <div><code>name</code>: Sort by company name</div>
+                    <div><code>market</code>: Sort by market type</div>
                   </div>
                 </td>
               </tr>
@@ -324,14 +324,14 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
         </div>
 
         <div class="response-section mb-6">
-          <h4 class="font-semibold mb-4">{% trans "Response Attributes" %}</h4>
+          <h4 class="font-semibold mb-4">Response Attributes</h4>
           <table class="parameter-table">
             <thead>
               <tr>
-                <th>{% trans "Attribute" %}</th>
-                <th>{% trans "Type" %}</th>
-                <th>{% trans "Optional" %}</th>
-                <th>{% trans "Description" %}</th>
+                <th>Attribute</th>
+                <th>Type</th>
+                <th>Optional</th>
+                <th>Description</th>
               </tr>
             </thead>
             <tbody>
@@ -340,17 +340,17 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                 <td><span class="parameter-type">array</span></td>
                 <td>No</td>
                 <td>
-                  {% trans "Array of ticker objects" %}
+                  Array of ticker objects
                   <div class="nested-attributes mt-2">
-                    <div><code>ticker</code>: string - {% trans "Stock symbol" %}</div>
-                    <div><code>name</code>: string - {% trans "Company name" %}</div>
-                    <div><code>market</code>: string - {% trans "Market type" %}</div>
-                    <div><code>locale</code>: string - {% trans "Market locale" %}</div>
-                    <div><code>primary_exchange</code>: string - {% trans "Primary exchange" %}</div>
-                    <div><code>type</code>: string - {% trans "Security type" %}</div>
-                    <div><code>active</code>: boolean - {% trans "Trading status" %}</div>
-                    <div><code>currency_name</code>: string - {% trans "Trading currency" %}</div>
-                    <div><code>last_updated_utc</code>: string - {% trans "Last update timestamp" %}</div>
+                    <div><code>ticker</code>: string - Stock symbol</div>
+                    <div><code>name</code>: string - Company name</div>
+                    <div><code>market</code>: string - Market type</div>
+                    <div><code>locale</code>: string - Market locale</div>
+                    <div><code>primary_exchange</code>: string - Primary exchange</div>
+                    <div><code>type</code>: string - Security type</div>
+                    <div><code>active</code>: boolean - Trading status</div>
+                    <div><code>currency_name</code>: string - Trading currency</div>
+                    <div><code>last_updated_utc</code>: string - Last update timestamp</div>
                   </div>
                 </td>
               </tr>
@@ -358,19 +358,19 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
                 <td>status</td>
                 <td><span class="parameter-type">string</span></td>
                 <td>No</td>
-                <td>{% trans "Response status (OK, ERROR)" %}</td>
+                <td>Response status (OK, ERROR)</td>
               </tr>
               <tr>
                 <td>count</td>
                 <td><span class="parameter-type">integer</span></td>
                 <td>No</td>
-                <td>{% trans "Total number of results in the current page" %}</td>
+                <td>Total number of results in the current page</td>
               </tr>
               <tr>
                 <td>next_url</td>
                 <td><span class="parameter-type">string</span></td>
                 <td>Yes</td>
-                <td>{% trans "URL for the next page of results" %}</td>
+                <td>URL for the next page of results</td>
               </tr>
             </tbody>
           </table>
@@ -380,7 +380,7 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
           <div class="code-example mt-6">
             <div class="code-example-header">
               <div class="code-example-tabs">
-                <div class="code-example-tab active">{% trans "Example Request" %}</div>
+                <div class="code-example-tab active">Example Request</div>
               </div>
               <button class="copy-button">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -391,7 +391,7 @@ curl -X POST "https://api.dadosfinanceiros.com.br/api/token/" \
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stocks&active=true&order=asc&limit=100&sort=ticker" \
+curl -X GET "https://api.financialdata.online/v1/stocks/tickers/?market=stocks&active=true&order=asc&limit=100&sort=ticker" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -399,7 +399,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stock
           <div class="code-example mt-6">
             <div class="code-example-header">
               <div class="code-example-tabs">
-                <div class="code-example-tab active">{% trans "Example Response" %}</div>
+                <div class="code-example-tab active">Example Response</div>
               </div>
               <button class="copy-button">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -446,13 +446,13 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stock
 
     <!-- Stock Details Endpoint -->
       <div class="mb-8">
-      <h3 class="text-xl mb-4">{% trans "Stock Details" %}</h3>
+      <h3 class="text-xl mb-4">Stock Details</h3>
         
         <!-- Financial Education Section -->
         <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6">
-          <h4 class="font-semibold text-green-800 mb-2">{% trans "Understanding Stock Fundamentals" %}</h4>
+          <h4 class="font-semibold text-green-800 mb-2">Understanding Stock Fundamentals</h4>
           <p class="text-green-700 mb-3">
-            {% trans "Stock details provide fundamental information about a company's securities, including corporate structure, market classification, and key identifiers. This data forms the foundation for all equity analysis and is crucial for investment decisions. Market capitalization, for instance, categorizes companies into large-cap, mid-cap, or small-cap segments, each with different risk-return profiles." %}
+            Stock details provide fundamental information about a company's securities, including corporate structure, market classification, and key identifiers. This data forms the foundation for all equity analysis and is crucial for investment decisions. Market capitalization, for instance, categorizes companies into large-cap, mid-cap, or small-cap segments, each with different risk-return profiles.
           </p>
           <p class="text-green-700 mb-3">
             {% trans "Professional investors use this information for sector analysis, peer comparison, and portfolio construction. The primary exchange data indicates where the stock has the highest liquidity, while the security type (common stock, preferred stock, etc.) affects voting rights and dividend priorities. Currency information is essential for international investors managing foreign exchange exposure." %}
@@ -604,7 +604,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/?market=stock
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/AAPL/?include_market_cap=true&include_financials=true" \
+curl -X GET "https://api.financialdata.online/v1/stocks/tickers/AAPL/?include_market_cap=true&include_financials=true" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -859,7 +859,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/tickers/AAPL/?include
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/aggregates/?multiplier=1&timespan=day&from_date=2024-01-01&to_date=2024-01-31&adjusted=true&sort=asc" \
+curl -X GET "https://api.financialdata.online/v1/stocks/AAPL/aggregates/?multiplier=1&timespan=day&from_date=2024-01-01&to_date=2024-01-31&adjusted=true&sort=asc" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -1056,7 +1056,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/aggregates/?mult
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/previous/?adjusted=true" \
+curl -X GET "https://api.financialdata.online/v1/stocks/AAPL/previous/?adjusted=true" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -1259,7 +1259,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/previous/?adjust
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/trades/?timestamp=2024-01-01&order=asc&limit=10" \
+curl -X GET "https://api.financialdata.online/v1/stocks/AAPL/trades/?timestamp=2024-01-01&order=asc&limit=10" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -1474,7 +1474,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/trades/?timestam
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/quotes/?timestamp=2024-01-01&order=asc&limit=10" \
+curl -X GET "https://api.financialdata.online/v1/stocks/AAPL/quotes/?timestamp=2024-01-01&order=asc&limit=10" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -1553,7 +1553,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/quotes/?timestam
 
         <div class="flex items-center gap-2 mb-4">
       <span class="endpoint-method">GET</span>
-          <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/forex/pairs/</span>
+          <span class="endpoint-path">https://api.financialdata.online/v1/forex/pairs/</span>
         </div>
       
         <p class="mb-4">{% trans "Get a list of available forex currency pairs." %}</p>
@@ -1604,7 +1604,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/stocks/AAPL/quotes/?timestam
           </div>
           <div class="code-example-content">
             <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/pairs/?base=EUR&quote=USD" \
+curl -X GET "https://api.financialdata.online/v1/forex/pairs/?base=EUR&quote=USD" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
           </div>
         </div>
@@ -1664,7 +1664,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/pairs/?base=EUR&quote=
 
         <div class="flex items-center gap-2 mb-4">
           <span class="endpoint-method">GET</span>
-          <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/forex/convert/</span>
+          <span class="endpoint-path">https://api.financialdata.online/v1/forex/convert/</span>
         </div>
 
         <p class="mb-4">{% trans "Convert an amount from one currency to another." %}</p>
@@ -1721,7 +1721,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/pairs/?base=EUR&quote=
           </div>
           <div class="code-example-content">
             <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/convert/?from=USD&to=EUR&amount=100&precision=2" \
+curl -X GET "https://api.financialdata.online/v1/forex/convert/?from=USD&to=EUR&amount=100&precision=2" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
           </div>
         </div>
@@ -1911,7 +1911,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/convert/?from=USD&to=E
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/rates/USD/EUR/?date=2024-01-01&precision=4" \
+curl -X GET "https://api.financialdata.online/v1/forex/rates/USD/EUR/?date=2024-01-01&precision=4" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -2125,7 +2125,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/rates/USD/EUR/?date=20
             </div>
             <div class="code-example-content">
               <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/historical/USD/EUR/?start_date=2024-01-01&end_date=2024-01-31&interval=1day" \
+curl -X GET "https://api.financialdata.online/v1/forex/historical/USD/EUR/?start_date=2024-01-01&end_date=2024-01-31&interval=1day" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
             </div>
           </div>
@@ -2200,7 +2200,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/historical/USD/EUR/?st
 
         <div class="flex items-center gap-2 mb-4">
       <span class="endpoint-method">GET</span>
-          <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/crypto/pairs/</span>
+          <span class="endpoint-path">https://api.financialdata.online/v1/crypto/pairs/</span>
         </div>
       
         <p class="mb-4">{% trans "Get a list of available cryptocurrency trading pairs." %}</p>
@@ -2257,7 +2257,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/forex/historical/USD/EUR/?st
           </div>
           <div class="code-example-content">
             <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/crypto/pairs/?base=BTC&quote=USD" \
+curl -X GET "https://api.financialdata.online/v1/crypto/pairs/?base=BTC&quote=USD" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
           </div>
         </div>
@@ -2318,7 +2318,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/crypto/pairs/?base=BTC&quote
 
         <div class="flex items-center gap-2 mb-4">
           <span class="endpoint-method">GET</span>
-          <span class="endpoint-path">https://api.dadosfinanceiros.com.br/v1/crypto/{symbol}/bars/</span>
+          <span class="endpoint-path">https://api.financialdata.online/v1/crypto/{symbol}/bars/</span>
         </div>
 
         <p class="mb-4">{% trans "Get aggregated price and volume data for a cryptocurrency pair." %}</p>
@@ -2395,7 +2395,7 @@ curl -X GET "https://api.dadosfinanceiros.com.br/v1/crypto/pairs/?base=BTC&quote
           </div>
           <div class="code-example-content">
             <div class="response-object">
-curl -X GET "https://api.dadosfinanceiros.com.br/v1/crypto/BTC-USD/bars/?interval=1day&start_date=2024-01-01&end_date=2024-01-31" \
+curl -X GET "https://api.financialdata.online/v1/crypto/BTC-USD/bars/?interval=1day&start_date=2024-01-01&end_date=2024-01-31" \
   -H "Authorization: Bearer YOUR_API_TOKEN"</div>
           </div>
         </div>

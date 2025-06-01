@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Subscription Plans" %}{% endblock %}
+{% block title %}Subscription Plans{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">{% trans "Choose Your Plan" %}</h1>
-        <p class="text-xl text-gray-600">{% trans "Select the plan that fits your API usage needs" %}</p>
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h1>
+        <p class="text-xl text-gray-600">Select the plan that fits your API usage needs</p>
     </div>
 
     {% if current_plan %}
@@ -15,17 +15,17 @@
         <div class="flex">
             <div class="ml-3">
                 <p class="text-sm text-blue-700">
-                    {% trans "Current Plan" %}: <strong>{{ current_plan.name }}</strong>
-                    ({{ current_plan.daily_request_limit }} {% trans "requests/day" %})
+                    Current Plan: <strong>{{ current_plan.name }}</strong>
+                    ({{ current_plan.daily_request_limit }} requests/day)
                     {% if user.subscription_status == 'active' %}
-                        <span class="text-green-600">- {% trans "Active" %}</span>
+                        <span class="text-green-600">- Active</span>
                     {% elif user.subscription_status == 'canceled' %}
-                        <span class="text-red-600">- {% trans "Canceled" %}</span>
+                        <span class="text-red-600">- Canceled</span>
                     {% endif %}
                 </p>
                 {% if user.subscription_expires_at %}
                     <p class="text-sm text-blue-600">
-                        {% trans "Expires" %}: {{ user.subscription_expires_at|date:"M d, Y" }}
+                        Expires: {{ user.subscription_expires_at|date:"M d, Y" }}
                     </p>
                 {% endif %}
             </div>
@@ -41,7 +41,7 @@
                     <h3 class="text-2xl font-semibold text-gray-900">{{ plan.name }}</h3>
                     <div class="mt-4 flex items-baseline justify-center">
                         <span class="text-5xl font-extrabold text-gray-900">${{ plan.price_monthly }}</span>
-                        <span class="text-xl font-medium text-gray-500">/{% trans "month" %}</span>
+                        <span class="text-xl font-medium text-gray-500">/month</span>
                     </div>
                 </div>
                 
@@ -54,7 +54,7 @@
                                 </svg>
                             </div>
                             <p class="ml-3 text-base text-gray-700">
-                                {{ plan.daily_request_limit|floatformat:0 }} {% trans "requests/day" %}
+                                {{ plan.daily_request_limit|floatformat:0 }} requests/day
                             </p>
                         </li>
                         
@@ -77,22 +77,22 @@
                     {% if current_plan and current_plan.id == plan.id %}
                         <div class="text-center">
                             <span class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100">
-                                {% trans "Current Plan" %}
+                                Current Plan
                             </span>
                             
                             {% if user.subscription_status == 'active' and not current_plan.is_free %}
                                 <form method="post" action="{% url 'cancel-subscription' %}" class="mt-4">
                                     {% csrf_token %}
                                     <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm"
-                                            onclick="return confirm('{% trans 'Are you sure you want to cancel your subscription?' %}')">
-                                        {% trans "Cancel Subscription" %}
+                                            onclick="return confirm('Are you sure you want to cancel your subscription?')">
+                                        Cancel Subscription
                                     </button>
                                 </form>
                             {% elif user.subscription_status == 'canceled' %}
                                 <form method="post" action="{% url 'reactivate-subscription' %}" class="mt-4">
                                     {% csrf_token %}
                                     <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm">
-                                        {% trans "Reactivate Subscription" %}
+                                        Reactivate Subscription
                                     </button>
                                 </form>
                             {% endif %}
@@ -103,9 +103,9 @@
                             <input type="hidden" name="plan_id" value="{{ plan.id }}">
                             <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 font-medium">
                                 {% if plan.is_free %}
-                                    {% trans "Select Free Plan" %}
+                                    Select Free Plan
                                 {% else %}
-                                    {% trans "Upgrade to" %} {{ plan.name }}
+                                    Upgrade to {{ plan.name }}
                                 {% endif %}
                             </button>
                         </form>
@@ -118,9 +118,9 @@
     
     <div class="mt-12 text-center">
         <p class="text-gray-600">
-            {% trans "Need a custom plan?" %} 
-            <a href="mailto:support@dadosfinanceiros.com.br" class="text-blue-600 hover:text-blue-500">
-                {% trans "Contact us" %}
+            Need a custom plan? 
+            <a href="mailto:support@financialdata.online" class="text-blue-600 hover:text-blue-500">
+                Contact us
             </a>
         </p>
     </div>

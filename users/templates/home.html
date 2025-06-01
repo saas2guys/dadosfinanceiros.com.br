@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Home - Dados Financeiros API" %}{% endblock %}
+{% block title %}Home - Financial Data API{% endblock %}
 
 {% block content %}
 <!-- Main content with normal width -->
 <div class="max-w-4xl mx-auto px-4 mb-12">
     <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">{% trans "Dados Financeiros API" %}</h1>
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Financial Data API</h1>
         
         <!-- WhiteNoise Static Files Test -->
         <div class="whitenoise-test">
             <h3>✅ WhiteNoise Active - Static Files Served Locally</h3>
         </div>
         
-        <p class="text-xl text-gray-600 mb-8">{% trans "Acesse dados do mercado financeiro com facilidade e segurança" %}</p>
+        <p class="text-xl text-gray-600 mb-8">Access financial market data with ease and security</p>
         <a href="{% url 'proxy_app:api_docs' %}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:text-lg">
-            {% trans "Ver Documentação Completa da API" %}
+            View Complete API Documentation
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
@@ -25,69 +25,69 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">{% trans "Recursos" %}</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Features</h2>
             <ul class="space-y-3">
                 <li class="flex items-start">
                     <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span>{% trans "Tokens de API com validade de 30 dias" %}</span>
+                    <span>API tokens with 30-day validity</span>
                 </li>
                 <li class="flex items-start">
                     <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span>{% trans "Tokens permanentes disponíveis" %}</span>
+                    <span>Permanent tokens available</span>
                 </li>
                 <li class="flex items-start">
                     <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span>{% trans "Histórico completo de tokens" %}</span>
+                    <span>Complete token history</span>
                 </li>
                 <li class="flex items-start">
                     <svg class="h-6 w-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span>{% trans "Limite diário de requisições" %}</span>
+                    <span>Daily request limits</span>
                 </li>
             </ul>
         </div>
 
         <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">{% trans "Começar" %}</h2>
-            <p class="text-gray-600 mb-4">{% trans "Crie uma conta para obter seu token de API e começar a fazer requisições." %}</p>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Get Started</h2>
+            <p class="text-gray-600 mb-4">Create an account to get your API token and start making requests.</p>
             <div class="space-x-4">
-                <a href="{% url 'register' %}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">{% trans "Criar Conta" %}</a>
-                <a href="{% url 'login' %}" class="inline-block text-indigo-600 hover:text-indigo-700">{% trans "Entrar" %}</a>
+                <a href="{% url 'register' %}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Create Account</a>
+                <a href="{% url 'login' %}" class="inline-block text-indigo-600 hover:text-indigo-700">Login</a>
             </div>
         </div>
     </div>
 
     <!-- How it Works Section -->
     <div class="mb-12">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">{% trans "Como Funciona" %}</h2>
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">How It Works</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="text-center">
                 <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
                     <span class="text-2xl">1</span>
                 </div>
-                <h3 class="text-xl font-semibold mb-2">{% trans "Criar uma Conta" %}</h3>
-                <p class="text-gray-600">{% trans "Registre-se com seu e-mail para começar." %}</p>
+                <h3 class="text-xl font-semibold mb-2">Create an Account</h3>
+                <p class="text-gray-600">Register with your email to get started.</p>
             </div>
             <div class="text-center">
                 <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
                     <span class="text-2xl">2</span>
                 </div>
-                <h3 class="text-xl font-semibold mb-2">{% trans "Obter seu Token" %}</h3>
-                <p class="text-gray-600">{% trans "Receba seu token de requisição automaticamente após o registro." %}</p>
+                <h3 class="text-xl font-semibold mb-2">Get Your Token</h3>
+                <p class="text-gray-600">Receive your request token automatically after registration.</p>
             </div>
             <div class="text-center">
                 <div class="bg-blue-100 rounded-full p-4 mx-auto w-16 h-16 flex items-center justify-center mb-4">
                     <span class="text-2xl">3</span>
                 </div>
-                <h3 class="text-xl font-semibold mb-2">{% trans "Fazer Requisições API" %}</h3>
-                <p class="text-gray-600">{% trans "Use seu token para acessar dados financeiros através do nosso serviço." %}</p>
+                <h3 class="text-xl font-semibold mb-2">Make API Requests</h3>
+                <p class="text-gray-600">Use your token to access financial data through our service.</p>
             </div>
         </div>
     </div>
@@ -97,10 +97,10 @@
 <div class="w-full bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 py-12">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">{% trans "API Reference Preview" %}</h2>
-            <p class="text-xl text-gray-600 mb-8">{% trans "Get a quick overview of our API endpoints" %}</p>
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">API Reference Preview</h2>
+            <p class="text-xl text-gray-600 mb-8">Get a quick overview of our API endpoints</p>
             <a href="{% url 'proxy_app:api_docs' %}" class="text-indigo-600 hover:text-indigo-700 font-medium">
-                {% trans "View Full Documentation" %}
+                View Full Documentation
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
@@ -111,13 +111,13 @@
             <!-- Sidebar Navigation -->
             <div class="lg:w-64 flex-shrink-0">
                 <div class="sticky top-4 bg-white rounded-lg shadow-sm p-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">{% trans "Quick Navigation" %}</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Navigation</h3>
                     <nav class="space-y-1">
-                        <a href="#authentication" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Authentication" %}</a>
-                        <a href="#stocks" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Stocks" %}</a>
-                        <a href="#forex" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Forex" %}</a>
-                        <a href="#crypto" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">{% trans "Crypto" %}</a>
-                        <a href="{% url 'proxy_app:api_docs' %}" class="block px-3 py-2 text-indigo-600 hover:bg-gray-100 rounded-md font-medium">{% trans "Full Documentation →" %}</a>
+                        <a href="#authentication" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Authentication</a>
+                        <a href="#stocks" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Stocks</a>
+                        <a href="#forex" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Forex</a>
+                        <a href="#crypto" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">Crypto</a>
+                        <a href="{% url 'proxy_app:api_docs' %}" class="block px-3 py-2 text-indigo-600 hover:bg-gray-100 rounded-md font-medium">Full Documentation →</a>
                     </nav>
                 </div>
             </div>
@@ -127,11 +127,11 @@
                 <!-- Authentication Section -->
                 <section id="authentication" class="bg-white rounded-lg shadow-sm p-6 mb-8">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Authentication" %}</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#authentication" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                        <h2 class="text-2xl font-bold text-gray-800">Authentication</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#authentication" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
                     </div>
                     <div class="prose max-w-none">
-                        <p class="text-gray-600 mb-4">{% trans "All API requests require authentication using JWT tokens." %}</p>
+                        <p class="text-gray-600 mb-4">All API requests require authentication using JWT tokens.</p>
                         <div class="bg-gray-800 text-white p-4 rounded-md">
                             <pre><code>POST /api/token/
 
@@ -146,8 +146,8 @@
                 <!-- Stocks Section -->
                 <section id="stocks" class="bg-white rounded-lg shadow-sm p-6 mb-8">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Stocks" %}</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#stocks" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                        <h2 class="text-2xl font-bold text-gray-800">Stocks</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#stocks" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
                     </div>
                     <div class="space-y-6">
                         <div>
@@ -155,7 +155,7 @@
                                 <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
                                 <span class="font-mono text-gray-800">/api/v1/stocks/tickers/</span>
                             </div>
-                            <p class="text-gray-600 mb-4">{% trans "Get a list of all available stock tickers." %}</p>
+                            <p class="text-gray-600 mb-4">Get a list of all available stock tickers.</p>
                         </div>
                     </div>
                 </section>
@@ -163,8 +163,8 @@
                 <!-- Forex Section -->
                 <section id="forex" class="bg-white rounded-lg shadow-sm p-6 mb-8">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Forex" %}</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#forex" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                        <h2 class="text-2xl font-bold text-gray-800">Forex</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#forex" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
                     </div>
                     <div class="space-y-6">
                         <div>
@@ -172,7 +172,7 @@
                                 <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
                                 <span class="font-mono text-gray-800">/api/v1/forex/pairs/</span>
                             </div>
-                            <p class="text-gray-600 mb-4">{% trans "Get a list of available forex currency pairs." %}</p>
+                            <p class="text-gray-600 mb-4">Get a list of available forex currency pairs.</p>
                         </div>
                     </div>
                 </section>
@@ -180,8 +180,8 @@
                 <!-- Crypto Section -->
                 <section id="crypto" class="bg-white rounded-lg shadow-sm p-6 mb-8">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">{% trans "Crypto" %}</h2>
-                        <a href="{% url 'proxy_app:api_docs' %}#crypto" class="text-sm text-indigo-600 hover:text-indigo-700">{% trans "View Details →" %}</a>
+                        <h2 class="text-2xl font-bold text-gray-800">Crypto</h2>
+                        <a href="{% url 'proxy_app:api_docs' %}#crypto" class="text-sm text-indigo-600 hover:text-indigo-700">View Details →</a>
                     </div>
                     <div class="space-y-6">
                         <div>
@@ -189,7 +189,7 @@
                                 <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold">GET</span>
                                 <span class="font-mono text-gray-800">/api/v1/crypto/pairs/</span>
                             </div>
-                            <p class="text-gray-600 mb-4">{% trans "Get a list of available cryptocurrency trading pairs." %}</p>
+                            <p class="text-gray-600 mb-4">Get a list of available cryptocurrency trading pairs.</p>
                         </div>
                     </div>
                 </section>
@@ -207,7 +207,7 @@ function copyCode(elementId) {
     
     navigator.clipboard.writeText(code).then(() => {
         Toastify({
-            text: "{% trans 'Código copiado!' %}",
+            text: "Code copied!",
             duration: 3000,
             gravity: "top",
             position: "right",
@@ -215,7 +215,7 @@ function copyCode(elementId) {
         }).showToast();
     }).catch(() => {
         Toastify({
-            text: "{% trans 'Erro ao copiar código' %}",
+            text: "Error copying code",
             duration: 3000,
             gravity: "top",
             position: "right",

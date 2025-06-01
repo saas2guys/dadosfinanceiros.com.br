@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - Dados Financeiros API</title>
+    <title>{% block title %}{% endblock %} - Financial Data API</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/whitenoise-test.css' %}">
@@ -31,7 +31,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <div class="flex-shrink-0 flex items-center">
-                        <a href="{% url 'home' %}" class="text-xl font-bold text-gray-800">Dados Financeiros API</a>
+                        <a href="{% url 'home' %}" class="text-xl font-bold text-gray-800">Financial Data API</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -52,14 +52,14 @@
                     </form>
 
                     {% if user.is_authenticated %}
-                        <a href="{% url 'profile' %}" class="text-gray-700 hover:text-gray-900">{% trans "Perfil" %}</a>
+                        <a href="{% url 'profile' %}" class="text-gray-700 hover:text-gray-900">Profile</a>
                         <form action="{% url 'logout' %}" method="post" class="inline">
                             {% csrf_token %}
-                            <button type="submit" class="text-gray-700 hover:text-gray-900">{% trans "Sair" %}</button>
+                            <button type="submit" class="text-gray-700 hover:text-gray-900">Logout</button>
                         </form>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-gray-700 hover:text-gray-900">{% trans "Entrar" %}</a>
-                        <a href="{% url 'register' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">{% trans "Registrar" %}</a>
+                        <a href="{% url 'login' %}" class="text-gray-700 hover:text-gray-900">Login</a>
+                        <a href="{% url 'register' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Register</a>
                     {% endif %}
                 </div>
             </div>
@@ -74,7 +74,7 @@
     <!-- Footer -->
     <footer class="bg-white">
         <div class="max-w-7xl mx-auto py-6 px-4">
-            <p class="text-center text-gray-600">{% trans "© 2024 Dados Financeiros API. Todos os direitos reservados." %}</p>
+            <p class="text-center text-gray-600">© 2024 Financial Data API. All rights reserved.</p>
         </div>
     </footer>
 

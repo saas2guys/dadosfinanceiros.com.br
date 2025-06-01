@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Subscription Success" %}{% endblock %}
+{% block title %}Subscription Success{% endblock %}
 
 {% block content %}
 <div class="max-w-2xl mx-auto px-4 py-16">
@@ -12,22 +12,22 @@
             </svg>
         </div>
         
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">{% trans "Subscription Successful!" %}</h1>
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Subscription Successful!</h1>
         
         <p class="text-lg text-gray-600 mb-8">
-            {% trans "Thank you for subscribing! Your payment has been processed successfully and your new plan is now active." %}
+            Thank you for subscribing! Your payment has been processed successfully and your new plan is now active.
         </p>
         
         <div class="space-y-4">
             <a href="{% url 'profile' %}" 
                class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                {% trans "View Profile" %}
+                View Profile
             </a>
             
             <div class="block">
                 <a href="{% url 'plans' %}" 
                    class="text-blue-600 hover:text-blue-500 font-medium">
-                    {% trans "Manage Subscription" %}
+                    Manage Subscription
                 </a>
             </div>
         </div>

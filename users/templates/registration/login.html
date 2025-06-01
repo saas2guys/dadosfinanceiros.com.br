@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Login - Dados Financeiros API" %}{% endblock %}
+{% block title %}Login - Financial Data API{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                {% trans "Entrar na sua conta" %}
+                Sign in to your account
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                {% trans "Ou" %}
+                Or
                 <a href="{% url 'register' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    {% trans "criar uma nova conta" %}
+                    create a new account
                 </a>
             </p>
         </div>
@@ -22,16 +22,16 @@
             <input type="hidden" name="remember" value="true">
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
-                    <label for="email" class="sr-only">{% trans "Email" %}</label>
+                    <label for="email" class="sr-only">Email</label>
                     <input id="email" name="username" type="email" autocomplete="email" required
                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="{% trans 'Endereço de email' %}">
+                           placeholder="Email address">
                 </div>
                 <div>
-                    <label for="password" class="sr-only">{% trans "Senha" %}</label>
+                    <label for="password" class="sr-only">Password</label>
                     <input id="password" name="password" type="password" autocomplete="current-password" required
                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="{% trans 'Senha' %}">
+                           placeholder="Password">
                 </div>
             </div>
 
@@ -40,13 +40,13 @@
                     <input id="remember-me" name="remember-me" type="checkbox"
                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
                     <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                        {% trans "Lembrar de mim" %}
+                        Remember me
                     </label>
                 </div>
 
                 <div class="text-sm">
                     <a href="{% url 'password_reset' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        {% trans "Esqueceu sua senha?" %}
+                        Forgot your password?
                     </a>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                                   clip-rule="evenodd"/>
                         </svg>
                     </span>
-                    {% trans "Entrar" %}
+                    Sign in
                 </button>
             </div>
         </form>

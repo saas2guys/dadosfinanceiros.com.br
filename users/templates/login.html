@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Login - Dados Financeiros API" %}{% endblock %}
+{% block title %}Login - Financial Data API{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                {% trans "Entrar na sua conta" %}
+                Sign in to your account
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                {% trans "Ou" %}
+                Or
                 <a href="{% url 'register' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    {% trans "criar uma nova conta" %}
+                    create a new account
                 </a>
             </p>
         </div>
@@ -23,7 +23,7 @@
             
             {% if form.errors %}
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                <p class="font-bold">{% trans "Por favor, corrija os seguintes erros:" %}</p>
+                <p class="font-bold">Please correct the following errors:</p>
                 {% for field in form %}
                     {% for error in field.errors %}
                         <p class="text-sm">{{ error }}</p>
@@ -37,23 +37,23 @@
             
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
-                    <label for="id_username" class="sr-only">{% trans "Email" %}</label>
+                    <label for="id_username" class="sr-only">Email</label>
                     <input type="email" name="username" id="id_username" autocomplete="email" required
                            class="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="{% trans 'Endereço de email' %}">
+                           placeholder="Email address">
                 </div>
                 <div>
-                    <label for="id_password" class="sr-only">{% trans "Senha" %}</label>
+                    <label for="id_password" class="sr-only">Password</label>
                     <input type="password" name="password" id="id_password" autocomplete="current-password" required
                            class="appearance-none rounded-b-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="{% trans 'Senha' %}">
+                           placeholder="Password">
                 </div>
             </div>
 
             <div class="flex items-center justify-between">
                 <div class="text-sm">
                     <a href="{% url 'password_reset' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        {% trans "Esqueceu sua senha?" %}
+                        Forgot your password?
                     </a>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                                   clip-rule="evenodd"/>
                         </svg>
                     </span>
-                    {% trans "Entrar" %}
+                    Sign in
                 </button>
             </div>
         </form>

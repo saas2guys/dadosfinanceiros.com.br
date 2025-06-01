@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Registro - Dados Financeiros API" %}{% endblock %}
+{% block title %}Register - Financial Data API{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                {% trans "Criar uma nova conta" %}
+                Create a new account
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                {% trans "Ou" %}
+                Or
                 <a href="{% url 'login' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    {% trans "entrar em uma conta existente" %}
+                    sign in to an existing account
                 </a>
             </p>
         </div>
@@ -21,22 +21,22 @@
             {% csrf_token %}
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
-                    <label for="email" class="sr-only">{% trans "Email" %}</label>
+                    <label for="email" class="sr-only">Email</label>
                     <input id="email" name="email" type="email" autocomplete="email" required
                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="{% trans 'Endereço de email' %}">
+                           placeholder="Email address">
                 </div>
                 <div>
-                    <label for="password1" class="sr-only">{% trans "Senha" %}</label>
+                    <label for="password1" class="sr-only">Password</label>
                     <input id="password1" name="password1" type="password" required
                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="{% trans 'Senha' %}">
+                           placeholder="Password">
                 </div>
                 <div>
-                    <label for="password2" class="sr-only">{% trans "Confirmar Senha" %}</label>
+                    <label for="password2" class="sr-only">Confirm Password</label>
                     <input id="password2" name="password2" type="password" required
                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="{% trans 'Confirmar Senha' %}">
+                           placeholder="Confirm Password">
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
                                   clip-rule="evenodd"/>
                         </svg>
                     </span>
-                    {% trans "Registrar" %}
+                    Register
                 </button>
             </div>
         </form>

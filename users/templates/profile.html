@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Profile - Polygon.io Proxy Service{% endblock %}
+{% block title %}Profile - Financial Data API{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
@@ -13,7 +13,7 @@
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                 </svg>
-                <span>{% trans "Edit Profile" %}</span>
+                <span>Edit Profile</span>
             </button>
         </div>
         
@@ -53,10 +53,10 @@
                 </div>
                 <div class="col-span-2 flex space-x-4 mt-4">
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                        {% trans "Save Changes" %}
+                        Save Changes
                     </button>
                     <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-                        {% trans "Cancel" %}
+                        Cancel
                     </button>
                 </div>
             </form>
@@ -66,25 +66,25 @@
     <!-- Subscription Information -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">{% trans "Subscription" %}</h2>
+            <h2 class="text-2xl font-semibold text-gray-800">Subscription</h2>
             <a href="{% url 'plans' %}" class="text-blue-500 hover:text-blue-600 font-medium">
-                {% trans "Manage Plans" %}
+                Manage Plans
             </a>
         </div>
         
         {% if user.current_plan %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg">
-                <h3 class="font-semibold text-gray-800 mb-2">{% trans "Current Plan" %}</h3>
+                <h3 class="font-semibold text-gray-800 mb-2">Current Plan</h3>
                 <p class="text-2xl font-bold text-blue-600">{{ user.current_plan.name }}</p>
-                <p class="text-gray-600">${{ user.current_plan.price_monthly }}/{% trans "month" %}</p>
+                <p class="text-gray-600">${{ user.current_plan.price_monthly }}/month</p>
                 <p class="text-sm text-gray-500 mt-2">
-                    {{ user.current_plan.daily_request_limit|floatformat:0 }} {% trans "requests per day" %}
+                    {{ user.current_plan.daily_request_limit|floatformat:0 }} requests per day
                 </p>
             </div>
             
             <div class="bg-gray-50 p-4 rounded-lg">
-                <h3 class="font-semibold text-gray-800 mb-2">{% trans "Usage Today" %}</h3>
+                <h3 class="font-semibold text-gray-800 mb-2">Usage Today</h3>
                 <div class="flex items-center space-x-2">
                     <div class="flex-1 bg-gray-200 rounded-full h-2">
                         {% with usage_percentage=user.daily_requests_made|floatformat:0|add:0 %}
@@ -103,7 +103,7 @@
                 </div>
                 <p class="text-sm text-gray-500 mt-2">
                     {% with remaining=user.daily_request_limit|add:user.daily_requests_made|add:"-"|add:user.daily_requests_made %}
-                    {{ remaining }} {% trans "requests remaining" %}
+                    {{ remaining }} requests remaining
                     {% endwith %}
                 </p>
             </div>
@@ -111,30 +111,30 @@
         
         <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <p class="text-gray-600">{% trans "Status" %}</p>
+                <p class="text-gray-600">Status</p>
                 <p class="font-semibold">
                     {% if user.subscription_status == 'active' %}
-                        <span class="text-green-600">{% trans "Active" %}</span>
+                        <span class="text-green-600">Active</span>
                     {% elif user.subscription_status == 'canceled' %}
-                        <span class="text-red-600">{% trans "Canceled" %}</span>
+                        <span class="text-red-600">Canceled</span>
                     {% elif user.subscription_status == 'past_due' %}
-                        <span class="text-yellow-600">{% trans "Past Due" %}</span>
+                        <span class="text-yellow-600">Past Due</span>
                     {% else %}
-                        <span class="text-gray-600">{% trans "Inactive" %}</span>
+                        <span class="text-gray-600">Inactive</span>
                     {% endif %}
                 </p>
             </div>
             
             {% if user.subscription_expires_at %}
             <div>
-                <p class="text-gray-600">{% trans "Expires" %}</p>
+                <p class="text-gray-600">Expires</p>
                 <p class="font-semibold">{{ user.subscription_expires_at|date:"M d, Y" }}</p>
             </div>
             {% endif %}
             
             {% if user.subscription_days_remaining %}
             <div>
-                <p class="text-gray-600">{% trans "Days Remaining" %}</p>
+                <p class="text-gray-600">Days Remaining</p>
                 <p class="font-semibold">{{ user.subscription_days_remaining }}</p>
             </div>
             {% endif %}
@@ -142,7 +142,7 @@
         
         {% if user.current_plan.features %}
         <div class="mt-6">
-            <h4 class="font-semibold text-gray-800 mb-3">{% trans "Plan Features" %}</h4>
+            <h4 class="font-semibold text-gray-800 mb-3">Plan Features</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {% for feature_key, feature_value in user.current_plan.features.items %}
                 <div class="flex items-center space-x-2">
@@ -158,9 +158,9 @@
         
         {% else %}
         <div class="text-center py-8">
-            <p class="text-gray-600 mb-4">{% trans "No active subscription plan" %}</p>
+            <p class="text-gray-600 mb-4">No active subscription plan</p>
             <a href="{% url 'plans' %}" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
-                {% trans "Choose a Plan" %}
+                Choose a Plan
             </a>
         </div>
         {% endif %}
@@ -333,18 +333,18 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.first_name !== undefined) {
-                    showGlobalToast('{% trans "Profile updated successfully!" %}');
+                    showGlobalToast('Profile updated successfully!');
                     // Refresh the page to show updated data
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
                 } else {
-                    showGlobalToast('{% trans "Error updating profile" %}', 'error');
+                    showGlobalToast('Error updating profile', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showGlobalToast('{% trans "Error updating profile" %}', 'error');
+                showGlobalToast('Error updating profile', 'error');
             });
         });
     }
