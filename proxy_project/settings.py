@@ -140,6 +140,8 @@ INSTALLED_APPS = [
 ]
 
 # Add development-only apps
+# These apps are only available in DEBUG mode and only if they're actually installed
+# This prevents production deployment errors when dev dependencies aren't available
 if DEBUG:
     # Only add development apps if they're actually available
     try:
