@@ -141,20 +141,61 @@ INSTALLED_APPS = [
 
 # Add development-only apps
 if DEBUG:
-    INSTALLED_APPS += [
-        "django_extensions",
-        "debug_toolbar",
-    ]
+    # Only add development apps if they're actually available
+    try:
+        import django_extensions
+        INSTALLED_APPS += ["django_extensions"]
+        
+        # Django Extensions shell_plus configuration
+        SHELL_PLUS_PRE_IMPORTS = [
+            ('pprint', ['pprint', 'pformat']),
+            ('datetime', ['datetime', 'date', 'time', 'timedelta']),
+        ]
+        
+        # Additional shell_plus settings
+        SHELL_PLUS_PRINT_SQL = True  # Show SQL queries in shell_plus
+        SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000  # Truncate long SQL queries
+    except ImportError:
+        # django_extensions not available
+        pass
     
-    # Django Extensions shell_plus configuration
-    SHELL_PLUS_PRE_IMPORTS = [
-        ('pprint', ['pprint', 'pformat']),
-        ('datetime', ['datetime', 'date', 'time', 'timedelta']),
-    ]
-    
-    # Additional shell_plus settings
-    SHELL_PLUS_PRINT_SQL = True  # Show SQL queries in shell_plus
-    SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000  # Truncate long SQL queries
+    try:
+        import debug_toolbar
+        INSTALLED_APPS += ["debug_toolbar"]
+        
+        # Django Debug Toolbar configuration (development only)
+        INTERNAL_IPS = [
+            "127.0.0.1",
+            "localhost",
+        ]
+        
+        # Django Debug Toolbar settings
+        DEBUG_TOOLBAR_CONFIG = {
+            'SHOW_TOOLBAR_CALLBACK': lambda request: True,  # Always show toolbar in DEBUG mode
+            'INSERT_BEFORE': '</body>',
+            'HIDE_DJANGO_SQL': False,
+            'TAG': 'div',
+            'ENABLE_STACKTRACES': True,
+        }
+        
+        DEBUG_TOOLBAR_PANELS = [
+            'debug_toolbar.panels.history.HistoryPanel',
+            'debug_toolbar.panels.versions.VersionsPanel',
+            'debug_toolbar.panels.timer.TimerPanel',
+            'debug_toolbar.panels.settings.SettingsPanel',
+            'debug_toolbar.panels.headers.HeadersPanel',
+            'debug_toolbar.panels.request.RequestPanel',
+            'debug_toolbar.panels.sql.SQLPanel',
+            'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+            'debug_toolbar.panels.templates.TemplatesPanel',
+            'debug_toolbar.panels.cache.CachePanel',
+            'debug_toolbar.panels.signals.SignalsPanel',
+            'debug_toolbar.panels.redirects.RedirectsPanel',
+            'debug_toolbar.panels.profiling.ProfilingPanel',
+        ]
+    except ImportError:
+        # debug_toolbar not available
+        pass
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -172,9 +213,14 @@ MIDDLEWARE = [
 
 # Add debug toolbar middleware for development
 if DEBUG:
-    MIDDLEWARE += [
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-    ]
+    try:
+        import debug_toolbar
+        MIDDLEWARE += [
+            "debug_toolbar.middleware.DebugToolbarMiddleware",
+        ]
+    except ImportError:
+        # debug_toolbar not available
+        pass
 
 if not DEBUG:
     MIDDLEWARE.insert(1, "django_csp.middleware.CSPMiddleware")
