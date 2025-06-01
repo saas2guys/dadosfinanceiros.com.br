@@ -17,9 +17,9 @@ ALLOWED_HOSTS = (
     ["*"]
     if DEBUG
     else [
-        "dadosfinanceiros.com.br",
-        "www.dadosfinanceiros.com.br",
-        "api.dadosfinanceiros.com.br",
+        "financialdata.online",
+        "www.financialdata.online",
+        "api.financialdata.online",
         "localhost",
         "127.0.0.1",
     ]
@@ -27,9 +27,9 @@ ALLOWED_HOSTS = (
 
 CSRF_TRUSTED_ORIGINS = (
     [
-        "https://dadosfinanceiros.com.br",
-        "https://www.dadosfinanceiros.com.br",
-        "https://api.dadosfinanceiros.com.br",
+        "https://financialdata.online",
+        "https://www.financialdata.online",
+        "https://api.financialdata.online",
     ]
     if not DEBUG
     else [
@@ -61,7 +61,7 @@ if not DEBUG:
 
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_AGE = 31449600
-CSRF_COOKIE_DOMAIN = ".dadosfinanceiros.com.br" if not DEBUG else None
+CSRF_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
 CSRF_COOKIE_PATH = "/"
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SECURE = not DEBUG
@@ -71,7 +71,7 @@ CSRF_FAILURE_VIEW = "users.views.csrf_failure_view"
 
 SESSION_COOKIE_NAME = "sessionid"
 SESSION_COOKIE_AGE = 1209600
-SESSION_COOKIE_DOMAIN = ".dadosfinanceiros.com.br" if not DEBUG else None
+SESSION_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
 SESSION_COOKIE_PATH = "/"
 SESSION_SAVE_EVERY_REQUEST = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -81,7 +81,7 @@ POLYGON_BASE_URL = config("POLYGON_BASE_URL", default="https://api.polygon.io")
 POLYGON_API_KEY = config("POLYGON_API_KEY", default="your-polygon-api-key-here")
 
 PROXY_TIMEOUT = config("PROXY_TIMEOUT", default=30, cast=int)
-PROXY_DOMAIN = config("PROXY_DOMAIN", default="api.dadosfinanceiros.com.br")
+PROXY_DOMAIN = config("PROXY_DOMAIN", default="api.financialdata.online")
 
 # Stripe Configuration
 STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
@@ -137,9 +137,9 @@ if not DEBUG:
     CSP_FONT_SRC = ("'self'", "https:")
     CSP_CONNECT_SRC = (
         "'self'",
-        "https://dadosfinanceiros.com.br",
-        "https://www.dadosfinanceiros.com.br",
-        "https://api.dadosfinanceiros.com.br",
+        "https://financialdata.online",
+        "https://www.financialdata.online",
+        "https://api.financialdata.online",
     )
     CSP_FRAME_ANCESTORS = ("'none'",)
     CSP_FORM_ACTION = ("'self'",)
@@ -239,9 +239,9 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = (
     [
-        "https://dadosfinanceiros.com.br",
-        "https://www.dadosfinanceiros.com.br",
-        "https://api.dadosfinanceiros.com.br",
+        "https://financialdata.online",
+        "https://www.financialdata.online",
+        "https://api.financialdata.online",
     ]
     if not DEBUG
     else [
