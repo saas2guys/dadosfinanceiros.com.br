@@ -1,16 +1,13 @@
 import json
 import logging
-from datetime import timedelta
 
 import stripe
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
 from rest_framework import generics, permissions, status
@@ -19,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .forms import WaitingListForm
-from .models import Plan, TokenHistory, User, WaitingList
+from .models import Plan, TokenHistory, User
 from .serializers import (
     PlanSerializer,
     TokenHistorySerializer,
