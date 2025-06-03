@@ -5,6 +5,7 @@ from pathlib import Path
 
 import dj_database_url
 from decouple import config
+from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,16 +15,15 @@ SECRET_KEY = config(
 
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-# Django Debug Toolbar configuration (development only)
+
 if DEBUG:
     INTERNAL_IPS = [
         "127.0.0.1",
         "localhost",
     ]
 
-    # Django Debug Toolbar settings
     DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TOOLBAR_CALLBACK": lambda request: True,  # Always show toolbar in DEBUG mode
+        "SHOW_TOOLBAR_CALLBACK": lambda request: True,
         "INSERT_BEFORE": "</body>",
         "HIDE_DJANGO_SQL": False,
         "TAG": "div",
@@ -119,7 +119,7 @@ POLYGON_API_KEY = config("POLYGON_API_KEY", default="your-polygon-api-key-here")
 PROXY_TIMEOUT = config("PROXY_TIMEOUT", default=30, cast=int)
 PROXY_DOMAIN = config("PROXY_DOMAIN", default="api.financialdata.online")
 
-# Stripe Configuration
+
 STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
@@ -139,27 +139,21 @@ INSTALLED_APPS = [
     "users",
 ]
 
-# Add development-only apps
-# These apps are only available in DEBUG mode and only if they're actually installed
-# This prevents production deployment errors when dev dependencies aren't available
+
 if DEBUG:
-    # Only add development apps if they're actually available
     try:
         import django_extensions
 
         INSTALLED_APPS += ["django_extensions"]
 
-        # Django Extensions shell_plus configuration
         SHELL_PLUS_PRE_IMPORTS = [
             ("pprint", ["pprint", "pformat"]),
             ("datetime", ["datetime", "date", "time", "timedelta"]),
         ]
 
-        # Additional shell_plus settings
-        SHELL_PLUS_PRINT_SQL = True  # Show SQL queries in shell_plus
-        SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000  # Truncate long SQL queries
+        SHELL_PLUS_PRINT_SQL = True
+        SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000
     except ImportError:
-        # django_extensions not available
         pass
 
     try:
@@ -167,15 +161,13 @@ if DEBUG:
 
         INSTALLED_APPS += ["debug_toolbar"]
 
-        # Django Debug Toolbar configuration (development only)
         INTERNAL_IPS = [
             "127.0.0.1",
             "localhost",
         ]
 
-        # Django Debug Toolbar settings
         DEBUG_TOOLBAR_CONFIG = {
-            "SHOW_TOOLBAR_CALLBACK": lambda request: True,  # Always show toolbar in DEBUG mode
+            "SHOW_TOOLBAR_CALLBACK": lambda request: True,
             "INSERT_BEFORE": "</body>",
             "HIDE_DJANGO_SQL": False,
             "TAG": "div",
@@ -198,7 +190,6 @@ if DEBUG:
             "debug_toolbar.panels.profiling.ProfilingPanel",
         ]
     except ImportError:
-        # debug_toolbar not available
         pass
 
 MIDDLEWARE = [
@@ -215,7 +206,7 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
 ]
 
-# Add debug toolbar middleware for development
+
 if DEBUG:
     try:
         import debug_toolbar
@@ -224,7 +215,6 @@ if DEBUG:
             "debug_toolbar.middleware.DebugToolbarMiddleware",
         ]
     except ImportError:
-        # debug_toolbar not available
         pass
 
 if not DEBUG:
@@ -279,22 +269,20 @@ TEMPLATES = [
 
 ASGI_APPLICATION = "proxy_project.asgi.application"
 
-# Database configuration with PostgreSQL support
+
 DATABASE_URL = config("DATABASE_URL", default=None)
 
 if DATABASE_URL:
-    # Use PostgreSQL from DATABASE_URL
     DATABASES = {
         "default": dj_database_url.parse(
             DATABASE_URL, conn_max_age=600, conn_health_checks=True
         )
     }
-    # Ensure SSL settings for production PostgreSQL
+
     DATABASES["default"]["OPTIONS"] = {
         "sslmode": "require",
     }
 else:
-    # Fallback to SQLite for development
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -347,6 +335,17 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "users.User"
+
+
+AUTHENTICATION_BACKENDS = [
+    "users.authentication.EmailAuthBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = reverse_lazy("profile")
+LOGOUT_REDIRECT_URL = "home"
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
@@ -445,17 +444,17 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# WhiteNoise configuration
+
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = DEBUG
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Add TEST_RUNNER configuration
+
 TEST_RUNNER = "proxy_project.test_runner.SilentTestRunner"
 
-# Logging configuration
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from datetime import timezone as tz
 from enum import Enum
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
@@ -45,6 +45,32 @@ class Plan(models.Model):
         ordering = ["price_monthly"]
 
 
+class UserManager(BaseUserManager):
+    """Custom user manager that uses email as the unique identifier."""
+
+    def create_user(self, email, password=None, **extra_fields):
+        """Create and save a regular User with the given email and password."""
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        """Create and save a SuperUser with the given email and password."""
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        return self.create_user(email, password, **extra_fields)
+
+
 class User(AbstractUser):
     username = models.CharField(max_length=150, null=True, blank=True)
     email = models.EmailField(unique=True)
@@ -72,6 +98,8 @@ class User(AbstractUser):
     subscription_expires_at = models.DateTimeField(null=True, blank=True)
     current_period_start = models.DateTimeField(null=True, blank=True)
     current_period_end = models.DateTimeField(null=True, blank=True)
+
+    objects = UserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

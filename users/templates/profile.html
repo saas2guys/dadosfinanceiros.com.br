@@ -87,24 +87,14 @@
                 <h3 class="font-semibold text-gray-800 mb-2">Usage Today</h3>
                 <div class="flex items-center space-x-2">
                     <div class="flex-1 bg-gray-200 rounded-full h-2">
-                        {% with usage_percentage=user.daily_requests_made|floatformat:0|add:0 %}
-                        {% with limit=user.daily_request_limit|floatformat:0|add:0 %}
-                        {% if limit > 0 %}
-                        {% with percentage=usage_percentage|mul:100|div:limit %}
-                        <div class="bg-blue-600 h-2 rounded-full" data-width="{{ percentage|floatformat:1 }}"></div>
-                        {% endwith %}
-                        {% endif %}
-                        {% endwith %}
-                        {% endwith %}
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ daily_usage.percentage }}%"></div>
                     </div>
                     <span class="text-sm text-gray-600">
-                        {{ user.daily_requests_made }}/{{ user.daily_request_limit }}
+                        {{ daily_usage.made }}/{{ daily_usage.limit }}
                     </span>
                 </div>
                 <p class="text-sm text-gray-500 mt-2">
-                    {% with remaining=user.daily_request_limit|add:user.daily_requests_made|add:"-"|add:user.daily_requests_made %}
-                    {{ remaining }} requests remaining
-                    {% endwith %}
+                    {{ daily_usage.remaining }} requests remaining
                 </p>
             </div>
         </div>

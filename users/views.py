@@ -119,15 +119,23 @@ def profile(request):
 
     token_info["is_active"] = not request.user.is_token_expired()
 
+    daily_requests_made = request.user.daily_requests_made
+    daily_request_limit = request.user.daily_request_limit
+    usage_percentage = 0
+    if daily_request_limit > 0:
+        usage_percentage = (daily_requests_made / daily_request_limit) * 100
+
+        usage_percentage = min(usage_percentage, 100)
+
     context = {
         "token_info": token_info,
         "token_history": _token_history,
         "user": request.user,
         "daily_usage": {
-            "made": request.user.daily_requests_made,
-            "limit": request.user.daily_request_limit,
-            "remaining": request.user.daily_request_limit
-            - request.user.daily_requests_made,
+            "made": daily_requests_made,
+            "limit": daily_request_limit,
+            "remaining": max(0, daily_request_limit - daily_requests_made),
+            "percentage": round(usage_percentage, 1),
         },
     }
     return render(request, "profile.html", context)
@@ -151,7 +159,6 @@ def regenerate_token(request):
 @api_view(["GET", "POST"])
 @permission_classes([permissions.AllowAny])
 def register_user(request):
-    # Temporarily redirect all registration attempts to waiting list
     return redirect("waiting_list")
 
 

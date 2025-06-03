@@ -1,8 +1,42 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import ModelBackend
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
+from .models import User
+
 User = get_user_model()
+
+
+class EmailAuthBackend(ModelBackend):
+    """
+    Custom authentication backend that allows users to log in using their email address.
+    """
+
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        if username is None:
+            username = kwargs.get(UserModel.USERNAME_FIELD)
+
+        if username is None or password is None:
+            return None
+
+        try:
+            user = UserModel.objects.get(email=username)
+        except UserModel.DoesNotExist:
+            UserModel().set_password(password)
+            return None
+        else:
+            if user.check_password(password) and self.user_can_authenticate(user):
+                return user
+        return None
+
+    def get_user(self, user_id):
+        UserModel = get_user_model()
+        try:
+            return UserModel.objects.get(pk=user_id)
+        except UserModel.DoesNotExist:
+            return None
 
 
 class RequestTokenAuthentication(BaseAuthentication):

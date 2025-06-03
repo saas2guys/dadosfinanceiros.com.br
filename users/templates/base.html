@@ -24,7 +24,7 @@
 </head>
 <body class="bg-gray-900 text-white">
     <!-- Global Toast Container -->
-    <div id="globalToast" class="fixed top-4 right-4 z-50 transform transition-transform duration-300 translate-x-full">
+    <div id="globalToast" class="fixed top-4 right-4 z-50 transform transition-transform duration-300 translate-x-full" style="display: none;">
         <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -73,6 +73,37 @@
         </div>
     </footer>
 
+    <!-- Django Messages for JavaScript -->
+    {% if messages %}
+        <script id="django-messages" type="application/json">
+            [
+                {% for message in messages %}
+                {
+                    "text": "{{ message|escapejs }}",
+                    "type": "{% if message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% elif message.tags == 'info' %}info{% else %}success{% endif %}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                try {
+                    var messagesElement = document.getElementById('django-messages');
+                    if (messagesElement) {
+                        var messages = JSON.parse(messagesElement.textContent);
+                        messages.forEach(function(msg, index) {
+                            setTimeout(function() {
+                                showGlobalToast(msg.text, msg.type);
+                            }, index * 200); // Stagger messages by 200ms
+                        });
+                    }
+                } catch (e) {
+                    console.error('Error parsing Django messages:', e);
+                }
+            });
+        </script>
+    {% endif %}
+
     <!-- Global JavaScript Functions -->
     <script>
         // Global toast function
@@ -80,26 +111,36 @@
             const toast = document.getElementById('globalToast');
             const toastMessage = document.getElementById('globalToastMessage');
             
-            if (toast && toastMessage) {
+            if (toast && toastMessage && message && message.trim()) {
                 toastMessage.textContent = message;
                 
                 // Change color based on type
                 const toastDiv = toast.querySelector('div');
+                toastDiv.className = 'text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2';
+                
                 if (type === 'error') {
-                    toastDiv.className = toastDiv.className.replace('bg-green-500', 'bg-red-500');
+                    toastDiv.classList.add('bg-red-500');
                 } else if (type === 'warning') {
-                    toastDiv.className = toastDiv.className.replace('bg-green-500', 'bg-yellow-500');
+                    toastDiv.classList.add('bg-yellow-500');
+                } else if (type === 'info') {
+                    toastDiv.classList.add('bg-blue-500');
                 } else {
-                    toastDiv.className = toastDiv.className.replace(/bg-(red|yellow)-500/g, 'bg-green-500');
+                    toastDiv.classList.add('bg-green-500');
                 }
                 
                 // Show toast
-                toast.classList.remove('translate-x-full');
+                toast.style.display = 'block';
+                setTimeout(() => {
+                    toast.classList.remove('translate-x-full');
+                }, 50); // Small delay to ensure display:block takes effect
                 
-                // Hide toast after 3 seconds
+                // Hide toast after 4 seconds
                 setTimeout(() => {
                     toast.classList.add('translate-x-full');
-                }, 3000);
+                    setTimeout(() => {
+                        toast.style.display = 'none';
+                    }, 300); // Wait for animation to complete
+                }, 4000);
             }
         }
 
