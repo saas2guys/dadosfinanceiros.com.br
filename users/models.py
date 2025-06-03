@@ -154,12 +154,22 @@ class User(AbstractUser):
         }
 
     def generate_new_request_token(self, save_old=True, never_expires=False):
-        if save_old and self.keep_token_history:
+        if save_old and self.keep_token_history and self.request_token:
+            # Save the old token to history
+            TokenHistory.objects.create(
+                user=self,
+                token=str(self.request_token),
+                expires_at=self.request_token_expires,
+                is_active=False,  # Old tokens are no longer active
+                never_expires=self.token_never_expires,
+            )
+
+            # Also save to the previous_tokens JSON field for backwards compatibility
             old_token_data = {
                 "token": str(self.request_token),
                 "created": self.request_token_created.isoformat()
                 if self.request_token_created
-                else timezone.now(),
+                else timezone.now().isoformat(),
                 "expires": self.request_token_expires.isoformat()
                 if self.request_token_expires
                 else None,
@@ -167,25 +177,16 @@ class User(AbstractUser):
                 "never_expires": self.token_never_expires,
             }
 
-            if save_old:
-                TokenHistory.objects.create(
-                    user=self,
-                    token=old_token_data["token"],
-                    expires_at=datetime.fromisoformat(old_token_data["expires"])
-                    if old_token_data["expires"]
-                    else None,
-                    is_active=False,
-                    never_expires=old_token_data["never_expires"],
-                )
-
             if isinstance(self.previous_tokens, list):
                 self.previous_tokens.append(old_token_data)
             else:
                 self.previous_tokens = [old_token_data]
 
+            # Keep only the last 10 tokens
             if len(self.previous_tokens) > 10:
                 self.previous_tokens = self.previous_tokens[-10:]
 
+        # Generate new token
         self.request_token = uuid.uuid4()
         self.request_token_created = timezone.now()
         self.token_never_expires = never_expires
@@ -292,6 +293,25 @@ class TokenHistory(models.Model):
 
     def __str__(self):
         return f"Token {self.token[:8]}... for {self.user.email}"
+
+    @property
+    def is_expired(self):
+        """Check if this token is expired based on its expiration date"""
+        if self.never_expires:
+            return False
+        if not self.expires_at:
+            return True
+        return timezone.now() > self.expires_at
+
+    @property
+    def status_display(self):
+        """Return a human-readable status for this token"""
+        if not self.is_active:
+            return "Revoked"
+        elif self.is_expired:
+            return "Expired"
+        else:
+            return "Active"
 
 
 class WaitingList(models.Model):

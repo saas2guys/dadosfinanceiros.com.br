@@ -189,18 +189,24 @@
             </div>
         </div>
         <div class="flex space-x-4">
-            <form method="post" action="{% url 'regenerate_token' %}" class="inline">
+            <form method="post" action="{% url 'regenerate_token' %}" class="inline" id="newTokenForm">
                 {% csrf_token %}
                 <input type="hidden" name="never_expires" value="false">
-                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                    Generate New Token
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center space-x-2" id="newTokenBtn">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    <span>Generate New Token</span>
                 </button>
             </form>
-            <form method="post" action="{% url 'regenerate_token' %}" class="inline">
+            <form method="post" action="{% url 'regenerate_token' %}" class="inline" id="foreverTokenForm">
                 {% csrf_token %}
                 <input type="hidden" name="never_expires" value="true">
-                <button type="submit" class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600">
-                    Generate Forever Token
+                <button type="submit" class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors duration-200 flex items-center space-x-2" id="foreverTokenBtn">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <span>Generate Forever Token</span>
                 </button>
             </form>
         </div>
@@ -211,7 +217,7 @@
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">Token History</h2>
             <div class="text-sm text-gray-500">
-                Total Tokens: {{ token_history|length }}
+                Total Tokens: {{ all_tokens|length }}
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -225,11 +231,14 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    {% for token in token_history %}
-                    <tr class="hover:bg-gray-50">
+                    {% for token in all_tokens %}
+                    <tr class="hover:bg-gray-50 {% if token.is_current %}bg-blue-50{% endif %}">
                         <td class="px-6 py-4 whitespace-nowrap font-mono text-sm">
                             <div class="flex items-center space-x-2">
-                                <span>{{ token.token }}</span>
+                                <span class="{% if token.is_current %}font-bold text-blue-700{% endif %}">
+                                    {{ token.token|truncatechars:20 }}
+                                    {% if token.is_current %}<span class="text-blue-600 text-xs ml-1">(Current)</span>{% endif %}
+                                </span>
                                 <button onclick="copyToClipboard('{{ token.token }}')" class="text-blue-500 hover:text-blue-600">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
@@ -240,20 +249,28 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm">{{ token.created_at|date:"Y-m-d H:i:s" }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             {% if token.never_expires %}
-                                <span class="text-purple-600">Never (Forever Token)</span>
+                                <span class="text-purple-600 font-medium">Never (Forever Token)</span>
                             {% else %}
                                 {{ token.expires_at|date:"Y-m-d H:i:s" }}
                             {% endif %}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {% if token.is_active %}
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Active
-                            </span>
+                            {% if token.is_current %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    Current
+                                </span>
+                            {% elif token.status_display == "Revoked" %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                    Revoked
+                                </span>
+                            {% elif token.status_display == "Expired" %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Expired
+                                </span>
                             {% else %}
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                                Expired
-                            </span>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Active
+                                </span>
                             {% endif %}
                         </td>
                     </tr>
@@ -336,6 +353,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
                 showGlobalToast('Error updating profile', 'error');
             });
+        });
+    }
+
+    // Token generation handling
+    const newTokenForm = document.getElementById('newTokenForm');
+    const foreverTokenForm = document.getElementById('foreverTokenForm');
+    const newTokenBtn = document.getElementById('newTokenBtn');
+    const foreverTokenBtn = document.getElementById('foreverTokenBtn');
+
+    function setButtonLoading(button, isLoading) {
+        const span = button.querySelector('span');
+        const svg = button.querySelector('svg');
+        
+        if (isLoading) {
+            button.disabled = true;
+            button.classList.add('opacity-75', 'cursor-not-allowed');
+            span.textContent = 'Generating...';
+            svg.classList.add('animate-spin');
+        } else {
+            button.disabled = false;
+            button.classList.remove('opacity-75', 'cursor-not-allowed');
+            svg.classList.remove('animate-spin');
+        }
+    }
+
+    if (newTokenForm && newTokenBtn) {
+        newTokenForm.addEventListener('submit', function(e) {
+            setButtonLoading(newTokenBtn, true);
+            const span = newTokenBtn.querySelector('span');
+            span.textContent = 'Generating New Token...';
+        });
+    }
+
+    if (foreverTokenForm && foreverTokenBtn) {
+        foreverTokenForm.addEventListener('submit', function(e) {
+            setButtonLoading(foreverTokenBtn, true);
+            const span = foreverTokenBtn.querySelector('span');
+            span.textContent = 'Generating Forever Token...';
         });
     }
 });

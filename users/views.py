@@ -116,26 +116,55 @@ def profile(request):
     )
 
     token_info = request.user.get_token_info()
-
     token_info["is_active"] = not request.user.is_token_expired()
 
+    # Calculate usage percentage for progress bar
     daily_requests_made = request.user.daily_requests_made
     daily_request_limit = request.user.daily_request_limit
     usage_percentage = 0
     if daily_request_limit > 0:
         usage_percentage = (daily_requests_made / daily_request_limit) * 100
-
+        # Cap at 100% to avoid overflow in UI
         usage_percentage = min(usage_percentage, 100)
+
+    # Create a complete token history including the current token
+    all_tokens = []
+    
+    # Add current token as the first item
+    current_token = {
+        'token': str(request.user.request_token),
+        'created_at': request.user.request_token_created,
+        'expires_at': request.user.request_token_expires,
+        'never_expires': request.user.token_never_expires,
+        'is_active': not request.user.is_token_expired(),
+        'is_current': True,
+        'status_display': 'Current Token'
+    }
+    all_tokens.append(current_token)
+    
+    # Add historical tokens
+    for token in _token_history:
+        token_data = {
+            'token': token.token,
+            'created_at': token.created_at,
+            'expires_at': token.expires_at,
+            'never_expires': token.never_expires,
+            'is_active': token.is_active,
+            'is_current': False,
+            'status_display': token.status_display
+        }
+        all_tokens.append(token_data)
 
     context = {
         "token_info": token_info,
         "token_history": _token_history,
+        "all_tokens": all_tokens,  # Complete token list including current
         "user": request.user,
         "daily_usage": {
             "made": daily_requests_made,
             "limit": daily_request_limit,
             "remaining": max(0, daily_request_limit - daily_requests_made),
-            "percentage": round(usage_percentage, 1),
+            "percentage": round(usage_percentage, 1),  # Round to 1 decimal place
         },
     }
     return render(request, "profile.html", context)
