@@ -218,7 +218,7 @@ if DEBUG:
         pass
 
 if not DEBUG:
-    MIDDLEWARE.insert(1, "django_csp.middleware.CSPMiddleware")
+    MIDDLEWARE.insert(1, "csp.middleware.CSPMiddleware")
 
     CSP_DEFAULT_SRC = ("'self'",)
     CSP_SCRIPT_SRC = (
