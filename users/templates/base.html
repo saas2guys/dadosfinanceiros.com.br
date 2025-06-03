@@ -11,7 +11,21 @@
     <meta name="description" content="{% block meta_description %}Professional financial data API providing real-time market data for stocks, forex, crypto, indices, options, and economic indicators{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}financial data API, stock market API, forex API, cryptocurrency API, real-time market data, trading API{% endblock %}">
     <meta name="author" content="Financial Data API">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
     <link rel="canonical" href="{% block canonical_url %}https://api.dadosfinanceiros.com.br{% endblock %}">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="US">
+    <meta name="geo.placename" content="United States">
+    <meta name="classification" content="Finance, Technology, API, Data">
+    <meta name="subject" content="Financial Data API Services">
+    <meta name="category" content="Finance Technology">
+    <meta name="coverage" content="Worldwide">
+    <meta name="distribution" content="Global">
+    <meta name="rating" content="General">
+    <meta name="revisit-after" content="7 days">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -20,12 +34,21 @@
     <meta property="og:url" content="{% block og_url %}https://api.dadosfinanceiros.com.br{% endblock %}">
     <meta property="og:image" content="{% block og_image %}https://api.dadosfinanceiros.com.br/static/images/financial-api-og.jpg{% endblock %}">
     <meta property="og:site_name" content="Financial Data API">
+    <meta property="og:locale" content="en_US">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{% block twitter_title %}{% endblock %}">
     <meta name="twitter:description" content="{% block twitter_description %}Real-time financial market data API for stocks, forex, crypto, and more. Trusted by developers worldwide.{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}https://api.dadosfinanceiros.com.br/static/images/financial-api-og.jpg{% endblock %}">
+    <meta name="twitter:site" content="@FinancialDataAPI">
+    <meta name="twitter:creator" content="@FinancialDataAPI">
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
     
     <!-- Additional Meta Tags -->
     {% block extra_meta %}{% endblock %}
@@ -44,6 +67,30 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.js"></script>
     {% block extra_css %}{% endblock %}
+
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Financial Data API",
+      "url": "https://api.dadosfinanceiros.com.br",
+      "logo": "https://api.dadosfinanceiros.com.br/static/images/logo.png",
+      "description": "Professional financial data API providing real-time market data for stocks, forex, cryptocurrencies, indices, options, and economic indicators",
+      "foundingDate": "2024",
+      "sameAs": [
+        "https://twitter.com/FinancialDataAPI",
+        "https://linkedin.com/company/financial-data-api"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-555-0123",
+        "contactType": "Customer Service",
+        "email": "talk@financialdata.online",
+        "availableLanguage": "English"
+      }
+    }
+    </script>
 </head>
 <body class="bg-gray-900 text-white">
     <!-- Global Toast Container -->
@@ -56,18 +103,30 @@
         </div>
     </div>
 
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-50">
+        Skip to main content
+    </a>
+
     <!-- Navigation -->
-    <nav class="bg-gray-800 shadow-lg">
+    <nav class="bg-gray-800 shadow-lg" role="navigation" aria-label="Main Navigation">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <div class="flex-shrink-0 flex items-center">
-                        <a href="{% url 'home' %}" class="text-xl font-bold text-white">Financial Data API</a>
+                        <a href="{% url 'home' %}" class="text-xl font-bold text-white" aria-label="Financial Data API Home">
+                            Financial Data API
+                        </a>
+                    </div>
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="{% url 'home' %}#features" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                        <a href="/stock-market-api/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Stock API</a>
+                        <a href="/faq/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
+                        <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white">Plans</a>
                         <a href="{% url 'profile' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Profile</a>
                         <a href="{% url 'logout' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
                     {% else %}
@@ -80,21 +139,72 @@
     </nav>
 
     <!-- Content -->
-    <main class="min-h-screen">
+    <main id="main-content" class="min-h-screen" role="main">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800">
+    <footer class="bg-gray-800" role="contentinfo">
         <div class="max-w-7xl mx-auto py-6 px-4">
-            <div class="flex flex-col sm:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-2 sm:mb-0">© 2024 Financial Data API. All rights reserved.</p>
-                <div class="text-gray-400">
-                    Contact us: <a href="mailto:talk@financialdata.online" class="text-indigo-400 hover:text-indigo-300">talk@financialdata.online</a>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Financial Data API</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Professional financial market data API for stocks, forex, cryptocurrencies, and more.
+                    </p>
+                    <div class="text-gray-400 text-sm">
+                        Contact: <a href="mailto:talk@financialdata.online" class="text-indigo-400 hover:text-indigo-300">talk@financialdata.online</a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="/stock-market-api/" class="text-gray-400 hover:text-white">Stock Market API</a></li>
+                        <li><a href="{% url 'plans' %}" class="text-gray-400 hover:text-white">Pricing</a></li>
+                        <li><a href="/faq/" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="{% url 'waiting_list' %}" class="text-gray-400 hover:text-white">Join Waiting List</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/privacy-policy/" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service/" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                        <li><a href="/api-terms/" class="text-gray-400 hover:text-white">API Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-2 sm:mb-0">© 2024 Financial Data API. All rights reserved.</p>
+                <div class="text-gray-400 text-sm">
+                    Built for developers, traders, and financial institutions
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- JSON-LD for Website -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Financial Data API",
+      "url": "https://api.dadosfinanceiros.com.br",
+      "description": "Professional financial data API providing real-time market data for stocks, forex, cryptocurrencies, indices, options, and economic indicators",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://api.dadosfinanceiros.com.br/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 
     <!-- Django Messages for JavaScript -->
     {% if messages %}

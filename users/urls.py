@@ -1,6 +1,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -27,6 +28,11 @@ api_urlpatterns = [
 
 urlpatterns = [
     path("", views.home, name="home"),
+    
+    # SEO-optimized landing pages
+    path("stock-market-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="stock_market_api"),
+    path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),
+    
     path("profile/", views.profile, name="profile"),
     path(
         "login/",

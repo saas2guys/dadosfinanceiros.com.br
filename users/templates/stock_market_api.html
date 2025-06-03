@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Stock Market API - Real-Time Stock Data & Historical Prices{% endblock %}
+
+{% block meta_description %}Professional stock market API providing real-time stock prices, historical OHLC data, earnings, fundamentals, and market analytics. Free and paid plans available for developers and institutions.{% endblock %}
+
+{% block meta_keywords %}stock market API, stock price API, real-time stock data, historical stock prices, OHLC data API, stock fundamentals API, earnings data API, market data API, equity data API, trading API, financial data API{% endblock %}
+
+{% block canonical_url %}https://api.dadosfinanceiros.com.br/stock-market-api/{% endblock %}
+
+{% block og_title %}Stock Market API - Real-Time & Historical Stock Data{% endblock %}
+{% block og_description %}Access comprehensive stock market data through our professional API. Get real-time prices, historical data, fundamentals, and earnings for 1000+ stocks.{% endblock %}
+
+{% block extra_meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Stock Market API",
+  "description": "Professional stock market API providing real-time stock prices, historical OHLC data, earnings, fundamentals, and market analytics",
+  "url": "https://api.dadosfinanceiros.com.br/stock-market-api/",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "Stock Market Data API",
+    "applicationCategory": "FinanceApplication",
+    "description": "Real-time and historical stock market data API",
+    "featureList": [
+      "Real-time stock prices",
+      "Historical OHLC data",
+      "Stock fundamentals",
+      "Earnings data",
+      "Market snapshots",
+      "Company information"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free tier with paid premium plans"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-900 to-gray-900">
+    <!-- Hero Section -->
+    <div class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                    Stock Market API
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                    Access real-time stock prices, historical data, fundamentals, and earnings 
+                    through our professional stock market API. Trusted by traders, analysts, and fintech companies.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'waiting_list' %}" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-200">
+                        Get Early Access
+                    </a>
+                    <a href="#features" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
+                        View Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Stock Market Data Features</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Real-Time Stock Prices</h3>
+                    <p class="text-gray-400">Get live stock prices with minimal latency for trading applications and real-time monitoring.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Historical OHLC Data</h3>
+                    <p class="text-gray-400">Access years of historical open, high, low, close data for backtesting and analysis.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Company Fundamentals</h3>
+                    <p class="text-gray-400">Financial ratios, balance sheets, income statements, and key metrics for fundamental analysis.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Earnings Data</h3>
+                    <p class="text-gray-400">Quarterly earnings reports, estimates, surprises, and earnings calendar data.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Market Snapshots</h3>
+                    <p class="text-gray-400">Real-time market overviews, top gainers, losers, and most active stocks.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Stock Splits & Dividends</h3>
+                    <p class="text-gray-400">Historical splits, dividend payments, and corporate actions data.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Perfect for Your Use Case</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Trading Platforms</h3>
+                    <p class="text-gray-400 mb-4">Power your trading app with real-time stock prices, order book data, and market analytics.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Real-time price feeds</li>
+                        <li>• Market depth data</li>
+                        <li>• Portfolio tracking</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Financial Analytics</h3>
+                    <p class="text-gray-400 mb-4">Build comprehensive financial models and analysis tools with our extensive dataset.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Historical backtesting</li>
+                        <li>• Risk analytics</li>
+                        <li>• Performance attribution</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Wealth Management</h3>
+                    <p class="text-gray-400 mb-4">Integrate stock data into robo-advisors and portfolio management systems.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Portfolio valuation</li>
+                        <li>• Asset allocation</li>
+                        <li>• Performance reporting</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Academic Research</h3>
+                    <p class="text-gray-400 mb-4">Access clean, reliable stock market data for financial research and education.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Academic discounts</li>
+                        <li>• Historical datasets</li>
+                        <li>• Research-grade quality</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 bg-blue-900">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Access Stock Market Data?</h2>
+            <p class="text-xl text-blue-200 mb-8">
+                Join our waiting list to get early access to professional stock market data API with special launch pricing.
+            </p>
+            <a href="{% url 'waiting_list' %}" class="bg-white text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-200">
+                Join Waiting List Now
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
