@@ -129,29 +129,29 @@ def profile(request):
 
     # Create a complete token history including the current token
     all_tokens = []
-    
+
     # Add current token as the first item
     current_token = {
-        'token': str(request.user.request_token),
-        'created_at': request.user.request_token_created,
-        'expires_at': request.user.request_token_expires,
-        'never_expires': request.user.token_never_expires,
-        'is_active': not request.user.is_token_expired(),
-        'is_current': True,
-        'status_display': 'Current Token'
+        "token": str(request.user.request_token),
+        "created_at": request.user.request_token_created,
+        "expires_at": request.user.request_token_expires,
+        "never_expires": request.user.token_never_expires,
+        "is_active": not request.user.is_token_expired(),
+        "is_current": True,
+        "status_display": "Current Token",
     }
     all_tokens.append(current_token)
-    
+
     # Add historical tokens
     for token in _token_history:
         token_data = {
-            'token': token.token,
-            'created_at': token.created_at,
-            'expires_at': token.expires_at,
-            'never_expires': token.never_expires,
-            'is_active': token.is_active,
-            'is_current': False,
-            'status_display': token.status_display
+            "token": token.token,
+            "created_at": token.created_at,
+            "expires_at": token.expires_at,
+            "never_expires": token.never_expires,
+            "is_active": token.is_active,
+            "is_current": False,
+            "status_display": token.status_display,
         }
         all_tokens.append(token_data)
 
