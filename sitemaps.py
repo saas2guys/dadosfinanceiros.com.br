@@ -10,7 +10,11 @@ class StaticViewSitemap(Sitemap):
         return [
             'home',
             'stock_market_api',
+            'forex_api',
+            'crypto_api',
             'faq', 
+            'blog',
+            'api_comparison',
             'plans',
             'waiting_list',
             'login',
@@ -38,6 +42,9 @@ class FinancialDataSitemap(Sitemap):
     def items(self):
         return [
             'stock_market_api',
+            'forex_api', 
+            'crypto_api',
+            'api_comparison',
             'plans',
             'faq',
         ]
@@ -46,8 +53,40 @@ class FinancialDataSitemap(Sitemap):
         return reverse(item)
 
 
+class ContentSitemap(Sitemap):
+    priority = 0.7
+    changefreq = 'weekly'
+
+    def items(self):
+        return [
+            'blog',
+            'faq',
+            'api_comparison',
+        ]
+
+    def location(self, item):
+        return reverse(item)
+
+
+class UserPagesSitemap(Sitemap):
+    priority = 0.3
+    changefreq = 'monthly'
+
+    def items(self):
+        return [
+            'waiting_list',
+            'login',
+        ]
+
+    def location(self, item):
+        return reverse(item)
+
+
+# Export all sitemaps
 sitemaps = {
+    'high-priority': HighPrioritySitemap,
+    'financial-data': FinancialDataSitemap,
+    'content': ContentSitemap,
+    'user-pages': UserPagesSitemap,
     'static': StaticViewSitemap,
-    'high_priority': HighPrioritySitemap,
-    'financial_data': FinancialDataSitemap,
 } 

@@ -29,10 +29,19 @@ api_urlpatterns = [
 urlpatterns = [
     path("", views.home, name="home"),
     
-    # SEO-optimized landing pages
+    # SEO-optimized landing pages for different financial data types
     path("stock-market-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="stock_market_api"),
-    path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),
+    path("forex-api/", TemplateView.as_view(template_name="forex_api.html"), name="forex_api"),
+    path("crypto-api/", TemplateView.as_view(template_name="crypto_api.html"), name="crypto_api"),
+    path("cryptocurrency-api/", TemplateView.as_view(template_name="crypto_api.html"), name="cryptocurrency_api"),  # Alternative URL
     
+    # SEO content pages
+    path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),
+    path("blog/", TemplateView.as_view(template_name="blog.html"), name="blog"),
+    path("api-comparison/", TemplateView.as_view(template_name="api_comparison.html"), name="api_comparison"),
+    path("financial-api-comparison/", TemplateView.as_view(template_name="api_comparison.html"), name="financial_api_comparison"),  # Alternative URL
+    
+    # User management pages
     path("profile/", views.profile, name="profile"),
     path(
         "login/",
@@ -50,6 +59,7 @@ urlpatterns = [
         "waiting-list/success/", views.waiting_list_success, name="waiting_list_success"
     ),
     path("regenerate-token/", views.regenerate_token, name="regenerate_token"),
+    
     # Password reset URLs
     path(
         "password_reset/",
@@ -79,8 +89,10 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
+    
     # API endpoints (standalone for backward compatibility)
     path("api/plans/", views.PlansListView.as_view(), name="api_plans"),
+    
     # Subscription URLs - Fixed to match test expectations
     path("plans/", views.plans_view, name="plans"),
     path(
@@ -98,6 +110,7 @@ urlpatterns = [
         name="reactivate-subscription",
     ),
     path("stripe/webhook/", views.stripe_webhook, name="stripe_webhook"),
+    
     # Include API URLs with namespace
     path("api/", include((api_urlpatterns, "api"), namespace="api")),
 ]

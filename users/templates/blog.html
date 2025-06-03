@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Financial API Blog - Guides, Tutorials & Market Data Insights{% endblock %}
+
+{% block meta_description %}Expert insights on financial APIs, market data integration, trading strategies, and API development. Learn how to build financial applications with our comprehensive guides and tutorials.{% endblock %}
+
+{% block meta_keywords %}financial API blog, trading API tutorials, market data guides, API integration, financial data analysis, algorithmic trading, fintech development, stock API tutorials, forex API guides{% endblock %}
+
+{% block canonical_url %}https://api.dadosfinanceiros.com.br/blog/{% endblock %}
+
+{% block og_title %}Financial API Blog - Expert Guides & Tutorials{% endblock %}
+{% block og_description %}Learn how to integrate financial APIs, build trading applications, and analyze market data with our expert guides and tutorials.{% endblock %}
+
+{% block extra_meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Financial API Blog",
+  "description": "Expert insights on financial APIs, market data integration, trading strategies, and API development",
+  "url": "https://api.dadosfinanceiros.com.br/blog/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Financial Data API",
+    "url": "https://api.dadosfinanceiros.com.br"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://api.dadosfinanceiros.com.br/blog/"
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+    <!-- Hero Section -->
+    <div class="pt-20 pb-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Financial API Blog
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Expert insights on financial APIs, market data integration, trading strategies, 
+                    and building modern financial applications.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Articles -->
+    <div class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Featured Articles</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <!-- Featured Article 1 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-8">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Tutorial</span>
+                            <span class="text-gray-400 ml-4 text-sm">5 min read</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">
+                            <a href="/blog/how-to-integrate-stock-market-api/" class="hover:text-blue-400 transition duration-200">
+                                How to Integrate Stock Market APIs in Your Application
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 mb-6">
+                            Complete guide to integrating real-time stock market data into your web or mobile application. 
+                            Learn about authentication, rate limiting, and best practices for financial data APIs.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/how-to-integrate-stock-market-api/" class="text-blue-400 hover:text-blue-300 font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-sm">Dec 15, 2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Featured Article 2 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-8">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">Strategy</span>
+                            <span class="text-gray-400 ml-4 text-sm">8 min read</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">
+                            <a href="/blog/building-algorithmic-trading-system/" class="hover:text-blue-400 transition duration-200">
+                                Building Your First Algorithmic Trading System
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 mb-6">
+                            Step-by-step guide to building an algorithmic trading system using financial APIs. 
+                            Covers strategy development, backtesting, and risk management for automated trading.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/building-algorithmic-trading-system/" class="text-blue-400 hover:text-blue-300 font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-sm">Dec 10, 2024</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Articles Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-purple-600 text-white px-2 py-1 rounded text-xs">Guide</span>
+                            <span class="text-gray-400 ml-3 text-sm">6 min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3">
+                            <a href="/blog/forex-api-best-practices/" class="hover:text-blue-400 transition duration-200">
+                                Forex API Best Practices for Currency Trading Apps
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Learn essential best practices for integrating forex APIs, handling real-time currency data, 
+                            and building reliable currency conversion features.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/forex-api-best-practices/" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-xs">Dec 8, 2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-yellow-600 text-white px-2 py-1 rounded text-xs">Analysis</span>
+                            <span class="text-gray-400 ml-3 text-sm">7 min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3">
+                            <a href="/blog/cryptocurrency-api-comparison/" class="hover:text-blue-400 transition duration-200">
+                                Cryptocurrency API Comparison: Finding the Right Data Provider
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Compare popular cryptocurrency APIs, their features, pricing, and coverage. 
+                            Find the best crypto data provider for your project.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/cryptocurrency-api-comparison/" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-xs">Dec 5, 2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">Tutorial</span>
+                            <span class="text-gray-400 ml-3 text-sm">4 min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3">
+                            <a href="/blog/financial-api-security/" class="hover:text-blue-400 transition duration-200">
+                                Financial API Security: Protecting Your Trading Application
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Essential security practices for financial APIs including authentication, 
+                            rate limiting, and protecting sensitive financial data.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/financial-api-security/" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-xs">Dec 3, 2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-indigo-600 text-white px-2 py-1 rounded text-xs">Development</span>
+                            <span class="text-gray-400 ml-3 text-sm">9 min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3">
+                            <a href="/blog/real-time-market-data-websockets/" class="hover:text-blue-400 transition duration-200">
+                                Real-Time Market Data with WebSockets vs REST APIs
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Compare WebSocket and REST API approaches for real-time financial data. 
+                            Learn when to use each method for optimal performance.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/real-time-market-data-websockets/" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-xs">Nov 28, 2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-teal-600 text-white px-2 py-1 rounded text-xs">Business</span>
+                            <span class="text-gray-400 ml-3 text-sm">5 min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3">
+                            <a href="/blog/fintech-api-monetization/" class="hover:text-blue-400 transition duration-200">
+                                Monetizing Your Fintech Application with Financial APIs
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Strategies for monetizing fintech applications using financial data APIs. 
+                            Explore subscription models, premium features, and revenue optimization.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/fintech-api-monetization/" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-xs">Nov 25, 2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 6 -->
+                <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-orange-600 text-white px-2 py-1 rounded text-xs">Technical</span>
+                            <span class="text-gray-400 ml-3 text-sm">6 min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3">
+                            <a href="/blog/financial-data-caching-strategies/" class="hover:text-blue-400 transition duration-200">
+                                Caching Strategies for High-Performance Financial Applications
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Optimize your financial application performance with smart caching strategies 
+                            for market data, user portfolios, and API responses.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <a href="/blog/financial-data-caching-strategies/" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+                                Read More →
+                            </a>
+                            <span class="text-gray-500 text-xs">Nov 20, 2024</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="py-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Explore by Category</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 transition duration-200">
+                    <div class="text-blue-400 text-3xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold text-white mb-2">API Tutorials</h3>
+                    <p class="text-gray-400 text-sm mb-4">Step-by-step guides for integrating financial APIs</p>
+                    <a href="/blog/category/tutorials/" class="text-blue-400 hover:text-blue-300 font-semibold">View Articles →</a>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 transition duration-200">
+                    <div class="text-green-400 text-3xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Trading Strategies</h3>
+                    <p class="text-gray-400 text-sm mb-4">Algorithmic trading and market analysis techniques</p>
+                    <a href="/blog/category/trading/" class="text-blue-400 hover:text-blue-300 font-semibold">View Articles →</a>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 transition duration-200">
+                    <div class="text-yellow-400 text-3xl mb-4">💡</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Market Insights</h3>
+                    <p class="text-gray-400 text-sm mb-4">Analysis of financial markets and data trends</p>
+                    <a href="/blog/category/insights/" class="text-blue-400 hover:text-blue-300 font-semibold">View Articles →</a>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 transition duration-200">
+                    <div class="text-purple-400 text-3xl mb-4">🔧</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Development</h3>
+                    <p class="text-gray-400 text-sm mb-4">Technical guides for building financial applications</p>
+                    <a href="/blog/category/development/" class="text-blue-400 hover:text-blue-300 font-semibold">View Articles →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Signup -->
+    <div class="py-16 bg-indigo-900">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-4">Stay Updated</h2>
+            <p class="text-xl text-indigo-200 mb-8">
+                Get the latest financial API tutorials, market insights, and development tips delivered to your inbox.
+            </p>
+            <div class="max-w-md mx-auto">
+                <div class="flex gap-4">
+                    <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-lg bg-white text-gray-900 placeholder-gray-500">
+                    <button class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

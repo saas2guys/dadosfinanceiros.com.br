@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Cryptocurrency API - Real-Time Bitcoin, Ethereum & Crypto Data{% endblock %}
+
+{% block meta_description %}Professional cryptocurrency API providing real-time Bitcoin, Ethereum, and altcoin prices, historical crypto data, market cap, volume, and DeFi token information. 24/7 crypto market coverage.{% endblock %}
+
+{% block meta_keywords %}cryptocurrency API, Bitcoin API, Ethereum API, crypto API, BTC price API, ETH API, altcoin API, DeFi API, crypto market data, blockchain API, digital asset API, crypto trading API{% endblock %}
+
+{% block canonical_url %}https://api.dadosfinanceiros.com.br/crypto-api/{% endblock %}
+
+{% block og_title %}Cryptocurrency API - Real-Time Bitcoin & Crypto Data{% endblock %}
+{% block og_description %}Access comprehensive cryptocurrency market data through our professional API. Get real-time Bitcoin, Ethereum, and altcoin prices with 24/7 coverage from major exchanges.{% endblock %}
+
+{% block extra_meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Cryptocurrency API",
+  "description": "Professional cryptocurrency API providing real-time Bitcoin, Ethereum, and altcoin prices, historical crypto data, market cap, and volume",
+  "url": "https://api.dadosfinanceiros.com.br/crypto-api/",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "Cryptocurrency Data API",
+    "applicationCategory": "FinanceApplication",
+    "description": "Real-time and historical cryptocurrency market data API",
+    "featureList": [
+      "Real-time crypto prices",
+      "Bitcoin and Ethereum data",
+      "Historical price data",
+      "Market cap and volume",
+      "DeFi token prices",
+      "Cross-exchange aggregation"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free tier with paid premium plans"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-yellow-900 to-gray-900">
+    <!-- Hero Section -->
+    <div class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                    Cryptocurrency API
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                    Access real-time Bitcoin, Ethereum, and altcoin prices through our professional cryptocurrency API. 
+                    24/7 market coverage with data from major exchanges worldwide.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'waiting_list' %}" class="bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-700 transition duration-200">
+                        Get Early Access
+                    </a>
+                    <a href="#features" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
+                        View Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Cryptocurrencies Section -->
+    <div class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Top Cryptocurrencies</h2>
+                <p class="text-gray-400">Real-time data for Bitcoin, Ethereum, and 1000+ altcoins</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-2">₿</div>
+                    <div class="text-xl font-bold text-yellow-400">Bitcoin (BTC)</div>
+                    <div class="text-sm text-gray-400">The original cryptocurrency</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-2">Ξ</div>
+                    <div class="text-xl font-bold text-yellow-400">Ethereum (ETH)</div>
+                    <div class="text-sm text-gray-400">Smart contracts platform</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-2">◊</div>
+                    <div class="text-xl font-bold text-yellow-400">Binance Coin (BNB)</div>
+                    <div class="text-sm text-gray-400">Exchange utility token</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-2">⊙</div>
+                    <div class="text-xl font-bold text-yellow-400">Cardano (ADA)</div>
+                    <div class="text-sm text-gray-400">Proof-of-stake blockchain</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Cryptocurrency Data Features</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Real-Time Crypto Prices</h3>
+                    <p class="text-gray-400">Get live cryptocurrency prices with minimal latency from major exchanges like Binance, Coinbase, and Kraken.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">24/7 Market Coverage</h3>
+                    <p class="text-gray-400">Cryptocurrency markets never sleep. Our API provides continuous data coverage around the clock.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Historical Price Data</h3>
+                    <p class="text-gray-400">Access years of historical cryptocurrency data for backtesting trading strategies and analysis.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Market Cap & Volume</h3>
+                    <p class="text-gray-400">Complete market statistics including market capitalization, trading volume, and supply metrics.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">DeFi Token Data</h3>
+                    <p class="text-gray-400">Comprehensive coverage of DeFi tokens, yield farming protocols, and decentralized exchange data.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Cross-Exchange Aggregation</h3>
+                    <p class="text-gray-400">Aggregated pricing data from multiple exchanges for accurate market representation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Perfect for Crypto Applications</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Crypto Trading Platforms</h3>
+                    <p class="text-gray-400 mb-4">Build professional cryptocurrency trading platforms with real-time data feeds.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Real-time price feeds</li>
+                        <li>• Order book data</li>
+                        <li>• Portfolio tracking</li>
+                        <li>• Trading signals</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">DeFi Applications</h3>
+                    <p class="text-gray-400 mb-4">Integrate cryptocurrency data into DeFi protocols and yield farming platforms.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Token price oracles</li>
+                        <li>• Liquidity pool data</li>
+                        <li>• Yield calculations</li>
+                        <li>• DEX aggregation</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Portfolio Management</h3>
+                    <p class="text-gray-400 mb-4">Create sophisticated crypto portfolio management and tracking applications.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Portfolio valuation</li>
+                        <li>• Performance tracking</li>
+                        <li>• Risk assessment</li>
+                        <li>• Tax reporting</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Financial News & Analytics</h3>
+                    <p class="text-gray-400 mb-4">Power financial news websites and crypto analytics platforms with live data.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Market charts</li>
+                        <li>• Price alerts</li>
+                        <li>• Market analysis</li>
+                        <li>• News correlation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Exchanges Section -->
+    <div class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Supported Exchanges</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 text-center">
+                <div class="text-gray-300">
+                    <div class="text-2xl font-bold">Binance</div>
+                    <div class="text-sm text-gray-500">World's largest exchange</div>
+                </div>
+                <div class="text-gray-300">
+                    <div class="text-2xl font-bold">Coinbase</div>
+                    <div class="text-sm text-gray-500">US-based exchange</div>
+                </div>
+                <div class="text-gray-300">
+                    <div class="text-2xl font-bold">Kraken</div>
+                    <div class="text-sm text-gray-500">European leader</div>
+                </div>
+                <div class="text-gray-300">
+                    <div class="text-2xl font-bold">Bitfinex</div>
+                    <div class="text-sm text-gray-500">Advanced trading</div>
+                </div>
+                <div class="text-gray-300">
+                    <div class="text-2xl font-bold">Huobi</div>
+                    <div class="text-sm text-gray-500">Global platform</div>
+                </div>
+                <div class="text-gray-300">
+                    <div class="text-2xl font-bold">KuCoin</div>
+                    <div class="text-sm text-gray-500">Altcoin exchange</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 bg-yellow-900">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Access Crypto Data?</h2>
+            <p class="text-xl text-yellow-200 mb-8">
+                Join our waiting list to get early access to professional cryptocurrency API with 24/7 support and enterprise features.
+            </p>
+            <a href="{% url 'waiting_list' %}" class="bg-white text-yellow-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-200">
+                Join Waiting List Now
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Forex API - Real-Time Currency Exchange Rates & FX Data{% endblock %}
+
+{% block meta_description %}Professional forex API providing real-time currency exchange rates, historical FX data, currency conversion, and cross-rates. Free and premium plans for developers and trading platforms.{% endblock %}
+
+{% block meta_keywords %}forex API, currency API, exchange rates API, FX data API, real-time currency rates, forex trading API, currency conversion API, foreign exchange API, EUR USD API, GBP USD API{% endblock %}
+
+{% block canonical_url %}https://api.dadosfinanceiros.com.br/forex-api/{% endblock %}
+
+{% block og_title %}Forex API - Real-Time Currency Exchange Rates{% endblock %}
+{% block og_description %}Access comprehensive forex market data through our professional API. Get real-time exchange rates, historical FX data, and currency conversion for 150+ currencies.{% endblock %}
+
+{% block extra_meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Forex API",
+  "description": "Professional forex API providing real-time currency exchange rates, historical FX data, currency conversion, and cross-rates",
+  "url": "https://api.dadosfinanceiros.com.br/forex-api/",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "Forex Data API",
+    "applicationCategory": "FinanceApplication",
+    "description": "Real-time and historical forex market data API",
+    "featureList": [
+      "Real-time exchange rates",
+      "Currency conversion",
+      "Historical FX data",
+      "Cross-rates calculation",
+      "Major and minor pairs",
+      "Central bank rates"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free tier with paid premium plans"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-green-900 to-gray-900">
+    <!-- Hero Section -->
+    <div class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                    Forex API
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                    Access real-time currency exchange rates, historical FX data, and currency conversion 
+                    through our professional forex API. Trusted by forex traders, fintech companies, and financial institutions.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'waiting_list' %}" class="bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition duration-200">
+                        Get Early Access
+                    </a>
+                    <a href="#features" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
+                        View Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Currency Pairs Section -->
+    <div class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Comprehensive Currency Coverage</h2>
+                <p class="text-gray-400">Real-time data for all major, minor, and exotic currency pairs</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-400">EUR/USD</div>
+                    <div class="text-sm text-gray-400">Euro / US Dollar</div>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-400">GBP/USD</div>
+                    <div class="text-sm text-gray-400">British Pound / US Dollar</div>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-400">USD/JPY</div>
+                    <div class="text-sm text-gray-400">US Dollar / Japanese Yen</div>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-400">USD/CHF</div>
+                    <div class="text-sm text-gray-400">US Dollar / Swiss Franc</div>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-400">AUD/USD</div>
+                    <div class="text-sm text-gray-400">Australian Dollar / US Dollar</div>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-400">USD/CAD</div>
+                    <div class="text-sm text-gray-400">US Dollar / Canadian Dollar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Forex Data Features</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Real-Time Exchange Rates</h3>
+                    <p class="text-gray-400">Get live currency exchange rates with minimal latency for forex trading and real-time applications.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Currency Conversion</h3>
+                    <p class="text-gray-400">Instant currency conversion calculations for any amount between 150+ supported currencies.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Historical FX Data</h3>
+                    <p class="text-gray-400">Access years of historical forex data for backtesting strategies and technical analysis.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Cross-Rate Calculations</h3>
+                    <p class="text-gray-400">Automatic cross-rate calculations for indirect currency pairs and triangular arbitrage opportunities.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Central Bank Rates</h3>
+                    <p class="text-gray-400">Official exchange rates from central banks and monetary authorities worldwide.</p>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Volatility Indicators</h3>
+                    <p class="text-gray-400">Currency volatility metrics and risk indicators for professional forex analysis.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Perfect for Forex Applications</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Forex Trading Platforms</h3>
+                    <p class="text-gray-400 mb-4">Power your forex trading platform with real-time exchange rates and market data.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Real-time currency rates</li>
+                        <li>• Order execution support</li>
+                        <li>• Risk management tools</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">E-commerce Applications</h3>
+                    <p class="text-gray-400 mb-4">Integrate dynamic currency conversion for international e-commerce stores.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Multi-currency pricing</li>
+                        <li>• Checkout conversion</li>
+                        <li>• Payment processing</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Financial Analytics</h3>
+                    <p class="text-gray-400 mb-4">Build sophisticated forex analysis tools and risk management systems.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Technical analysis</li>
+                        <li>• Correlation studies</li>
+                        <li>• Volatility modeling</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Travel & Fintech Apps</h3>
+                    <p class="text-gray-400 mb-4">Enhance travel and financial apps with accurate currency conversion.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Travel budgeting</li>
+                        <li>• Expense tracking</li>
+                        <li>• International transfers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 bg-green-900">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Access Forex Data?</h2>
+            <p class="text-xl text-green-200 mb-8">
+                Join our waiting list to get early access to professional forex API with competitive pricing and enterprise features.
+            </p>
+            <a href="{% url 'waiting_list' %}" class="bg-white text-green-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-200">
+                Join Waiting List Now
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
