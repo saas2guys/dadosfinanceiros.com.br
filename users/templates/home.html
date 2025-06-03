@@ -1,7 +1,60 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Professional Financial Data API - Real-Time Stocks, Forex, Crypto & Market Data{% endblock %}
+
+{% block meta_description %}Professional financial data API providing real-time and historical market data for stocks, forex, cryptocurrencies, indices, options, and economic indicators. Trusted by developers, analysts, and financial institutions worldwide.{% endblock %}
+
+{% block meta_keywords %}financial data API, stock market API, forex API, cryptocurrency API, real-time market data, financial market data, trading API, investment data, economic indicators API, options data API, enterprise financial data, algorithmic trading API, fintech API{% endblock %}
+
+{% block canonical_url %}https://api.dadosfinanceiros.com.br/{% endblock %}
+
+{% block og_title %}Professional Financial Data API - Real-Time Market Data{% endblock %}
+{% block og_description %}Access comprehensive financial market data through our powerful API. Get real-time stocks, forex, crypto, indices, options, and economic data with enterprise-grade reliability.{% endblock %}
+{% block og_url %}https://api.dadosfinanceiros.com.br/{% endblock %}
+
+{% block twitter_title %}Professional Financial Data API{% endblock %}
+{% block twitter_description %}Real-time financial market data API for stocks, forex, crypto, and more. Trusted by developers worldwide.{% endblock %}
+
+{% block extra_meta %}
+<!-- Schema.org structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Financial Data API",
+  "description": "Professional financial data API providing real-time and historical market data for stocks, forex, cryptocurrencies, indices, options, and economic indicators",
+  "url": "https://api.dadosfinanceiros.com.br",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web-based",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free tier available"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Financial Data API",
+    "email": "talk@financialdata.online"
+  },
+  "featureList": [
+    "Real-time stock market data",
+    "Foreign exchange rates",
+    "Cryptocurrency prices",
+    "Market indices",
+    "Options data",
+    "Economic indicators",
+    "Historical data",
+    "RESTful API",
+    "Enterprise-grade security"
+  ]
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
@@ -13,19 +66,20 @@
                 <svg class="h-5 w-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span class="text-sm font-medium text-yellow-300">API Coming Soon - Join Our Waiting List</span>
-        </div>
+                <span class="text-sm font-medium text-yellow-300">API Coming Soon - Join Our Waiting List for Early Access</span>
+            </div>
         
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                Financial Data API
+                Professional Financial Data API
             </h1>
-            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                Access comprehensive financial market data with our powerful, reliable, and easy-to-use API. 
-                Get real-time stocks, forex, crypto, and more.
+            <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                Access comprehensive, real-time financial market data through our enterprise-grade API. 
+                Get stocks, forex, cryptocurrencies, indices, options, and economic indicators with 
+                institutional-quality data reliability and speed.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200">
-                    Join Waiting List
+                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
+                    Join Waiting List - Get Early Access
                 </a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'profile' %}" class="bg-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-200">
@@ -33,30 +87,180 @@
                     </a>
                 {% else %}
                     <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                        Sign In
+                        Already Registered? Sign In
                     </a>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Features Section -->
+    <!-- Market Data Types Section -->
     <div class="py-20 bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-white mb-4">Powerful Features</h2>
-                <p class="text-lg text-gray-400">Everything you need for financial data integration</p>
+                <h2 class="text-4xl font-bold text-white mb-4">Comprehensive Financial Market Data</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Access all major financial markets through a single, unified API. 
+                    From traditional equities to digital assets, we provide the data you need for modern financial applications.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Stocks -->
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-blue-500 transition duration-300">
+                    <div class="bg-blue-900 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-8 w-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Stock Market Data</h3>
+                    <p class="text-gray-400 mb-4">
+                        Complete equity market coverage including real-time prices, historical OHLC data, 
+                        tick-by-tick trades, market snapshots, and comprehensive ticker information.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• Real-time stock prices and quotes</li>
+                        <li>• Historical OHLC aggregates</li>
+                        <li>• Tick-by-tick trade data</li>
+                        <li>• Market snapshots and summaries</li>
+                        <li>• Company fundamentals</li>
+                        <li>• Earnings and financial reports</li>
+                    </ul>
+                </div>
+
+                <!-- Forex -->
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-green-500 transition duration-300">
+                    <div class="bg-green-900 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-8 w-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Foreign Exchange</h3>
+                    <p class="text-gray-400 mb-4">
+                        Global currency markets with real-time exchange rates, historical forex data, 
+                        currency conversion, and cross-rate calculations for all major and minor pairs.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• Real-time exchange rates</li>
+                        <li>• Currency pair data (majors, minors, exotics)</li>
+                        <li>• Historical forex rates</li>
+                        <li>• Currency conversion endpoints</li>
+                        <li>• Cross-rate calculations</li>
+                        <li>• Central bank reference rates</li>
+                    </ul>
+                </div>
+
+                <!-- Crypto -->
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-yellow-500 transition duration-300">
+                    <div class="bg-yellow-900 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-8 w-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Cryptocurrency Markets</h3>
+                    <p class="text-gray-400 mb-4">
+                        Complete digital asset coverage with 24/7 cryptocurrency data, DeFi tokens, 
+                        stablecoins, and cross-exchange price aggregation for accurate market data.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• Real-time crypto prices (BTC, ETH, etc.)</li>
+                        <li>• 24/7 market data coverage</li>
+                        <li>• DeFi token prices</li>
+                        <li>• Stablecoin exchange rates</li>
+                        <li>• Cross-exchange price aggregation</li>
+                        <li>• Market cap and volume data</li>
+                    </ul>
+                </div>
+
+                <!-- Options -->
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-purple-500 transition duration-300">
+                    <div class="bg-purple-900 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-8 w-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Options & Derivatives</h3>
+                    <p class="text-gray-400 mb-4">
+                        Comprehensive options market data including contracts, chains, greeks, 
+                        implied volatility, and real-time options pricing for risk management.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• Options contracts and chains</li>
+                        <li>• Real-time options prices</li>
+                        <li>• Greeks calculations (Delta, Gamma, etc.)</li>
+                        <li>• Implied volatility data</li>
+                        <li>• Open interest and volume</li>
+                        <li>• Expiration and strike data</li>
+                    </ul>
+                </div>
+
+                <!-- Indices -->
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-indigo-500 transition duration-300">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Market Indices</h3>
+                    <p class="text-gray-400 mb-4">
+                        Global market indices including S&P 500, NASDAQ, Dow Jones, international 
+                        indices, sector indices, and custom index calculations.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• Major indices (S&P 500, NASDAQ, Dow)</li>
+                        <li>• International market indices</li>
+                        <li>• Sector and industry indices</li>
+                        <li>• Custom index calculations</li>
+                        <li>• Index constituents and weights</li>
+                        <li>• Historical index performance</li>
+                    </ul>
+                </div>
+
+                <!-- Economic Data -->
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-red-500 transition duration-300">
+                    <div class="bg-red-900 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-8 w-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Economic Indicators</h3>
+                    <p class="text-gray-400 mb-4">
+                        Essential economic data including treasury yields, inflation rates, 
+                        employment data, GDP figures, and central bank policy indicators.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• Treasury yields and bond data</li>
+                        <li>• Inflation and CPI data</li>
+                        <li>• Employment statistics</li>
+                        <li>• GDP and economic growth</li>
+                        <li>• Central bank rates</li>
+                        <li>• Economic calendar events</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Features Section -->
+    <div class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Enterprise-Grade API Infrastructure</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Built for developers, analysts, and financial institutions who demand reliability, 
+                    speed, and accuracy in their financial data infrastructure.
+                </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
                     <div class="bg-indigo-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <svg class="h-6 w-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Real-time Data</h3>
-                    <p class="text-gray-400">Get live market data with minimal latency for stocks, forex, and cryptocurrencies.</p>
+                    <h3 class="text-xl font-semibold text-white mb-2">Ultra-Low Latency</h3>
+                    <p class="text-gray-400">Sub-millisecond response times with global CDN infrastructure and optimized data delivery for real-time trading applications.</p>
                 </div>
                 
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
@@ -64,20 +268,20 @@
                         <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-            </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">99.9% Uptime</h3>
-                    <p class="text-gray-400">Reliable infrastructure ensures your applications always have access to data.</p>
-</div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">99.99% Uptime SLA</h3>
+                    <p class="text-gray-400">Mission-critical reliability with redundant infrastructure, automatic failover, and 24/7 monitoring for uninterrupted data access.</p>
+                </div>
 
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
                     <div class="bg-blue-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                </svg>
-        </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Secure & Compliant</h3>
-                    <p class="text-gray-400">Enterprise-grade security with authentication and rate limiting.</p>
-            </div>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Bank-Grade Security</h3>
+                    <p class="text-gray-400">Enterprise security with JWT authentication, request rate limiting, audit trails, and compliance with financial regulations.</p>
+                </div>
 
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
                     <div class="bg-purple-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
@@ -85,48 +289,126 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Easy Integration</h3>
-                    <p class="text-gray-400">RESTful API with comprehensive documentation and code examples.</p>
+                    <h3 class="text-xl font-semibold text-white mb-2">RESTful JSON API</h3>
+                    <p class="text-gray-400">Clean, intuitive API design with comprehensive documentation, code examples, and SDKs for popular programming languages.</p>
                 </div>
                 
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
                     <div class="bg-yellow-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <svg class="h-6 w-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">High Performance</h3>
-                    <p class="text-gray-400">Optimized for speed with global CDN and caching infrastructure.</p>
+                    <h3 class="text-xl font-semibold text-white mb-2">Flexible Rate Limits</h3>
+                    <p class="text-gray-400">Scalable pricing tiers from free development access to enterprise unlimited plans, designed to grow with your application.</p>
                 </div>
                 
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
                     <div class="bg-red-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 1a3 3 0 00-3 3v1m6 0V4a3 3 0 00-3-3M7 11.5a3 3 0 11-1.5 0M17 11.5a3 3 0 11-1.5 0"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">24/7 Support</h3>
-                    <p class="text-gray-400">Get help when you need it with our dedicated support team. <a href="mailto:talk@financialdata.online" class="text-indigo-400 hover:text-indigo-300">Contact us</a></p>
-                            </div>
-                        </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Expert Support</h3>
+                    <p class="text-gray-400">Dedicated technical support from financial data experts, with priority assistance and custom integration support. <a href="mailto:talk@financialdata.online" class="text-indigo-400 hover:text-indigo-300">Contact us</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Trusted by Financial Professionals</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    From fintech startups to institutional investors, our API powers financial applications 
+                    across every segment of the market.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Trading Platforms</h3>
+                    <p class="text-gray-400">Power algorithmic trading systems, portfolio management tools, and risk analytics with real-time market data.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Financial Analytics</h3>
+                    <p class="text-gray-400">Build sophisticated financial models, backtesting systems, and quantitative research platforms.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Wealth Management</h3>
+                    <p class="text-gray-400">Create portfolio tracking, robo-advisors, and client reporting tools with comprehensive market coverage.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Financial Media</h3>
+                    <p class="text-gray-400">Integrate live market data into news platforms, financial websites, and investment research publications.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Risk Management</h3>
+                    <p class="text-gray-400">Develop enterprise risk systems, compliance monitoring, and regulatory reporting tools.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Academic Research</h3>
+                    <p class="text-gray-400">Support financial research, economic studies, and academic publications with historical and real-time data.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- How It Works Section -->
     <div class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-white mb-4">How It Works</h2>
-                <p class="text-lg text-gray-400">Get started with our waiting list in three simple steps</p>
-                            </div>
+                <h2 class="text-4xl font-bold text-white mb-4">Get Early Access</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Be among the first to access our comprehensive financial data API when we launch. 
+                    Early subscribers get special pricing and priority support.
+                </p>
+            </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
                     <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-2xl font-bold text-indigo-400">1</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Join Waiting List</h3>
-                    <p class="text-gray-400">Sign up for our waiting list to be notified when the API launches.</p>
+                    <h3 class="text-xl font-semibold text-white mb-2">Join Our Waiting List</h3>
+                    <p class="text-gray-400">Register your interest and be notified immediately when the API becomes available for testing and integration.</p>
                 </div>
                 
                 <div class="text-center">
@@ -134,15 +416,15 @@
                         <span class="text-2xl font-bold text-indigo-400">2</span>
                     </div>
                     <h3 class="text-xl font-semibold text-white mb-2">Get Early Access</h3>
-                    <p class="text-gray-400">Receive exclusive early access and special pricing when we launch.</p>
-                            </div>
+                    <p class="text-gray-400">Receive exclusive early access with special launch pricing, extended free tiers, and priority technical support.</p>
+                </div>
                 
                 <div class="text-center">
                     <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-2xl font-bold text-indigo-400">3</span>
                     </div>
                     <h3 class="text-xl font-semibold text-white mb-2">Start Building</h3>
-                    <p class="text-gray-400">Begin integrating financial data into your applications immediately.</p>
+                    <p class="text-gray-400">Begin integrating comprehensive financial data into your applications with our developer-friendly API and documentation.</p>
                 </div>
             </div>
         </div>
@@ -151,41 +433,80 @@
     <!-- CTA Section -->
     <div class="py-20 bg-gray-800">
         <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
+            <h2 class="text-4xl font-bold text-white mb-4">Ready to Power Your Financial Application?</h2>
             <p class="text-lg text-gray-400 mb-8">
-                Join thousands of developers who are waiting for our powerful financial data API.
+                Join thousands of developers, analysts, and financial institutions waiting for our comprehensive financial data API. 
+                Be among the first to access institutional-grade market data.
             </p>
-            <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200">
-                Join Waiting List Now
-            </a>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
+                    Join Waiting List Now
+                </a>
+                <a href="mailto:talk@financialdata.online" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition duration-200">
+                    Contact Sales Team
+                </a>
+            </div>
+            <p class="text-sm text-gray-500 mt-4">
+                No commitment required • Early access benefits • Priority support
+            </p>
         </div>
     </div>
 </div>
+
+<!-- FAQ Schema for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What types of financial data are available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our API provides comprehensive financial market data including real-time and historical stock prices, forex rates, cryptocurrency data, market indices, options contracts, and economic indicators."
+      }
+    },
+    {
+      "@type": "Question", 
+      "name": "Is the API suitable for algorithmic trading?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, our API is designed for high-frequency applications with ultra-low latency, real-time data feeds, and enterprise-grade reliability suitable for algorithmic trading systems."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the API coverage and reliability?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We offer 99.99% uptime SLA, global market coverage, 24/7 data availability for crypto markets, and redundant infrastructure with automatic failover."
+      }
+    }
+  ]
+}
+</script>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function copyCode(elementId) {
-    const codeBlock = document.getElementById(elementId);
-    const code = codeBlock.textContent;
-    
-    navigator.clipboard.writeText(code).then(() => {
-        Toastify({
-            text: "Code copied!",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#48BB78",
-        }).showToast();
-    }).catch(() => {
-        Toastify({
-            text: "Error copying code",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#F56565",
-        }).showToast();
-    });
+// Enhanced tracking for waiting list conversion
+function trackWaitingListClick() {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+            'event_category': 'engagement',
+            'event_label': 'waiting_list_cta',
+            'custom_map': {'custom_parameter_1': 'homepage'}
+        });
+    }
 }
+
+// Add click tracking to waiting list buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const waitingListButtons = document.querySelectorAll('a[href*="waiting_list"]');
+    waitingListButtons.forEach(button => {
+        button.addEventListener('click', trackWaitingListClick);
+    });
+});
 </script>
 {% endblock %} 
