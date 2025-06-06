@@ -102,292 +102,775 @@
             <h2 class="text-4xl font-bold text-white text-center mb-16">Detailed API Comparison</h2>
             
             <!-- Mobile-friendly comparison cards -->
-            <div class="lg:hidden space-y-8">
-                <!-- Our API -->
-                <div class="bg-indigo-800 border-2 border-indigo-600 rounded-lg p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-white">Financial Data API</h3>
-                        <span class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm">Best Value</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Stock Markets:</span>
-                            <span class="text-white font-semibold">✓ 40+ Global Exchanges</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Forex:</span>
-                            <span class="text-white font-semibold">✓ 170+ Pairs</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Cryptocurrency:</span>
-                            <span class="text-white font-semibold">✓ 3000+ Coins</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Free Tier:</span>
-                            <span class="text-white font-semibold">✓ 1000 calls/day</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Starting Price:</span>
-                            <span class="text-white font-semibold">$49/month</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Rate Limit:</span>
-                            <span class="text-white font-semibold">100 calls/min</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Support:</span>
-                            <span class="text-white font-semibold">Email + Docs</span>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <a href="{% url 'waiting_list' %}" class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200 block text-center">
-                            Join Waiting List
-                        </a>
-                    </div>
+            <div class="block md:hidden space-y-6 mb-8">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-white mb-2">Compare Financial APIs</h3>
+                    <p class="text-gray-400 text-sm">Swipe through providers to compare features</p>
                 </div>
+                
+                <div class="overflow-x-auto">
+                    <div class="flex space-x-4 pb-4" style="width: max-content;">
+                        <!-- Your API -->
+                        <div class="w-80 bg-gradient-to-br from-indigo-600 to-indigo-800 border-2 border-indigo-400 rounded-xl p-6 flex-shrink-0 relative">
+                            <div class="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs px-3 py-1 rounded-full font-bold">
+                                🏆 BEST
+                            </div>
+                            <div class="text-center mb-4">
+                                <div class="text-3xl mb-2">🚀</div>
+                                <h3 class="text-xl font-bold text-white">YOUR API</h3>
+                                <div class="text-yellow-300 text-sm font-semibold">25% CHEAPER THAN POLYGON</div>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="bg-indigo-700 rounded-lg p-3">
+                                    <div class="text-green-300 font-bold">🆓 Free: 500 calls/d</div>
+                                    <div class="text-white">🥉 Basic: $19/month</div>
+                                    <div class="text-white">🥈 Advanced: $59/month</div>
+                                    <div class="text-white">🥇 Pro: $149/month</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="text-green-300">Real-time data</div>
+                                    <div class="text-green-300">✅ Options data</div>
+                                    <div class="text-green-300">✅ AI sentiment</div>
+                                    <div class="text-green-300">✅ WebSocket</div>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Alpha Vantage -->
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-2xl font-bold text-white mb-4">Alpha Vantage</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Stock Markets:</span>
-                            <span class="text-white font-semibold">✓ US + International</span>
+                        <!-- Alpha Vantage -->
+                        <div class="w-80 bg-gray-800 border border-gray-600 rounded-xl p-6 flex-shrink-0">
+                            <div class="text-center mb-4">
+                                <div class="text-3xl mb-2"></div>
+                                <h3 class="text-xl font-bold text-white">Alpha Vantage</h3>
+                                <div class="text-gray-400 text-sm">Basic provider</div>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="bg-gray-700 rounded-lg p-3">
+                                    <div class="text-gray-300">Free: 25 calls/d</div>
+                                    <div class="text-gray-300">Basic: $25/month</div>
+                                    <div class="text-gray-300">Pro: $75/month</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="text-red-400">15-min delay</div>
+                                    <div class="text-red-400">No WebSocket</div>
+                                    <div class="text-gray-400">Limited features</div>
+                                    <div class="text-gray-400">Email support</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Forex:</span>
-                            <span class="text-white font-semibold">✓ 60+ Pairs</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Cryptocurrency:</span>
-                            <span class="text-white font-semibold">✓ 100+ Coins</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Free Tier:</span>
-                            <span class="text-white font-semibold">✓ 25 calls/day</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Starting Price:</span>
-                            <span class="text-white font-semibold">$25/month</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Rate Limit:</span>
-                            <span class="text-white font-semibold">75 calls/min</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Support:</span>
-                            <span class="text-white font-semibold">Email Only</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Polygon.io -->
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-2xl font-bold text-white mb-4">Polygon.io</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Stock Markets:</span>
-                            <span class="text-white font-semibold">✓ US Markets Only</span>
+                        <!-- Polygon.io -->
+                        <div class="w-80 bg-gray-800 border border-gray-600 rounded-xl p-6 flex-shrink-0">
+                            <div class="text-center mb-4">
+                                <div class="text-3xl mb-2"></div>
+                                <h3 class="text-xl font-bold text-white">Polygon.io</h3>
+                                <div class="text-gray-400 text-sm">Premium but expensive</div>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="bg-gray-700 rounded-lg p-3">
+                                    <div class="text-gray-300">Free: 5 calls/min</div>
+                                    <div class="text-gray-300">Basic: $29/month</div>
+                                    <div class="text-red-300">Pro: $199/month</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="text-green-400">Real-time</div>
+                                    <div class="text-red-400">No options</div>
+                                    <div class="text-green-400">US markets</div>
+                                    <div class="text-red-400">💰 Expensive</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Forex:</span>
-                            <span class="text-white font-semibold">✓ Major Pairs</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Cryptocurrency:</span>
-                            <span class="text-white font-semibold">✓ Top Cryptos</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Free Tier:</span>
-                            <span class="text-white font-semibold">✓ 5 calls/min</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Starting Price:</span>
-                            <span class="text-white font-semibold">$199/month</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Rate Limit:</span>
-                            <span class="text-white font-semibold">100 calls/min</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Support:</span>
-                            <span class="text-white font-semibold">Business Hours</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- IEX Cloud -->
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-2xl font-bold text-white mb-4">IEX Cloud</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Stock Markets:</span>
-                            <span class="text-white font-semibold">✓ US Markets Only</span>
+                        <!-- Finnhub -->
+                        <div class="w-80 bg-gray-800 border border-gray-600 rounded-xl p-6 flex-shrink-0">
+                            <div class="text-center mb-4">
+                                <div class="text-3xl mb-2"></div>
+                                <h3 class="text-xl font-bold text-white">Finnhub</h3>
+                                <div class="text-gray-400 text-sm">Enterprise focused</div>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="bg-gray-700 rounded-lg p-3">
+                                    <div class="text-gray-300">Free: 60 calls/min</div>
+                                    <div class="text-red-300">Enterprise: $1,000+</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="text-green-400">Real-time</div>
+                                    <div class="text-red-400">No options</div>
+                                    <div class="text-red-400">💰 Very expensive</div>
+                                    <div class="text-gray-400">Custom pricing</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Forex:</span>
-                            <span class="text-white font-semibold">✗ No Forex</span>
+
+                        <!-- Financial Modeling Prep -->
+                        <div class="w-80 bg-gray-800 border border-gray-600 rounded-xl p-6 flex-shrink-0">
+                            <div class="text-center mb-4">
+                                <div class="text-3xl mb-2"></div>
+                                <h3 class="text-xl font-bold text-white">Financial Modeling Prep</h3>
+                                <div class="text-gray-400 text-sm">Mid-tier option</div>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="bg-gray-700 rounded-lg p-3">
+                                    <div class="text-gray-300">Free: 250 calls/d</div>
+                                    <div class="text-gray-300">Pro: $50/month</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="text-red-400">15-min delay</div>
+                                    <div class="text-red-400">No WebSocket</div>
+                                    <div class="text-red-400">No options</div>
+                                    <div class="text-gray-400">Basic features</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Cryptocurrency:</span>
-                            <span class="text-white font-semibold">✗ No Crypto</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Free Tier:</span>
-                            <span class="text-white font-semibold">✓ 100 calls/day</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Starting Price:</span>
-                            <span class="text-white font-semibold">$9/month</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Rate Limit:</span>
-                            <span class="text-white font-semibold">100 calls/min</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Support:</span>
-                            <span class="text-white font-semibold">Email + Chat</span>
+
+                        <!-- Marketstack -->
+                        <div class="w-80 bg-gray-800 border border-gray-600 rounded-xl p-6 flex-shrink-0">
+                            <div class="text-center mb-4">
+                                <div class="text-3xl mb-2"></div>
+                                <h3 class="text-xl font-bold text-white">Marketstack</h3>
+                                <div class="text-gray-400 text-sm">Limited scope</div>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="bg-gray-700 rounded-lg p-3">
+                                    <div class="text-gray-300">Free: 100 calls/mo</div>
+                                    <div class="text-gray-300">Pro: $60/month</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="text-red-400">Stocks only</div>
+                                    <div class="text-red-400">No real-time</div>
+                                    <div class="text-red-400">Very limited</div>
+                                    <div class="text-gray-400">Basic API</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Twelve Data -->
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-2xl font-bold text-white mb-4">Twelve Data</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Stock Markets:</span>
-                            <span class="text-white font-semibold">✓ Global Markets</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Forex:</span>
-                            <span class="text-white font-semibold">✓ 60+ Pairs</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Cryptocurrency:</span>
-                            <span class="text-white font-semibold">✓ 1000+ Coins</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Free Tier:</span>
-                            <span class="text-white font-semibold">✓ 800 calls/day</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Starting Price:</span>
-                            <span class="text-white font-semibold">$8/month</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Rate Limit:</span>
-                            <span class="text-white font-semibold">8 calls/min</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-300">Support:</span>
-                            <span class="text-white font-semibold">Email Only</span>
-                        </div>
+                
+                <div class="text-center">
+                    <div class="inline-flex items-center px-4 py-2 bg-indigo-900 rounded-lg border border-indigo-600">
+                        <span class="text-indigo-300 text-sm">👆 Swipe to compare all providers</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Desktop comparison table -->
-            <div class="hidden lg:block overflow-x-auto">
-                <table class="w-full bg-gray-800 rounded-lg overflow-hidden">
-                    <thead>
-                        <tr class="bg-gray-700">
-                            <th class="text-left p-6 text-white font-semibold">Feature</th>
-                            <th class="text-center p-6 text-white font-semibold bg-indigo-800">
-                                <div class="flex flex-col items-center">
-                                    <span>Financial Data API</span>
-                                    <span class="bg-indigo-600 text-white px-2 py-1 rounded-full text-xs mt-1">Best Value</span>
+            <!-- Desktop & Tablet comparison table -->
+            <div class="hidden md:block shadow-2xl rounded-xl border border-gray-600">
+                <table class="w-full bg-gradient-to-br from-gray-800 to-gray-900 text-xs lg:text-sm table-fixed">
+                    <colgroup>
+                        <col class="w-[18%]">
+                        <col class="w-[16%]">
+                        <col class="w-[11%]">
+                        <col class="w-[11%]">
+                        <col class="w-[11%]">
+                        <col class="w-[16%]">
+                        <col class="w-[11%]">
+                    </colgroup>
+                    <thead class="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 sticky top-0 z-10">
+                        <tr>
+                            <th class="px-2 lg:px-3 py-3 text-left text-white font-bold text-xs lg:text-sm ">
+                                <div class="flex items-center">
+                                    <span class="mr-2"></span>
+                                    <span>Feature Category</span>
                                 </div>
                             </th>
-                            <th class="text-center p-6 text-white font-semibold">Alpha Vantage</th>
-                            <th class="text-center p-6 text-white font-semibold">Polygon.io</th>
-                            <th class="text-center p-6 text-white font-semibold">IEX Cloud</th>
-                            <th class="text-center p-6 text-white font-semibold">Twelve Data</th>
+                            <th class="px-3 py-3 text-center text-white font-bold bg-indigo-900 text-xs lg:text-sm relative">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-lg lg:text-xl mb-1">🚀</span>
+                                    <span class="text-yellow-300 font-extrabold text-xs lg:text-sm">YOUR API</span>
+                                    <div class="absolute -top-1 -right-1 bg-green-500 text-white text-xs px-2 py-1 rounded-full transform rotate-12">
+                                        BEST
+                                    </div>
+                                </div>
+                            </th>
+                            <th class="px-2 lg:px-3 py-3 text-center text-white font-semibold  text-xs lg:text-sm">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-lg mb-1"></span>
+                                    <span>Alpha Vantage</span>
+                                </div>
+                            </th>
+                            <th class="px-2 lg:px-3 py-3 text-center text-white font-semibold  text-xs lg:text-sm">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-lg mb-1"></span>
+                                    <span>Polygon.io</span>
+                                </div>
+                            </th>
+                            <th class="px-2 lg:px-3 py-3 text-center text-white font-semibold  text-xs lg:text-sm">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-lg mb-1"></span>
+                                    <span>Finnhub</span>
+                                </div>
+                            </th>
+                            <th class="px-2 lg:px-3 py-3 text-center text-white font-semibold  text-xs lg:text-sm">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-lg mb-1"></span>
+                                    <span class="text-center text-xs">Financial<br>Modeling<br>Prep</span>
+                                </div>
+                            </th>
+                            <th class="px-2 lg:px-3 py-3 text-center text-white font-semibold text-xs lg:text-sm">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-lg mb-1"></span>
+                                    <span>Marketstack</span>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-300">
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Stock Market Coverage</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">✓ 40+ Global Exchanges</td>
-                            <td class="p-6 text-center">✓ US + International</td>
-                            <td class="p-6 text-center">✓ US Markets Only</td>
-                            <td class="p-6 text-center">✓ US Markets Only</td>
-                            <td class="p-6 text-center">✓ Global Markets</td>
+                    <tbody class="divide-y divide-gray-600">
+                        <!-- Pricing Section -->
+                        <tr class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900">
+                            <td colspan="7" class="px-2 lg:px-3 py-3 text-white font-bold text-lg lg:text-xl text-center">
+                                <div class="flex items-center justify-center">
+                                    <span class="mr-3 text-2xl"></span>
+                                    <span>PRICING COMPARISON</span>
+                                </div>
+                            </td>
                         </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Forex Coverage</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">✓ 170+ Pairs</td>
-                            <td class="p-6 text-center">✓ 60+ Pairs</td>
-                            <td class="p-6 text-center">✓ Major Pairs</td>
-                            <td class="p-6 text-center">✗ No Forex</td>
-                            <td class="p-6 text-center">✓ 60+ Pairs</td>
+                        <tr class="hover:bg-gray-700 transition-colors duration-200">
+                            <td class="px-2 lg:px-3 py-3 text-white font-semibold ">
+                                <div class="flex items-center">
+                                    <span class="mr-2"></span>
+                                    <span class="text-xs lg:text-sm">Free Tier</span>
+                                </div>
+                            </td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <div class="text-green-300 font-bold text-xs lg:text-sm">✅ 500 calls/d</div>
+                                <div class="text-green-200 text-xs">1 year history</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">25 calls/d</div>
+                                <div class="text-xs text-gray-400">Basic data</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">5 calls/min</div>
+                                <div class="text-xs text-gray-400">2 years EOD</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">60 calls/min</div>
+                                <div class="text-xs text-gray-400">Limited data</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">250 calls/d</div>
+                                <div class="text-xs text-gray-400">5 years data</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300">
+                                <div class="text-xs lg:text-sm">100 calls/mo</div>
+                                <div class="text-xs text-gray-400">EOD only</div>
+                            </td>
                         </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Cryptocurrency</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">✓ 3000+ Coins</td>
-                            <td class="p-6 text-center">✓ 100+ Coins</td>
-                            <td class="p-6 text-center">✓ Top Cryptos</td>
-                            <td class="p-6 text-center">✗ No Crypto</td>
-                            <td class="p-6 text-center">✓ 1000+ Coins</td>
+                        <tr class="hover:bg-gray-700 transition-colors duration-200">
+                            <td class="px-2 lg:px-3 py-3 text-white font-semibold ">
+                                <div class="flex items-center">
+                                    <span class="mr-2"></span>
+                                    <span class="text-xs lg:text-sm">Basic Plan</span>
+                                </div>
+                            </td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <div class="text-orange-300 font-bold text-xs lg:text-sm">🔥 $19/month</div>
+                                <div class="text-orange-200 text-xs">5,000 calls/d</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$25/month</div>
+                                <div class="text-xs text-gray-400">25 req/day</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$29/month</div>
+                                <div class="text-xs text-gray-400">Unlimited</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm text-gray-500">Unknown pricing</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$15/month</div>
+                                <div class="text-xs text-gray-400">Starter plan</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300">
+                                <div class="text-xs lg:text-sm">$10/month</div>
+                                <div class="text-xs text-gray-400">1,000 calls/mo</div>
+                            </td>
                         </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Free Tier</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">✓ 1000 calls/day</td>
-                            <td class="p-6 text-center">✓ 25 calls/day</td>
-                            <td class="p-6 text-center">✓ 5 calls/min</td>
-                            <td class="p-6 text-center">✓ 100 calls/day</td>
-                            <td class="p-6 text-center">✓ 800 calls/day</td>
+                        <tr class="hover:bg-gray-700 transition-colors duration-200">
+                            <td class="px-2 lg:px-3 py-3 text-white font-semibold ">
+                                <div class="flex items-center">
+                                    <span class="mr-2"></span>
+                                    <span class="text-xs lg:text-sm">Advanced Plan</span>
+                                </div>
+                            </td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <div class="text-blue-300 font-bold text-xs lg:text-sm">💎 $59/month</div>
+                                <div class="text-blue-200 text-xs">50,000 calls/d</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$75/month</div>
+                                <div class="text-xs text-gray-400">75 req/min</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$79/month</div>
+                                <div class="text-xs text-gray-400">Unlimited</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$1,000/month</div>
+                                <div class="text-xs text-gray-400">Enterprise</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$50/month</div>
+                                <div class="text-xs text-gray-400">Premium plan</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300">
+                                <div class="text-xs lg:text-sm">$60/month</div>
+                                <div class="text-xs text-gray-400">Professional</div>
+                            </td>
                         </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Starting Price</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">$49/month</td>
-                            <td class="p-6 text-center">$25/month</td>
-                            <td class="p-6 text-center">$199/month</td>
-                            <td class="p-6 text-center">$9/month</td>
-                            <td class="p-6 text-center">$8/month</td>
+                        <tr class="hover:bg-gray-700 transition-colors duration-200">
+                            <td class="px-2 lg:px-3 py-3 text-white font-semibold ">
+                                <div class="flex items-center">
+                                    <span class="mr-2"></span>
+                                    <span class="text-xs lg:text-sm">Pro Plan</span>
+                                </div>
+                            </td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <div class="text-green-300 font-bold text-xs lg:text-sm">🚀 $149/month</div>
+                                <div class="text-green-200 text-xs">Unlimited</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$249/month</div>
+                                <div class="text-xs text-gray-400">1,200 req/min</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$199/month</div>
+                                <div class="text-xs text-gray-400">Advanced plan</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm text-gray-500">Custom pricing</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">$400/month</div>
+                                <div class="text-xs text-gray-400">Ultimate plan</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300">
+                                <div class="text-xs lg:text-sm">$500/month</div>
+                                <div class="text-xs text-gray-400">Enterprise</div>
+                            </td>
                         </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Rate Limit</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">100 calls/min</td>
-                            <td class="p-6 text-center">75 calls/min</td>
-                            <td class="p-6 text-center">100 calls/min</td>
-                            <td class="p-6 text-center">100 calls/min</td>
-                            <td class="p-6 text-center">8 calls/min</td>
+
+                        <!-- Data Access Section -->
+                        <tr class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900">
+                            <td colspan="7" class="px-2 lg:px-3 py-3 text-white font-bold text-lg lg:text-xl text-center">
+                                <div class="flex items-center justify-center">
+                                    <span class="mr-3 text-2xl"></span>
+                                    <span>DATA ACCESS</span>
+                                </div>
+                            </td>
                         </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Real-time Data</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">✓ REST API (50ms)</td>
-                            <td class="p-6 text-center">✗ 15-min delay</td>
-                            <td class="p-6 text-center">✓ Real-time</td>
-                            <td class="p-6 text-center">✗ 15-min delay</td>
-                            <td class="p-6 text-center">✓ Real-time</td>
-                        </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">WebSocket Support</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">✓ Coming Q4 2025</td>
-                            <td class="p-6 text-center">✗ No</td>
-                            <td class="p-6 text-center">✓ Yes</td>
-                            <td class="p-6 text-center">✓ Yes</td>
-                            <td class="p-6 text-center">✗ No</td>
-                        </tr>
-                        <tr class="border-b border-gray-700">
-                            <td class="p-6 font-semibold">Support Quality</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">Email + Documentation</td>
-                            <td class="p-6 text-center">Email Only</td>
-                            <td class="p-6 text-center">Business Hours + Chat</td>
-                            <td class="p-6 text-center">Email + Chat</td>
-                            <td class="p-6 text-center">Email Only</td>
+                        <tr class="hover:bg-gray-700 transition-colors duration-200">
+                            <td class="px-2 lg:px-3 py-3 text-white font-semibold ">
+                                <div class="flex items-center">
+                                    <span class="mr-2"></span>
+                                    <span class="text-xs lg:text-sm">Historical Data</span>
+                                </div>
+                            </td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <div class="text-green-300 font-bold text-xs lg:text-sm">✅ 20+ years</div>
+                                <div class="text-green-200 text-xs">(matches Polygon Pro)</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">20+ years</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">20+ years</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">30+ years</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300 ">
+                                <div class="text-xs lg:text-sm">30+ years</div>
+                            </td>
+                            <td class="px-2 lg:px-3 py-3 text-center text-gray-300">
+                                <div class="text-xs lg:text-sm">30 years</div>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="p-6 font-semibold">Documentation</td>
-                            <td class="p-6 text-center bg-indigo-900 text-white font-semibold">✓ Comprehensive</td>
-                            <td class="p-6 text-center">✓ Good</td>
-                            <td class="p-6 text-center">✓ Excellent</td>
-                            <td class="p-6 text-center">✓ Good</td>
-                            <td class="p-6 text-center">✓ Good</td>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Real-time Data</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">Real-time<br>(&lt;20ms latency)</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">15-min delayed<br>(real-time extra)</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Real-time<br>(&lt;20ms latency)</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Real-time</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">15-min delayed</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">15-min delayed</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Market Coverage</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ 100% US Markets<br>All exchanges</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Global markets</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">100% US Markets</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Global markets</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Global markets</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Global markets</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Asset Classes</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Stocks+Options+Crypto+Forex</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Stocks+Forex+Crypto</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Stocks+Options+Crypto</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Stocks+Forex+Crypto</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Stocks+Forex+Crypto</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Stocks only</td>
+                        </tr>
+
+                        <!-- Performance Features Section -->
+                        <tr class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900">
+                            <td colspan="7" class="px-2 lg:px-3 py-3 text-white font-bold text-lg lg:text-xl text-center">
+                                <div class="flex items-center justify-center">
+                                    <span class="mr-3 text-2xl"></span>
+                                    <span>PERFORMANCE & FEATURES</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Rate Limits</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Tier-based limits<br>Unlimited on Pro</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Max 1,200/min</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Unlimited premium</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">30-300/min</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">10,000/day max</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Limited monthly</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">WebSocket Streams</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ All tiers (Basic+)</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Premium only</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Minute Aggregates</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ All tiers</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Intraday data</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Second Aggregates</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Advanced+ tiers</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Developer+</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Limited</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Individual Trades</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Advanced+ tiers</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Developer+</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Premium</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Options Data</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Advanced+ tiers</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not included</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                        </tr>
+
+                        <!-- Technical Features Section -->
+                        <tr class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900">
+                            <td colspan="7" class="px-2 lg:px-3 py-3 text-white font-bold text-lg lg:text-xl text-center">
+                                <div class="flex items-center justify-center">
+                                    <span class="mr-3 text-2xl"></span>
+                                    <span>TECHNICAL FEATURES</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Technical Indicators</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ 100+ indicators<br>All tiers</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">50+ indicators</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Limited set</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">50+ indicators</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">30+ indicators</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">10+ basic</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Corporate Actions</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ All tiers</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Limited</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Fundamentals Data</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Full dataset<br>All tiers</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Comprehensive</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Extensive</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Basic</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">News & Sentiment</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ AI-powered<br>Advanced+</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Basic news API</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not included</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Alternative data</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                        </tr>
+
+                        <!-- Developer Experience Section -->
+                        <tr class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900">
+                            <td colspan="7" class="px-2 lg:px-3 py-3 text-white font-bold text-lg lg:text-xl text-center">
+                                <div class="flex items-center justify-center">
+                                    <span class="mr-3 text-2xl"></span>
+                                    <span>DEVELOPER EXPERIENCE</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">API Documentation</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Interactive docs<br>Code examples</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Good docs</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Excellent docs</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Good docs</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Good docs</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Fair docs</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">SDK Support</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ 10+ languages</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">20+ languages</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">10+ languages</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">5+ languages</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">8+ languages</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">5+ languages</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">File Downloads</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">✅ Unlimited<br>Basic+</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">API only</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Premium plans</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">CSV/JSON</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Limited</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-3 text-white font-medium text-xs lg:text-sm">Snapshot API</td>
+                            <td class="px-3 py-3 text-center bg-indigo-900 text-xs lg:text-sm">
+                                <span class="text-green-400 font-bold text-xs lg:text-sm">Real-time<br>Basic+</span>
+                            </td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Premium only</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-gray-300 text-xs lg:text-sm">Available</td>
+                            <td class="px-3 py-3 text-center text-red-400 text-xs lg:text-sm">Not available</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Competitive Advantages Section -->
+    <div class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">🎯 YOUR COMPETITIVE ADVANTAGES</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <!-- Superior Free Tier -->
+                <div class="bg-gray-800 border border-green-600 rounded-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-2">🆓</div>
+                        <h3 class="text-xl font-bold text-green-400">Superior Free Tier</h3>
+                    </div>
+                    <ul class="text-gray-300 space-y-2 text-sm">
+                        <li>• <strong class="text-white">500 daily calls</strong> vs Alpha Vantage's 25</li>
+                        <li>• <strong class="text-white">1 year historical data</strong> vs Polygon's 2 years EOD only</li>
+                        <li>• <strong class="text-white">Basic fundamentals included</strong> vs limited competitor offerings</li>
+                    </ul>
+                </div>
+
+                <!-- Better Value Proposition -->
+                <div class="bg-gray-800 border border-orange-600 rounded-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-2">💰</div>
+                        <h3 class="text-xl font-bold text-orange-400">Better Value Proposition</h3>
+                    </div>
+                    <ul class="text-gray-300 space-y-2 text-sm">
+                        <li>• <strong class="text-white">$19 Basic plan</strong> with 5,000 daily calls vs Alpha Vantage $25 for 25 daily</li>
+                        <li>• <strong class="text-white">$59 Advanced plan</strong> with second-level data vs Polygon $79 for same features</li>
+                        <li>• <strong class="text-white">$149 Pro plan</strong> with unlimited calls + extras vs Polygon $199</li>
+                    </ul>
+                </div>
+
+                <!-- Feature Distribution Advantage -->
+                <div class="bg-gray-800 border border-blue-600 rounded-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-2">⚡</div>
+                        <h3 class="text-xl font-bold text-blue-400">Feature Distribution</h3>
+                    </div>
+                    <div class="text-gray-300 space-y-2 text-sm">
+                        <div class="bg-gray-700 p-3 rounded mb-2">
+                            <div class="text-orange-400 font-semibold text-xs">YOUR BASIC ($19/month):</div>
+                            <div class="text-xs">✅ WebSocket streams (Polygon: $29+)</div>
+                            <div class="text-xs">Real-time snapshots (Polygon: $29+)</div>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <div class="text-blue-400 font-semibold text-xs">YOUR ADVANCED ($59/month):</div>
+                            <div class="text-xs">✅ Options data (Polygon: not available)</div>
+                            <div class="text-xs">✅ AI-powered news (unique feature)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unique Differentiators -->
+                <div class="bg-gray-800 border border-purple-600 rounded-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-2">🚀</div>
+                        <h3 class="text-xl font-bold text-purple-400">Unique Differentiators</h3>
+                    </div>
+                    <ul class="text-gray-300 space-y-2 text-sm">
+                        <li>• <strong class="text-white">Options data integration</strong> (Polygon doesn't offer this)</li>
+                        <li>• <strong class="text-white">AI-powered sentiment analysis</strong> (none of competitors have this)</li>
+                        <li>• <strong class="text-white">Multi-asset coverage</strong> in single API</li>
+                        <li>• <strong class="text-white">Better tier progression</strong> (more logical feature distribution)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Competitive Messaging -->
+            <div class="bg-gray-800 rounded-lg p-8">
+                <h3 class="text-2xl font-bold text-white text-center mb-8">🔥 COMPETITIVE MESSAGING</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- vs Polygon.io -->
+                    <div class="bg-indigo-900 border border-indigo-600 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-indigo-300 mb-3">vs Polygon.io</h4>
+                        <p class="text-gray-300 text-sm italic">
+                            "Same enterprise-grade data and performance, 25% cheaper with options data and AI insights included"
+                        </p>
+                    </div>
+
+                    <!-- vs Alpha Vantage -->
+                    <div class="bg-green-900 border border-green-600 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-green-300 mb-3">vs Alpha Vantage</h4>
+                        <p class="text-gray-300 text-sm italic">
+                            "26x more free calls, real-time data at half the price, with WebSocket streaming included"
+                        </p>
+                    </div>
+
+                    <!-- vs Finnhub -->
+                    <div class="bg-yellow-900 border border-yellow-600 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-yellow-300 mb-3">vs Finnhub</h4>
+                        <p class="text-gray-300 text-sm italic">
+                            "Enterprise features starting at $59 vs their $1,000+ enterprise plans"
+                        </p>
+                    </div>
+
+                    <!-- vs Financial Modeling Prep -->
+                    <div class="bg-blue-900 border border-blue-600 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-blue-300 mb-3">vs Financial Modeling Prep</h4>
+                        <p class="text-gray-300 text-sm italic">
+                            "Real-time streaming data with options coverage at competitive pricing"
+                        </p>
+                    </div>
+
+                    <!-- vs Marketstack -->
+                    <div class="bg-red-900 border border-red-600 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-red-300 mb-3">vs Marketstack</h4>
+                        <p class="text-gray-300 text-sm italic">
+                            "5x more free calls, real-time data, and professional features at similar pricing"
+                        </p>
+                    </div>
+
+                    <!-- Market Positioning -->
+                    <div class="bg-purple-900 border border-purple-600 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-purple-300 mb-3">Market Position</h4>
+                        <p class="text-gray-300 text-sm italic">
+                            "Enterprise-grade performance with startup-friendly pricing and next-gen AI features"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Key Value Props -->
+                <div class="mt-8 bg-gray-700 rounded-lg p-6">
+                    <h4 class="text-lg font-bold text-white mb-4 text-center">Key Value Propositions</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl mb-2">⚡</div>
+                            <div class="text-sm text-gray-300">
+                                <strong class="text-white">Performance Parity</strong><br>
+                                Same speed and reliability as Polygon.io
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-2xl mb-2">💰</div>
+                            <div class="text-sm text-gray-300">
+                                <strong class="text-white">Better Economics</strong><br>
+                                25% cheaper with more features per tier
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-2xl mb-2">🤖</div>
+                            <div class="text-sm text-gray-300">
+                                <strong class="text-white">AI-First</strong><br>
+                                Only API with built-in sentiment and predictive analytics
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-2xl mb-2">🌍</div>
+                            <div class="text-sm text-gray-300">
+                                <strong class="text-white">Complete Coverage</strong><br>
+                                Stocks, options, crypto, forex in one API
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-2xl mb-2">👨‍💻</div>
+                            <div class="text-sm text-gray-300">
+                                <strong class="text-white">Developer-Friendly</strong><br>
+                                Better free tier and logical feature progression
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -441,7 +924,7 @@
                         <div>
                             <h4 class="text-lg font-semibold text-white mb-2">Alpha Vantage</h4>
                             <p class="text-gray-400 text-sm mb-2">Best for: Basic market data needs</p>
-                            <p class="text-gray-300 text-sm">Good free tier but limited to 25 calls/day. Delayed data on free tier. Good for learning and prototyping.</p>
+                            <p class="text-gray-300 text-sm">Good free tier but limited to 25 calls/d. Delayed data on free tier. Good for learning and prototyping.</p>
                         </div>
                         
                         <div>
