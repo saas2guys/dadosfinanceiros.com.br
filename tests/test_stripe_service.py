@@ -298,6 +298,19 @@ class StripeSubscriptionLifecycleManagementTest(StripeServiceTestCaseBase):
         self.assertTrue(subscription["cancel_at_period_end"])
         mock_modify.assert_called_once()
 
+    @patch("stripe.Subscription.modify")
+    def test_reactivates_canceled_subscription(self, mock_modify):
+        """Test subscription reactivation."""
+        mock_subscription = StripeMockSubscriptionFactory(
+            id="sub_test123", status="active", cancel_at_period_end=False
+        )
+        mock_modify.return_value = StripeObject(**mock_subscription)
+
+        subscription = self.stripe_service.reactivate_subscription("sub_test123")
+
+        self.assertFalse(subscription["cancel_at_period_end"])
+        mock_modify.assert_called_once_with("sub_test123", cancel_at_period_end=False)
+
 
 class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
     """
@@ -365,6 +378,26 @@ class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
         # Verify user was updated
         self.user.refresh_from_db()
         self.assertEqual(self.user.subscription_status, "active")
+
+    def test_processes_subscription_deleted_webhook_events(self):
+        """Test processing of subscription deletion events."""
+        subscription_data = StripeMockSubscriptionFactory(
+            id="sub_test123", status="canceled", customer="cus_test123"
+        )
+
+        self.user.stripe_customer_id = "cus_test123"
+        self.user.stripe_subscription_id = "sub_test123"
+        self.user.subscription_status = "active"
+        self.user.save()
+
+        result = self.stripe_service.handle_subscription_deleted(subscription_data)
+
+        # Verify the deletion was processed successfully
+        self.assertTrue(result)
+
+        # Verify user was updated
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.subscription_status, "canceled")
 
     def test_handles_unknown_webhook_event_types_gracefully(self):
         """Test handling of unknown webhook event types."""
