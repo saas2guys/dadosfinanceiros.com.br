@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Options API 2025 - Real-Time Options Contracts Data for Financial Applications{% endblock %}
+
+{% block meta_description %}Professional options API for financial applications launching July 2025. Get real-time options contracts data with comprehensive pricing and analytics. API access only with JSON/CSV formats. Free tier available for developers, analysts, and financial institutions.{% endblock %}
+
+{% block meta_keywords %}options API 2025, real-time options data, options contracts API, options pricing API, implied volatility API, options chain API, financial options data, derivatives API, options analytics API, american options, european options, option Greeks API, strike prices API, expiration dates API, options volume API, put call ratio API{% endblock %}
+
+{% block canonical_url %}https://api.dadosfinanceiros.com.br/options-api/{% endblock %}
+
+{% block og_title %}Options API 2025 - Real-Time Options Contracts Data{% endblock %}
+{% block og_description %}Professional options API for financial applications. Real-time options contracts data with comprehensive pricing information and analytics. Perfect for developers, analysts, and financial institutions.{% endblock %}
+
+{% block extra_meta %}
+<!-- Advanced SEO Meta Tags -->
+<meta name="author" content="Financial Data API - Options Team">
+<meta name="geo.region" content="US">
+<meta name="geo.placename" content="American Options Markets">
+<meta name="target" content="developers, analysts, financial institutions, options traders">
+<meta name="audience" content="financial developers, options analysts, derivatives specialists">
+<meta name="classification" content="Options Data, Derivatives, Financial Technology">
+
+<!-- Schema.org structured data for Options API -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Options Trading API",
+  "alternateName": ["Options Contracts API", "Derivatives API", "Options Chain API", "Options Pricing API"],
+  "description": "Professional options API providing real-time options contracts data, pricing information, and comprehensive analytics for American markets. Essential for financial applications requiring derivatives data.",
+  "url": "https://api.dadosfinanceiros.com.br/options-api/",
+  "applicationCategory": "FinanceApplication",
+  "applicationSubCategory": ["Options Trading", "Derivatives Analytics", "Financial Applications"],
+  "datePublished": "2024-01-01",
+  "dateModified": "2024-12-15",
+  "version": "2.0",
+  "operatingSystem": "Web-based, Cross-platform",
+  "programmingLanguage": ["Python", "JavaScript", "Java", "C#", "PHP", "R", "Go"],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free tier with API access for options data",
+    "category": "Free Options Data Plan"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Financial Data API",
+    "description": "Professional provider of options and derivatives APIs for American markets"
+  },
+  "featureList": [
+    "Real-time options contracts data with comprehensive pricing information",
+    "Options chains for all major American stocks and ETFs",
+    "Implied volatility calculations and Greeks analytics",
+    "Strike prices and expiration dates for all contracts",
+    "Historical options data for backtesting strategies",
+    "Put/call ratios and options volume analytics",
+    "Real-time bid/ask spreads for options contracts",
+    "Options flow analysis and unusual activity detection",
+    "Custom options screening and filtering tools",
+    "Options portfolio analytics and risk management",
+    "American and European style options support",
+    "Comprehensive options market intelligence"
+  ],
+  "softwareHelp": "https://api.dadosfinanceiros.com.br/docs/options/",
+  "installUrl": "https://api.dadosfinanceiros.com.br/waiting-list/",
+  "screenshot": "https://api.dadosfinanceiros.com.br/static/options-api-screenshot.png"
+}
+</script>
+
+<!-- FAQ Schema for voice search optimization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the best options API for real-time contracts data in 2025?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our Options API provides comprehensive real-time options contracts data for American markets, including pricing information, implied volatility, Greeks, and historical data perfect for financial applications and trading bot training."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How to get options chain data for my financial application?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Get options chain data by integrating our Options API which provides real-time contracts information, strike prices, expiration dates, and comprehensive analytics for building sophisticated financial applications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which options API provides free tier for developers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our Options API offers a free tier for developers, analysts, and financial institutions, including access to real-time options contracts data and comprehensive derivatives analytics."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Breadcrumb Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://api.dadosfinanceiros.com.br/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Options API",
+      "item": "https://api.dadosfinanceiros.com.br/options-api/"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-900 to-gray-900">
+    <!-- Hero Section -->
+    <div class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-indigo-900 border border-indigo-700">
+                    <span class="text-sm font-medium text-indigo-300">🚀 Options API Launching July 2025 - Join Whitelist for Priority Access</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                    Professional Options API for Financial Applications
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                    We're building a comprehensive options API with real-time contracts data and comprehensive pricing information for American markets. 
+                    Perfect for developers, analysts, and financial institutions building financial applications, custom queries, trading bot training, and strategy backtesting. 
+                    API access only with JSON and CSV formats. Launching July 2025 with pricing 25-60% cheaper than competitors.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200">
+                        Join Whitelist - Free Tier Available
+                    </a>
+                    <a href="#features" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
+                        Explore Planned Features
+                    </a>
+                </div>
+                
+                <!-- Key metrics -->
+                <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-400">Real-Time</div>
+                        <div class="text-sm text-gray-400">Options Contracts</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-400">JSON/CSV</div>
+                        <div class="text-sm text-gray-400">API Access Only</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-400">25-60%</div>
+                        <div class="text-sm text-gray-400">Cheaper Than Competitors</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-400">July 2025</div>
+                        <div class="text-sm text-gray-400">Launch Date</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Options Features Section -->
+    <div class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Comprehensive Options Contracts Coverage</h2>
+                <p class="text-gray-400">Real-time options data for American markets with comprehensive pricing and analytics</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">📈</div>
+                    <div class="text-xl font-bold text-indigo-400">Stock Options</div>
+                    <div class="text-sm text-gray-400">Individual Stock Options</div>
+                    <div class="text-xs text-gray-500 mt-2">AAPL, TSLA, AMZN, etc.</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">📊</div>
+                    <div class="text-xl font-bold text-indigo-400">ETF Options</div>
+                    <div class="text-sm text-gray-400">Exchange-Traded Funds</div>
+                    <div class="text-xs text-gray-500 mt-2">SPY, QQQ, IWM, etc.</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">📉</div>
+                    <div class="text-xl font-bold text-indigo-400">Index Options</div>
+                    <div class="text-sm text-gray-400">Market Indices</div>
+                    <div class="text-xs text-gray-500 mt-2">SPX, NDX, RUT, etc.</div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    Complete American options market coverage with real-time data and historical analytics
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Features Section -->
+    <div id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Professional Options Data Features for Financial Applications</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">🕐 Real-Time Options Contracts & Pricing</h3>
+                    <p class="text-gray-400 mb-4">Live options contracts data with real-time pricing information, bid/ask spreads, and comprehensive market analytics for American options markets.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Real-time bid/ask prices and spreads</li>
+                        <li>• Live trading volume and open interest</li>
+                        <li>• Strike prices and expiration dates</li>
+                        <li>• Contract specifications and details</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">📊 Options Chains & Analytics</h3>
+                    <p class="text-gray-400 mb-4">Complete options chains for stocks and ETFs with comprehensive analytics including implied volatility, Greeks, and sophisticated options metrics.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Complete options chains for all strikes</li>
+                        <li>• Implied volatility calculations</li>
+                        <li>• Delta, Gamma, Theta, Vega analytics</li>
+                        <li>• Put/call ratios and sentiment indicators</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">📈 Historical Options Data & Backtesting</h3>
+                    <p class="text-gray-400 mb-4">Comprehensive historical options data for strategy backtesting, research, and analysis. Perfect for developing and testing options trading strategies.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Historical options pricing data</li>
+                        <li>• Implied volatility time series</li>
+                        <li>• Options flow and unusual activity</li>
+                        <li>• Strategy backtesting datasets</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">🔍 Options Screening & Filtering</h3>
+                    <p class="text-gray-400 mb-4">Advanced options screening tools for identifying opportunities based on volume, volatility, unusual activity, and custom criteria.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Custom options screening criteria</li>
+                        <li>• Volume and open interest filters</li>
+                        <li>• Unusual options activity detection</li>
+                        <li>• Smart money flow analysis</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">⚡ Options Flow & Market Intelligence</h3>
+                    <p class="text-gray-400 mb-4">Real-time options flow analysis and market intelligence for understanding institutional activity and market sentiment.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Real-time options flow tracking</li>
+                        <li>• Large block trades identification</li>
+                        <li>• Institutional activity monitoring</li>
+                        <li>• Market sentiment indicators</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">🎯 Risk Management & Portfolio Analytics</h3>
+                    <p class="text-gray-400 mb-4">Comprehensive risk management tools and portfolio analytics for options positions, including Greeks exposure and risk metrics.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Portfolio Greeks aggregation</li>
+                        <li>• Risk exposure calculations</li>
+                        <li>• Position sizing recommendations</li>
+                        <li>• Volatility risk analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Perfect for Every Type of Options & Derivatives Application</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">🛠️ Financial Applications & Custom Queries</h3>
+                    <p class="text-gray-400 mb-4">
+                        Build sophisticated financial applications with real-time options data, analytics, and comprehensive derivatives intelligence. 
+                        Perfect for developers creating custom options solutions and analytical tools.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Real-time options chains and pricing</li>
+                        <li>• Custom options analytics and screening</li>
+                        <li>• Derivatives portfolio management</li>
+                        <li>• Options flow analysis tools</li>
+                        <li>• Risk management applications</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">🤖 Trading Bot Training & Strategy Backtesting</h3>
+                    <p class="text-gray-400 mb-4">
+                        Develop and train sophisticated options trading algorithms with comprehensive historical data and 
+                        real-time feeds. Essential for options strategy backtesting and algorithmic trading development.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Historical options data for backtesting</li>
+                        <li>• Machine learning training datasets</li>
+                        <li>• Options strategy performance analysis</li>
+                        <li>• Real-time data for live trading bots</li>
+                        <li>• Volatility forecasting models</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">📊 Financial Research & Analytics</h3>
+                    <p class="text-gray-400 mb-4">
+                        Power sophisticated options research platforms with comprehensive data, analytics, and market intelligence. 
+                        Essential for institutional research and financial advisory tools.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Options market research and analysis</li>
+                        <li>• Implied volatility studies</li>
+                        <li>• Derivatives correlation analysis</li>
+                        <li>• Options sentiment indicators</li>
+                        <li>• Custom research reports and alerts</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">🏛️ Institutional & Enterprise Solutions</h3>
+                    <p class="text-gray-400 mb-4">
+                        Enterprise-grade options data solutions for financial institutions, hedge funds, and professional trading firms 
+                        requiring comprehensive derivatives market intelligence.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Institutional-grade data feeds</li>
+                        <li>• High-frequency options analytics</li>
+                        <li>• Risk management and compliance tools</li>
+                        <li>• Custom integration and support</li>
+                        <li>• Enterprise security and reliability</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 bg-indigo-900">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Build Your Options Application?</h2>
+            <p class="text-xl text-indigo-200 mb-8">
+                Join developers, analysts, and financial institutions building sophisticated options applications. 
+                Get whitelist priority access and testing benefits for our July 2025 launch.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'waiting_list' %}" class="bg-white text-indigo-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-200">
+                    Join Whitelist Today
+                </a>
+                <a href="{% url 'api_comparison' %}" class="border border-indigo-300 text-indigo-200 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-800 transition duration-200">
+                    Compare APIs
+                </a>
+            </div>
+            <p class="text-sm text-indigo-300 mt-6">
+                ✓ Free tier available ✓ API access only ✓ JSON/CSV formats ✓ 25-60% cheaper than competitors
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

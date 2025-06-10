@@ -34,6 +34,10 @@ urlpatterns = [
     path("forex-api/", TemplateView.as_view(template_name="forex_api.html"), name="forex_api"),
     path("crypto-api/", TemplateView.as_view(template_name="crypto_api.html"), name="crypto_api"),
     path("cryptocurrency-api/", TemplateView.as_view(template_name="crypto_api.html"), name="cryptocurrency_api"),  # Alternative URL
+    path("options-api/", TemplateView.as_view(template_name="options_api.html"), name="options_api"),
+    path("indices-api/", TemplateView.as_view(template_name="indices_api.html"), name="indices_api"),
+    path("futures-api/", TemplateView.as_view(template_name="futures_api.html"), name="futures_api"),
+    path("economic-indicators-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="economic_indicators_api"),
     
     # SEO content pages
     path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),

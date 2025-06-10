@@ -32,6 +32,20 @@
                     <div class="flex-shrink-0 flex items-center">
                         <a href="{% url 'home' %}" class="text-xl font-bold text-white">American Markets API</a>
                     </div>
+                    <div class="hidden lg:ml-6 lg:flex lg:space-x-4">
+                        <!-- All API Links Directly Visible -->
+                        <a href="{% url 'stock_market_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">📈 Stocks</a>
+                        <a href="{% url 'options_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">📊 Options</a>
+                        <a href="{% url 'indices_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">📈 Indices</a>
+                        <a href="{% url 'futures_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">🛒 Futures</a>
+                        <a href="{% url 'forex_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">💱 Forex</a>
+                        <a href="{% url 'crypto_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">₿ Crypto</a>
+                        <a href="{% url 'economic_indicators_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">📊 Economic</a>
+                        <span class="text-gray-500">|</span>
+                        <a href="{% url 'api_comparison' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">Pricing</a>
+                        <a href="{% url 'faq' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium">FAQ</a>
+                        <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-3 py-2 rounded hover:bg-indigo-700 text-sm font-medium">Join Whitelist</a>
+                    </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     {% if user.is_authenticated %}
@@ -45,6 +59,38 @@
                         <a href="{% url 'register' %}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Register</a>
                     {% endif %}
                 </div>
+            </div>
+            
+            <!-- Mobile menu button -->
+            <div class="lg:hidden">
+                <button type="button" class="mobile-menu-button bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden lg:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-700">
+                <div class="border-b border-gray-600 pb-2 mb-2">
+                    <p class="text-gray-300 px-3 py-2 text-sm font-medium">APIs</p>
+                    <a href="{% url 'stock_market_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm">📈 Stocks API</a>
+                    <a href="{% url 'options_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm">📊 Options API</a>
+                    <a href="{% url 'indices_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm">📈 Indices API</a>
+                    <a href="{% url 'futures_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm">🛒 Futures API</a>
+                    <a href="{% url 'forex_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm">💱 Forex API</a>
+                    <a href="{% url 'crypto_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm">₿ Crypto API</a>
+                    <a href="{% url 'economic_indicators_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm">📊 Economic Indicators API</a>
+                </div>
+                <a href="{% url 'api_comparison' %}" class="text-gray-300 hover:text-white block px-3 py-2 text-sm">Pricing</a>
+                <a href="{% url 'faq' %}" class="text-gray-300 hover:text-white block px-3 py-2 text-sm">FAQ</a>
+                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white block px-3 py-2 rounded text-sm">Join Whitelist</a>
             </div>
         </div>
     </nav>
@@ -67,5 +113,29 @@
     </footer>
 
     {% block extra_js %}{% endblock %}
+    
+    <!-- Mobile menu toggle script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.mobile-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuIcons = mobileMenuButton.querySelectorAll('svg');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                    
+                    // Toggle menu visibility
+                    mobileMenu.classList.toggle('hidden');
+                    
+                    // Update aria-expanded
+                    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    
+                    // Toggle menu icons (hamburger <-> X)
+                    menuIcons.forEach(icon => icon.classList.toggle('hidden'));
+                });
+            }
+        });
+    </script>
 </body>
 </html> 
