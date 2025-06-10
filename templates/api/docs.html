@@ -39,14 +39,85 @@
           <h3 class="quick-link-title">Crypto API</h3>
           <p class="quick-link-description">Cryptocurrency data</p>
         </a>
+        <a href="#options" class="quick-link-card">
+          <h3 class="quick-link-title">Options API</h3>
+          <p class="quick-link-description">Options contracts data</p>
+        </a>
         <a href="#indices" class="quick-link-card">
           <h3 class="quick-link-title">Indices API</h3>
           <p class="quick-link-description">Market indices data</p>
+        </a>
+        <a href="#futures" class="quick-link-card">
+          <h3 class="quick-link-title">Futures API</h3>
+          <p class="quick-link-description">Futures contracts data</p>
+        </a>
+        <a href="#economic-indicators" class="quick-link-card">
+          <h3 class="quick-link-title">Economic Indicators API</h3>
+          <p class="quick-link-description">Real-time economic data</p>
         </a>
         <a href="#rate-limits" class="quick-link-card">
           <h3 class="quick-link-title">Rate Limits</h3>
           <p class="quick-link-description">API usage limits</p>
         </a>
+      </div>
+    </div>
+
+    <!-- Data Coverage Summary Section -->
+    <div class="doc-section">
+      <h2>Available Data Types</h2>
+      <div class="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
+        <h4 class="font-semibold text-blue-800 mb-4">American Markets Financial Data Coverage</h4>
+        <p class="text-blue-700 mb-4">
+          Our API provides comprehensive financial data focused on American markets, designed for developers, analysts, 
+          and financial institutions building applications, custom queries, trading bot training, and strategy backtesting.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+          <div class="bg-white p-4 rounded-lg border border-blue-200">
+            <h5 class="font-semibold text-blue-800 mb-2">📈 Stocks (American Markets)</h5>
+            <p class="text-blue-700 text-sm">Real-time and historical OHLC data for American stock markets. JSON and CSV formats via API access only.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-blue-200">
+            <h5 class="font-semibold text-blue-800 mb-2">📊 Options Contracts</h5>
+            <p class="text-blue-700 text-sm">Real-time and historical options data with comprehensive contract details and pricing information.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-blue-200">
+            <h5 class="font-semibold text-blue-800 mb-2">📈 Indices</h5>
+            <p class="text-blue-700 text-sm">Financial indices data with real-time values and historical performance tracking.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-blue-200">
+            <h5 class="font-semibold text-blue-800 mb-2">🛒 Futures Contracts</h5>
+            <p class="text-blue-700 text-sm">Real-time and historical futures contract data with comprehensive market information.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-blue-200">
+            <h5 class="font-semibold text-blue-800 mb-2">💱 Forex (24/7)</h5>
+            <p class="text-blue-700 text-sm">Currency pairs with 24/7 market coverage. Real-time and historical OHLC data.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-blue-200">
+            <h5 class="font-semibold text-blue-800 mb-2">₿ Cryptocurrencies (3000+)</h5>
+            <p class="text-blue-700 text-sm">Over 3000 cryptocurrencies with 24/7 market coverage and comprehensive market data.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-blue-200">
+            <h5 class="font-semibold text-blue-800 mb-2">📊 Economic Indicators</h5>
+            <p class="text-blue-700 text-sm">Real-time economic data and indicators for comprehensive market analysis.</p>
+          </div>
+        </div>
+        
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h5 class="font-semibold text-blue-800 mb-2">📋 Data Format & Access</h5>
+          <ul class="text-blue-700 text-sm list-disc list-inside space-y-1">
+            <li><strong>Formats:</strong> JSON and CSV formats available</li>
+            <li><strong>Access:</strong> API access only - no file downloads</li>
+            <li><strong>Authentication:</strong> Token-based with HTTPS encryption</li>
+            <li><strong>Coverage:</strong> Real-time and historical data with OHLC</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -316,7 +387,7 @@ curl -X POST "https://api.financialdata.online/api/token/" \
             In professional finance, tickers are used by traders for quick order entry, by analysts for building financial models, by portfolio managers for asset allocation, and by retail investors for tracking investments. The ticker system standardizes communication across global financial markets, ensuring that everyone refers to the same security using the same identifier.
           </p>
           <p class="text-blue-700">
-            <strong>Common Applications:</strong> Stock screeners, market surveillance systems, portfolio tracking applications, trading platforms, financial news systems, and regulatory reporting. This endpoint returns comprehensive metadata including company names, exchange information, trading status, and market classifications.
+                <strong>Common Applications:</strong> Stock screeners, market surveillance systems, portfolio tracking applications, financial applications, financial news systems, and regulatory reporting. This endpoint returns comprehensive metadata including company names, exchange information, trading status, and market classifications.
           </p>
         </div>
 
@@ -334,7 +405,7 @@ curl -X POST "https://api.financialdata.online/api/token/" \
               <li>Building stock screeners and watchlists</li>
               <li>Market analysis and research tools</li>
               <li>Portfolio tracking applications</li>
-              <li>Data synchronization with trading platforms</li>
+              <li>Data synchronization with financial applications</li>
             </ul>
           </div>
         </div>
@@ -1410,7 +1481,7 @@ curl -X GET "https://api.financialdata.online/v1/stocks/AAPL/trades/?timestamp=2
             {% trans "Professional traders use quote data for order placement decisions, spread trading strategies, and market making activities. The NBBO ensures that retail investors receive the best available prices across all exchanges. Quote timestamps help identify market timing opportunities, while exchange information reveals where the best prices originate. This data is fundamental for understanding market liquidity and execution costs." %}
           </p>
           <p class="text-indigo-700">
-            <strong>{% trans "Trading Applications:" %}</strong> {% trans "Spread analysis, liquidity assessment, order optimization, market making strategies, best execution monitoring, and real-time trading decisions. Quote data is essential for any trading platform or portfolio management system requiring current market conditions." %}
+            <strong>{% trans "Trading Applications:" %}</strong> {% trans "Spread analysis, liquidity assessment, order optimization, market making strategies, best execution monitoring, and real-time trading decisions. Quote data is essential for any financial application or portfolio management system requiring current market conditions." %}
           </p>
         </div>
 
@@ -2549,19 +2620,19 @@ curl -X GET "https://api.financialdata.online/v1/crypto/BTC-USD/bars/?interval=1
         </thead>
         <tbody>
           <tr>
-            <td>{% trans "Free tier" %}</td>
-            <td>100</td>
-            <td>{% trans "Per day" %}</td>
-          </tr>
-          <tr>
-            <td>{% trans "Basic tier" %}</td>
+            <td>{% trans "Free/Basic" %}</td>
             <td>1,000</td>
             <td>{% trans "Per day" %}</td>
           </tr>
           <tr>
-            <td>{% trans "Premium tier" %}</td>
-            <td>10,000</td>
+            <td>{% trans "Professional" %}</td>
+            <td>{% trans "Enhanced limits" %}</td>
             <td>{% trans "Per day" %}</td>
+          </tr>
+          <tr>
+            <td>{% trans "Enterprise" %}</td>
+            <td>{% trans "High-volume" %}</td>
+            <td>{% trans "Custom" %}</td>
           </tr>
         </tbody>
       </table>
