@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}{% trans 'API Documentation - Global Financial Data API' %}{% endblock %}
+{% block title %}{% trans 'API Documentation - Financial Data API' %}{% endblock %}
 
 {% block meta_description %}Professional API documentation for our upcoming financial data API with 104+ endpoints across 22 categories. Real-time market data, fundamental analysis, news sentiment, earnings data, SEC filings launching July 2025.{% endblock %}
 
@@ -32,340 +32,1958 @@
 {% endblock %}
 
 {% block content %}
-<section class="py-16 bg-gray-900">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl sm:text-5xl font-bold text-white mb-6">
-                {% trans 'API Documentation' %}
-            </h1>
-            <p class="text-xl text-gray-300">
-                {% trans 'Professional financial data API documentation and developer resources' %}
-            </p>
-        </div>
-
-        <!-- Getting Started -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-rocket text-blue-400 mr-3"></i>
-                {% trans 'Getting Started' %}
-            </h2>
-            <p class="text-gray-300 mb-4">
-                {% trans 'Our Global Financial Data API provides professional-grade access to real-time and historical financial data across multiple asset classes and global markets.' %}
-            </p>
-            <div class="bg-gray-700 rounded-lg p-4">
-                <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Base URL' %}</h3>
-                <code class="text-green-400">https://api.dadosfinanceiros.com.br/v1/</code>
-            </div>
-        </div>
-
-        <!-- Authentication -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-key text-green-400 mr-3"></i>
-                {% trans 'Authentication' %}
-            </h2>
-            <p class="text-gray-300 mb-4">
-                {% trans 'All API requests require authentication using an API key. Include your API key in the request header:' %}
-            </p>
-            <div class="bg-gray-700 rounded-lg p-4">
-                <pre class="text-green-400"><code>Authorization: Bearer YOUR_API_KEY</code></pre>
-            </div>
-        </div>
-
-        <!-- Data Formats -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-code text-purple-400 mr-3"></i>
-                {% trans 'Data Formats' %}
-            </h2>
-            <p class="text-gray-300 mb-4">
-                {% trans 'Our API supports multiple data formats to suit different use cases:' %}
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">JSON</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'Default format for real-time applications and API integrations' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">CSV</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'Ideal for bulk data downloads and spreadsheet analysis' %}</p>
+<div class="min-h-screen bg-gray-900">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-900 to-purple-900 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    {% trans 'Financial Data API Documentation' %}
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    {% trans 'Comprehensive guide to our 104+ financial data endpoints covering stocks, options, forex, crypto, fundamentals, and economic data.' %}
+                </p>
+                <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quick-start" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        {% trans 'Quick Start Guide' %}
+                    </a>
+                    <a href="#endpoints" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        {% trans 'Browse Endpoints' %}
+                    </a>
                 </div>
             </div>
-        </div>
-
-        <!-- API Endpoints -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-list text-yellow-400 mr-3"></i>
-                {% trans 'Main API Endpoints' %}
-            </h2>
-            
-            <div class="space-y-6">
-                <!-- Stocks -->
-                <div class="border-l-4 border-blue-400 pl-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Stock Market Data' %}</h3>
-                    <div class="space-y-2">
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /quotes/{symbol}</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get real-time stock quote' %}</p>
-                        </div>
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /quotes/gainers</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get top gaining stocks' %}</p>
-                        </div>
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /historical/{symbol}</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get historical price data' %}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Options -->
-                <div class="border-l-4 border-green-400 pl-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Options Data' %}</h3>
-                    <div class="space-y-2">
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /options/chain/{symbol}</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get complete options chain' %}</p>
-                        </div>
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /options/greeks/{contract}</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get options Greeks (Delta, Gamma, Theta, Vega)' %}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Forex -->
-                <div class="border-l-4 border-purple-400 pl-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Forex Data' %}</h3>
-                    <div class="space-y-2">
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /forex/{pair}</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get currency pair rate' %}</p>
-                        </div>
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /forex/majors</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get major currency pairs' %}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Crypto -->
-                <div class="border-l-4 border-yellow-400 pl-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Cryptocurrency Data' %}</h3>
-                    <div class="space-y-2">
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /crypto/{symbol}</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get cryptocurrency price' %}</p>
-                        </div>
-                        <div class="bg-gray-700 rounded p-3">
-                            <code class="text-green-400">GET /crypto/top</code>
-                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get top cryptocurrencies by market cap' %}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Rate Limits -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-tachometer-alt text-red-400 mr-3"></i>
-                {% trans 'Rate Limits' %}
-            </h2>
-            <p class="text-gray-300 mb-4">
-                {% trans 'Rate limits vary by subscription plan to ensure optimal performance:' %}
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Free Tier' %}</h3>
-                    <p class="text-gray-300">{% trans '1,000 calls/day' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Professional' %}</h3>
-                    <p class="text-gray-300">{% trans '100,000 calls/day' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Enterprise' %}</h3>
-                    <p class="text-gray-300">{% trans 'Custom limits' %}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Error Handling -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-exclamation-triangle text-orange-400 mr-3"></i>
-                {% trans 'Error Handling' %}
-            </h2>
-            <p class="text-gray-300 mb-4">
-                {% trans 'Our API uses standard HTTP status codes and returns detailed error messages:' %}
-            </p>
-            <div class="space-y-3">
-                <div class="bg-gray-700 rounded p-3">
-                    <div class="flex items-center justify-between">
-                        <code class="text-red-400">400 Bad Request</code>
-                        <span class="text-gray-300 text-sm">{% trans 'Invalid request parameters' %}</span>
-                    </div>
-                </div>
-                <div class="bg-gray-700 rounded p-3">
-                    <div class="flex items-center justify-between">
-                        <code class="text-red-400">401 Unauthorized</code>
-                        <span class="text-gray-300 text-sm">{% trans 'Invalid or missing API key' %}</span>
-                    </div>
-                </div>
-                <div class="bg-gray-700 rounded p-3">
-                    <div class="flex items-center justify-between">
-                        <code class="text-red-400">429 Too Many Requests</code>
-                        <span class="text-gray-300 text-sm">{% trans 'Rate limit exceeded' %}</span>
-                    </div>
-                </div>
-                <div class="bg-gray-700 rounded p-3">
-                    <div class="flex items-center justify-between">
-                        <code class="text-red-400">500 Internal Server Error</code>
-                        <span class="text-gray-300 text-sm">{% trans 'Server error - please try again' %}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Code Examples -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-code text-indigo-400 mr-3"></i>
-                {% trans 'Code Examples' %}
-            </h2>
-            
-            <div class="space-y-6">
-                <!-- Python Example -->
-                <div>
-                    <h3 class="text-lg font-semibold text-white mb-3">Python</h3>
-                    <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                        <pre class="text-green-400 text-sm"><code>import requests
-
-api_key = "YOUR_API_KEY"
-symbol = "AAPL"
-
-headers = {
-    "Authorization": f"Bearer {api_key}"
-}
-
-response = requests.get(
-    f"https://api.dadosfinanceiros.com.br/v1/quotes/{symbol}",
-    headers=headers
-)
-
-data = response.json()
-print(f"Price: ${data['price']}")
-</code></pre>
-                    </div>
-                </div>
-
-                <!-- JavaScript Example -->
-                <div>
-                    <h3 class="text-lg font-semibold text-white mb-3">JavaScript</h3>
-                    <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                        <pre class="text-green-400 text-sm"><code>const apiKey = "YOUR_API_KEY";
-const symbol = "AAPL";
-
-fetch(`https://api.dadosfinanceiros.com.br/v1/quotes/${symbol}`, {
-    headers: {
-        "Authorization": `Bearer ${apiKey}`
-    }
-})
-.then(response => response.json())
-.then(data => {
-    console.log(`Price: $${data.price}`);
-})
-.catch(error => console.error(error));
-</code></pre>
-                    </div>
-                </div>
-
-                <!-- cURL Example -->
-                <div>
-                    <h3 class="text-lg font-semibold text-white mb-3">cURL</h3>
-                    <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                        <pre class="text-green-400 text-sm"><code>curl -X GET \
-  https://api.dadosfinanceiros.com.br/v1/quotes/AAPL \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json"
-</code></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SDKs and Libraries -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-download text-cyan-400 mr-3"></i>
-                {% trans 'SDKs and Libraries' %}
-            </h2>
-            <p class="text-gray-300 mb-4">
-                {% trans 'Official SDKs and libraries to accelerate your integration:' %}
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-gray-700 rounded-lg p-4 text-center">
-                    <i class="fab fa-python text-3xl text-yellow-400 mb-2"></i>
-                    <h3 class="text-white font-semibold">Python SDK</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'pip install dadosfinanceiros' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4 text-center">
-                    <i class="fab fa-js text-3xl text-yellow-400 mb-2"></i>
-                    <h3 class="text-white font-semibold">JavaScript SDK</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'npm install dadosfinanceiros' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4 text-center">
-                    <i class="fab fa-java text-3xl text-red-400 mb-2"></i>
-                    <h3 class="text-white font-semibold">Java SDK</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'Maven/Gradle available' %}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Support -->
-        <div class="bg-gray-800 rounded-lg p-6">
-            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-headset text-pink-400 mr-3"></i>
-                {% trans 'Support and Resources' %}
-            </h2>
-            <p class="text-gray-300 mb-4">
-                {% trans 'Need help? We provide comprehensive support for all our API users:' %}
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Documentation' %}</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'Comprehensive guides, tutorials, and API reference' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Email Support' %}</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'Technical support via email for all plan levels' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Community Forum' %}</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'Connect with other developers and share knowledge' %}</p>
-                </div>
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Priority Support' %}</h3>
-                    <p class="text-gray-300 text-sm">{% trans 'Dedicated support for Enterprise customers' %}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- CTA -->
-        <div class="text-center mt-12 pt-8 border-t border-gray-700">
-            <h2 class="text-2xl font-bold text-white mb-4">
-                {% trans 'Ready to get started?' %}
-            </h2>
-            <p class="text-gray-300 mb-6">
-                {% trans 'Join our waiting list to be among the first to access our professional financial data API' %}
-            </p>
-            <a href="{% url 'waiting_list' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors">
-                <i class="fas fa-rocket mr-2"></i>
-                {% trans 'Join Waiting List' %}
-            </a>
         </div>
     </div>
-</section>
+
+    <!-- Navigation -->
+    <div class="sticky top-0 bg-gray-800 border-b border-gray-700 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex space-x-8 overflow-x-auto py-4">
+                <a href="#quick-start" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Quick Start' %}</a>
+                <a href="#authentication" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Authentication' %}</a>
+                <a href="#reference" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Reference Data' %}</a>
+                <a href="#market-data" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Market Data' %}</a>
+                <a href="#historical" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Historical Data' %}</a>
+                <a href="#ticks" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Tick Data' %}</a>
+                <a href="#options" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Options' %}</a>
+                <a href="#futures" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Futures' %}</a>
+                <a href="#forex" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Forex' %}</a>
+                <a href="#crypto" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Crypto' %}</a>
+                <a href="#commodities" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Commodities' %}</a>
+                <a href="#indices" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Indices' %}</a>
+                <a href="#fundamentals" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Fundamentals' %}</a>
+                <a href="#valuation" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Valuation' %}</a>
+                <a href="#analyst" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Analyst Data' %}</a>
+                <a href="#earnings" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Earnings' %}</a>
+                <a href="#insider" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Insider Trading' %}</a>
+                <a href="#institutional" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Institutional' %}</a>
+                <a href="#etf" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'ETF & Funds' %}</a>
+                <a href="#news" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'News' %}</a>
+                <a href="#technical" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Technical' %}</a>
+                <a href="#economic" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Economic' %}</a>
+                <a href="#sec-filings" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'SEC Filings' %}</a>
+                <a href="#bulk" class="text-gray-300 hover:text-white whitespace-nowrap transition-colors">{% trans 'Bulk Data' %}</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-32">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">{% trans 'API Information' %}</h3>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <span class="text-gray-400">{% trans 'Base URL:' %}</span>
+                                <div class="text-green-400 font-mono">https://api.dadosfinanceiros.com.br</div>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">{% trans 'Version:' %}</span>
+                                <div class="text-white">v1</div>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">{% trans 'Format:' %}</span>
+                                <div class="text-white">JSON</div>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">{% trans 'Rate Limit:' %}</span>
+                                <div class="text-white">Plan dependent</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6 mt-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">{% trans 'SDKs & Tools' %}</h3>
+                        <div class="space-y-2 text-sm">
+                            <a href="#" class="block text-blue-400 hover:text-blue-300">Python SDK</a>
+                            <a href="#" class="block text-blue-400 hover:text-blue-300">JavaScript SDK</a>
+                            <a href="#" class="block text-blue-400 hover:text-blue-300">Postman Collection</a>
+                            <a href="#" class="block text-blue-400 hover:text-blue-300">OpenAPI Spec</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3">
+                <!-- Quick Start -->
+                <section id="quick-start" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Quick Start Guide' %}</h2>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">{% trans '1. Get Your API Key' %}</h3>
+                        <p class="text-gray-300 mb-4">{% trans 'Sign up for an account and get your API key from the dashboard.' %}</p>
+                        <div class="bg-gray-900 rounded p-4 font-mono text-sm">
+                            <span class="text-gray-400"># Your API key will look like this:</span><br>
+                            <span class="text-green-400">X-Request-Token: your-api-key-here</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">{% trans '2. Make Your First Request' %}</h3>
+                        <p class="text-gray-300 mb-4">{% trans 'Get real-time stock quotes using our quotes endpoint:' %}</p>
+                        <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+                            <span class="text-blue-400">curl</span> <span class="text-yellow-400">-H</span> <span class="text-green-400">"X-Request-Token: your-api-key"</span> \<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">"https://api.dadosfinanceiros.com.br/api/v1/quotes/AAPL"</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">{% trans '3. Example Response' %}</h3>
+                        <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+  <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">150.25</span>,
+  <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">2.15</span>,
+  <span class="text-blue-400">"changePercent"</span>: <span class="text-yellow-400">1.45</span>,
+  <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">45623410</span>,
+  <span class="text-blue-400">"timestamp"</span>: <span class="text-green-400">"2024-01-15T16:00:00Z"</span>
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Authentication -->
+                <section id="authentication" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Authentication' %}</h2>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">{% trans 'API Key Authentication' %}</h3>
+                        <p class="text-gray-300 mb-4">{% trans 'All requests require authentication using your API key in the request header:' %}</p>
+                        <div class="bg-gray-900 rounded p-4 font-mono text-sm">
+                            <span class="text-green-400">X-Request-Token: your-api-key-here</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Rate Limits' %}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-gray-700 rounded p-4">
+                                <div class="text-2xl font-bold text-blue-400">1,000</div>
+                                <div class="text-sm text-gray-300">{% trans 'Free Plan' %}</div>
+                                <div class="text-xs text-gray-400">{% trans 'requests/day' %}</div>
+                            </div>
+                            <div class="bg-gray-700 rounded p-4">
+                                <div class="text-2xl font-bold text-green-400">100,000</div>
+                                <div class="text-sm text-gray-300">{% trans 'Pro Plan' %}</div>
+                                <div class="text-xs text-gray-400">{% trans 'requests/day' %}</div>
+                            </div>
+                            <div class="bg-gray-700 rounded p-4">
+                                <div class="text-2xl font-bold text-purple-400">∞</div>
+                                <div class="text-sm text-gray-300">{% trans 'Enterprise' %}</div>
+                                <div class="text-xs text-gray-400">{% trans 'unlimited' %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reference Data -->
+                <section id="reference" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Reference Data Endpoints' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Tickers List -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'List All Tickers' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get a list of all available stock tickers with basic information.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/reference/tickers</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Parameters' %}</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-700">
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Parameter' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Type' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Description' %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">limit</td>
+                                                <td class="py-2 text-gray-300">integer</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Number of results (default: 100, max: 5000)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">exchange</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Filter by exchange (NYSE, NASDAQ, etc.)' %}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Apple Inc."</span>,
+    <span class="text-blue-400">"currency"</span>: <span class="text-green-400">"USD"</span>,
+    <span class="text-blue-400">"stockExchange"</span>: <span class="text-green-400">"NASDAQ Global Select"</span>,
+    <span class="text-blue-400">"exchangeShortName"</span>: <span class="text-green-400">"NASDAQ"</span>
+  },
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"GOOGL"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Alphabet Inc."</span>,
+    <span class="text-blue-400">"currency"</span>: <span class="text-green-400">"USD"</span>,
+    <span class="text-blue-400">"stockExchange"</span>: <span class="text-green-400">"NASDAQ Global Select"</span>,
+    <span class="text-blue-400">"exchangeShortName"</span>: <span class="text-green-400">"NASDAQ"</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Building stock screeners and search functionality' %}</li>
+                                    <li>{% trans 'Populating dropdown lists in trading applications' %}</li>
+                                    <li>{% trans 'Data validation and symbol lookup' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Company Profile -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Company Profile' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get detailed company information including business description, industry, and key metrics.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/reference/ticker/{symbol}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Parameters' %}</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-700">
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Parameter' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Type' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Description' %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">symbol</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Stock symbol (e.g., AAPL, GOOGL)' %}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+    <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">175.43</span>,
+    <span class="text-blue-400">"beta"</span>: <span class="text-yellow-400">1.286</span>,
+    <span class="text-blue-400">"volAvg"</span>: <span class="text-yellow-400">57809250</span>,
+    <span class="text-blue-400">"mktCap"</span>: <span class="text-yellow-400">2758977331200</span>,
+    <span class="text-blue-400">"lastDiv"</span>: <span class="text-yellow-400">0.96</span>,
+    <span class="text-blue-400">"range"</span>: <span class="text-green-400">"124.17-198.23"</span>,
+    <span class="text-blue-400">"changes"</span>: <span class="text-yellow-400">1.64</span>,
+    <span class="text-blue-400">"companyName"</span>: <span class="text-green-400">"Apple Inc."</span>,
+    <span class="text-blue-400">"currency"</span>: <span class="text-green-400">"USD"</span>,
+    <span class="text-blue-400">"cik"</span>: <span class="text-green-400">"0000320193"</span>,
+    <span class="text-blue-400">"isin"</span>: <span class="text-green-400">"US0378331005"</span>,
+    <span class="text-blue-400">"cusip"</span>: <span class="text-green-400">"037833100"</span>,
+    <span class="text-blue-400">"exchange"</span>: <span class="text-green-400">"NASDAQ Global Select"</span>,
+    <span class="text-blue-400">"exchangeShortName"</span>: <span class="text-green-400">"NASDAQ"</span>,
+    <span class="text-blue-400">"industry"</span>: <span class="text-green-400">"Consumer Electronics"</span>,
+    <span class="text-blue-400">"website"</span>: <span class="text-green-400">"https://www.apple.com"</span>,
+    <span class="text-blue-400">"description"</span>: <span class="text-green-400">"Apple Inc. designs, manufactures, and markets smartphones..."</span>,
+    <span class="text-blue-400">"ceo"</span>: <span class="text-green-400">"Timothy Donald Cook"</span>,
+    <span class="text-blue-400">"sector"</span>: <span class="text-green-400">"Technology"</span>,
+    <span class="text-blue-400">"country"</span>: <span class="text-green-400">"US"</span>,
+    <span class="text-blue-400">"fullTimeEmployees"</span>: <span class="text-green-400">"164000"</span>,
+    <span class="text-blue-400">"phone"</span>: <span class="text-green-400">"14089961010"</span>,
+    <span class="text-blue-400">"address"</span>: <span class="text-green-400">"One Apple Park Way"</span>,
+    <span class="text-blue-400">"city"</span>: <span class="text-green-400">"Cupertino"</span>,
+    <span class="text-blue-400">"state"</span>: <span class="text-green-400">"CA"</span>,
+    <span class="text-blue-400">"zip"</span>: <span class="text-green-400">"95014"</span>,
+    <span class="text-blue-400">"dcfDiff"</span>: <span class="text-yellow-400">25.67</span>,
+    <span class="text-blue-400">"dcf"</span>: <span class="text-yellow-400">149.76</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Company research and fundamental analysis' %}</li>
+                                    <li>{% trans 'Investment portfolio management' %}</li>
+                                    <li>{% trans 'Financial reporting and compliance' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Company Executives -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Company Executives' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get detailed information about company executives and management team.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/reference/ticker/{symbol}/executives</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"title"</span>: <span class="text-green-400">"Chief Executive Officer"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Timothy Donald Cook"</span>,
+    <span class="text-blue-400">"pay"</span>: <span class="text-yellow-400">98734394</span>,
+    <span class="text-blue-400">"currencyPay"</span>: <span class="text-green-400">"USD"</span>,
+    <span class="text-blue-400">"gender"</span>: <span class="text-green-400">"male"</span>,
+    <span class="text-blue-400">"yearBorn"</span>: <span class="text-yellow-400">1960</span>,
+    <span class="text-blue-400">"titleSince"</span>: <span class="text-green-400">"2011-08-24"</span>
+  },
+  {
+    <span class="text-blue-400">"title"</span>: <span class="text-green-400">"Chief Financial Officer"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Luca Maestri"</span>,
+    <span class="text-blue-400">"pay"</span>: <span class="text-yellow-400">26555466</span>,
+    <span class="text-blue-400">"currencyPay"</span>: <span class="text-green-400">"USD"</span>,
+    <span class="text-blue-400">"gender"</span>: <span class="text-green-400">"male"</span>,
+    <span class="text-blue-400">"yearBorn"</span>: <span class="text-yellow-400">1963</span>,
+    <span class="text-blue-400">"titleSince"</span>: <span class="text-green-400">"2014-05-08"</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Corporate governance analysis' %}</li>
+                                    <li>{% trans 'Executive compensation research' %}</li>
+                                    <li>{% trans 'Management team evaluation' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Market Status -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Market Status' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get current market status for all major exchanges and trading sessions.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/reference/market-status</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"market"</span>: <span class="text-green-400">"open"</span>,
+  <span class="text-blue-400">"serverTime"</span>: <span class="text-green-400">"2024-01-15T15:30:00.000Z"</span>,
+  <span class="text-blue-400">"exchanges"</span>: {
+    <span class="text-blue-400">"nasdaq"</span>: <span class="text-green-400">"open"</span>,
+    <span class="text-blue-400">"nyse"</span>: <span class="text-green-400">"open"</span>,
+    <span class="text-blue-400">"otc"</span>: <span class="text-green-400">"open"</span>
+  },
+  <span class="text-blue-400">"currencies"</span>: {
+    <span class="text-blue-400">"fx"</span>: <span class="text-green-400">"open"</span>,
+    <span class="text-blue-400">"crypto"</span>: <span class="text-green-400">"open"</span>
+  }
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Trading application status display' %}</li>
+                                    <li>{% trans 'Market hours validation' %}</li>
+                                    <li>{% trans 'Real-time data reliability checks' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Market Holidays -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Market Holidays' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get upcoming and historical market holidays for all major exchanges.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/reference/market-holidays</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"exchange"</span>: <span class="text-green-400">"NYSE"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Presidents Day"</span>,
+    <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-02-19"</span>,
+    <span class="text-blue-400">"status"</span>: <span class="text-green-400">"closed"</span>
+  },
+  {
+    <span class="text-blue-400">"exchange"</span>: <span class="text-green-400">"NASDAQ"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Presidents Day"</span>,
+    <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-02-19"</span>,
+    <span class="text-blue-400">"status"</span>: <span class="text-green-400">"closed"</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Trading calendar planning' %}</li>
+                                    <li>{% trans 'Settlement and execution scheduling' %}</li>
+                                    <li>{% trans 'Data processing workflow management' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Market Data -->
+                <section id="market-data" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Market Data Endpoints' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Real-time Quotes -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Real-time Stock Quotes' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get real-time stock quotes with current price, volume, and market status.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/quotes/{symbol}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+  <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">150.25</span>,
+  <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">2.15</span>,
+  <span class="text-blue-400">"changePercent"</span>: <span class="text-yellow-400">1.45</span>,
+  <span class="text-blue-400">"dayHigh"</span>: <span class="text-yellow-400">152.10</span>,
+  <span class="text-blue-400">"dayLow"</span>: <span class="text-yellow-400">148.50</span>,
+  <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">45623410</span>,
+  <span class="text-blue-400">"avgVolume"</span>: <span class="text-yellow-400">52341200</span>,
+  <span class="text-blue-400">"marketCap"</span>: <span class="text-yellow-400">2456789012345</span>,
+  <span class="text-blue-400">"timestamp"</span>: <span class="text-green-400">"2024-01-15T16:00:00Z"</span>
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Live trading dashboards and portfolio tracking' %}</li>
+                                    <li>{% trans 'Real-time price alerts and notifications' %}</li>
+                                    <li>{% trans 'Market monitoring and analysis tools' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Batch Quotes -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Batch Stock Quotes' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get quotes for multiple stocks in a single request for efficiency.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/quotes/batch?symbols=AAPL,GOOGL,MSFT</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Parameters' %}</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-700">
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Parameter' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Type' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Description' %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">symbols</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Comma-separated list of symbols (max 100)' %}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+    <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">175.43</span>,
+    <span class="text-blue-400">"changesPercentage"</span>: <span class="text-yellow-400">0.94</span>,
+    <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">1.64</span>
+  },
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"GOOGL"</span>,
+    <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">142.56</span>,
+    <span class="text-blue-400">"changesPercentage"</span>: <span class="text-yellow-400">-0.23</span>,
+    <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">-0.33</span>
+  },
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"MSFT"</span>,
+    <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">384.52</span>,
+    <span class="text-blue-400">"changesPercentage"</span>: <span class="text-yellow-400">1.12</span>,
+    <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">4.26</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Portfolio monitoring with multiple assets' %}</li>
+                                    <li>{% trans 'Watchlist updates and tracking' %}</li>
+                                    <li>{% trans 'Efficient bulk data retrieval' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Historical Data -->
+                <section id="historical" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Historical Data Endpoints' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Historical Prices -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Historical Stock Prices' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get historical daily, weekly, or monthly stock prices with OHLCV data.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/historical/{symbol}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Parameters' %}</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-700">
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Parameter' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Type' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Description' %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">from</td>
+                                                <td class="py-2 text-gray-300">date</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Start date (YYYY-MM-DD)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">to</td>
+                                                <td class="py-2 text-gray-300">date</td>
+                                                <td class="py-2 text-gray-300">{% trans 'End date (YYYY-MM-DD)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">interval</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Daily, weekly, monthly' %}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+  <span class="text-blue-400">"historical"</span>: [
+    {
+      <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-01-15"</span>,
+      <span class="text-blue-400">"open"</span>: <span class="text-yellow-400">174.32</span>,
+      <span class="text-blue-400">"high"</span>: <span class="text-yellow-400">176.82</span>,
+      <span class="text-blue-400">"low"</span>: <span class="text-yellow-400">173.97</span>,
+      <span class="text-blue-400">"close"</span>: <span class="text-yellow-400">175.43</span>,
+      <span class="text-blue-400">"adjClose"</span>: <span class="text-yellow-400">175.43</span>,
+      <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">48562341</span>,
+      <span class="text-blue-400">"unadjustedVolume"</span>: <span class="text-yellow-400">48562341</span>,
+      <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">1.11</span>,
+      <span class="text-blue-400">"changePercent"</span>: <span class="text-yellow-400">0.637</span>,
+      <span class="text-blue-400">"vwap"</span>: <span class="text-yellow-400">175.12</span>,
+      <span class="text-blue-400">"label"</span>: <span class="text-green-400">"January 15, 24"</span>,
+      <span class="text-blue-400">"changeOverTime"</span>: <span class="text-yellow-400">0.00637</span>
+    },
+    {
+      <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-01-14"</span>,
+      <span class="text-blue-400">"open"</span>: <span class="text-yellow-400">173.75</span>,
+      <span class="text-blue-400">"high"</span>: <span class="text-yellow-400">175.25</span>,
+      <span class="text-blue-400">"low"</span>: <span class="text-yellow-400">172.89</span>,
+      <span class="text-blue-400">"close"</span>: <span class="text-yellow-400">174.32</span>,
+      <span class="text-blue-400">"adjClose"</span>: <span class="text-yellow-400">174.32</span>,
+      <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">52341234</span>,
+      <span class="text-blue-400">"unadjustedVolume"</span>: <span class="text-yellow-400">52341234</span>,
+      <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">0.57</span>,
+      <span class="text-blue-400">"changePercent"</span>: <span class="text-yellow-400">0.328</span>,
+      <span class="text-blue-400">"vwap"</span>: <span class="text-yellow-400">174.01</span>,
+      <span class="text-blue-400">"label"</span>: <span class="text-green-400">"January 14, 24"</span>,
+      <span class="text-blue-400">"changeOverTime"</span>: <span class="text-yellow-400">0.00328</span>
+    }
+  ]
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Backtesting trading strategies and algorithms' %}</li>
+                                    <li>{% trans 'Financial charting and technical analysis' %}</li>
+                                    <li>{% trans 'Historical performance research and reporting' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Intraday Data -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Intraday Data' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get minute-level intraday stock price data for detailed analysis.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/historical/{symbol}/intraday</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Parameters' %}</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-700">
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Parameter' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Type' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Description' %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">symbol</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Stock symbol (e.g., AAPL, GOOGL)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">interval</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Time interval (1min, 5min, 15min, 30min, 1hour)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">from</td>
+                                                <td class="py-2 text-gray-300">date</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Start date (YYYY-MM-DD)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">to</td>
+                                                <td class="py-2 text-gray-300">date</td>
+                                                <td class="py-2 text-gray-300">{% trans 'End date (YYYY-MM-DD)' %}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-01-15 09:30:00"</span>,
+    <span class="text-blue-400">"open"</span>: <span class="text-yellow-400">174.55</span>,
+    <span class="text-blue-400">"high"</span>: <span class="text-yellow-400">174.89</span>,
+    <span class="text-blue-400">"low"</span>: <span class="text-yellow-400">174.32</span>,
+    <span class="text-blue-400">"close"</span>: <span class="text-yellow-400">174.67</span>,
+    <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">1234567</span>
+  },
+  {
+    <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-01-15 09:31:00"</span>,
+    <span class="text-blue-400">"open"</span>: <span class="text-yellow-400">174.67</span>,
+    <span class="text-blue-400">"high"</span>: <span class="text-yellow-400">174.98</span>,
+    <span class="text-blue-400">"low"</span>: <span class="text-yellow-400">174.45</span>,
+    <span class="text-blue-400">"close"</span>: <span class="text-yellow-400">174.82</span>,
+    <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">987654</span>
+  },
+  {
+    <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-01-15 09:32:00"</span>,
+    <span class="text-blue-400">"open"</span>: <span class="text-yellow-400">174.82</span>,
+    <span class="text-blue-400">"high"</span>: <span class="text-yellow-400">175.15</span>,
+    <span class="text-blue-400">"low"</span>: <span class="text-yellow-400">174.69</span>,
+    <span class="text-blue-400">"close"</span>: <span class="text-yellow-400">175.01</span>,
+    <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">1456789</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'High-frequency trading and algorithmic strategies' %}</li>
+                                    <li>{% trans 'Real-time charting and technical analysis' %}</li>
+                                    <li>{% trans 'Minute-by-minute market monitoring' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Options Data -->
+                <section id="options" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Options Data Endpoints' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Options Chain -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Options Chain' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get complete options chain with Greeks, implied volatility, and open interest.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/options/chain/{symbol}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Parameters' %}</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-700">
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Parameter' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Type' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Description' %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">symbol</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Underlying stock symbol (e.g., AAPL, TSLA)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">expiration</td>
+                                                <td class="py-2 text-gray-300">date</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Options expiration date (optional)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">strike</td>
+                                                <td class="py-2 text-gray-300">number</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Strike price filter (optional)' %}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"underlying"</span>: {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+    <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">175.43</span>,
+    <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">1.64</span>,
+    <span class="text-blue-400">"changePercent"</span>: <span class="text-yellow-400">0.94</span>
+  },
+  <span class="text-blue-400">"options"</span>: [
+    {
+      <span class="text-blue-400">"contract"</span>: <span class="text-green-400">"AAPL240119C00175000"</span>,
+      <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+      <span class="text-blue-400">"type"</span>: <span class="text-green-400">"call"</span>,
+      <span class="text-blue-400">"strike"</span>: <span class="text-yellow-400">175.0</span>,
+      <span class="text-blue-400">"expiration"</span>: <span class="text-green-400">"2024-01-19"</span>,
+      <span class="text-blue-400">"bid"</span>: <span class="text-yellow-400">2.45</span>,
+      <span class="text-blue-400">"ask"</span>: <span class="text-yellow-400">2.55</span>,
+      <span class="text-blue-400">"last"</span>: <span class="text-yellow-400">2.50</span>,
+      <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">1234</span>,
+      <span class="text-blue-400">"openInterest"</span>: <span class="text-yellow-400">5678</span>,
+      <span class="text-blue-400">"impliedVolatility"</span>: <span class="text-yellow-400">0.25</span>,
+      <span class="text-blue-400">"delta"</span>: <span class="text-yellow-400">0.52</span>,
+      <span class="text-blue-400">"gamma"</span>: <span class="text-yellow-400">0.08</span>,
+      <span class="text-blue-400">"theta"</span>: <span class="text-yellow-400">-0.12</span>,
+      <span class="text-blue-400">"vega"</span>: <span class="text-yellow-400">0.18</span>,
+      <span class="text-blue-400">"rho"</span>: <span class="text-yellow-400">0.05</span>
+    },
+    {
+      <span class="text-blue-400">"contract"</span>: <span class="text-green-400">"AAPL240119P00175000"</span>,
+      <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+      <span class="text-blue-400">"type"</span>: <span class="text-green-400">"put"</span>,
+      <span class="text-blue-400">"strike"</span>: <span class="text-yellow-400">175.0</span>,
+      <span class="text-blue-400">"expiration"</span>: <span class="text-green-400">"2024-01-19"</span>,
+      <span class="text-blue-400">"bid"</span>: <span class="text-yellow-400">1.85</span>,
+      <span class="text-blue-400">"ask"</span>: <span class="text-yellow-400">1.95</span>,
+      <span class="text-blue-400">"last"</span>: <span class="text-yellow-400">1.90</span>,
+      <span class="text-blue-400">"volume"</span>: <span class="text-yellow-400">987</span>,
+      <span class="text-blue-400">"openInterest"</span>: <span class="text-yellow-400">3456</span>,
+      <span class="text-blue-400">"impliedVolatility"</span>: <span class="text-yellow-400">0.28</span>,
+      <span class="text-blue-400">"delta"</span>: <span class="text-yellow-400">-0.48</span>,
+      <span class="text-blue-400">"gamma"</span>: <span class="text-yellow-400">0.08</span>,
+      <span class="text-blue-400">"theta"</span>: <span class="text-yellow-400">-0.10</span>,
+      <span class="text-blue-400">"vega"</span>: <span class="text-yellow-400">0.18</span>,
+      <span class="text-blue-400">"rho"</span>: <span class="text-yellow-400">-0.04</span>
+    }
+  ]
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Options trading platforms and strategy builders' %}</li>
+                                    <li>{% trans 'Risk management and portfolio Greeks calculation' %}</li>
+                                    <li>{% trans 'Volatility analysis and options pricing models' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Futures Data -->
+                <section id="futures" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Futures Data Endpoints' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Futures Contracts -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Futures Contracts' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Access futures contracts data including commodities, indices, and currencies with real-time prices and specifications.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/futures/contracts</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Parameters' %}</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-700">
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Parameter' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Type' %}</th>
+                                                <th class="text-left py-2 text-gray-300">{% trans 'Description' %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">asset_class</td>
+                                                <td class="py-2 text-gray-300">string</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Filter by asset class (commodity, currency, index)' %}</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-700">
+                                                <td class="py-2 text-blue-400">limit</td>
+                                                <td class="py-2 text-gray-300">number</td>
+                                                <td class="py-2 text-gray-300">{% trans 'Number of results (default: 100, max: 1000)' %}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"count"</span>: <span class="text-yellow-400">3</span>,
+  <span class="text-blue-400">"results"</span>: [
+    {
+      <span class="text-blue-400">"ticker"</span>: <span class="text-green-400">"CL=F"</span>,
+      <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Crude Oil Futures"</span>,
+      <span class="text-blue-400">"market"</span>: <span class="text-green-400">"commodity"</span>,
+      <span class="text-blue-400">"locale"</span>: <span class="text-green-400">"us"</span>,
+      <span class="text-blue-400">"primary_exchange"</span>: <span class="text-green-400">"NYMEX"</span>,
+      <span class="text-blue-400">"currency_name"</span>: <span class="text-green-400">"USD"</span>,
+      <span class="text-blue-400">"underlying_ticker"</span>: <span class="text-green-400">"CL"</span>,
+      <span class="text-blue-400">"contract_type"</span>: <span class="text-green-400">"commodity"</span>,
+      <span class="text-blue-400">"delivery_month"</span>: <span class="text-green-400">"2024-02"</span>,
+      <span class="text-blue-400">"expiration_date"</span>: <span class="text-green-400">"2024-01-22"</span>,
+      <span class="text-blue-400">"additional_underlyings"</span>: null,
+      <span class="text-blue-400">"last_quote"</span>: {
+        <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">73.45</span>,
+        <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">0.85</span>,
+        <span class="text-blue-400">"change_percent"</span>: <span class="text-yellow-400">1.17</span>
+      }
+    },
+    {
+      <span class="text-blue-400">"ticker"</span>: <span class="text-green-400">"GC=F"</span>,
+      <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Gold Futures"</span>,
+      <span class="text-blue-400">"market"</span>: <span class="text-green-400">"commodity"</span>,
+      <span class="text-blue-400">"locale"</span>: <span class="text-green-400">"us"</span>,
+      <span class="text-blue-400">"primary_exchange"</span>: <span class="text-green-400">"COMEX"</span>,
+      <span class="text-blue-400">"currency_name"</span>: <span class="text-green-400">"USD"</span>,
+      <span class="text-blue-400">"underlying_ticker"</span>: <span class="text-green-400">"GC"</span>,
+      <span class="text-blue-400">"contract_type"</span>: <span class="text-green-400">"commodity"</span>,
+      <span class="text-blue-400">"delivery_month"</span>: <span class="text-green-400">"2024-02"</span>,
+      <span class="text-blue-400">"expiration_date"</span>: <span class="text-green-400">"2024-01-29"</span>,
+      <span class="text-blue-400">"additional_underlyings"</span>: null,
+      <span class="text-blue-400">"last_quote"</span>: {
+        <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">2032.10</span>,
+        <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">-8.40</span>,
+        <span class="text-blue-400">"change_percent"</span>: <span class="text-yellow-400">-0.41</span>
+      }
+    }
+  ]
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Commodity trading and risk management systems' %}</li>
+                                    <li>{% trans 'Futures market analysis and hedging strategies' %}</li>
+                                    <li>{% trans 'Agricultural and energy market monitoring' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Futures Historical Data -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Futures Historical Data' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get historical futures price data for backtesting and trend analysis.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/futures/{symbol}/historical</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Earnings Data -->
+                <section id="earnings" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Earnings Data Endpoints' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Earnings Calendar -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Earnings Calendar' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get upcoming earnings announcements, historical earnings data, and earnings surprises.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/earnings/calendar</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-gray-700 rounded p-4">
+                                    <h4 class="font-medium text-white mb-2">{% trans 'Earnings History' %}</h4>
+                                    <div class="bg-gray-900 rounded p-2 font-mono text-xs">
+                                        <span class="text-blue-400">/earnings/{symbol}/history</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-4">
+                                    <h4 class="font-medium text-white mb-2">{% trans 'Earnings Surprises' %}</h4>
+                                    <div class="bg-gray-900 rounded p-2 font-mono text-xs">
+                                        <span class="text-blue-400">/earnings/{symbol}/surprises</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Earnings-driven trading strategies and event calendars' %}</li>
+                                    <li>{% trans 'Financial analysis and earnings prediction models' %}</li>
+                                    <li>{% trans 'Investment research and earnings tracking dashboards' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Earnings Transcripts -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Earnings Call Transcripts' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Access earnings call transcripts with sentiment analysis and key insights extraction.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/earnings/{symbol}/transcripts</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEC Filings -->
+                <section id="sec-filings" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'SEC Filings Data' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- SEC Filings -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'SEC Filings & Reports' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Access complete SEC filings including 10-K, 10-Q, 8-K forms with structured data extraction.' %}</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="bg-gray-700 rounded p-4 text-center">
+                                    <div class="text-lg font-bold text-blue-400">10-K</div>
+                                    <div class="text-xs text-gray-300">{% trans 'Annual Reports' %}</div>
+                                    <div class="bg-gray-900 rounded p-1 mt-2 font-mono text-xs">
+                                        <span class="text-blue-400">/sec/{symbol}/10k</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-4 text-center">
+                                    <div class="text-lg font-bold text-green-400">10-Q</div>
+                                    <div class="text-xs text-gray-300">{% trans 'Quarterly Reports' %}</div>
+                                    <div class="bg-gray-900 rounded p-1 mt-2 font-mono text-xs">
+                                        <span class="text-blue-400">/sec/{symbol}/10q</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-4 text-center">
+                                    <div class="text-lg font-bold text-purple-400">8-K</div>
+                                    <div class="text-xs text-gray-300">{% trans 'Current Reports' %}</div>
+                                    <div class="bg-gray-900 rounded p-1 mt-2 font-mono text-xs">
+                                        <span class="text-blue-400">/sec/{symbol}/8k</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Due diligence and compliance monitoring systems' %}</li>
+                                    <li>{% trans 'Regulatory filing analysis and document processing' %}</li>
+                                    <li>{% trans 'Investment research and legal document review' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Institutional Data -->
+                <section id="institutional" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Institutional Data' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Institutional Holdings -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Institutional Holdings' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Track institutional ownership, 13F filings, and large fund positions with change analysis.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/institutional/{symbol}/holdings</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-gray-700 rounded p-4">
+                                    <h4 class="font-medium text-white mb-2">{% trans '13F Filings' %}</h4>
+                                    <div class="bg-gray-900 rounded p-2 font-mono text-xs">
+                                        <span class="text-blue-400">/institutional/{symbol}/13f</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-4">
+                                    <h4 class="font-medium text-white mb-2">{% trans 'Fund Holdings' %}</h4>
+                                    <div class="bg-gray-900 rounded p-2 font-mono text-xs">
+                                        <span class="text-blue-400">/institutional/funds/{cik}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Smart money tracking and institutional flow analysis' %}</li>
+                                    <li>{% trans 'Portfolio allocation and concentration risk assessment' %}</li>
+                                    <li>{% trans 'Investor relations and shareholder analysis tools' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Insider Trading -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Insider Trading Data' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Monitor insider transactions, ownership changes, and executive trading activity.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/insider/{symbol}/transactions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Forex Data -->
+                <section id="forex" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Forex & Currency Data' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Real-time Exchange Rates -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Real-time Exchange Rates' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get real-time foreign exchange rates for 150+ currency pairs including majors, minors, and exotics.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/forex/rates</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"EURUSD"</span>: {
+    <span class="text-blue-400">"bid"</span>: <span class="text-yellow-400">1.0852</span>,
+    <span class="text-blue-400">"ask"</span>: <span class="text-yellow-400">1.0854</span>,
+    <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">0.0012</span>,
+    <span class="text-blue-400">"changePercent"</span>: <span class="text-yellow-400">0.11</span>,
+    <span class="text-blue-400">"timestamp"</span>: <span class="text-green-400">"2024-01-15T16:00:00Z"</span>
+  }
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'FX trading platforms and currency conversion tools' %}</li>
+                                    <li>{% trans 'International e-commerce pricing and payment processing' %}</li>
+                                    <li>{% trans 'Portfolio hedging and risk management systems' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Historical Forex Data -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Historical Forex Data' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Access historical forex data for backtesting and analysis with daily, hourly, and minute intervals.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/forex/{pair}/historical</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cryptocurrency Data -->
+                <section id="crypto" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Cryptocurrency Data' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Crypto Prices -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Real-time Crypto Prices' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get real-time prices for 3000+ cryptocurrencies including Bitcoin, Ethereum, DeFi tokens, and NFT data.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/crypto/prices</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Cryptocurrency trading platforms and exchanges' %}</li>
+                                    <li>{% trans 'DeFi applications and yield farming tools' %}</li>
+                                    <li>{% trans 'Portfolio tracking and crypto analytics dashboards' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Fundamental Data -->
+                <section id="fundamentals" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Fundamental Data' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Financial Statements -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Financial Statements' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Access complete financial statements including income statement, balance sheet, and cash flow data.' %}</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-gray-700 rounded p-4">
+                                    <h4 class="font-medium text-white mb-2">{% trans 'Income Statement' %}</h4>
+                                    <div class="bg-gray-900 rounded p-2 font-mono text-xs">
+                                        <span class="text-blue-400">/fundamentals/{symbol}/income-statement</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-4">
+                                    <h4 class="font-medium text-white mb-2">{% trans 'Balance Sheet' %}</h4>
+                                    <div class="bg-gray-900 rounded p-2 font-mono text-xs">
+                                        <span class="text-blue-400">/fundamentals/{symbol}/balance-sheet</span>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-4">
+                                    <h4 class="font-medium text-white mb-2">{% trans 'Cash Flow' %}</h4>
+                                    <div class="bg-gray-900 rounded p-2 font-mono text-xs">
+                                        <span class="text-blue-400">/fundamentals/{symbol}/cash-flow</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Fundamental analysis and stock valuation models' %}</li>
+                                    <li>{% trans 'Financial research and investment screening tools' %}</li>
+                                    <li>{% trans 'Credit analysis and risk assessment systems' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Financial Ratios -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Financial Ratios & Metrics' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get calculated financial ratios including P/E, ROE, debt ratios, and growth metrics.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/fundamentals/{symbol}/ratios</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- News & Sentiment -->
+                <section id="news" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'News & Sentiment Data' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Financial News -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Financial News Feed' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Access real-time financial news from major sources with sentiment analysis and relevance scoring.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/news?symbol={symbol}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Response' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 font-mono text-sm overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"title"</span>: <span class="text-green-400">"Apple Reports Strong Q4 Earnings"</span>,
+    <span class="text-blue-400">"summary"</span>: <span class="text-green-400">"Apple Inc. exceeded expectations..."</span>,
+    <span class="text-blue-400">"url"</span>: <span class="text-green-400">"https://example.com/news"</span>,
+    <span class="text-blue-400">"sentiment"</span>: <span class="text-green-400">"positive"</span>,
+    <span class="text-blue-400">"score"</span>: <span class="text-yellow-400">0.75</span>,
+    <span class="text-blue-400">"publishedAt"</span>: <span class="text-green-400">"2024-01-15T14:30:00Z"</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'News-driven trading algorithms and sentiment analysis' %}</li>
+                                    <li>{% trans 'Investment research and market monitoring dashboards' %}</li>
+                                    <li>{% trans 'Social media and news aggregation platforms' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Sentiment Analysis -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Market Sentiment Analysis' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Get aggregated sentiment scores based on news, social media, and analyst opinions.' %}</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/news/sentiment/{symbol}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section id="technical" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Technical Analysis' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Technical Indicators -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">{% trans 'Technical Indicators' %}</h3>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">GET</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">{% trans 'Access 20+ technical indicators including moving averages, RSI, MACD, Bollinger Bands, and more.' %}</p>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                <div class="bg-gray-700 rounded p-3 text-center">
+                                    <div class="text-sm font-medium text-white">SMA</div>
+                                    <div class="text-xs text-gray-300">Simple Moving Average</div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-3 text-center">
+                                    <div class="text-sm font-medium text-white">EMA</div>
+                                    <div class="text-xs text-gray-300">Exponential Moving Average</div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-3 text-center">
+                                    <div class="text-sm font-medium text-white">RSI</div>
+                                    <div class="text-xs text-gray-300">Relative Strength Index</div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-3 text-center">
+                                    <div class="text-sm font-medium text-white">MACD</div>
+                                    <div class="text-xs text-gray-300">Moving Average Convergence</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Example Endpoint' %}</h4>
+                                <div class="bg-gray-900 rounded p-3 font-mono text-sm">
+                                    <span class="text-green-400">GET</span> <span class="text-blue-400">/api/v1/technical/{symbol}/rsi?period=14</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-2">{% trans 'Use Cases' %}</h4>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    <li>{% trans 'Algorithmic trading strategies and signal generation' %}</li>
+                                    <li>{% trans 'Technical analysis charting and visualization tools' %}</li>
+                                    <li>{% trans 'Trading bots and automated investment systems' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Economic Data -->
+                <section id="economic" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Economic Data' %}</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- GDP Data -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'GDP Data' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Retrieve Gross Domestic Product data for economic analysis.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/economy/gdp
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-300 mb-2">{% trans 'Response Example:' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 text-xs overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-Q1"</span>,
+    <span class="text-blue-400">"value"</span>: <span class="text-yellow-400">28.8</span>,
+    <span class="text-blue-400">"unit"</span>: <span class="text-green-400">"Trillion USD"</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Economic research, country analysis, and macroeconomic forecasting.' %}
+                            </div>
+                        </div>
+
+                        <!-- Treasury Rates -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Treasury Rates' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Get current US Treasury yield curve rates.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/economy/treasury-rates
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Fixed income analysis, bond trading, and interest rate modeling.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tick-level Data -->
+                <section id="ticks" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Tick-level Data' %} <span class="text-xs bg-purple-600 text-white px-2 py-1 rounded ml-2">Polygon.io</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Real-time Trades -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Real-time Trades' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Stream individual trade executions in real-time with microsecond precision.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/ticks/{symbol}/trades
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-300 mb-2">{% trans 'Response Example:' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 text-xs overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"results"</span>: [
+    {
+      <span class="text-blue-400">"participant_timestamp"</span>: <span class="text-yellow-400">1609459200000000000</span>,
+      <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">132.69</span>,
+      <span class="text-blue-400">"size"</span>: <span class="text-yellow-400">100</span>,
+      <span class="text-blue-400">"exchange"</span>: <span class="text-yellow-400">4</span>
+    }
+  ]
+}</pre>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Algorithmic trading, market microstructure analysis, execution quality measurement.' %}
+                            </div>
+                        </div>
+
+                        <!-- Real-time Quotes -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Real-time Quotes' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Get bid/ask quotes with Level 1 market data precision.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/ticks/{symbol}/quotes
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Spread analysis, market making strategies, real-time portfolio valuation.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Valuation Data -->
+                <section id="valuation" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Valuation Data' %} <span class="text-xs bg-green-600 text-white px-2 py-1 rounded ml-2">FMP</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- DCF Valuation -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'DCF Valuation' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Discounted Cash Flow valuation models and intrinsic value calculations.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/valuation/{symbol}/dcf
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-300 mb-2">{% trans 'Response Example:' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 text-xs overflow-x-auto">
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+  <span class="text-blue-400">"dcf"</span>: <span class="text-yellow-400">165.23</span>,
+  <span class="text-blue-400">"stock_price"</span>: <span class="text-yellow-400">150.25</span>,
+  <span class="text-blue-400">"date"</span>: <span class="text-green-400">"2024-01-15"</span>
+}</pre>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Investment analysis, value investing strategies, fair value assessment.' %}
+                            </div>
+                        </div>
+
+                        <!-- Enterprise Value -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Enterprise Value' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Enterprise value metrics including EV/EBITDA, EV/Sales ratios.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/valuation/{symbol}/enterprise-value
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'M&A analysis, company comparison, valuation multiples research.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analyst Data -->
+                <section id="analyst" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Analyst Data' %} <span class="text-xs bg-green-600 text-white px-2 py-1 rounded ml-2">FMP</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Price Targets -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Price Targets' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Wall Street analyst price targets and consensus estimates.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/analysts/{symbol}/price-targets
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-300 mb-2">{% trans 'Response Example:' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 text-xs overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"analystCompany"</span>: <span class="text-green-400">"Goldman Sachs"</span>,
+    <span class="text-blue-400">"priceTarget"</span>: <span class="text-yellow-400">175.00</span>,
+    <span class="text-blue-400">"priceWhenPosted"</span>: <span class="text-yellow-400">150.25</span>,
+    <span class="text-blue-400">"newsDate"</span>: <span class="text-green-400">"2024-01-15"</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Investment research, consensus analysis, sentiment tracking.' %}
+                            </div>
+                        </div>
+
+                        <!-- Estimates -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Earnings Estimates' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Analyst earnings estimates and revenue forecasts.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/analysts/{symbol}/estimates
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Earnings preview, surprise analysis, forecast modeling.' %}
+                            </div>
+                        </div>
+
+                        <!-- Upgrades/Downgrades -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Upgrades & Downgrades' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Analyst rating changes and recommendation updates.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/analysts/{symbol}/upgrades-downgrades
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Trading signals, sentiment analysis, rating consensus tracking.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Insider Trading -->
+                <section id="insider" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Insider Trading' %} <span class="text-xs bg-green-600 text-white px-2 py-1 rounded ml-2">FMP</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Insider Transactions -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Insider Transactions' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Executive and insider trading activities with transaction details.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/insider/{symbol}/transactions
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-300 mb-2">{% trans 'Response Example:' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 text-xs overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"filingDate"</span>: <span class="text-green-400">"2024-01-15"</span>,
+    <span class="text-blue-400">"reportingName"</span>: <span class="text-green-400">"John Doe"</span>,
+    <span class="text-blue-400">"transactionType"</span>: <span class="text-green-400">"P-Purchase"</span>,
+    <span class="text-blue-400">"securitiesTransacted"</span>: <span class="text-yellow-400">10000</span>,
+    <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">150.25</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Insider sentiment analysis, governance research, investment screening.' %}
+                            </div>
+                        </div>
+
+                        <!-- Insider Ownership -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Insider Ownership' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Insider ownership percentages and shareholdings.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/insider/{symbol}/ownership
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Corporate governance analysis, alignment assessment.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ETF & Mutual Funds -->
+                <section id="etf" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'ETF & Mutual Funds' %} <span class="text-xs bg-green-600 text-white px-2 py-1 rounded ml-2">FMP</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- ETF List -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'ETF List' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Complete list of available ETFs with basic information.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/etf/list
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'ETF discovery, universe construction, screening tools.' %}
+                            </div>
+                        </div>
+
+                        <!-- ETF Holdings -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'ETF Holdings' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Detailed ETF holdings with weights and allocation data.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/etf/{symbol}/holdings
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-300 mb-2">{% trans 'Response Example:' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 text-xs overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"AAPL"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Apple Inc."</span>,
+    <span class="text-blue-400">"weightPercentage"</span>: <span class="text-yellow-400">7.12</span>,
+    <span class="text-blue-400">"sharesNumber"</span>: <span class="text-yellow-400">915482</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Portfolio analysis, ETF research, factor exposure analysis.' %}
+                            </div>
+                        </div>
+
+                        <!-- Mutual Fund Holdings -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Mutual Fund Data' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Mutual fund holdings, performance, and fund information.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/funds/{symbol}/holdings
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Fund analysis, manager research, investment style assessment.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Commodities -->
+                <section id="commodities" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Commodities' %} <span class="text-xs bg-green-600 text-white px-2 py-1 rounded ml-2">FMP</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Metals -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Precious Metals' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Gold, silver, platinum, and palladium prices with real-time updates.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/commodities/metals
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Portfolio hedging, inflation protection, commodity trading.' %}
+                            </div>
+                        </div>
+
+                        <!-- Energy -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Energy Commodities' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Oil, natural gas, and energy commodity prices.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/commodities/energy
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Energy sector analysis, inflation forecasting, macro trading.' %}
+                            </div>
+                        </div>
+
+                        <!-- Agriculture -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Agricultural Commodities' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Wheat, corn, soybeans, and agricultural futures prices.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/commodities/agriculture
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Agricultural trading, food price analysis, weather impact assessment.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Indices -->
+                <section id="indices" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Market Indices' %} <span class="text-xs bg-green-600 text-white px-2 py-1 rounded ml-2">FMP</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Index List -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Index Quotes' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Real-time quotes for major market indices including S&P 500, NASDAQ, Dow Jones.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/indices/list
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-300 mb-2">{% trans 'Response Example:' %}</h4>
+                                <div class="bg-gray-900 rounded p-4 text-xs overflow-x-auto">
+<pre class="text-gray-300">[
+  {
+    <span class="text-blue-400">"symbol"</span>: <span class="text-green-400">"^GSPC"</span>,
+    <span class="text-blue-400">"name"</span>: <span class="text-green-400">"S&P 500"</span>,
+    <span class="text-blue-400">"price"</span>: <span class="text-yellow-400">4750.23</span>,
+    <span class="text-blue-400">"change"</span>: <span class="text-yellow-400">15.25</span>,
+    <span class="text-blue-400">"changePercent"</span>: <span class="text-yellow-400">0.32</span>
+  }
+]</pre>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Market overview, benchmark analysis, portfolio performance comparison.' %}
+                            </div>
+                        </div>
+
+                        <!-- Index Components -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Index Components' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Get constituent stocks and their weights in major indices.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/indices/{symbol}/components
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Index tracking, replication strategies, sector analysis.' %}
+                            </div>
+                        </div>
+
+                        <!-- Index Historical -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Index Historical Data' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Historical price data for market indices with custom date ranges.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/indices/{symbol}/historical
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Backtesting strategies, correlation analysis, market research.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bulk Data -->
+                <section id="bulk" class="mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-6">{% trans 'Bulk Data' %} <span class="text-xs bg-green-600 text-white px-2 py-1 rounded ml-2">FMP</span></h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Bulk EOD Prices -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Bulk End-of-Day Prices' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Download complete end-of-day price data for all stocks in bulk format.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/bulk/eod/{date}
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Data warehousing, systematic strategies, institutional research.' %}
+                            </div>
+                        </div>
+
+                        <!-- Bulk Fundamentals -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Bulk Fundamental Data' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Batch download of financial statements and fundamental metrics.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/bulk/fundamentals/{date}
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Fundamental analysis, screening tools, academic research.' %}
+                            </div>
+                        </div>
+
+                        <!-- Bulk Insider Trading -->
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4">{% trans 'Bulk Insider Trading' %} <span class="text-sm text-blue-400 ml-2">GET</span></h3>
+                            <div class="text-sm text-gray-400 mb-4">{% trans 'Complete insider trading database with all SEC filings.' %}</div>
+                            <div class="bg-gray-900 rounded p-4 font-mono text-sm mb-4">
+                                <span class="text-green-400">GET</span> /api/v1/bulk/insider-trading/{date}
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <strong>{% trans 'Use Case:' %}</strong> {% trans 'Governance research, insider sentiment analysis, regulatory compliance.' %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Highlight current section in navigation
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= (sectionTop - 200)) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('text-blue-400');
+        link.classList.add('text-gray-300');
+        if (link.getAttribute('href').substring(1) === current) {
+            link.classList.remove('text-gray-300');
+            link.classList.add('text-blue-400');
+        }
+    });
+});
+</script>
 {% endblock %} 

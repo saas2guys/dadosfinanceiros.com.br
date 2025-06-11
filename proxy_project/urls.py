@@ -12,6 +12,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from sitemaps import sitemaps
+from proxy_app.views import api_documentation
 
 def redirect_to_default_language(request):
     """Redirect root path to default language"""
@@ -23,6 +24,8 @@ urlpatterns = [
     path("set_language/", set_language, name="set_language"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('robots.txt', lambda r: HttpResponse("User-agent: *\nAllow: /\nSitemap: https://api.dadosfinanceiros.com.br/sitemap.xml", content_type="text/plain")),
+    # API Documentation - accessible without language prefix
+    path("api/docs/", api_documentation, name="api_docs_direct"),
 ]
 
 urlpatterns += i18n_patterns(

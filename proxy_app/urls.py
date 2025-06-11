@@ -6,6 +6,7 @@ from .views_new import FinancialAPIView, HealthView, EndpointsView
 app_name = "proxy_app"
 
 urlpatterns = [
+    # API Documentation - available at /api/docs/
     path("docs/", api_documentation, name="api_docs"),
     
     # Health check and documentation endpoints
