@@ -10,7 +10,7 @@ class DailyLimitPermission(BasePermission):
 
         today = timezone.now().date()
         if request.user.last_request_date != today:
-            request.user.reset_daily_requests()
+            request.user.reset_daily_requests_if_needed()
 
         can_request, message = request.user.can_make_request()
 

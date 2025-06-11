@@ -5,7 +5,7 @@ variable "do_token" {
 }
 
 variable "app_domain" {
-  description = "Your App Platform domain (e.g., dadosfinanceiros-com-br-vsxtw.ondigitalocean.app)"
+  description = "Your App Platform domain (e.g., financialdata-online-vsxtw.ondigitalocean.app)"
   type        = string
   default     = ""
 } 

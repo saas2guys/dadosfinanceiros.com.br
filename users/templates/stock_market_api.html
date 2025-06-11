@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Stock Market API 2025 - Real-Time Stock Prices, NYSE, NASDAQ Data for Trading Apps & Investment Platforms{% endblock %}
+{% block title %}{% trans 'Global Stock Market API - Real-time & Historical Data' %}{% endblock %}
 
-{% block meta_description %}Professional American stock market API for financial applications launching July 2025. Get real-time stock prices from American markets including NYSE, NASDAQ. API access only with JSON/CSV formats. Free tier available for developers, analysts, and financial institutions.{% endblock %}
+{% block meta_description %}Professional market data API as part of comprehensive financial data platform with 104+ endpoints across 22 categories. Real-time stock quotes, historical data, gainers/losers, market movers. 13 market data endpoints with free tier available. Launching July 2025.{% endblock %}
 
-{% block meta_keywords %}stock market API 2025, real-time stock prices API, NYSE API, NASDAQ API, live stock data, stock price feed, equity data API, trading API, algorithmic trading data, stock market data provider, financial data API for developers, day trading API, investment app API, portfolio tracking API, stock fundamentals API, earnings data API, dividend API, market cap API, OHLC stock data, after hours trading data, pre-market stock prices, stock split API, financial ratios API{% endblock %}
+{% block meta_keywords %}market data API 2025, real-time stock quotes API, historical stock data API, market movers API, gainers losers API, active stocks API, stock market feed, trading data API, comprehensive financial data API, 104 endpoints, 22 categories, market intelligence API, OHLC data API, stock prices API, financial market data, trading platform API, algorithmic trading data{% endblock %}
 
-{% block canonical_url %}https://api.dadosfinanceiros.com.br/stock-market-api/{% endblock %}
+{% block canonical_url %}https://api.financialdata.online/stock-market-api/{% endblock %}
 
 {% block og_title %}Stock Market API 2024 - Real-Time NYSE & NASDAQ Data{% endblock %}
 {% block og_description %}Upcoming professional stock market API for trading platforms. Real-time stock prices from global exchanges including NYSE, NASDAQ. Free tier available for developers building trading apps.{% endblock %}
@@ -29,7 +29,7 @@
   "name": "Stock Market Data API",
   "alternateName": ["Stock Price API", "Equity Data API", "NYSE API", "NASDAQ API"],
   "description": "Upcoming professional stock market API providing real-time stock prices, OHLC data, fundamentals, earnings, and comprehensive equity analytics for global stock exchanges including NYSE, NASDAQ, LSE, and international markets.",
-  "url": "https://api.dadosfinanceiros.com.br/stock-market-api/",
+  "url": "https://api.financialdata.online/stock-market-api/",
   "applicationCategory": "FinanceApplication",
   "applicationSubCategory": ["Stock Trading", "Investment Platform", "Portfolio Management", "Algorithmic Trading"],
   "datePublished": "2025-01-01",
@@ -64,9 +64,9 @@
     "Earnings calendars and analyst estimates",
     "RESTful JSON API with comprehensive documentation"
   ],
-  "softwareHelp": "https://api.dadosfinanceiros.com.br/docs/stock-market/",
-  "installUrl": "https://api.dadosfinanceiros.com.br/waiting-list/",
-  "screenshot": "https://api.dadosfinanceiros.com.br/static/stock-api-screenshot.png"
+  "softwareHelp": "https://api.financialdata.online/docs/stock-market/",
+  "installUrl": "https://api.financialdata.online/waiting-list/",
+  "screenshot": "https://api.financialdata.online/static/stock-api-screenshot.png"
 }
 </script>
 
@@ -122,13 +122,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://api.dadosfinanceiros.com.br/"
+      "item": "https://api.financialdata.online/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Stock Market API",
-      "item": "https://api.dadosfinanceiros.com.br/stock-market-api/"
+      "item": "https://api.financialdata.online/stock-market-api/"
     }
   ]
 }
@@ -142,39 +142,37 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-blue-900 border border-blue-700">
-                                                <span class="text-sm font-medium text-blue-300">🚀 American Stock Market API Launching July 2025 - Join Waiting List for Priority Access</span>
+                    <span class="text-sm font-medium text-blue-300">🚀 Market Data API - 13 Endpoints from 104+ Total Across 22 Categories - Launching July 2025</span>
                 </div>
                 
                 <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                    Professional American Stock Market API for Financial Applications
+                    {% trans 'Global Stock Market API' %}
                 </h1>
                 <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                    We're building a comprehensive American stock market API with real-time stock prices from NYSE, NASDAQ, and other US exchanges. 
-                    Pricing 25-60% cheaper than competitors with a generous free tier. 
-                    API access only with JSON and CSV formats. Launching July 2025. Perfect for developers, analysts, and financial institutions building financial applications, custom queries, trading bot training, and strategy backtesting.
+                    {% trans 'Professional stock market data API covering global exchanges. Real-time quotes, historical prices, and comprehensive market data for developers and analysts.' %}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{% url 'waiting_list' %}" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-200">
-                        Join Waiting List - Free Tier Available
+                        {% trans 'Join Waiting List' %}
                     </a>
                     <a href="#features" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                        Explore Planned Features
+                        {% trans 'Explore Planned Features' %}
                     </a>
                 </div>
                 
                 <!-- Trust indicators and key metrics -->
                 <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                     <div>
-                        <div class="text-2xl font-bold text-blue-400">American</div>
-                        <div class="text-sm text-gray-400">Stock Markets Focus</div>
+                        <div class="text-2xl font-bold text-blue-400">13</div>
+                        <div class="text-sm text-gray-400">Market Data Endpoints</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-blue-400">JSON/CSV</div>
-                        <div class="text-sm text-gray-400">API Access Only</div>
+                        <div class="text-2xl font-bold text-blue-400">104+</div>
+                        <div class="text-sm text-gray-400">Total API Endpoints</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-blue-400">25-60%</div>
-                        <div class="text-sm text-gray-400">Cheaper Than Competitors</div>
+                        <div class="text-2xl font-bold text-blue-400">22</div>
+                        <div class="text-sm text-gray-400">API Categories</div>
                     </div>
                     <div>
                         <div class="text-2xl font-bold text-blue-400">July 2025</div>
@@ -185,39 +183,30 @@
         </div>
     </div>
 
-    <!-- American Stock Exchanges Coverage Section -->
-    <div class="py-16 bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-white mb-4">Comprehensive American Stock Market Coverage</h2>
-                <p class="text-gray-400">Real-time stock market data from major American exchanges with API access only</p>
-            </div>
+    <!-- Global Stock Exchanges Coverage Section -->
+    <div class="bg-gradient-to-r from-blue-900 to-indigo-900 py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-white mb-4">{% trans 'Global Stock Market Coverage' %}</h2>
+            <p class="text-gray-400">{% trans 'Access stock market data from major exchanges around the world' %}</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-700 p-6 rounded-lg text-center">
-                    <div class="text-3xl mb-3">🏛️</div>
-                    <div class="text-xl font-bold text-blue-400">NYSE</div>
-                    <div class="text-sm text-gray-400">New York Stock Exchange</div>
-                    <div class="text-xs text-gray-500 mt-2">$25+ Trillion Market Cap</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-blue-300 mb-3"><i class="fas fa-building mr-2"></i>NYSE & NASDAQ</h3>
+                    <p class="text-gray-400 text-sm mb-3">{% trans 'Complete coverage of the world's largest stock exchanges' %}</p>
+                    <div class="text-xs text-gray-500 mt-2">{% trans 'Complete US Coverage' %}</div>
                 </div>
-                <div class="bg-gray-700 p-6 rounded-lg text-center">
-                    <div class="text-3xl mb-3">💻</div>
-                    <div class="text-xl font-bold text-blue-400">NASDAQ</div>
-                    <div class="text-sm text-gray-400">Technology Stocks</div>
-                    <div class="text-xs text-gray-500 mt-2">Apple, Microsoft, Tesla</div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-green-300 mb-3"><i class="fas fa-globe mr-2"></i>Global Exchanges</h3>
+                    <p class="text-gray-400 text-sm mb-3">{% trans 'London, Tokyo, Frankfurt, Toronto, and other major exchanges' %}</p>
+                    <div class="text-xs text-gray-500 mt-2">{% trans 'International Markets' %}</div>
                 </div>
-                <div class="bg-gray-700 p-6 rounded-lg text-center">
-                    <div class="text-3xl mb-3">🇺🇸</div>
-                    <div class="text-xl font-bold text-blue-400">Other US Exchanges</div>
-                    <div class="text-sm text-gray-400">Regional Markets</div>
-                    <div class="text-xs text-gray-500 mt-2">Complete American Coverage</div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-purple-300 mb-3"><i class="fas fa-chart-line mr-2"></i>Real-time Data</h3>
+                    <p class="text-gray-400 text-sm mb-3">
+                    {% trans 'Focused on global markets for high-quality, consistent data delivery via JSON and CSV formats' %}
+                    </p>
+                    <div class="text-xs text-gray-500 mt-2">{% trans '24/7 Coverage' %}</div>
                 </div>
-            </div>
-            
-            <div class="mt-8 text-center">
-                <p class="text-gray-400 text-sm">
-                    Focused on American markets for high-quality, consistent data delivery via JSON and CSV formats
-                </p>
             </div>
         </div>
     </div>
@@ -226,10 +215,9 @@
     <div id="features" class="py-20 bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-white mb-4">Competitive Stock Market API Features</h2>
+                <h2 class="text-4xl font-bold text-white mb-4">{% trans 'Professional API Features' %}</h2>
                 <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-                    Professional-grade REST API delivering real-time stock market data at 60% lower cost than premium providers.
-                    WebSocket streaming coming Q4 2025.
+                    {% trans 'Enterprise-grade stock market API built for developers' %}
                 </p>
             </div>
             
@@ -242,16 +230,16 @@
                                 <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-white">Real-time Stock Prices</h3>
+                        <h3 class="text-xl font-semibold text-white">{% trans 'Real-time Quotes' %}</h3>
                     </div>
                     <p class="text-gray-400 mb-4">
-                        Live stock prices with 50ms average response time via REST API. Real-time pricing from 40+ global exchanges during market hours.
+                        {% trans 'Live stock prices with 50ms average response time via REST API. Real-time pricing from 40+ global exchanges during market hours.' %}
                     </p>
                     <ul class="text-sm text-gray-500 space-y-1">
-                        <li>• Current price, daily high/low</li>
-                        <li>• Volume and market cap data</li>
-                        <li>• Pre/after-market pricing</li>
-                        <li>• 15-minute delayed for free tier</li>
+                        <li>• {% trans 'Current price, daily high/low' %}</li>
+                        <li>• {% trans 'Volume and market cap data' %}</li>
+                        <li>• {% trans 'Pre/after-market pricing' %}</li>
+                        <li>• {% trans '15-minute delayed for free tier' %}</li>
                     </ul>
                 </div>
 
@@ -263,16 +251,16 @@
                                 <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-white">Historical OHLC Data</h3>
+                        <h3 class="text-xl font-semibold text-white">{% trans 'Historical Prices' %}</h3>
                     </div>
                     <p class="text-gray-400 mb-4">
-                        Complete historical stock data going back 20+ years for backtesting and analysis. Multiple time intervals supported.
+                        {% trans 'Complete historical stock data going back 20+ years for backtesting and analysis. Multiple time intervals supported.' %}
                     </p>
                     <ul class="text-sm text-gray-500 space-y-1">
-                        <li>• 1min, 5min, 15min, 1hour, daily</li>
-                        <li>• Adjusted for splits and dividends</li>
-                        <li>• CSV and JSON export formats</li>
-                        <li>• Bulk download capabilities</li>
+                        <li>• {% trans '1min, 5min, 15min, 1hour, daily' %}</li>
+                        <li>• {% trans 'Adjusted for splits and dividends' %}</li>
+                        <li>• {% trans 'CSV and JSON export formats' %}</li>
+                        <li>• {% trans 'Bulk download capabilities' %}</li>
                     </ul>
                 </div>
 
@@ -284,16 +272,16 @@
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-white">Company Fundamentals</h3>
+                        <h3 class="text-xl font-semibold text-white">{% trans 'Company Data' %}</h3>
                     </div>
                     <p class="text-gray-400 mb-4">
-                        Essential company data including financials, ratios, and key metrics for investment analysis and screening.
+                        {% trans 'Essential company data including financials, ratios, and key metrics for investment analysis and screening.' %}
                     </p>
                     <ul class="text-sm text-gray-500 space-y-1">
-                        <li>• Market cap, P/E ratio, EPS</li>
-                        <li>• Revenue and profit margins</li>
-                        <li>• Dividend yield and payout ratio</li>
-                        <li>• Quarterly earnings updates</li>
+                        <li>• {% trans 'Market cap, P/E ratio, EPS' %}</li>
+                        <li>• {% trans 'Revenue and profit margins' %}</li>
+                        <li>• {% trans 'Dividend yield and payout ratio' %}</li>
+                        <li>• {% trans 'Quarterly earnings updates' %}</li>
                     </ul>
                 </div>
 
@@ -305,16 +293,16 @@
                                 <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-white">Technical Analysis</h3>
+                        <h3 class="text-xl font-semibold text-white">{% trans 'Technical Analysis' %}</h3>
                     </div>
                     <p class="text-gray-400 mb-4">
-                        Pre-calculated technical indicators to save computation time and accelerate trading algorithm development.
+                        {% trans 'Pre-calculated technical indicators to save computation time and accelerate trading algorithm development.' %}
                     </p>
                     <ul class="text-sm text-gray-500 space-y-1">
-                        <li>• Moving averages (SMA, EMA)</li>
-                        <li>• RSI, MACD, Bollinger Bands</li>
-                        <li>• Support/resistance levels</li>
-                        <li>• Custom indicator parameters</li>
+                        <li>• {% trans 'Moving averages (SMA, EMA)' %}</li>
+                        <li>• {% trans 'RSI, MACD, Bollinger Bands' %}</li>
+                        <li>• {% trans 'Support/resistance levels' %}</li>
+                        <li>• {% trans 'Custom indicator parameters' %}</li>
                     </ul>
                 </div>
 
@@ -326,38 +314,16 @@
                                 <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-white">High Performance REST API</h3>
+                        <h3 class="text-xl font-semibold text-white">{% trans 'Market Events' %}</h3>
                     </div>
                     <p class="text-gray-400 mb-4">
-                        Fast and reliable REST API with global CDN. WebSocket streaming for real-time feeds coming Q4 2025.
+                        {% trans 'Financial news, earnings announcements, and market-moving events with sentiment analysis and impact scoring.' %}
                     </p>
                     <ul class="text-sm text-gray-500 space-y-1">
-                        <li>• 50ms average response time</li>
-                        <li>• 99.5% uptime SLA</li>
-                        <li>• Global edge locations</li>
-                        <li>• Rate limiting: 100 calls/min</li>
-                    </ul>
-                </div>
-
-                <!-- Market News -->
-                <div class="bg-gray-800 p-8 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors duration-200">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-blue-600 p-3 rounded-lg mr-4">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd"/>
-                                <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z"/>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-white">Market News & Events</h3>
-                    </div>
-                    <p class="text-gray-400 mb-4">
-                        Financial news, earnings announcements, and market-moving events with sentiment analysis and impact scoring.
-                    </p>
-                    <ul class="text-sm text-gray-500 space-y-1">
-                        <li>• Real-time financial news feed</li>
-                        <li>• Earnings calendar and results</li>
-                        <li>• Corporate actions and splits</li>
-                        <li>• News sentiment scoring</li>
+                        <li>• {% trans 'Real-time financial news feed' %}</li>
+                        <li>• {% trans 'Earnings calendar and results' %}</li>
+                        <li>• {% trans 'Corporate actions and splits' %}</li>
+                        <li>• {% trans 'News sentiment scoring' %}</li>
                     </ul>
                 </div>
             </div>
@@ -367,66 +333,62 @@
     <!-- Use Cases Section with enhanced SEO content -->
     <div class="py-20 bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-white text-center mb-16">Perfect for Every Type of Stock Market Application</h2>
+            <h2 class="text-4xl font-bold text-white text-center mb-16">{% trans 'Perfect for Your Use Case' %}</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div>
                     <h3 class="text-2xl font-semibold text-white mb-4">⚡ High-Frequency & Algorithmic Trading</h3>
                     <p class="text-gray-400 mb-4">
-                        Build professional algorithmic trading systems with ultra-low latency stock market data. 
-                        Perfect for quantitative trading strategies, statistical arbitrage, and market making algorithms.
+                        {% trans 'Build professional algorithmic trading systems with ultra-low latency stock market data. Perfect for quantitative trading strategies, statistical arbitrage, and market making algorithms.' %}
                     </p>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• Sub-50ms API response times for HFT</li>
-                        <li>• Level 2 market data for order book analysis</li>
-                        <li>• Real-time tick data and microsecond timestamps</li>
-                        <li>• Historical data for strategy backtesting</li>
-                        <li>• WebSocket feeds for continuous data streaming</li>
+                        <li>• {% trans 'Sub-50ms API response times for HFT' %}</li>
+                        <li>• {% trans 'Level 2 market data for order book analysis' %}</li>
+                        <li>• {% trans 'Real-time tick data and microsecond timestamps' %}</li>
+                        <li>• {% trans 'Historical data for strategy backtesting' %}</li>
+                        <li>• {% trans 'WebSocket feeds for continuous data streaming' %}</li>
                     </ul>
                 </div>
                 
                 <div>
                     <h3 class="text-2xl font-semibold text-white mb-4">🛠️ Financial Applications & Custom Queries</h3>
                     <p class="text-gray-400 mb-4">
-                        Build sophisticated financial applications with real-time stock prices, technical indicators, 
-                        and market analytics. Perfect for developers creating custom financial solutions.
+                        {% trans 'Build sophisticated financial applications with real-time stock prices, technical indicators, and market analytics. Perfect for developers creating custom financial solutions.' %}
                     </p>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• Real-time stock quotes and price alerts</li>
-                        <li>• Technical analysis indicators and charts</li>
-                        <li>• Stock screeners and market scanners</li>
-                        <li>• Custom queries and data analysis</li>
-                        <li>• After-hours and pre-market data access</li>
+                        <li>• {% trans 'Real-time stock quotes and price alerts' %}</li>
+                        <li>• {% trans 'Technical analysis indicators and charts' %}</li>
+                        <li>• {% trans 'Stock screeners and market scanners' %}</li>
+                        <li>• {% trans 'Custom queries and data analysis' %}</li>
+                        <li>• {% trans 'After-hours and pre-market data access' %}</li>
                     </ul>
                 </div>
                 
                 <div>
                     <h3 class="text-2xl font-semibold text-white mb-4">🤖 Trading Bot Training & Strategy Backtesting</h3>
                     <p class="text-gray-400 mb-4">
-                        Develop and train sophisticated trading algorithms with comprehensive historical data and 
-                        real-time feeds. Essential for strategy backtesting and algorithmic trading development.
+                        {% trans 'Develop and train sophisticated trading algorithms with comprehensive historical data and real-time feeds. Essential for strategy backtesting and algorithmic trading development.' %}
                     </p>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• Historical OHLC data for backtesting</li>
-                        <li>• Machine learning training datasets</li>
-                        <li>• Strategy performance analysis</li>
-                        <li>• Real-time data for live trading bots</li>
-                        <li>• Risk metrics and portfolio optimization</li>
+                        <li>• {% trans 'Historical OHLC data for backtesting' %}</li>
+                        <li>• {% trans 'Machine learning training datasets' %}</li>
+                        <li>• {% trans 'Strategy performance analysis' %}</li>
+                        <li>• {% trans 'Real-time data for live trading bots' %}</li>
+                        <li>• {% trans 'Risk metrics and portfolio optimization' %}</li>
                     </ul>
                 </div>
                 
                 <div>
                     <h3 class="text-2xl font-semibold text-white mb-4">📈 Investment Research & Analytics</h3>
                     <p class="text-gray-400 mb-4">
-                        Power sophisticated investment research platforms with fundamental data, earnings analysis, 
-                        and market intelligence. Essential for institutional research and financial advisory tools.
+                        {% trans 'Power sophisticated investment research platforms with fundamental data, earnings analysis, and market intelligence. Essential for institutional research and financial advisory tools.' %}
                     </p>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• Company fundamentals and financial statements</li>
-                        <li>• Earnings estimates and analyst consensus</li>
-                        <li>• Sector analysis and peer comparisons</li>
-                        <li>• ESG ratings and sustainability metrics</li>
-                        <li>• Custom research reports and alerts</li>
+                        <li>• {% trans 'Company fundamentals and financial statements' %}</li>
+                        <li>• {% trans 'Earnings estimates and analyst consensus' %}</li>
+                        <li>• {% trans 'Sector analysis and peer comparisons' %}</li>
+                        <li>• {% trans 'ESG ratings and sustainability metrics' %}</li>
+                        <li>• {% trans 'Custom research reports and alerts' %}</li>
                     </ul>
                 </div>
             </div>
@@ -436,42 +398,42 @@
     <!-- Technical Specifications for SEO -->
     <div class="py-20 bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-white text-center mb-16">Technical Specifications & Integration Details</h2>
+            <h2 class="text-4xl font-bold text-white text-center mb-16">{% trans 'Technical Specifications & Integration Details' %}</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-gray-800 p-6 rounded-lg">
                     <h3 class="text-xl font-semibold text-white mb-4">🚀 Performance & Reliability</h3>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• < 50ms average API response time</li>
-                        <li>• 99.99% uptime SLA with automatic failover</li>
-                        <li>• Global CDN with edge caching</li>
-                        <li>• Rate limiting: up to 1000 requests/minute</li>
-                        <li>• Real-time WebSocket connections</li>
-                        <li>• Redundant data centers worldwide</li>
+                        <li>• {% trans '< 50ms average API response time' %}</li>
+                        <li>• {% trans '99.99% uptime SLA with automatic failover' %}</li>
+                        <li>• {% trans 'Global CDN with edge caching' %}</li>
+                        <li>• {% trans 'Rate limiting: up to 1000 requests/minute' %}</li>
+                        <li>• {% trans 'Real-time WebSocket connections' %}</li>
+                        <li>• {% trans 'Redundant data centers worldwide' %}</li>
                     </ul>
                 </div>
                 
                 <div class="bg-gray-800 p-6 rounded-lg">
                     <h3 class="text-xl font-semibold text-white mb-4">🔧 API Integration & SDKs</h3>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• RESTful JSON API with OpenAPI specs</li>
-                        <li>• Official SDKs for Python, JavaScript, Java</li>
-                        <li>• JWT authentication and API key security</li>
-                        <li>• Comprehensive API documentation</li>
-                        <li>• Code examples and integration tutorials</li>
-                        <li>• Postman collections and testing tools</li>
+                        <li>• {% trans 'RESTful JSON API with OpenAPI specs' %}</li>
+                        <li>• {% trans 'Official SDKs for Python, JavaScript, Java' %}</li>
+                        <li>• {% trans 'JWT authentication and API key security' %}</li>
+                        <li>• {% trans 'Comprehensive API documentation' %}</li>
+                        <li>• {% trans 'Code examples and integration tutorials' %}</li>
+                        <li>• {% trans 'Postman collections and testing tools' %}</li>
                     </ul>
                 </div>
                 
                 <div class="bg-gray-800 p-6 rounded-lg">
                     <h3 class="text-xl font-semibold text-white mb-4">💾 Data Coverage & History</h3>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• 50+ global stock exchanges</li>
-                        <li>• 20+ years of historical data</li>
-                        <li>• Real-time updates every 1 second</li>
-                        <li>• Support for 10,000+ stock symbols</li>
-                        <li>• Multiple data formats and time zones</li>
-                        <li>• Corporate actions and adjustments</li>
+                        <li>• {% trans '50+ global stock exchanges' %}</li>
+                        <li>• {% trans '20+ years of historical data' %}</li>
+                        <li>• {% trans 'Real-time updates every 1 second' %}</li>
+                        <li>• {% trans 'Support for 10,000+ stock symbols' %}</li>
+                        <li>• {% trans 'Multiple data formats and time zones' %}</li>
+                        <li>• {% trans 'Corporate actions and adjustments' %}</li>
                     </ul>
                 </div>
             </div>
@@ -482,10 +444,9 @@
     <div class="py-20 bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-white mb-4">Simple, Competitive Pricing</h2>
+                <h2 class="text-4xl font-bold text-white mb-4">{% trans 'Simple, Competitive Pricing' %}</h2>
                 <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-                    Professional-grade stock market data at 60% lower cost than premium providers. 
-                    All plans include REST API access with competitive rate limits.
+                    {% trans 'Professional-grade stock market data at 60% lower cost than premium providers. All plans include REST API access with competitive rate limits.' %}
                 </p>
             </div>
             
@@ -493,9 +454,9 @@
                 <!-- Free Tier -->
                 <div class="bg-gray-700 rounded-lg p-8 border border-gray-600">
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold text-white mb-2">Free Tier</h3>
+                        <h3 class="text-2xl font-bold text-white mb-2">{% trans 'Free Tier' %}</h3>
                         <div class="text-4xl font-bold text-blue-400 mb-2">$0</div>
-                        <div class="text-gray-400 mb-6">Perfect for learning and prototyping</div>
+                        <div class="text-gray-400 mb-6">{% trans 'Perfect for learning and prototyping' %}</div>
                         
                         <ul class="text-left space-y-3 mb-8">
                             <li class="flex items-center text-gray-300">
@@ -537,7 +498,7 @@
                         </ul>
                         
                         <a href="{% url 'waiting_list' %}" class="w-full bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition duration-200 block text-center">
-                            Join Waiting List
+                            {% trans 'Join Waiting List' %}
                         </a>
                     </div>
                 </div>
@@ -545,13 +506,13 @@
                 <!-- Professional Plan -->
                 <div class="bg-blue-900 rounded-lg p-8 border-2 border-blue-600 relative">
                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">Most Popular</span>
+                        <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">{% trans 'Most Popular' %}</span>
                     </div>
                     
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold text-white mb-2">Professional</h3>
+                        <h3 class="text-2xl font-bold text-white mb-2">{% trans 'Professional' %}</h3>
                         <div class="text-4xl font-bold text-blue-400 mb-2">$49</div>
-                        <div class="text-gray-300 mb-6">per month</div>
+                        <div class="text-gray-300 mb-6">{% trans 'per month' %}</div>
                         
                         <ul class="text-left space-y-3 mb-8">
                             <li class="flex items-center text-gray-300">
@@ -599,7 +560,7 @@
                         </ul>
                         
                         <a href="{% url 'waiting_list' %}" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 block text-center">
-                            Join Waiting List
+                            {% trans 'Join Waiting List' %}
                         </a>
                     </div>
                 </div>
@@ -607,9 +568,9 @@
                 <!-- Enterprise Plan -->
                 <div class="bg-gray-700 rounded-lg p-8 border border-gray-600">
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
+                        <h3 class="text-2xl font-bold text-white mb-2">{% trans 'Enterprise' %}</h3>
                         <div class="text-4xl font-bold text-blue-400 mb-2">$299</div>
-                        <div class="text-gray-400 mb-6">per month</div>
+                        <div class="text-gray-400 mb-6">{% trans 'per month' %}</div>
                         
                         <ul class="text-left space-y-3 mb-8">
                             <li class="flex items-center text-gray-300">
@@ -657,7 +618,7 @@
                         </ul>
                         
                         <a href="{% url 'waiting_list' %}" class="w-full bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition duration-200 block text-center">
-                            Contact for Enterprise
+                            {% trans 'Contact for Enterprise' %}
                         </a>
                     </div>
                 </div>
@@ -665,11 +626,10 @@
             
             <div class="mt-12 text-center">
                 <p class="text-gray-400 text-sm mb-4">
-                    All plans include documentation, community support, and access to our REST API. 
-                    WebSocket streaming capabilities will be available starting Q4 2025.
+                    {% trans 'All plans include documentation, community support, and access to our REST API. WebSocket streaming capabilities will be available starting Q4 2025.' %}
                 </p>
                 <p class="text-blue-400 font-semibold">
-                    💰 Save 60% compared to premium providers - Professional plan costs just $49/month vs $199+ elsewhere
+                    💰 {% trans 'Save 60% compared to premium providers - Professional plan costs just $49/month vs $199+' %}
                 </p>
             </div>
         </div>
@@ -678,21 +638,20 @@
     <!-- CTA Section -->
     <div class="py-20 bg-blue-900">
         <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-white mb-6">Ready to Build Your Stock Trading Application?</h2>
+            <h2 class="text-4xl font-bold text-white mb-6">{% trans 'Ready to Access Global Stock Market Data?' %}</h2>
             <p class="text-xl text-blue-200 mb-8">
-                Join our waiting list to be among the first to access our comprehensive stock market API when we launch. 
-                Get started with our planned free tier - 1000 API calls per day, no credit card required.
+                {% trans 'Join our waiting list to be notified when our professional stock market API becomes available' %}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{% url 'waiting_list' %}" class="bg-white text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-200">
-                    Join Waiting List Today
+                    {% trans 'Join Waiting List Today' %}
                 </a>
-                <a href="{% url 'api_comparison' %}" class="border border-blue-300 text-blue-200 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-800 transition duration-200">
-                    Compare with Alternatives
+                <a href="{% url 'faq' %}" class="border border-blue-300 text-blue-200 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-800 transition duration-200">
+                    {% trans 'Learn More' %}
                 </a>
             </div>
             <p class="text-sm text-blue-300 mt-6">
-                ✓ No setup fees ✓ Free tier planned ✓ Developer documentation ✓ Email support available
+                ✓ {% trans 'No setup fees' %} ✓ {% trans 'Free tier planned' %} ✓ {% trans 'Developer documentation' %} ✓ {% trans 'Email support available' %}
             </p>
         </div>
     </div>

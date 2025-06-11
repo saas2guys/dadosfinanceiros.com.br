@@ -1,4 +1,4 @@
-# Production Deployment Guide for dadosfinanceiros.com.br
+# Production Deployment Guide for financialdata.online
 
 This guide provides step-by-step instructions for deploying your Django application to production with proper CSRF token support and security configurations.
 
@@ -7,7 +7,7 @@ This guide provides step-by-step instructions for deploying your Django applicat
 ### 1. Domain Configuration
 - **Fixed**: `ALLOWED_HOSTS` now properly configured for your domain
 - **Fixed**: `CSRF_TRUSTED_ORIGINS` configured for HTTPS domains
-- **Fixed**: `CSRF_COOKIE_DOMAIN` set to `.dadosfinanceiros.com.br`
+- **Fixed**: `CSRF_COOKIE_DOMAIN` set to `.financialdata.online`
 
 ### 2. Security Settings
 The following security settings have been configured for production:
@@ -31,9 +31,9 @@ CORS settings have been updated to work properly with your domain:
 
 ```python
 CORS_ALLOWED_ORIGINS = [
-    'https://dadosfinanceiros.com.br',
-    'https://www.dadosfinanceiros.com.br',
-    'https://api.dadosfinanceiros.com.br',
+    'https://financialdata.online',
+    'https://www.financialdata.online',
+    'https://api.financialdata.online',
 ]
 ```
 
@@ -53,7 +53,7 @@ CORS_ALLOWED_ORIGINS = [
    export DEBUG=False
    export ENV=production
    export SECRET_KEY="your-super-secret-production-key-here"
-   export DATABASE_URL="postgresql://username:password@localhost:5432/dadosfinanceiros"
+   export DATABASE_URL="postgresql://username:password@localhost:5432/financialdata"
    export REDIS_URL="redis://localhost:6379"
    ```
 
@@ -99,13 +99,13 @@ python manage.py createsuperuser
 
 ```bash
 # Copy the sample nginx configuration
-sudo cp nginx.conf.sample /etc/nginx/sites-available/dadosfinanceiros.com.br
+sudo cp nginx.conf.sample /etc/nginx/sites-available/financialdata.online
 
 # Update the configuration with your actual paths
-sudo nano /etc/nginx/sites-available/dadosfinanceiros.com.br
+sudo nano /etc/nginx/sites-available/financialdata.online
 
 # Enable the site
-sudo ln -s /etc/nginx/sites-available/dadosfinanceiros.com.br /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/financialdata.online /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
@@ -119,7 +119,7 @@ Using Certbot (Let's Encrypt):
 sudo apt install certbot python3-certbot-nginx
 
 # Obtain SSL certificate
-sudo certbot --nginx -d dadosfinanceiros.com.br -d www.dadosfinanceiros.com.br
+sudo certbot --nginx -d financialdata.online -d www.financialdata.online
 
 # Test auto-renewal
 sudo certbot renew --dry-run
@@ -127,7 +127,7 @@ sudo certbot renew --dry-run
 
 ### 6. Create Systemd Service
 
-Create `/etc/systemd/system/dadosfinanceiros.service`:
+Create `/etc/systemd/system/financialdata.service`:
 
 ```ini
 [Unit]
@@ -163,8 +163,8 @@ sudo systemctl status dadosfinanceiros
 ### 1. Test Frontend Forms
 
 Visit your site and test the following:
-- User registration: `https://dadosfinanceiros.com.br/register/`
-- User login: `https://dadosfinanceiros.com.br/login/`
+- User registration: `https://financialdata.online/register/`
+- User login: `https://financialdata.online/login/`
 - Language selector in navigation
 - Token regeneration in user profile
 
@@ -172,7 +172,7 @@ Visit your site and test the following:
 
 ```bash
 # Test that CSRF is working for API endpoints that require it
-curl -X POST https://dadosfinanceiros.com.br/api/register/ \
+curl -X POST https://financialdata.online/api/register/ \
      -H "Content-Type: application/json" \
      -H "X-CSRFToken: your-csrf-token" \
      -d '{"email": "test@example.com", "password": "testpass123"}'
@@ -235,8 +235,8 @@ LOGGING = {
 ## Monitoring
 
 Monitor these endpoints:
-- `https://dadosfinanceiros.com.br/health/` - Application health
-- `https://dadosfinanceiros.com.br/admin/` - Django admin (ensure login works)
+- `https://financialdata.online/health/` - Application health
+- `https://financialdata.online/admin/` - Django admin (ensure login works)
 - API endpoints with proper token authentication
 
 ## Support

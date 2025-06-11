@@ -1,10 +1,32 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Profile - Financial Data API{% endblock %}
+{% block title %}User Profile - Comprehensive Financial Data API 2025{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
+<div class="max-w-6xl mx-auto">
+    <!-- API Launch Notice -->
+    <div class="bg-blue-900 border border-blue-700 rounded-lg p-6 mb-8 text-center">
+        <div class="flex items-center justify-center mb-4">
+            <svg class="h-6 w-6 text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-lg font-semibold text-blue-300">🚀 Comprehensive Financial Data API - Launching July 2025</span>
+        </div>
+        <p class="text-blue-300 mb-4">
+            You're registered for early access to our comprehensive financial data API with 104+ endpoints across 22 categories. 
+            Your account will be automatically activated when we launch in July 2025.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'home' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
+                Explore All 22 API Categories
+            </a>
+            <a href="{% url 'proxy_app:api_docs' %}" class="border border-blue-400 text-blue-300 px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition duration-200">
+                View Complete Documentation
+            </a>
+        </div>
+    </div>
+
     <!-- Profile Information Section -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <div class="flex justify-between items-center mb-6">

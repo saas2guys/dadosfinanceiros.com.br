@@ -1,5 +1,7 @@
+import uuid
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
+from django.core.exceptions import ValidationError
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
@@ -46,10 +48,18 @@ class RequestTokenAuthentication(BaseAuthentication):
         if not token:
             return None
 
+        # Validate token format first
+        try:
+            uuid.UUID(token)
+        except (ValueError, TypeError):
+            raise AuthenticationFailed("Invalid token format")
+
         try:
             user = User.objects.get(request_token=token)
         except User.DoesNotExist:
             raise AuthenticationFailed("Invalid token")
+        except ValidationError:
+            raise AuthenticationFailed("Invalid token format")
 
         if user.is_token_expired():
             raise AuthenticationFailed("Token has expired")

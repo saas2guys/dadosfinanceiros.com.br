@@ -31,7 +31,6 @@ class PolygonProxyTestCaseBase(APITestCase):
         # Create a plan first
         self.plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=1000,
             price_monthly=Decimal("9.99"),
         )
@@ -139,7 +138,7 @@ class PolygonStocksApiComprehensiveTest(PolygonProxyTestCaseBase):
 
         # Check URL replacement
         expected_next_url = (
-            "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=next123"
+            "https://api.financialdata.online/v1/reference/tickers?cursor=next123"
         )
         self.assertEqual(response.data["next_url"], expected_next_url)
 
@@ -476,8 +475,8 @@ class PolygonUrlTransformationComprehensiveTest(PolygonProxyTestCaseBase):
 
         result = self.view._replace_polygon_urls(test_data, request)
 
-        expected_next = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=asc&page_marker=ABC123&sort=ticker"
-        expected_prev = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=desc&page_marker=XYZ789&sort=ticker"
+        expected_next = "https://api.financialdata.online/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=asc&page_marker=ABC123&sort=ticker"
+        expected_prev = "https://api.financialdata.online/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=desc&page_marker=XYZ789&sort=ticker"
 
         self.assertEqual(result["next_url"], expected_next)
         self.assertEqual(result["previous_url"], expected_prev)
@@ -505,7 +504,7 @@ class PolygonUrlTransformationComprehensiveTest(PolygonProxyTestCaseBase):
 
         # Only pagination URLs should be replaced, not nested URLs in data
         expected_next_url = (
-            "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=next"
+            "https://api.financialdata.online/v1/reference/tickers?cursor=next"
         )
 
         # Nested URLs should NOT be replaced by this method

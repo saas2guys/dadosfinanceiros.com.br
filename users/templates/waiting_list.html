@@ -1,177 +1,230 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
-{% block title %}Join Waiting List - Financial Data API{% endblock %}
+{% block title %}{% trans 'Join Waiting List - Global Financial Data API' %}{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-2xl mx-auto">
-        <!-- Header Section -->
-        <div class="text-center mb-12">
-            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-indigo-900 mb-4">
-                <svg class="h-6 w-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                </svg>
+<div class="min-h-screen bg-gray-900 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-rocket text-white text-2xl"></i>
             </div>
-            <h1 class="text-4xl font-bold text-white mb-4">Financial Data API</h1>
-            <h2 class="text-2xl font-semibold text-indigo-400 mb-4">Coming Soon</h2>
-            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
-                We're putting the finishing touches on our comprehensive financial data API. 
-                Join our waiting list to be the first to know when we launch and get exclusive early access.
+            <h1 class="text-3xl font-bold text-white mb-2">
+                {% trans 'Join the Waiting List' %}
+            </h1>
+            <p class="text-gray-300 text-lg">
+                {% trans 'Get notified when our Global Financial Data API launches' %}
             </p>
         </div>
 
-        <!-- Features Preview -->
-        <div class="bg-gray-800 rounded-lg shadow-sm p-6 mb-8 border border-gray-700">
-            <h3 class="text-xl font-semibold text-white mb-4">What to Expect</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">Real-time Stock Data</h4>
-                        <p class="text-sm text-gray-400">Live market data for stocks, indices, and ETFs</p>
+        <!-- Display messages -->
+        {% if messages %}
+            <div class="space-y-3">
+                {% for message in messages %}
+                    <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-800 text-green-100{% elif message.tags == 'error' %}bg-red-800 text-red-100{% else %}bg-blue-800 text-blue-100{% endif %}">
+                        {{ message }}
                     </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">Forex & Crypto</h4>
-                        <p class="text-sm text-gray-400">Currency exchange rates and cryptocurrency data</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">Professional API</h4>
-                        <p class="text-sm text-gray-400">Secure, reliable, and well-documented financial data API</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">Flexible Pricing</h4>
-                        <p class="text-sm text-gray-400">Plans for individual developers to enterprises</p>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        </div>
+        {% endif %}
 
-        <!-- Waiting List Form -->
-        <div class="bg-gray-800 rounded-lg shadow-lg p-8 border border-gray-700">
-            <h3 class="text-2xl font-semibold text-white mb-6 text-center">Join the Waiting List</h3>
+        <!-- Key Features -->
+        <div class="bg-gray-800 rounded-lg p-6 space-y-4">
+            <h2 class="text-xl font-semibold text-white mb-4">
+                <i class="fas fa-star text-yellow-400 mr-2"></i>
+                {% trans 'What You\'ll Get' %}
+            </h2>
             
-            <form method="post" class="space-y-6">
-                {% csrf_token %}
+            <div class="space-y-3">
+                <div class="flex items-start">
+                    <i class="fas fa-chart-line text-blue-400 mr-3 mt-1"></i>
+                    <div>
+                        <h3 class="text-white font-medium">{% trans 'Global Market Data' %}</h3>
+                        <p class="text-gray-300 text-sm">{% trans 'Real-time and historical data from global stock exchanges' %}</p>
+                    </div>
+                </div>
                 
-                <div>
-                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        First Name *
-                    </label>
-                    {{ form.first_name }}
-                    {% if form.first_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.first_name.errors.0 }}</p>
-                    {% endif %}
+                <div class="flex items-start">
+                    <i class="fas fa-chart-bar text-green-400 mr-3 mt-1"></i>
+                    <div>
+                        <h3 class="text-white font-medium">{% trans 'Options & Derivatives' %}</h3>
+                        <p class="text-gray-300 text-sm">{% trans 'Options chains, Greeks, and derivatives analytics' %}</p>
+                    </div>
                 </div>
-
-                <div>
-                    <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Last Name *
-                    </label>
-                    {{ form.last_name }}
-                    {% if form.last_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.last_name.errors.0 }}</p>
-                    {% endif %}
+                
+                <div class="flex items-start">
+                    <i class="fas fa-exchange-alt text-yellow-400 mr-3 mt-1"></i>
+                    <div>
+                        <h3 class="text-white font-medium">{% trans 'Forex & Commodities' %}</h3>
+                        <p class="text-gray-300 text-sm">{% trans '24/7 currency data and commodities pricing' %}</p>
+                    </div>
                 </div>
-
-                <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address *
-                    </label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.email.errors.0 }}</p>
-                    {% endif %}
+                
+                <div class="flex items-start">
+                    <i class="fab fa-bitcoin text-orange-400 mr-3 mt-1"></i>
+                    <div>
+                        <h3 class="text-white font-medium">{% trans 'Cryptocurrency' %}</h3>
+                        <p class="text-gray-300 text-sm">{% trans '3000+ digital assets with real-time pricing' %}</p>
+                    </div>
                 </div>
-
-                <div>
-                    <label for="{{ form.company_size.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Company Size
-                    </label>
-                    {{ form.company_size }}
-                    {% if form.company_size.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.company_size.errors.0 }}</p>
-                    {% endif %}
+                
+                <div class="flex items-start">
+                    <i class="fas fa-building text-purple-400 mr-3 mt-1"></i>
+                    <div>
+                        <h3 class="text-white font-medium">{% trans 'Fundamental Data' %}</h3>
+                        <p class="text-gray-300 text-sm">{% trans 'Financial statements, earnings, and company profiles' %}</p>
+                    </div>
                 </div>
-
-                <div>
-                    <label for="{{ form.use_case.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        What will you use our API for? (Optional)
-                    </label>
-                    {{ form.use_case }}
-                    {% if form.use_case.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.use_case.errors.0 }}</p>
-                    {% endif %}
+                
+                <div class="flex items-start">
+                    <i class="fas fa-newspaper text-red-400 mr-3 mt-1"></i>
+                    <div>
+                        <h3 class="text-white font-medium">{% trans 'News & Events' %}</h3>
+                        <p class="text-gray-300 text-sm">{% trans 'Financial news, earnings calendar, and economic events' %}</p>
+                    </div>
                 </div>
-
-                <div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 font-medium text-lg transition duration-150 ease-in-out">
-                        Join Waiting List
-                    </button>
-                </div>
-            </form>
-
-            <div class="mt-6 text-center">
-                <p class="text-sm text-gray-400">
-                    Already have an account? 
-                    <a href="{% url 'login' %}" class="text-indigo-400 hover:text-indigo-300 font-medium">Sign in here</a>
-                </p>
             </div>
         </div>
 
-        <!-- Timeline -->
-        <div class="mt-12 text-center">
-            <h3 class="text-xl font-semibold text-white mb-6">Launch Timeline</h3>
-            <div class="bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-700">
-                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-                    <div class="flex flex-col items-center">
-                        <div class="bg-green-900 rounded-full p-3 mb-2">
-                            <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                        <h4 class="font-medium text-white">API Development</h4>
-                        <p class="text-sm text-gray-400">Completed</p>
+        <!-- Signup Form -->
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label for="email" class="sr-only">{% trans 'Email address' %}</label>
+                <input 
+                    id="email" 
+                    name="email" 
+                    type="email" 
+                    required 
+                    class="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-600 placeholder-gray-400 text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10" 
+                    placeholder="{% trans 'Enter your email address' %}"
+                    value="{{ form.email.value|default:'' }}"
+                >
+                {% if form.email.errors %}
+                    <div class="mt-2 text-red-400 text-sm">
+                        {% for error in form.email.errors %}
+                            {{ error }}
+                        {% endfor %}
                     </div>
-                    <div class="hidden md:block w-8 h-px bg-gray-600"></div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-yellow-900 rounded-full p-3 mb-2">
-                            <svg class="h-6 w-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h4 class="font-medium text-white">Testing & Optimization</h4>
-                        <p class="text-sm text-gray-400">In Progress</p>
-                    </div>
-                    <div class="hidden md:block w-8 h-px bg-gray-600"></div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-blue-900 rounded-full p-3 mb-2">
-                            <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                        </div>
-                        <h4 class="font-medium text-white">Public Launch</h4>
-                        <p class="text-sm text-gray-400">Coming Soon</p>
-                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <button 
+                    type="submit" 
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-white font-medium rounded-lg bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                >
+                    <i class="fas fa-rocket mr-2"></i>
+                    {% trans 'Join Waiting List' %}
+                </button>
+            </div>
+        </form>
+
+        <!-- Benefits -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">
+                <i class="fas fa-gift text-green-400 mr-2"></i>
+                {% trans 'Early Access Benefits' %}
+            </h3>
+            <ul class="space-y-2 text-gray-300">
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-400 mr-3"></i>
+                    {% trans 'Priority access when we launch' %}
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-400 mr-3"></i>
+                    {% trans 'Special launch pricing' %}
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-400 mr-3"></i>
+                    {% trans 'Exclusive beta access' %}
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-400 mr-3"></i>
+                    {% trans 'Direct feedback channel' %}
+                </li>
+            </ul>
+        </div>
+
+        <!-- Why Choose Us -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">
+                <i class="fas fa-crown text-yellow-400 mr-2"></i>
+                {% trans 'Why Choose Our API?' %}
+            </h3>
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-blue-400">25-60%</div>
+                    <div class="text-gray-300 text-sm">{% trans 'Cheaper than competitors' %}</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-green-400">99.9%</div>
+                    <div class="text-gray-300 text-sm">{% trans 'Uptime guarantee' %}</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-purple-400">3000+</div>
+                    <div class="text-gray-300 text-sm">{% trans 'Cryptocurrencies' %}</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-yellow-400">24/7</div>
+                    <div class="text-gray-300 text-sm">{% trans 'Forex markets' %}</div>
                 </div>
             </div>
+        </div>
+
+        <!-- Target Users -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">
+                <i class="fas fa-users text-blue-400 mr-2"></i>
+                {% trans 'Perfect For' %}
+            </h3>
+            <div class="grid grid-cols-2 gap-3 text-sm text-gray-300">
+                <div class="flex items-center">
+                    <i class="fas fa-code text-blue-400 mr-2"></i>
+                    {% trans 'Developers' %}
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-chart-line text-green-400 mr-2"></i>
+                    {% trans 'Analysts' %}
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-robot text-purple-400 mr-2"></i>
+                    {% trans 'Trading Bots' %}
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-university text-yellow-400 mr-2"></i>
+                    {% trans 'Institutions' %}
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-mobile-alt text-red-400 mr-2"></i>
+                    {% trans 'App Builders' %}
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-graduation-cap text-indigo-400 mr-2"></i>
+                    {% trans 'Researchers' %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Security & Compliance -->
+        <div class="text-center text-gray-400 text-sm">
+            <p class="mb-2">
+                <i class="fas fa-shield-alt text-green-400 mr-1"></i>
+                {% trans 'Enterprise-grade security & compliance' %}
+            </p>
+            <p>
+                {% trans 'Your email will only be used for API launch notifications. No spam.' %}
+            </p>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center">
+            <a href="{% url 'home' %}" class="text-blue-400 hover:text-blue-300 text-sm">
+                <i class="fas fa-arrow-left mr-1"></i>
+                {% trans 'Back to Home' %}
+            </a>
         </div>
     </div>
 </div>

@@ -330,6 +330,6 @@ print('Reset all daily request counters')
 ## Support
 
 For technical support or questions about the subscription system:
-- Email: support@dadosfinanceiros.com.br
+- Email: support@financialdata.online
 - Documentation: This file and inline code comments
 - Stripe Documentation: https://stripe.com/docs 
