@@ -140,6 +140,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
+    "django_ratelimit",
     "proxy_app",
     "users",
 ]
@@ -207,7 +208,9 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "users.middleware.DatabaseRateLimitMiddleware",
     "users.middleware.UserRequestCountMiddleware",
+    "users.middleware.RateLimitHeaderMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -303,6 +306,9 @@ if 'test' in sys.argv:
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+        'rate_limit': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         }
     }
 else:
@@ -314,7 +320,15 @@ else:
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
                 "CONNECTION_POOL_KWARGS": {"max_connections": 100},
             },
-        }
+        },
+        "rate_limit": {
+            "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+            "LOCATION": "rate_limit_cache",
+            "OPTIONS": {
+                "MAX_ENTRIES": 100000,  # Prevent unlimited growth
+                "CULL_FREQUENCY": 10,   # Clean old entries regularly
+            },
+        },
     }
 
 CHANNEL_LAYERS = {

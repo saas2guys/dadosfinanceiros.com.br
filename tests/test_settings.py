@@ -50,6 +50,10 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "test-cache",
+    },
+    "rate_limit": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "test-rate-limit-cache",
     }
 }
 
@@ -90,3 +94,6 @@ SECURE_HSTS_PRELOAD = False
 
 # Set environment to test to enable authentication
 ENV = "test"
+
+# Remove django_ratelimit from installed apps for testing since we're using database-based rate limiting
+INSTALLED_APPS = [app for app in INSTALLED_APPS if app != "django_ratelimit"]
