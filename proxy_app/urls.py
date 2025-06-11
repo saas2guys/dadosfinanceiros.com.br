@@ -1,15 +1,24 @@
 from django.urls import path, re_path
 
-from .views import PolygonProxyView, api_documentation
+from .views import UnifiedFinancialAPIView, api_documentation
+from .views_new import FinancialAPIView, HealthView, EndpointsView
 
 app_name = "proxy_app"
 
 urlpatterns = [
     path("docs/", api_documentation, name="api_docs"),
-    # All requests go to PolygonProxyView for US market data
+    
+    # Health check and documentation endpoints
+    path("health/", HealthView.as_view(), name="health"),
+    path("api/v1/endpoints/", EndpointsView.as_view(), name="endpoints"),
+    
+    # New unified API using the proxy system
+    re_path(r"^api/v1/(?P<path>.*)$", FinancialAPIView.as_view(), name="unified_financial_api_new"),
+    
+    # Backward compatibility - all other requests go to original implementation
     re_path(
-        r"^(?!docs/)(?P<path>.*)$",
-        PolygonProxyView.as_view(),
-        name="polygon_proxy",
+        r"^(?!docs/|health/|api/)(?P<path>.*)$",
+        UnifiedFinancialAPIView.as_view(),
+        name="unified_financial_api_legacy",
     ),
 ]

@@ -22,7 +22,10 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("users.urls")),
+    # Legacy route for backward compatibility
     path("v1/", include("proxy_app.urls")),
+    # New unified API route
+    path("api/v1/", include("proxy_app.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),

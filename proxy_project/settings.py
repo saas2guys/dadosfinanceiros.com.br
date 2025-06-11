@@ -116,6 +116,10 @@ SESSION_COOKIE_SAMESITE = "Lax"
 POLYGON_BASE_URL = config("POLYGON_BASE_URL", default="https://api.polygon.io")
 POLYGON_API_KEY = config("POLYGON_API_KEY", default="your-polygon-api-key-here")
 
+# FMP Ultimate API Configuration
+FMP_BASE_URL = config("FMP_BASE_URL", default="https://financialmodelingprep.com/api")
+FMP_API_KEY = config("FMP_API_KEY", default="your-fmp-api-key-here")
+
 PROXY_TIMEOUT = config("PROXY_TIMEOUT", default=30, cast=int)
 PROXY_DOMAIN = config("PROXY_DOMAIN", default="api.financialdata.online")
 
@@ -311,6 +315,47 @@ CHANNEL_LAYERS = {
             "hosts": [REDIS_URL],
             "capacity": 1500,
             "expiry": 60,
+        },
+    },
+}
+
+# Logging configuration for the new financial API system
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'financial_api.log'),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'proxy_app': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'financial_api': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
         },
     },
 }
