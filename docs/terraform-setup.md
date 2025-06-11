@@ -6,8 +6,8 @@ This project uses Terraform to manage DNS records for our domains on DigitalOcea
 ## Domains Managed
 - `financialdata.online`
 - `financialdata.digital`
-- `dadosfinanceiros.com`
-- `dadosfinanceiros.com.br`
+- `financialdata.online`
+- `financialdata.online`
 
 ## DigitalOcean App Platform Integration
 
@@ -50,11 +50,11 @@ The following secrets must be configured in your GitHub repository:
 
 ### Setting Up GitHub Secrets
 
-1. Go to your repository: https://github.com/saas2guys/dadosfinanceiros.com.br
+1. Go to your repository: https://github.com/saas2guys/financialdata.online
 2. Navigate to: **Settings** → **Secrets and variables** → **Actions**
 3. Click **"New repository secret"** for each:
    - **Name**: `DO_TOKEN`, **Value**: `dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE`
-   - **Name**: `APP_DOMAIN`, **Value**: `dadosfinanceiros-com-br-bbce29b0.ondigitalocean.app` (adjust as needed)
+   - **Name**: `APP_DOMAIN`, **Value**: `financialdata-online-bbce29b0.ondigitalocean.app` (adjust as needed)
 
 ## Local Development
 
@@ -73,7 +73,7 @@ The following secrets must be configured in your GitHub repository:
 2. **Edit `terraform.tfvars`** with your actual values:
    ```hcl
    do_token = "dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE"
-   app_domain = "dadosfinanceiros-com-br-bbce29b0.ondigitalocean.app"
+   app_domain = "financialdata-online-bbce29b0.ondigitalocean.app"
    ```
 
 3. **Initialize and apply**:
@@ -130,10 +130,10 @@ After the DNS records are created, you need to add the domains to your App Platf
    - `www.financialdata.online`
    - `financialdata.digital`
    - `www.financialdata.digital`
-   - `dadosfinanceiros.com`
-   - `www.dadosfinanceiros.com`
-   - `dadosfinanceiros.com.br`
-   - `www.dadosfinanceiros.com.br`
+   - `financialdata.online`
+   - `www.financialdata.online`
+   - `financialdata.online`
+   - `www.financialdata.online`
 
 4. **Choose "Point to DigitalOcean"** (not delegate) since we're managing DNS with Terraform
 

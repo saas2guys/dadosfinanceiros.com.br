@@ -68,7 +68,7 @@ class UnifiedFinancialAPIView(APIView):
         self.polygon_base_url = "https://api.polygon.io/v2/"
         self.fmp_api_key = settings.FMP_API_KEY
         self.fmp_base_url = "https://financialmodelingprep.com/api/v3/"
-        self.proxy_domain = "api.dadosfinanceiros.com.br"  # Domain for URL replacement
+        self.proxy_domain = "api.financialdata.online"  # Domain for URL replacement
         self.timeout = 30
         
         # API Configuration
@@ -99,7 +99,7 @@ class UnifiedFinancialAPIView(APIView):
         # Initialize requests session
         self.session = requests.Session()
         self.timeout = getattr(settings, 'PROXY_TIMEOUT', 30)
-        self.proxy_domain = getattr(settings, 'PROXY_DOMAIN', 'api.dadosfinanceiros.com.br')
+        self.proxy_domain = getattr(settings, 'PROXY_DOMAIN', 'api.financialdata.online')
 
         # Environment-based authentication
         if getattr(settings, 'ENV', 'local') == "local":

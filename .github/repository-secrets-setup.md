@@ -13,11 +13,11 @@ The following GitHub repository secrets need to be configured for the Terraform 
 - **Value**: Your App Platform domain (optional)
 - **Required**: No
 - **Description**: Your DigitalOcean App Platform domain for CNAME fallback
-- **Example**: `dadosfinanceiros-com-br-bbce29b0.ondigitalocean.app`
+- **Example**: `financialdata-online-bbce29b0.ondigitalocean.app`
 
 ## Setup Instructions
 
-1. Go to: https://github.com/saas2guys/dadosfinanceiros.com.br/settings/secrets/actions
+1. Go to: https://github.com/saas2guys/financialdata.online/settings/secrets/actions
 2. Click "New repository secret"
 3. Add each secret with the exact name and value above
 

@@ -284,7 +284,7 @@ POLYGON_BASE_URL=https://api.polygon.io
 
 # General configuration
 PROXY_TIMEOUT=30
-PROXY_DOMAIN=api.dadosfinanceiros.com.br
+PROXY_DOMAIN=api.financialdata.online
 ENV=local
 ```
 

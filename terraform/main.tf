@@ -48,14 +48,14 @@ locals {
 }
 
 # ===== financialdata.online =====
-resource "digitalocean_domain" "financialdata_online" {
+resource "digitalocean_domain" "dadosfinanceiros_com" {
   name       = "financialdata.online"
   ip_address = local.app_ipv4_primary
 }
 
 # A Records for financialdata.online
 resource "digitalocean_record" "financialdata_online_a_secondary" {
-  domain = digitalocean_domain.financialdata_online.name
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "@"
   value  = local.app_ipv4_secondary
@@ -63,7 +63,7 @@ resource "digitalocean_record" "financialdata_online_a_secondary" {
 }
 
 resource "digitalocean_record" "financialdata_online_www" {
-  domain = digitalocean_domain.financialdata_online.name
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "www"
   value  = local.app_ipv4_primary
@@ -71,7 +71,7 @@ resource "digitalocean_record" "financialdata_online_www" {
 }
 
 resource "digitalocean_record" "financialdata_online_www_secondary" {
-  domain = digitalocean_domain.financialdata_online.name
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "www"
   value  = local.app_ipv4_secondary
@@ -80,7 +80,7 @@ resource "digitalocean_record" "financialdata_online_www_secondary" {
 
 # AAAA Records for financialdata.online (IPv6)
 resource "digitalocean_record" "financialdata_online_aaaa" {
-  domain = digitalocean_domain.financialdata_online.name
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "@"
   value  = local.app_ipv6_primary
@@ -88,7 +88,7 @@ resource "digitalocean_record" "financialdata_online_aaaa" {
 }
 
 resource "digitalocean_record" "financialdata_online_aaaa_secondary" {
-  domain = digitalocean_domain.financialdata_online.name
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "@"
   value  = local.app_ipv6_secondary
@@ -96,7 +96,7 @@ resource "digitalocean_record" "financialdata_online_aaaa_secondary" {
 }
 
 resource "digitalocean_record" "financialdata_online_www_aaaa" {
-  domain = digitalocean_domain.financialdata_online.name
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "www"
   value  = local.app_ipv6_primary
@@ -104,7 +104,7 @@ resource "digitalocean_record" "financialdata_online_www_aaaa" {
 }
 
 resource "digitalocean_record" "financialdata_online_www_aaaa_secondary" {
-  domain = digitalocean_domain.financialdata_online.name
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "www"
   value  = local.app_ipv6_secondary
@@ -182,7 +182,7 @@ resource "digitalocean_domain" "dadosfinanceiros_com" {
 }
 
 # A Records for dadosfinanceiros.com
-resource "digitalocean_record" "dadosfinanceiros_com_a_secondary" {
+resource "digitalocean_record" "financialdata_online_a_secondary" {
   domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "@"
@@ -190,7 +190,7 @@ resource "digitalocean_record" "dadosfinanceiros_com_a_secondary" {
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_www" {
+resource "digitalocean_record" "financialdata_online_www" {
   domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "www"
@@ -198,7 +198,7 @@ resource "digitalocean_record" "dadosfinanceiros_com_www" {
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_www_secondary" {
+resource "digitalocean_record" "financialdata_online_www_secondary" {
   domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "www"
@@ -207,7 +207,7 @@ resource "digitalocean_record" "dadosfinanceiros_com_www_secondary" {
 }
 
 # AAAA Records for dadosfinanceiros.com (IPv6)
-resource "digitalocean_record" "dadosfinanceiros_com_aaaa" {
+resource "digitalocean_record" "financialdata_online_aaaa" {
   domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "@"
@@ -215,7 +215,7 @@ resource "digitalocean_record" "dadosfinanceiros_com_aaaa" {
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_aaaa_secondary" {
+resource "digitalocean_record" "financialdata_online_aaaa_secondary" {
   domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "@"
@@ -223,7 +223,7 @@ resource "digitalocean_record" "dadosfinanceiros_com_aaaa_secondary" {
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_www_aaaa" {
+resource "digitalocean_record" "financialdata_online_www_aaaa" {
   domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "www"
@@ -231,7 +231,7 @@ resource "digitalocean_record" "dadosfinanceiros_com_www_aaaa" {
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_www_aaaa_secondary" {
+resource "digitalocean_record" "financialdata_online_www_aaaa_secondary" {
   domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "www"
@@ -239,64 +239,64 @@ resource "digitalocean_record" "dadosfinanceiros_com_www_aaaa_secondary" {
   ttl    = 300
 }
 
-# ===== dadosfinanceiros.com.br =====
-resource "digitalocean_domain" "dadosfinanceiros_com_br" {
-  name       = "dadosfinanceiros.com.br"
+# ===== financialdata.online =====
+resource "digitalocean_domain" "dadosfinanceiros_com" {
+  name       = "financialdata.online"
   ip_address = local.app_ipv4_primary
 }
 
-# A Records for dadosfinanceiros.com.br
-resource "digitalocean_record" "dadosfinanceiros_com_br_a_secondary" {
-  domain = digitalocean_domain.dadosfinanceiros_com_br.name
+# A Records for financialdata.online
+resource "digitalocean_record" "financialdata_online_a_secondary" {
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "@"
   value  = local.app_ipv4_secondary
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_br_www" {
-  domain = digitalocean_domain.dadosfinanceiros_com_br.name
+resource "digitalocean_record" "financialdata_online_www" {
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "www"
   value  = local.app_ipv4_primary
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_br_www_secondary" {
-  domain = digitalocean_domain.dadosfinanceiros_com_br.name
+resource "digitalocean_record" "financialdata_online_www_secondary" {
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "A"
   name   = "www"
   value  = local.app_ipv4_secondary
   ttl    = 300
 }
 
-# AAAA Records for dadosfinanceiros.com.br (IPv6)
-resource "digitalocean_record" "dadosfinanceiros_com_br_aaaa" {
-  domain = digitalocean_domain.dadosfinanceiros_com_br.name
+# AAAA Records for financialdata.online (IPv6)
+resource "digitalocean_record" "financialdata_online_aaaa" {
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "@"
   value  = local.app_ipv6_primary
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_br_aaaa_secondary" {
-  domain = digitalocean_domain.dadosfinanceiros_com_br.name
+resource "digitalocean_record" "financialdata_online_aaaa_secondary" {
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "@"
   value  = local.app_ipv6_secondary
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_br_www_aaaa" {
-  domain = digitalocean_domain.dadosfinanceiros_com_br.name
+resource "digitalocean_record" "financialdata_online_www_aaaa" {
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "www"
   value  = local.app_ipv6_primary
   ttl    = 300
 }
 
-resource "digitalocean_record" "dadosfinanceiros_com_br_www_aaaa_secondary" {
-  domain = digitalocean_domain.dadosfinanceiros_com_br.name
+resource "digitalocean_record" "financialdata_online_www_aaaa_secondary" {
+  domain = digitalocean_domain.dadosfinanceiros_com.name
   type   = "AAAA"
   name   = "www"
   value  = local.app_ipv6_secondary

@@ -1,7 +1,7 @@
 # Authentication Fix for Registration Endpoint
 
 ## Issue
-The registration endpoint `https://dadosfinanceiros.com.br/register/` was requiring authentication, preventing new users from registering.
+The registration endpoint `https://financialdata.online/register/` was requiring authentication, preventing new users from registering.
 
 ## Root Cause
 In production (`ENV != "local"`), the default DRF permission class was set to `IsAuthenticated`:

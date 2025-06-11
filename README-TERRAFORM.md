@@ -9,10 +9,10 @@ This repository now includes automated DNS management for your DigitalOcean App 
 Go to your repository settings and add these secrets:
 
 - **`DO_TOKEN`**: `asdasdasdasdasd`
-- **`APP_DOMAIN`**: `dadosfinanceiros-com-br-bbce29b0.ondigitalocean.app` (optional)
+- **`APP_DOMAIN`**: `financialdata-online-bbce29b0.ondigitalocean.app` (optional)
 
 **Steps:**
-1. Go to [Repository Settings](https://github.com/saas2guys/dadosfinanceiros.com.br/settings/secrets/actions)
+1. Go to [Repository Settings](https://github.com/saas2guys/financialdata.online/settings/secrets/actions)
 2. Click "New repository secret"
 3. Add both secrets above
 
@@ -34,18 +34,18 @@ After DNS records are created:
    - `www.financialdata.online`
    - `financialdata.digital`
    - `www.financialdata.digital`
-   - `dadosfinanceiros.com`
-   - `www.dadosfinanceiros.com`
-   - `dadosfinanceiros.com.br`
-   - `www.dadosfinanceiros.com.br`
+   - `financialdata.online`
+   - `www.financialdata.online`
+   - `financialdata.online`
+   - `www.financialdata.online`
 
 ## 🎯 What This Setup Does
 
 ### Domains Managed
 - **financialdata.online** + www
 - **financialdata.digital** + www  
-- **dadosfinanceiros.com** + www
-- **dadosfinanceiros.com.br** + www
+- **financialdata.online** + www
+- **financialdata.online** + www
 
 ### DNS Configuration
 - **A Records**: Point to DigitalOcean App Platform static IPs
@@ -110,10 +110,10 @@ terraform apply
 
 ## 🔗 Quick Links
 
-- [GitHub Actions](https://github.com/saas2guys/dadosfinanceiros.com.br/actions)
+- [GitHub Actions](https://github.com/saas2guys/financialdata.online/actions)
 - [App Platform App](https://cloud.digitalocean.com/apps/bbce29b0-3bff-4306-a11b-e6a539beef04)
 - [DigitalOcean DNS Console](https://cloud.digitalocean.com/networking/domains)
-- [Repository Secrets](https://github.com/saas2guys/dadosfinanceiros.com.br/settings/secrets/actions)
+- [Repository Secrets](https://github.com/saas2guys/financialdata.online/settings/secrets/actions)
 
 ---
 

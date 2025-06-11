@@ -6,7 +6,7 @@ do_token = "dop_v1_YOUR_DIGITALOCEAN_TOKEN_HERE"
 
 # Your DigitalOcean App Platform domain
 # This will be automatically resolved to get current IPs
-app_domain = "dadosfinanceiros-com-br-vsxtw.ondigitalocean.app"
+app_domain = "financialdata-online-vsxtw.ondigitalocean.app"
 
 # ========================================
 # How IP Detection Works:
@@ -32,7 +32,7 @@ app_domain = "dadosfinanceiros-com-br-vsxtw.ondigitalocean.app"
 # ========================================
 #
 # Test DNS resolution manually:
-# dig dadosfinanceiros-com-br-vsxtw.ondigitalocean.app A +short
+# dig financialdata-online-vsxtw.ondigitalocean.app A +short
 #
 # View detection results after terraform apply:
 # terraform output detected_ips

@@ -269,7 +269,7 @@ terraform output detected_ips
 ```bash
 # After terraform apply, verify DNS records
 dig financialdata.online A +short
-dig www.dadosfinanceiros.com A +short
+dig www.financialdata.online A +short
 
 # Should return the auto-detected IPs
 ```
@@ -438,7 +438,7 @@ terraform output detected_ips
 
 ```bash
 # Test all your domains resolve correctly
-for domain in financialdata.online financialdata.digital dadosfinanceiros.com dadosfinanceiros.com.br; do
+for domain in financialdata.online financialdata.digital financialdata.online financialdata.online; do
   echo "Testing $domain:"
   dig $domain A +short
 done

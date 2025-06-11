@@ -18,12 +18,12 @@ This repository now includes **automated DNS management** for DigitalOcean App P
 
 #### Step 1: Set Up GitHub Secrets
 
-1. Go to your repository: [Settings → Secrets](https://github.com/saas2guys/dadosfinanceiros.com.br/settings/secrets/actions)
+1. Go to your repository: [Settings → Secrets](https://github.com/saas2guys/financialdata.online/settings/secrets/actions)
 2. Add these repository secrets:
 
 ```
 DO_TOKEN = asdasdasdasd
-APP_DOMAIN = dadosfinanceiros-com-br-vsxtw.ondigitalocean.app
+APP_DOMAIN = financialdata-online-vsxtw.ondigitalocean.app
 ```
 
 #### Step 2: Commit and Push the Terraform Files
@@ -39,7 +39,7 @@ git push origin main
 
 #### Step 3: Monitor the Automation
 
-1. **GitHub Actions**: Check the [Actions tab](https://github.com/saas2guys/dadosfinanceiros.com.br/actions) for deployment status
+1. **GitHub Actions**: Check the [Actions tab](https://github.com/saas2guys/financialdata.online/actions) for deployment status
 2. **DigitalOcean DNS**: Check [Networking → Domains](https://cloud.digitalocean.com/networking/domains) for created records
 
 #### Step 4: Add Domains to App Platform
@@ -131,7 +131,7 @@ sequenceDiagram
     App-->>User: Application response
 
     %% API Access Flow
-    User->>DNS: 14. DNS query for api.dadosfinanceiros.com
+    User->>DNS: 14. DNS query for api.financialdata.online
     DNS-->>User: Return same IP address
     User->>App: 15. API request to resolved IP
     App-->>User: API response
@@ -143,17 +143,17 @@ sequenceDiagram
         User->>DNS: Query financialdata.digital
         DNS-->>User: Same IP address
     and
-        User->>DNS: Query dadosfinanceiros.com
+        User->>DNS: Query financialdata.online
         DNS-->>User: Same IP address  
     and
-        User->>DNS: Query dadosfinanceiros.com.br
+        User->>DNS: Query financialdata.online
         DNS-->>User: Same IP address
     end
 
     %% Email flow (using MX records)
     Note over User, App: Email Flow
-    User->>DNS: 16. MX query for dadosfinanceiros.com
-    DNS-->>User: Return mail.dadosfinanceiros.com
+    User->>DNS: 16. MX query for financialdata.online
+    DNS-->>User: Return mail.financialdata.online
     User->>App: 17. Connect to mail server
     App-->>User: Email service response
 
@@ -350,11 +350,11 @@ ns3.digitalocean.com  # Tertiary nameserver
 **Step 14-15: API Access**
 ```bash
 # API client makes request
-curl -X GET https://api.dadosfinanceiros.com/v1/stocks/AAPL \
+curl -X GET https://api.financialdata.online/v1/stocks/AAPL \
   -H "X-Request-Token: your_token"
 
 # Flow:
-1. DNS resolves api.dadosfinanceiros.com → 162.159.140.98
+1. DNS resolves api.financialdata.online → 162.159.140.98
 2. HTTPS request to App Platform
 3. App Platform SSL termination
 4. Route to Django API endpoint
@@ -367,8 +367,8 @@ curl -X GET https://api.dadosfinanceiros.com/v1/stocks/AAPL \
 All domains resolve to the same IP addresses:
 - **financialdata.online** → 162.159.140.98, 172.66.0.96
 - **financialdata.digital** → Same IPs
-- **dadosfinanceiros.com** → Same IPs
-- **dadosfinanceiros.com.br** → Same IPs
+- **financialdata.online** → Same IPs
+- **financialdata.online** → Same IPs
 
 **Benefits**:
 - **Brand flexibility**: Multiple branded access points
@@ -381,11 +381,11 @@ All domains resolve to the same IP addresses:
 **Step 17: MX Records for Email**
 ```bash
 # MX record creation (if configured)
-POST /v2/domains/dadosfinanceiros.com/records
+POST /v2/domains/financialdata.online/records
 {
   "type": "MX",
   "name": "@",
-  "data": "mail.dadosfinanceiros.com.",
+  "data": "mail.financialdata.online.",
   "priority": 10,
   "ttl": 300
 }
@@ -454,7 +454,7 @@ dig financialdata.online AAAA +short
 # Expected: 2606:4700:7::60
 
 # Multiple domain check
-for domain in financialdata.online financialdata.digital dadosfinanceiros.com dadosfinanceiros.com.br; do
+for domain in financialdata.online financialdata.digital financialdata.online financialdata.online; do
   echo "Testing $domain:"
   dig $domain A +short
 done
@@ -464,7 +464,7 @@ done
 ```bash
 # Verify application responds on all domains
 curl -I https://financialdata.online/api/health/
-curl -I https://www.dadosfinanceiros.com.br/v1/stocks/AAPL
+curl -I https://www.financialdata.online/v1/stocks/AAPL
 ```
 
 **Performance Monitoring**:
@@ -1511,10 +1511,10 @@ graph TD
 Your current app domain **automatically resolves** to:
 ```bash
 # IPv4 Addresses (detected live)
-dadosfinanceiros-com-br-vsxtw.ondigitalocean.app → 162.159.140.98, 172.66.0.96
+financialdata-online-vsxtw.ondigitalocean.app → 162.159.140.98, 172.66.0.96
 
 # IPv6 Addresses (detected live)  
-dadosfinanceiros-com-br-vsxtw.ondigitalocean.app → 2606:4700:7::60, 2a06:98c1:58::60
+financialdata-online-vsxtw.ondigitalocean.app → 2606:4700:7::60, 2a06:98c1:58::60
 ```
 
 #### **🎯 IP Automation Benefits**
@@ -1529,7 +1529,7 @@ dadosfinanceiros-com-br-vsxtw.ondigitalocean.app → 2606:4700:7::60, 2a06:98c1:
 
 ```hcl
 # terraform.tfvars
-app_domain = "dadosfinanceiros-com-br-vsxtw.ondigitalocean.app"  # ✅ Already set
+app_domain = "financialdata-online-vsxtw.ondigitalocean.app"  # ✅ Already set
 enable_ip_automation = true   # ✅ Enabled by default
 
 # Optional: For API-based detection
@@ -1540,11 +1540,11 @@ app_id = "bbce29b0-3bff-4306-a11b-e6a539beef04"  # Your app ID
 
 ```bash
 # Test DNS resolution manually
-dig dadosfinanceiros-com-br-vsxtw.ondigitalocean.app A +short
+dig financialdata-online-vsxtw.ondigitalocean.app A +short
 # Returns: 162.159.140.98, 172.66.0.96
 
 # Test the automation script
-echo '{"app_domain":"dadosfinanceiros-com-br-vsxtw.ondigitalocean.app","do_token":""}' | \
+echo '{"app_domain":"financialdata-online-vsxtw.ondigitalocean.app","do_token":""}' | \
   ./terraform/scripts/get-app-ips.sh
 
 # View detection results after terraform apply

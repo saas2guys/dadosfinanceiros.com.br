@@ -1,7 +1,7 @@
 # Global Financial Data API - English Translation
 # Copyright (C) 2024 Global Markets Financial Data API
 # This file is distributed under the same license as the PACKAGE package.
-# Global Markets API Team <admin@dadosfinanceiros.com.br>, 2024.
+# Global Markets API Team <admin@financialdata.online>, 2024.
 #
 msgid ""
 msgstr ""
@@ -9,8 +9,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-11 01:21-0300\n"
 "PO-Revision-Date: 2024-06-11 01:15-0300\n"
-"Last-Translator: Global Markets API Team <admin@dadosfinanceiros.com.br>\n"
-"Language-Team: English <admin@dadosfinanceiros.com.br>\n"
+"Last-Translator: Global Markets API Team <admin@financialdata.online>\n"
+"Language-Team: English <admin@financialdata.online>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -216,11 +216,11 @@ msgid "Official SDKs and libraries to accelerate your integration:"
 msgstr ""
 
 #: templates/api/docs.html:312
-msgid "pip install dadosfinanceiros"
+msgid "pip install financialdata"
 msgstr ""
 
 #: templates/api/docs.html:317
-msgid "npm install dadosfinanceiros"
+msgid "npm install financialdata"
 msgstr ""
 
 #: templates/api/docs.html:322

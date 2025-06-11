@@ -34,7 +34,7 @@ class PolygonApiResponseTransformationTest(TestCase):
 
         result = self.view._replace_polygon_urls(test_data, request)
 
-        expected_url = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=YWN0aXZlPXRydWUmZGF0ZT0yMDIxLTA0LTI1JmxpbWl0PTEmb3JkZXI9YXNjJnBhZ2VfbWFya2VyPUElN0M5YWRjMjY0ZTgyM2E1ZjBiOGUyNDc5YmZiOGE1YmYwNDVkYzU0YjgwMDcyMWE2YmI1ZjBjMjQwMjU4MjFmNGZiJnNvcnQ9dGlja2Vy"
+        expected_url = "https://api.financialdata.online/v1/reference/tickers?cursor=YWN0aXZlPXRydWUmZGF0ZT0yMDIxLTA0LTI1JmxpbWl0PTEmb3JkZXI9YXNjJnBhZ2VfbWFya2VyPUElN0M5YWRjMjY0ZTgyM2E1ZjBiOGUyNDc5YmZiOGE1YmYwNDVkYzU0YjgwMDcyMWE2YmI1ZjBjMjQwMjU4MjFmNGZiJnNvcnQ9dGlja2Vy"
         self.assertEqual(result["next_url"], expected_url)
 
     def test_replaces_multiple_pagination_urls_in_single_response(self):
@@ -50,10 +50,10 @@ class PolygonApiResponseTransformationTest(TestCase):
         result = self.view._replace_polygon_urls(test_data, request)
 
         expected_next = (
-            "https://api.dadosfinanceiros.com.br/v1/stocks/tickers?cursor=next123"
+            "https://api.financialdata.online/v1/stocks/tickers?cursor=next123"
         )
         expected_prev = (
-            "https://api.dadosfinanceiros.com.br/v1/stocks/tickers?cursor=prev456"
+            "https://api.financialdata.online/v1/stocks/tickers?cursor=prev456"
         )
 
         self.assertEqual(result["next_url"], expected_next)
@@ -88,7 +88,7 @@ class PolygonApiResponseTransformationTest(TestCase):
 
         result = self.view._replace_polygon_urls(test_data, request)
 
-        expected_url = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=YWN0aXZlPXRydWUmZGF0ZT0yMDIxLTA0LTI1JmxpbWl0PTEmb3JkZXI9YXNjJnBhZ2VfbWFya2VyPUElN0M5YWRjMjY0ZTgyM2E1ZjBiOGUyNDc5YmZiOGE1YmYwNDVkYzU0YjgwMDcyMWE2YmI1ZjBjMjQwMjU4MjFmNGZiJnNvcnQ9dGlja2Vy"
+        expected_url = "https://api.financialdata.online/v1/reference/tickers?cursor=YWN0aXZlPXRydWUmZGF0ZT0yMDIxLTA0LTI1JmxpbWl0PTEmb3JkZXI9YXNjJnBhZ2VfbWFya2VyPUElN0M5YWRjMjY0ZTgyM2E1ZjBiOGUyNDc5YmZiOGE1YmYwNDVkYzU0YjgwMDcyMWE2YmI1ZjBjMjQwMjU4MjFmNGZiJnNvcnQ9dGlja2Vy"
         self.assertEqual(result["next_url"], expected_url)
 
         self.assertEqual(result["count"], 1)
@@ -141,7 +141,7 @@ class PolygonApiResponseTransformationTest(TestCase):
         self.assertIn("results", result.data)
         self.assertIn("next_url", result.data)
         expected_next_url = (
-            "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=test123"
+            "https://api.financialdata.online/v1/reference/tickers?cursor=test123"
         )
         self.assertEqual(result.data["next_url"], expected_next_url)
 
