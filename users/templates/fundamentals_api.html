@@ -1,0 +1,572 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Fundamental Data API 2025 - Financial Statements, Ratios & Company Analysis | Real-Time Financial API{% endblock %}
+
+{% block meta_description %}Professional fundamental data API for financial statements, ratios, valuation metrics, DCF analysis, and company financials. Real-time income statements, balance sheets, cash flows, and growth metrics for stocks analysis.{% endblock %}
+
+{% block meta_keywords %}fundamental data API, financial statements API, income statement API, balance sheet API, cash flow API, financial ratios API, valuation metrics API, DCF analysis API, company financials API, earnings data API, fundamental analysis API, stock financials API{% endblock %}
+
+{% block canonical_url %}https://api.dadosfinanceiros.com.br/fundamentals-api/{% endblock %}
+
+{% block og_title %}Fundamental Data API 2025 - Financial Statements & Company Analysis{% endblock %}
+{% block og_description %}Professional fundamental data API providing real-time financial statements, ratios, valuation metrics, and comprehensive company analysis. Perfect for fundamental analysis and financial research.{% endblock %}
+{% block og_url %}https://api.dadosfinanceiros.com.br/fundamentals-api/{% endblock %}
+
+{% block twitter_title %}Fundamental Data API - Financial Statements & Analysis{% endblock %}
+{% block twitter_description %}Professional fundamental data API for financial statements, ratios, and company analysis. Real-time income statements, balance sheets, cash flows, and more.{% endblock %}
+
+{% block extra_meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Fundamental Data API",
+  "description": "Professional fundamental data API providing comprehensive financial statements, ratios, valuation metrics, DCF analysis, and company fundamentals for stocks and securities analysis.",
+  "url": "https://api.dadosfinanceiros.com.br/fundamentals-api",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free tier with fundamental data access"
+  },
+  "featureList": [
+    "Income Statement Data API",
+    "Balance Sheet API", 
+    "Cash Flow Statement API",
+    "Financial Ratios API",
+    "Valuation Metrics API",
+    "DCF Analysis API",
+    "Growth Metrics API",
+    "Key Financial Metrics API",
+    "Company Profile Data",
+    "Quarterly and Annual Data",
+    "Historical Financial Data",
+    "Real-time Fundamental Updates"
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+    <!-- Hero Section -->
+    <div class="pt-16 pb-20 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- API Coming Soon Notice -->
+            <div class="mb-8 inline-flex items-center px-6 py-3 rounded-full bg-blue-900 border border-blue-700">
+                <svg class="h-5 w-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="text-sm font-medium text-blue-300">💼 Comprehensive Fundamental Data API - Launching July 2025</span>
+            </div>
+
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                Fundamental Data API for Financial Analysis
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                Professional fundamental data API providing comprehensive financial statements, ratios, valuation metrics, 
+                and company analysis. Real-time income statements, balance sheets, cash flows, financial ratios, 
+                DCF analysis, and growth metrics. Perfect for fundamental analysis, financial research, and investment applications.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
+                    Join Waiting List for Early Access
+                </a>
+                <a href="{% url 'home' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
+                    Explore All APIs
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fundamental Data Categories -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Comprehensive Fundamental Data Coverage</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Access complete fundamental data for in-depth financial analysis and investment research. 
+                    Our API provides all the financial statements, ratios, and metrics you need for comprehensive company analysis.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Financial Statements -->
+                <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+                    <div class="text-blue-400 text-4xl mb-4">📊</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Financial Statements API</h3>
+                    <p class="text-gray-400 mb-6">
+                        Complete financial statements including income statements, balance sheets, and cash flow statements. 
+                        Quarterly and annual data with historical coverage going back 10+ years.
+                    </p>
+                    <ul class="text-gray-300 space-y-2 mb-6">
+                        <li>• Income Statement (P&L) data</li>
+                        <li>• Balance Sheet information</li>
+                        <li>• Cash Flow Statement details</li>
+                        <li>• Quarterly and annual reporting</li>
+                        <li>• Historical data (10+ years)</li>
+                        <li>• Real-time updates on filing</li>
+                        <li>• GAAP and non-GAAP metrics</li>
+                        <li>• JSON and CSV format output</li>
+                    </ul>
+                    <div class="bg-gray-600 p-4 rounded-lg">
+                        <h4 class="text-sm font-semibold text-blue-400 mb-2">Key Endpoints:</h4>
+                        <div class="text-xs text-gray-300 space-y-1">
+                            <div>• /fundamentals/{symbol}/income-statement</div>
+                            <div>• /fundamentals/{symbol}/balance-sheet</div>
+                            <div>• /fundamentals/{symbol}/cash-flow</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Ratios -->
+                <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+                    <div class="text-green-400 text-4xl mb-4">📈</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Financial Ratios API</h3>
+                    <p class="text-gray-400 mb-6">
+                        Comprehensive financial ratios for profitability, liquidity, efficiency, and leverage analysis. 
+                        Pre-calculated ratios and custom ratio calculation capabilities.
+                    </p>
+                    <ul class="text-gray-300 space-y-2 mb-6">
+                        <li>• Profitability ratios (ROE, ROA, margins)</li>
+                        <li>• Liquidity ratios (current, quick, cash)</li>
+                        <li>• Efficiency ratios (turnover, cycles)</li>
+                        <li>• Leverage ratios (debt-to-equity, coverage)</li>
+                        <li>• Valuation ratios (P/E, P/B, P/S)</li>
+                        <li>• Growth ratios and trends</li>
+                        <li>• TTM (Trailing Twelve Months) data</li>
+                        <li>• Industry comparison metrics</li>
+                    </ul>
+                    <div class="bg-gray-600 p-4 rounded-lg">
+                        <h4 class="text-sm font-semibold text-green-400 mb-2">Key Endpoints:</h4>
+                        <div class="text-xs text-gray-300 space-y-1">
+                            <div>• /fundamentals/{symbol}/ratios</div>
+                            <div>• /fundamentals/{symbol}/ratios-ttm</div>
+                            <div>• /fundamentals/{symbol}/efficiency-ratios</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valuation & DCF -->
+                <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+                    <div class="text-yellow-400 text-4xl mb-4">💎</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Valuation & DCF Analysis API</h3>
+                    <p class="text-gray-400 mb-6">
+                        Advanced valuation metrics including DCF analysis, enterprise value calculations, 
+                        and comprehensive valuation models for investment decision making.
+                    </p>
+                    <ul class="text-gray-300 space-y-2 mb-6">
+                        <li>• Discounted Cash Flow (DCF) models</li>
+                        <li>• Enterprise Value calculations</li>
+                        <li>• Market capitalization data</li>
+                        <li>• Price-to-value ratios</li>
+                        <li>• Fair value estimates</li>
+                        <li>• Valuation multiples</li>
+                        <li>• Peer comparison values</li>
+                        <li>• Historical valuation trends</li>
+                    </ul>
+                    <div class="bg-gray-600 p-4 rounded-lg">
+                        <h4 class="text-sm font-semibold text-yellow-400 mb-2">Key Endpoints:</h4>
+                        <div class="text-xs text-gray-300 space-y-1">
+                            <div>• /valuation/{symbol}/dcf</div>
+                            <div>• /valuation/{symbol}/enterprise-value</div>
+                            <div>• /valuation/{symbol}/multiples</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+                    <div class="text-purple-400 text-4xl mb-4">🔍</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Key Financial Metrics API</h3>
+                    <p class="text-gray-400 mb-6">
+                        Essential financial metrics and KPIs for quick company assessment. 
+                        Pre-calculated metrics that provide instant insights into company performance.
+                    </p>
+                    <ul class="text-gray-300 space-y-2 mb-6">
+                        <li>• Revenue and earnings metrics</li>
+                        <li>• Margin analysis (gross, operating, net)</li>
+                        <li>• Return metrics (ROE, ROA, ROIC)</li>
+                        <li>• Debt and leverage metrics</li>
+                        <li>• Efficiency indicators</li>
+                        <li>• Per-share metrics</li>
+                        <li>• Growth rates and trends</li>
+                        <li>• Quality scores and rankings</li>
+                    </ul>
+                    <div class="bg-gray-600 p-4 rounded-lg">
+                        <h4 class="text-sm font-semibold text-purple-400 mb-2">Key Endpoints:</h4>
+                        <div class="text-xs text-gray-300 space-y-1">
+                            <div>• /fundamentals/{symbol}/metrics</div>
+                            <div>• /fundamentals/{symbol}/kpis</div>
+                            <div>• /fundamentals/{symbol}/quality-score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Growth Analysis -->
+                <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+                    <div class="text-red-400 text-4xl mb-4">📊</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Growth Analysis API</h3>
+                    <p class="text-gray-400 mb-6">
+                        Comprehensive growth metrics and trend analysis for revenue, earnings, and key financial indicators. 
+                        Historical growth patterns and future growth projections.
+                    </p>
+                    <ul class="text-gray-300 space-y-2 mb-6">
+                        <li>• Revenue growth rates (YoY, QoQ)</li>
+                        <li>• Earnings growth analysis</li>
+                        <li>• Dividend growth tracking</li>
+                        <li>• Book value growth</li>
+                        <li>• Operating metrics growth</li>
+                        <li>• Multi-year CAGR calculations</li>
+                        <li>• Growth consistency scores</li>
+                        <li>• Seasonal adjustment factors</li>
+                    </ul>
+                    <div class="bg-gray-600 p-4 rounded-lg">
+                        <h4 class="text-sm font-semibold text-red-400 mb-2">Key Endpoints:</h4>
+                        <div class="text-xs text-gray-300 space-y-1">
+                            <div>• /fundamentals/{symbol}/growth</div>
+                            <div>• /fundamentals/{symbol}/growth-trends</div>
+                            <div>• /fundamentals/{symbol}/cagr</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Profile -->
+                <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+                    <div class="text-orange-400 text-4xl mb-4">🏢</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Company Profile API</h3>
+                    <p class="text-gray-400 mb-6">
+                        Detailed company information including business descriptions, industry classifications, 
+                        key personnel, and corporate structure data.
+                    </p>
+                    <ul class="text-gray-300 space-y-2 mb-6">
+                        <li>• Company overview and description</li>
+                        <li>• Industry and sector classification</li>
+                        <li>• Key executives and management</li>
+                        <li>• Corporate structure details</li>
+                        <li>• Business segment breakdown</li>
+                        <li>• Geographic revenue split</li>
+                        <li>• Peer company identification</li>
+                        <li>• Company contact information</li>
+                    </ul>
+                    <div class="bg-gray-600 p-4 rounded-lg">
+                        <h4 class="text-sm font-semibold text-orange-400 mb-2">Key Endpoints:</h4>
+                        <div class="text-xs text-gray-300 space-y-1">
+                            <div>• /reference/ticker/{symbol}/profile</div>
+                            <div>• /reference/ticker/{symbol}/executives</div>
+                            <div>• /reference/ticker/{symbol}/peers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Features -->
+    <div class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Professional Fundamental Data Features</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Built for financial professionals, researchers, and developers who need reliable, 
+                    comprehensive fundamental data for analysis and applications.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-blue-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Complete Statements</h3>
+                    <p class="text-gray-400 text-sm">Full income statements, balance sheets, and cash flow statements with 10+ years of history</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Pre-calculated Ratios</h3>
+                    <p class="text-gray-400 text-sm">Comprehensive financial ratios for profitability, liquidity, efficiency, and leverage analysis</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-yellow-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">DCF Valuation</h3>
+                    <p class="text-gray-400 text-sm">Advanced discounted cash flow models and enterprise value calculations for valuation analysis</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="h-8 w-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Real-time Updates</h3>
+                    <p class="text-gray-400 text-sm">Automatic updates when new financial reports are filed, ensuring access to latest data</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Fundamental Analysis Use Cases</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Our fundamental data API enables comprehensive financial analysis for various professional applications
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="text-3xl mb-4">📊</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Investment Research</h3>
+                    <p class="text-gray-400 mb-4">
+                        Build comprehensive investment research platforms with detailed fundamental analysis, 
+                        valuation models, and comparative analysis tools.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Stock screening and filtering</li>
+                        <li>• DCF valuation models</li>
+                        <li>• Peer comparison analysis</li>
+                        <li>• Financial trend analysis</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="text-3xl mb-4">🏦</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Portfolio Management</h3>
+                    <p class="text-gray-400 mb-4">
+                        Create sophisticated portfolio management tools with fundamental-based position sizing, 
+                        risk assessment, and performance attribution.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Fundamental-based screening</li>
+                        <li>• Risk factor analysis</li>
+                        <li>• Performance attribution</li>
+                        <li>• Portfolio optimization</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="text-3xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Quantitative Strategy</h3>
+                    <p class="text-gray-400 mb-4">
+                        Develop quantitative trading strategies based on fundamental factors, 
+                        financial ratios, and growth metrics for systematic investing.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Factor-based models</li>
+                        <li>• Quality scoring systems</li>
+                        <li>• Value investing algorithms</li>
+                        <li>• Growth momentum strategies</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="text-3xl mb-4">🎓</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Financial Education</h3>
+                    <p class="text-gray-400 mb-4">
+                        Build educational platforms teaching fundamental analysis with real financial data, 
+                        interactive calculators, and learning modules.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Interactive financial calculators</li>
+                        <li>• Educational case studies</li>
+                        <li>• Real-time learning modules</li>
+                        <li>• Financial ratio tutorials</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="text-3xl mb-4">📱</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Investment Apps</h3>
+                    <p class="text-gray-400 mb-4">
+                        Power mobile investment applications with comprehensive fundamental data, 
+                        company analysis, and investment recommendation engines.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Mobile investment platforms</li>
+                        <li>• Company analysis tools</li>
+                        <li>• Investment recommendations</li>
+                        <li>• Financial health scores</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="text-3xl mb-4">🏢</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Enterprise Solutions</h3>
+                    <p class="text-gray-400 mb-4">
+                        Create enterprise-grade financial analysis tools for institutional investors, 
+                        fund managers, and corporate finance teams.
+                    </p>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Institutional research platforms</li>
+                        <li>• Risk management systems</li>
+                        <li>• Corporate finance tools</li>
+                        <li>• Regulatory reporting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sample API Response -->
+    <div class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Sample API Response</h2>
+                <p class="text-lg text-gray-400">
+                    Example of fundamental data API response for comprehensive financial analysis
+                </p>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-8">
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-white">GET /fundamentals/AAPL/income-statement</h3>
+                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">200 OK</span>
+                    </div>
+                </div>
+                
+                <pre class="bg-gray-900 text-gray-300 p-6 rounded-lg overflow-x-auto text-sm"><code>{
+  "status": "success",
+  "data": {
+    "symbol": "AAPL",
+    "company_name": "Apple Inc.",
+    "fiscal_year": 2023,
+    "quarter": "Q4",
+    "period_ending": "2023-09-30",
+    "currency": "USD",
+    "income_statement": {
+      "revenue": 383285000000,
+      "gross_profit": 169148000000,
+      "operating_income": 114301000000,
+      "net_income": 96995000000,
+      "eps_basic": 6.16,
+      "eps_diluted": 6.13,
+      "shares_outstanding_basic": 15744231000,
+      "shares_outstanding_diluted": 15812547000
+    },
+    "margins": {
+      "gross_margin": 0.441,
+      "operating_margin": 0.298,
+      "net_margin": 0.253
+    },
+    "growth_rates": {
+      "revenue_growth_yoy": -0.028,
+      "net_income_growth_yoy": -0.132,
+      "eps_growth_yoy": -0.125
+    }
+  },
+  "metadata": {
+    "timestamp": "2024-01-15T10:30:00Z",
+    "data_source": "SEC filings",
+    "last_updated": "2023-11-02T16:30:00Z"
+  }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Integration Guide -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Easy Integration</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Get started with our fundamental data API using simple REST endpoints and comprehensive documentation
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-700 p-8 rounded-lg">
+                    <h3 class="text-2xl font-bold text-white mb-6">Python Example</h3>
+                    <pre class="bg-gray-900 text-gray-300 p-6 rounded-lg overflow-x-auto text-sm"><code>import requests
+
+# Get income statement data
+url = "https://api.dadosfinanceiros.com.br/fundamentals/AAPL/income-statement"
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+data = response.json()
+
+# Extract key metrics
+revenue = data['data']['income_statement']['revenue']
+net_income = data['data']['income_statement']['net_income']
+eps = data['data']['income_statement']['eps_diluted']
+
+print(f"Revenue: ${revenue:,}")
+print(f"Net Income: ${net_income:,}")
+print(f"EPS: ${eps}")
+</code></pre>
+                </div>
+
+                <div class="bg-gray-700 p-8 rounded-lg">
+                    <h3 class="text-2xl font-bold text-white mb-6">JavaScript Example</h3>
+                    <pre class="bg-gray-900 text-gray-300 p-6 rounded-lg overflow-x-auto text-sm"><code>// Fetch fundamental data
+const getFundamentals = async (symbol) => {
+  const response = await fetch(
+    `https://api.dadosfinanceiros.com.br/fundamentals/${symbol}/metrics`,
+    {
+      headers: {
+        'Authorization': 'Bearer YOUR_API_KEY'
+      }
+    }
+  );
+  
+  const data = await response.json();
+  
+  // Calculate key ratios
+  const pe_ratio = data.data.valuation.pe_ratio;
+  const roe = data.data.profitability.return_on_equity;
+  const debt_ratio = data.data.leverage.debt_to_equity;
+  
+  console.log(`P/E Ratio: ${pe_ratio}`);
+  console.log(`ROE: ${roe}%`);
+  console.log(`Debt/Equity: ${debt_ratio}`);
+};
+
+getFundamentals('AAPL');
+</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white mb-4">Start Building with Fundamental Data</h2>
+            <p class="text-lg text-gray-400 mb-8">
+                Join our waiting list to get early access to comprehensive fundamental data API 
+                when we launch in July 2025. Build better investment applications with reliable financial data.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
+                    Join Waiting List for Early Access
+                </a>
+                <a href="{% url 'api_comparison' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition duration-200">
+                    Compare Financial APIs
+                </a>
+            </div>
+            <p class="text-sm text-gray-500 mt-6">
+                Free tier available • 1000 daily API calls • Comprehensive documentation
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -116,13 +116,69 @@
                         </a>
                     </div>
                     <div class="hidden md:ml-6 md:flex md:space-x-8">
-                        <a href="{% url 'home' %}#features" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Features</a>
-                        <a href="/stock-market-api/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Stock API</a>
+                        <!-- API Endpoints Dropdown -->
+                        <div class="relative group">
+                            <button class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center">
+                                API Endpoints
+                                <svg class="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            
+                            <!-- Dropdown Menu -->
+                            <div class="absolute left-0 mt-1 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                <div class="p-4 grid grid-cols-2 gap-4">
+                                    <!-- Market Data Column -->
+                                    <div>
+                                        <h4 class="text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-2">Market Data</h4>
+                                        <div class="space-y-1">
+                                            <a href="{% url 'stock_market_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Stock Market</a>
+                                            <a href="{% url 'forex_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Forex</a>
+                                            <a href="{% url 'crypto_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Cryptocurrency</a>
+                                            <a href="{% url 'options_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Options</a>
+                                            <a href="{% url 'indices_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Indices</a>
+                                            <a href="{% url 'futures_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Futures</a>
+                                            <a href="{% url 'commodities_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Commodities</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Analysis & Data Column -->
+                                    <div>
+                                        <h4 class="text-green-400 font-semibold text-xs uppercase tracking-wider mb-2">Analysis & Data</h4>
+                                        <div class="space-y-1">
+                                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Fundamentals</a>
+                                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Technical Analysis</a>
+                                            <a href="{% url 'earnings_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Earnings</a>
+                                            <a href="{% url 'news_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">News & Sentiment</a>
+                                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Economic Data</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Bottom section -->
+                                <div class="border-t border-gray-700 px-4 py-3">
+                                    <a href="{% url 'home' %}#features" class="text-indigo-400 hover:text-indigo-300 text-sm font-medium">
+                                        View All 104+ Endpoints →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="/api/docs/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">API Docs</a>
                         <a href="/faq/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
                         <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none focus:text-white">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
                     {% if user.is_authenticated %}
                         <a href="{% url 'profile' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Profile</a>
                         <a href="{% url 'logout' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
@@ -131,6 +187,61 @@
                         <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Join Waiting List</a>
                     {% endif %}
                 </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu, hidden by default -->
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <!-- API Endpoints Mobile Section -->
+                <div class="mobile-dropdown">
+                    <button id="mobile-api-toggle" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center justify-between">
+                        API Endpoints
+                        <svg class="h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="mobile-api-menu" class="hidden pl-4 space-y-1 bg-gray-800 rounded mt-1">
+                        <!-- Market Data -->
+                        <div class="py-2">
+                            <div class="text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-2">Market Data</div>
+                            <a href="{% url 'stock_market_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Stock Market</a>
+                            <a href="{% url 'forex_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Forex</a>
+                            <a href="{% url 'crypto_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Cryptocurrency</a>
+                            <a href="{% url 'options_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Options</a>
+                            <a href="{% url 'indices_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Indices</a>
+                            <a href="{% url 'futures_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Futures</a>
+                            <a href="{% url 'commodities_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Commodities</a>
+                        </div>
+                        <!-- Analysis & Data -->
+                        <div class="py-2 border-t border-gray-600">
+                            <div class="text-green-400 font-semibold text-xs uppercase tracking-wider mb-2">Analysis & Data</div>
+                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Fundamentals</a>
+                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Technical Analysis</a>
+                            <a href="{% url 'earnings_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Earnings</a>
+                            <a href="{% url 'news_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">News & Sentiment</a>
+                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Economic Data</a>
+                        </div>
+                        <div class="border-t border-gray-600 pt-2">
+                            <a href="{% url 'home' %}#features" class="text-indigo-400 hover:text-indigo-300 text-sm font-medium block px-2">
+                                View All 104+ Endpoints →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="/api/docs/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">API Docs</a>
+                <a href="/faq/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+                <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pricing</a>
+                
+                <!-- Mobile Auth Links -->
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Profile</a>
+                    <a href="{% url 'logout' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Login</a>
+                    <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 block px-3 py-2 rounded-md text-base font-medium">Join Waiting List</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -146,9 +257,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Company Info -->
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Financial Data API</h3>
+                    <h3 class="text-white font-semibold mb-4">Comprehensive Financial Data API</h3>
                     <p class="text-gray-400 text-sm mb-4">
-                        Professional financial market data API for stocks, forex, cryptocurrencies, and more.
+                        Professional financial data API with 104+ endpoints across 22 categories including market data, fundamentals, news, earnings, SEC filings, technical indicators, and more.
                     </p>
                     <div class="text-gray-400 text-sm">
                         Contact: <a href="mailto:talk@financialdata.online" class="text-indigo-400 hover:text-indigo-300">talk@financialdata.online</a>
@@ -157,13 +268,14 @@
                 
                 <!-- Quick Links -->
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+                    <h3 class="text-white font-semibold mb-4">API Categories</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white">Home</a></li>
-                        <li><a href="/stock-market-api/" class="text-gray-400 hover:text-white">Stock Market API</a></li>
-                        <li><a href="{% url 'plans' %}" class="text-gray-400 hover:text-white">Pricing</a></li>
-                        <li><a href="/faq/" class="text-gray-400 hover:text-white">FAQ</a></li>
-                        <li><a href="{% url 'waiting_list' %}" class="text-gray-400 hover:text-white">Join Waiting List</a></li>
+                        <li><a href="{% url 'home' %}#features" class="text-gray-400 hover:text-white">All 22 Categories</a></li>
+                        <li><a href="/api/docs/" class="text-gray-400 hover:text-white">API Documentation</a></li>
+                        <li><a href="/market-data-api/" class="text-gray-400 hover:text-white">Market Data API</a></li>
+                        <li><a href="/fundamentals-api/" class="text-gray-400 hover:text-white">Fundamentals API</a></li>
+                        <li><a href="/options-api/" class="text-gray-400 hover:text-white">Options API</a></li>
+                        <li><a href="{% url 'plans' %}" class="text-gray-400 hover:text-white">Pricing Plans</a></li>
                     </ul>
                 </div>
                 
@@ -326,8 +438,38 @@
             }
         }
 
-        // Initialize page
+        // Mobile menu functionality
         document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileApiToggle = document.getElementById('mobile-api-toggle');
+            const mobileApiMenu = document.getElementById('mobile-api-menu');
+            
+            // Toggle mobile menu
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Toggle mobile API submenu
+            if (mobileApiToggle && mobileApiMenu) {
+                mobileApiToggle.addEventListener('click', function() {
+                    mobileApiMenu.classList.toggle('hidden');
+                    const svg = mobileApiToggle.querySelector('svg');
+                    if (svg) {
+                        svg.classList.toggle('rotate-180');
+                    }
+                });
+            }
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (mobileMenu && mobileMenuButton && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
             // Add any global initialization here
             console.log('Financial Data API - Frontend Loaded');
         });

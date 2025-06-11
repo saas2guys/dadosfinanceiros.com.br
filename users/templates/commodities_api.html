@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block title %}Commodities API 2025 - Part of 104+ Endpoint Financial Data Platform | 4 Commodities Data Endpoints{% endblock %}
+
+{% block meta_description %}Professional commodities API with 4 commodities data endpoints, part of our comprehensive 104+ endpoint financial data platform launching July 2025. Metals, energy, agriculture. 25-60% cheaper than competitors.{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-yellow-900 via-gray-900 to-black py-20">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-yellow-900 border border-yellow-700">
+                <span class="text-sm font-medium text-yellow-300">🚀 Commodities API: 4 Commodities Data Endpoints - Part of Comprehensive 104+ Endpoint Platform Launching July 2025</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                Commodities API: 4 Commodities Data Endpoints
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                Professional commodities data API with 4 specialized endpoints covering metals, energy, agriculture, and historical data.
+                Part of our comprehensive 104+ endpoint financial data platform launching July 2025. 
+                Perfect for commodity trading, portfolio diversification, and macroeconomic analysis.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="{% url 'waiting_list' %}" class="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Join Waiting List - Priority Access
+                </a>
+                <a href="{% url 'api_comparison' %}" class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors border border-gray-600">
+                    Compare APIs
+                </a>
+            </div>
+            
+            <!-- Key metrics -->
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-yellow-400">4 Endpoints</div>
+                    <div class="text-sm text-gray-400">Commodities Data</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-yellow-400">104+ Total</div>
+                    <div class="text-sm text-gray-400">Complete Platform</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-yellow-400">25-60%</div>
+                    <div class="text-sm text-gray-400">Cheaper Than Competitors</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-yellow-400">July 2025</div>
+                    <div class="text-sm text-gray-400">Launch Date</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Endpoints Section -->
+    <div class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">4 Commodities Data Endpoints</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Complete commodities data: Metals, Energy, Agriculture, and Historical prices
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Precious Metals</h3>
+                    <p class="text-gray-700 mb-4">GET /commodities/metals - Real-time prices for gold, silver, platinum, and other precious metals.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Gold</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Silver</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Platinum</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Track precious metals prices for hedging and investment portfolio allocation.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Energy Commodities</h3>
+                    <p class="text-gray-700 mb-4">GET /commodities/energy - Real-time prices for crude oil, natural gas, and energy commodities.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Crude Oil</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Natural Gas</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Gasoline</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Monitor energy prices for macroeconomic analysis and sector investment decisions.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Agricultural Commodities</h3>
+                    <p class="text-gray-700 mb-4">GET /commodities/agriculture - Prices for wheat, corn, soybeans, and agricultural products.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Wheat</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Corn</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Soybeans</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Track agricultural prices for food sector analysis and commodity trading strategies.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Historical Commodities Data</h3>
+                    <p class="text-gray-700 mb-4">GET /commodities/{symbol}/historical - Historical price data for backtesting and analysis.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Historical</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Backtesting</span>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Trends</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Access historical commodities data for quantitative analysis and strategy development.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Integration Section -->
+    <div class="py-20 bg-gray-900 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-6">Part of Our Comprehensive Financial Data Platform</h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    Our Commodities API with 4 specialized endpoints is part of a comprehensive 104+ endpoint financial data platform 
+                    covering 22+ categories. Access commodities data alongside all other financial data types in one unified platform.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+                <div class="bg-gray-800 p-4 rounded-lg text-center border border-gray-700">
+                    <div class="text-amber-400 font-bold text-lg">🛒 Futures (3)</div>
+                    <div class="text-gray-400 text-sm">Derivatives</div>
+                </div>
+                <div class="bg-yellow-600 p-4 rounded-lg text-center border border-yellow-500">
+                    <div class="text-white font-bold text-lg">🌾 Commodities (4)</div>
+                    <div class="text-yellow-100 text-sm">Current Category</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center border border-gray-700">
+                    <div class="text-gray-400 font-bold text-lg">🌍 Economic (5)</div>
+                    <div class="text-gray-400 text-sm">Macro Data</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center border border-gray-700">
+                    <div class="text-blue-400 font-bold text-lg">💱 Forex (4)</div>
+                    <div class="text-gray-400 text-sm">Currencies</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-gray-400 mb-6">Plus: Market Data (13), Technical Analysis (8), Fundamentals (8), News (5), and more!</p>
+                <a href="{% url 'waiting_list' %}" class="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                    Get Access to Complete Platform
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 bg-yellow-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Build with Commodities Data?</h2>
+            <p class="text-xl text-yellow-100 mb-8 max-w-3xl mx-auto">
+                Join our waiting list for priority access to the Commodities API and complete 104+ endpoint platform. 
+                Launching July 2025 with competitive pricing and comprehensive documentation.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <a href="{% url 'waiting_list' %}" class="bg-white hover:bg-gray-100 text-yellow-900 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Join Waiting List
+                </a>
+                <a href="{% url 'faq' %}" class="border border-white hover:bg-white hover:text-yellow-900 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Learn More
+                </a>
+            </div>
+            
+            <div class="text-yellow-200">
+                <p class="mb-2">🚀 <strong>Launching July 2025</strong> | 💰 <strong>25-60% cheaper than competitors</strong></p>
+                <p>🔄 <strong>Free tier available</strong> | 📚 <strong>Comprehensive documentation</strong></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

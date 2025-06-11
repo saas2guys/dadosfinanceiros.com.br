@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block title %}Technical Analysis API 2025 - Part of 104+ Endpoint Financial Data Platform | 8 Technical Indicators Endpoints{% endblock %}
+
+{% block meta_description %}Professional technical analysis API with 8 indicator endpoints, part of our comprehensive 104+ endpoint financial data platform launching July 2025. SMA, EMA, RSI, MACD, Bollinger Bands. 25-60% cheaper than competitors.{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-violet-900 via-gray-900 to-black py-20">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-violet-900 border border-violet-700">
+                <span class="text-sm font-medium text-violet-300">🚀 Technical Analysis API: 8 Indicator Endpoints - Part of Comprehensive 104+ Endpoint Platform Launching July 2025</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                Technical Analysis API: 8 Indicator Endpoints
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                Professional technical analysis API with 8 specialized indicator endpoints including SMA, EMA, RSI, MACD, Bollinger Bands, and more.
+                Part of our comprehensive 104+ endpoint financial data platform launching July 2025. 
+                Perfect for algorithmic trading, chart analysis, and technical strategy development.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="{% url 'waiting_list' %}" class="bg-violet-600 hover:bg-violet-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Join Waiting List - Priority Access
+                </a>
+                <a href="{% url 'api_comparison' %}" class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors border border-gray-600">
+                    Compare APIs
+                </a>
+            </div>
+            
+            <!-- Key metrics -->
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-violet-400">8 Endpoints</div>
+                    <div class="text-sm text-gray-400">Technical Indicators</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-violet-400">104+ Total</div>
+                    <div class="text-sm text-gray-400">Complete Platform</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-violet-400">25-60%</div>
+                    <div class="text-sm text-gray-400">Cheaper Than Competitors</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-violet-400">July 2025</div>
+                    <div class="text-sm text-gray-400">Launch Date</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Endpoints Section -->
+    <div class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">8 Technical Indicator Endpoints</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Complete suite of technical indicators: SMA, EMA, RSI, MACD, Bollinger Bands, Stochastic, ADX, Williams %R
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">SMA - Simple Moving Average</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/sma - Basic trend identification and support/resistance levels.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">Trend Analysis</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">EMA - Exponential Moving Average</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/ema - Responsive trend analysis with recent price emphasis.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">Responsive</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">RSI - Relative Strength Index</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/rsi - Momentum oscillator for overbought/oversold conditions.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">Momentum</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">MACD - Moving Average Convergence Divergence</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/macd - Trend and momentum with signal crossovers.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">Crossovers</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Bollinger Bands</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/bollinger-bands - Volatility and price channel analysis.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">Volatility</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Stochastic Oscillator</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/stochastic - Momentum analysis with %K and %D lines.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">%K %D</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">ADX - Average Directional Index</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/adx - Trend strength and directional movement.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">Trend Strength</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Williams %R</h3>
+                    <p class="text-gray-700 mb-4">GET /technical/{symbol}/williams-r - Momentum and reversal signals.</p>
+                    <span class="px-2 py-1 bg-violet-100 text-violet-800 text-xs rounded">Reversal</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Integration Section -->
+    <div class="py-20 bg-gray-900 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-6">Part of Our Comprehensive Financial Data Platform</h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    Our Technical Analysis API with 8 specialized endpoints is part of a comprehensive 104+ endpoint financial data platform 
+                    covering 22+ categories. Access technical indicators alongside all other financial data types in one unified platform.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+                <div class="bg-gray-800 p-4 rounded-lg text-center border border-gray-700">
+                    <div class="text-green-400 font-bold text-lg">📈 Market (13)</div>
+                    <div class="text-gray-400 text-sm">Real-time Quotes</div>
+                </div>
+                <div class="bg-violet-600 p-4 rounded-lg text-center border border-violet-500">
+                    <div class="text-white font-bold text-lg">📊 Technical (8)</div>
+                    <div class="text-violet-100 text-sm">Current Category</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center border border-gray-700">
+                    <div class="text-indigo-400 font-bold text-lg">💼 Fundamentals (8)</div>
+                    <div class="text-gray-400 text-sm">Financial Statements</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center border border-gray-700">
+                    <div class="text-orange-400 font-bold text-lg">📰 News (5)</div>
+                    <div class="text-gray-400 text-sm">Sentiment</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-gray-400 mb-6">Plus: Options (5), Futures (3), Earnings (5), Economic Data (5), Crypto (3), Forex (4), and more!</p>
+                <a href="{% url 'waiting_list' %}" class="bg-violet-600 hover:bg-violet-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                    Get Access to Complete Platform
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 bg-violet-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Build with Technical Analysis?</h2>
+            <p class="text-xl text-violet-100 mb-8 max-w-3xl mx-auto">
+                Join our waiting list for priority access to the Technical Analysis API and complete 104+ endpoint platform. 
+                Launching July 2025 with competitive pricing and comprehensive documentation.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <a href="{% url 'waiting_list' %}" class="bg-white hover:bg-gray-100 text-violet-900 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Join Waiting List
+                </a>
+                <a href="{% url 'faq' %}" class="border border-white hover:bg-white hover:text-violet-900 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Learn More
+                </a>
+            </div>
+            
+            <div class="text-violet-200">
+                <p class="mb-2">🚀 <strong>Launching July 2025</strong> | 💰 <strong>25-60% cheaper than competitors</strong></p>
+                <p>🔄 <strong>Free tier available</strong> | 📚 <strong>Comprehensive documentation</strong></p>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

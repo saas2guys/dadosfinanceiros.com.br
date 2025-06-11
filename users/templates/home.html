@@ -355,6 +355,179 @@
         </div>
     </div>
 
+    <!-- All API Endpoints Section -->
+    <div class="py-20" id="features">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Complete API Endpoint Coverage</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Comprehensive financial data API with 104+ endpoints across 22 categories. 
+                    Explore all our specialized API endpoints designed for different financial data needs.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Market Data APIs -->
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-indigo-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📈</div>
+                        <h3 class="text-xl font-semibold text-white">Stock Market API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Real-time and historical stock data for American markets with OHLC data, volume, and comprehensive equity analytics.</p>
+                    <a href="{% url 'stock_market_api' %}" class="inline-flex items-center text-indigo-400 hover:text-indigo-300 font-semibold">
+                        Explore Stock API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-green-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">💱</div>
+                        <h3 class="text-xl font-semibold text-white">Forex API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">24/7 forex data for major, minor, and exotic currency pairs with real-time rates and historical data.</p>
+                    <a href="{% url 'forex_api' %}" class="inline-flex items-center text-green-400 hover:text-green-300 font-semibold">
+                        Explore Forex API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-yellow-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">₿</div>
+                        <h3 class="text-xl font-semibold text-white">Cryptocurrency API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">3000+ cryptocurrencies with real-time prices, market cap rankings, and 24/7 coverage.</p>
+                    <a href="{% url 'crypto_api' %}" class="inline-flex items-center text-yellow-400 hover:text-yellow-300 font-semibold">
+                        Explore Crypto API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-purple-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🎯</div>
+                        <h3 class="text-xl font-semibold text-white">Options API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Options contracts data, Greeks, implied volatility, and derivatives analytics for comprehensive options trading.</p>
+                    <a href="{% url 'options_api' %}" class="inline-flex items-center text-purple-400 hover:text-purple-300 font-semibold">
+                        Explore Options API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-blue-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📊</div>
+                        <h3 class="text-xl font-semibold text-white">Indices API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Market indices data including S&P 500, NASDAQ, Dow Jones, and global index components.</p>
+                    <a href="{% url 'indices_api' %}" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold">
+                        Explore Indices API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-red-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🔮</div>
+                        <h3 class="text-xl font-semibold text-white">Futures API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Futures contracts data with commodity, currency, and index futures pricing and analytics.</p>
+                    <a href="{% url 'futures_api' %}" class="inline-flex items-center text-red-400 hover:text-red-300 font-semibold">
+                        Explore Futures API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-yellow-600 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🌾</div>
+                        <h3 class="text-xl font-semibold text-white">Commodities API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Gold, silver, oil, agriculture, and other commodity prices with historical data and market analysis.</p>
+                    <a href="{% url 'commodities_api' %}" class="inline-flex items-center text-yellow-600 hover:text-yellow-500 font-semibold">
+                        Explore Commodities API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-teal-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🏢</div>
+                        <h3 class="text-xl font-semibold text-white">Fundamentals API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Financial statements, ratios, valuations, and company fundamentals for comprehensive analysis.</p>
+                    <a href="{% url 'fundamentals_api' %}" class="inline-flex items-center text-teal-400 hover:text-teal-300 font-semibold">
+                        Explore Fundamentals API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-orange-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📰</div>
+                        <h3 class="text-xl font-semibold text-white">News & Sentiment API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Financial news, market sentiment analysis, and company press releases with AI-powered insights.</p>
+                    <a href="{% url 'news_api' %}" class="inline-flex items-center text-orange-400 hover:text-orange-300 font-semibold">
+                        Explore News API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-violet-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📉</div>
+                        <h3 class="text-xl font-semibold text-white">Technical Analysis API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Technical indicators including SMA, EMA, RSI, MACD, Bollinger Bands, and more for trading analysis.</p>
+                    <a href="{% url 'technical_analysis_api' %}" class="inline-flex items-center text-violet-400 hover:text-violet-300 font-semibold">
+                        Explore Technical API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-pink-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">💰</div>
+                        <h3 class="text-xl font-semibold text-white">Earnings API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Earnings calendars, historical earnings, surprises, and transcripts for fundamental analysis.</p>
+                    <a href="{% url 'earnings_api' %}" class="inline-flex items-center text-pink-400 hover:text-pink-300 font-semibold">
+                        Explore Earnings API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-cyan-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🏛️</div>
+                        <h3 class="text-xl font-semibold text-white">Economic Indicators API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">GDP, inflation, unemployment, interest rates, and other macroeconomic data for market analysis.</p>
+                    <a href="{% url 'economic_indicators_api' %}" class="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-semibold">
+                        Explore Economic API →
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="text-gray-400 mb-6">
+                    These are just the main categories. Each API includes multiple endpoints for comprehensive data access.
+                </p>
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <h4 class="text-xl font-semibold text-white mb-4">104+ Total Endpoints Across 22 Categories</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300">
+                        <div>• Market Data (15+ endpoints)</div>
+                        <div>• Options & Derivatives (12+ endpoints)</div>
+                        <div>• Fundamentals (18+ endpoints)</div>
+                        <div>• Technical Analysis (8+ endpoints)</div>
+                        <div>• News & Sentiment (5+ endpoints)</div>
+                        <div>• Earnings Data (5+ endpoints)</div>
+                        <div>• Economic Indicators (6+ endpoints)</div>
+                        <div>• SEC Filings (8+ endpoints)</div>
+                        <div>• Institutional Data (6+ endpoints)</div>
+                        <div>• Insider Trading (4+ endpoints)</div>
+                        <div>• ETF & Mutual Funds (6+ endpoints)</div>
+                        <div>• Bulk Data Access (5+ endpoints)</div>
+                        <div>• Currency & Forex (6+ endpoints)</div>
+                        <div>• Plus many more...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- API Features Section -->
     <div class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

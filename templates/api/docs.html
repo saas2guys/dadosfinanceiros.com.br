@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}API Documentation{% endblock %}
+{% block title %}Comprehensive Financial Data API Documentation 2025 - 104+ Endpoints Across 22 Categories{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/api_docs.css' %}">
@@ -17,106 +17,279 @@
       <span>API Documentation</span>
     </div>
 
-    <h1>API Documentation</h1>
+    <!-- Coming Soon Notice -->
+    <div class="mb-8 bg-blue-900 border border-blue-700 rounded-lg p-6 text-center">
+        <div class="flex items-center justify-center mb-4">
+            <svg class="h-6 w-6 text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-lg font-semibold text-blue-300">🚀 Comprehensive Financial Data API - Launching July 2025</span>
+        </div>
+        <p class="text-blue-300 mb-4">
+            This documentation covers our upcoming comprehensive financial data API with 104+ endpoints across 22 categories. 
+            Join our waiting list for early access and priority testing.
+        </p>
+        <a href="{% url 'waiting_list' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
+            Join Waiting List for Early Access
+        </a>
+    </div>
+
+    <h1>Comprehensive Financial Data API Documentation</h1>
+    <p class="text-lg text-gray-600 mb-8 max-w-4xl">
+        Complete API reference for our upcoming comprehensive financial data service providing 104+ endpoints across 22 categories. 
+        Access real-time and historical market data for stocks, options, futures, forex, cryptocurrencies, fundamentals, news, 
+        earnings, SEC filings, technical indicators, and more. Designed for developers, analysts, and financial institutions.
+    </p>
 
     <!-- Quick Links -->
   <div class="doc-section">
-      <h2>Quick Links</h2>
+      <h2>API Categories & Quick Links</h2>
+      <p class="text-gray-600 mb-6">
+          Our comprehensive API provides 104+ endpoints organized across 22 distinct categories covering all major financial data types.
+      </p>
       <div class="quick-links-grid">
+        <!-- Core System -->
         <a href="#authentication" class="quick-link-card">
-          <h3 class="quick-link-title">Authentication</h3>
+          <h3 class="quick-link-title">🔐 Authentication</h3>
           <p class="quick-link-description">Get started with API tokens</p>
         </a>
-        <a href="#stocks" class="quick-link-card">
-          <h3 class="quick-link-title">Stocks API</h3>
-          <p class="quick-link-description">Access stock market data</p>
+        
+        <!-- Market Data Categories (22 total) -->
+        <a href="#reference-data" class="quick-link-card">
+          <h3 class="quick-link-title">📋 Reference Data</h3>
+          <p class="quick-link-description">Company profiles, exchanges, market status (8 endpoints)</p>
         </a>
-        <a href="#forex" class="quick-link-card">
-          <h3 class="quick-link-title">Forex API</h3>
-          <p class="quick-link-description">Foreign exchange rates</p>
+        <a href="#market-data" class="quick-link-card">
+          <h3 class="quick-link-title">📈 Market Data</h3>
+          <p class="quick-link-description">Real-time quotes, historical data (13 endpoints)</p>
         </a>
-        <a href="#crypto" class="quick-link-card">
-          <h3 class="quick-link-title">Crypto API</h3>
-          <p class="quick-link-description">Cryptocurrency data</p>
+        <a href="#options-data" class="quick-link-card">
+          <h3 class="quick-link-title">📊 Options Data</h3>
+          <p class="quick-link-description">Options contracts, chains, Greeks (5 endpoints)</p>
         </a>
-        <a href="#options" class="quick-link-card">
-          <h3 class="quick-link-title">Options API</h3>
-          <p class="quick-link-description">Options contracts data</p>
+        <a href="#futures-data" class="quick-link-card">
+          <h3 class="quick-link-title">🛒 Futures Data</h3>
+          <p class="quick-link-description">Futures contracts, snapshots (3 endpoints)</p>
         </a>
-        <a href="#indices" class="quick-link-card">
-          <h3 class="quick-link-title">Indices API</h3>
-          <p class="quick-link-description">Market indices data</p>
+        <a href="#tick-data" class="quick-link-card">
+          <h3 class="quick-link-title">⚡ Tick-level Data</h3>
+          <p class="quick-link-description">Real-time trades, quotes, bars (3 endpoints)</p>
         </a>
-        <a href="#futures" class="quick-link-card">
-          <h3 class="quick-link-title">Futures API</h3>
-          <p class="quick-link-description">Futures contracts data</p>
+        <a href="#fundamental-data" class="quick-link-card">
+          <h3 class="quick-link-title">💼 Fundamental Data</h3>
+          <p class="quick-link-description">Financial statements, ratios, DCF (8 endpoints)</p>
         </a>
-        <a href="#economic-indicators" class="quick-link-card">
-          <h3 class="quick-link-title">Economic Indicators API</h3>
-          <p class="quick-link-description">Real-time economic data</p>
+        <a href="#news-sentiment" class="quick-link-card">
+          <h3 class="quick-link-title">📰 News & Sentiment</h3>
+          <p class="quick-link-description">Stock news, sentiment analysis (5 endpoints)</p>
+        </a>
+        <a href="#analyst-data" class="quick-link-card">
+          <h3 class="quick-link-title">🔍 Analyst Data</h3>
+          <p class="quick-link-description">Estimates, recommendations, targets (4 endpoints)</p>
+        </a>
+        <a href="#earnings-data" class="quick-link-card">
+          <h3 class="quick-link-title">📅 Earnings Data</h3>
+          <p class="quick-link-description">Earnings calendar, transcripts, surprises (4 endpoints)</p>
+        </a>
+        <a href="#corporate-events" class="quick-link-card">
+          <h3 class="quick-link-title">🏢 Corporate Events</h3>
+          <p class="quick-link-description">IPOs, stock splits, dividends (3 endpoints)</p>
+        </a>
+        <a href="#institutional-data" class="quick-link-card">
+          <h3 class="quick-link-title">🏛️ Institutional Data</h3>
+          <p class="quick-link-description">13F filings, institutional holdings (6 endpoints)</p>
+        </a>
+        <a href="#economic-data" class="quick-link-card">
+          <h3 class="quick-link-title">🌍 Economic Data</h3>
+          <p class="quick-link-description">GDP, inflation, unemployment, rates (5 endpoints)</p>
+        </a>
+        <a href="#etf-funds" class="quick-link-card">
+          <h3 class="quick-link-title">📦 ETF & Mutual Funds</h3>
+          <p class="quick-link-description">ETF/fund lists, holdings, performance (4 endpoints)</p>
+        </a>
+        <a href="#commodities" class="quick-link-card">
+          <h3 class="quick-link-title">🥇 Commodities</h3>
+          <p class="quick-link-description">Metals, energy, agriculture (4 endpoints)</p>
+        </a>
+        <a href="#cryptocurrencies" class="quick-link-card">
+          <h3 class="quick-link-title">₿ Cryptocurrencies</h3>
+          <p class="quick-link-description">Crypto prices, historical data (3 endpoints)</p>
+        </a>
+        <a href="#international-markets" class="quick-link-card">
+          <h3 class="quick-link-title">🌐 International Markets</h3>
+          <p class="quick-link-description">Global exchanges, forex rates (4 endpoints)</p>
+        </a>
+        <a href="#sec-filings" class="quick-link-card">
+          <h3 class="quick-link-title">📋 SEC Filings</h3>
+          <p class="quick-link-description">10-K, 10-Q, 8-K filings, RSS feeds (5 endpoints)</p>
+        </a>
+        <a href="#technical-indicators" class="quick-link-card">
+          <h3 class="quick-link-title">📊 Technical Indicators</h3>
+          <p class="quick-link-description">SMA, EMA, RSI, MACD, Bollinger Bands (8 endpoints)</p>
+        </a>
+        <a href="#bulk-data" class="quick-link-card">
+          <h3 class="quick-link-title">📦 Bulk Data</h3>
+          <p class="quick-link-description">EOD prices, bulk fundamentals (3 endpoints)</p>
+        </a>
+        <a href="#forex-data" class="quick-link-card">
+          <h3 class="quick-link-title">💱 Forex Data</h3>
+          <p class="quick-link-description">Currency pairs, 24/7 coverage (4 endpoints)</p>
+        </a>
+        <a href="#indices-data" class="quick-link-card">
+          <h3 class="quick-link-title">📊 Indices Data</h3>
+          <p class="quick-link-description">Market indices, components (3 endpoints)</p>
+        </a>
+        <a href="#system-endpoints" class="quick-link-card">
+          <h3 class="quick-link-title">⚙️ System Endpoints</h3>
+          <p class="quick-link-description">Health checks, docs, batch requests (3 endpoints)</p>
         </a>
         <a href="#rate-limits" class="quick-link-card">
-          <h3 class="quick-link-title">Rate Limits</h3>
-          <p class="quick-link-description">API usage limits</p>
+          <h3 class="quick-link-title">🚦 Rate Limits</h3>
+          <p class="quick-link-description">API usage limits and best practices</p>
         </a>
       </div>
     </div>
 
-    <!-- Data Coverage Summary Section -->
+    <!-- Comprehensive API Overview Section -->
     <div class="doc-section">
-      <h2>Available Data Types</h2>
+      <h2>Comprehensive Financial Data Coverage - 104+ Endpoints Across 22 Categories</h2>
       <div class="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
-        <h4 class="font-semibold text-blue-800 mb-4">American Markets Financial Data Coverage</h4>
+        <h4 class="font-semibold text-blue-800 mb-4">Complete Financial Market Data API</h4>
         <p class="text-blue-700 mb-4">
-          Our API provides comprehensive financial data focused on American markets, designed for developers, analysts, 
-          and financial institutions building applications, custom queries, trading bot training, and strategy backtesting.
+          Our upcoming comprehensive financial data API provides 104+ endpoints organized across 22 distinct categories. 
+          Designed for developers, analysts, and financial institutions building applications, custom queries, 
+          trading bot training, and strategy backtesting. Launching July 2025 with competitive pricing and generous free tier.
         </p>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          <div class="bg-white p-4 rounded-lg border border-blue-200">
-            <h5 class="font-semibold text-blue-800 mb-2">📈 Stocks (American Markets)</h5>
-            <p class="text-blue-700 text-sm">Real-time and historical OHLC data for American stock markets. JSON and CSV formats via API access only.</p>
+        <!-- Core Market Data -->
+        <div class="mb-6">
+          <h5 class="font-semibold text-blue-800 mb-3">🎯 Core Market Data (40+ Endpoints)</h5>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📋 Reference Data (8)</h6>
+              <p class="text-blue-700 text-xs">Company profiles, exchanges, market status, tickers, executives, peers</p>
+          </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📈 Market Data (13)</h6>
+              <p class="text-blue-700 text-xs">Real-time quotes, historical data, gainers/losers, active stocks, batch quotes</p>
+          </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📊 Options Data (5)</h6>
+              <p class="text-blue-700 text-xs">Options contracts, chains, Greeks, open interest, historical options</p>
+          </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">🛒 Futures Data (3)</h6>
+              <p class="text-blue-700 text-xs">Futures contracts, snapshots, historical futures data</p>
+          </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">⚡ Tick-level Data (3)</h6>
+              <p class="text-blue-700 text-xs">Real-time trades, quotes, aggregated bars</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">💱 Forex Data (4)</h6>
+              <p class="text-blue-700 text-xs">Currency pairs, 24/7 coverage, historical forex data</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">₿ Cryptocurrencies (3)</h6>
+              <p class="text-blue-700 text-xs">3000+ crypto prices, historical data, 24/7 coverage</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📊 Indices Data (3)</h6>
+              <p class="text-blue-700 text-xs">Market indices, components, historical performance</p>
+            </div>
+          </div>
           </div>
           
-          <div class="bg-white p-4 rounded-lg border border-blue-200">
-            <h5 class="font-semibold text-blue-800 mb-2">📊 Options Contracts</h5>
-            <p class="text-blue-700 text-sm">Real-time and historical options data with comprehensive contract details and pricing information.</p>
+        <!-- Fundamental & Analysis Data -->
+        <div class="mb-6">
+          <h5 class="font-semibold text-blue-800 mb-3">💼 Fundamental & Analysis Data (35+ Endpoints)</h5>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">💼 Fundamental Data (8)</h6>
+              <p class="text-blue-700 text-xs">Financial statements, ratios, DCF analysis, metrics, growth data</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📰 News & Sentiment (5)</h6>
+              <p class="text-blue-700 text-xs">Stock news, sentiment analysis, press releases</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">🔍 Analyst Data (4)</h6>
+              <p class="text-blue-700 text-xs">Estimates, recommendations, price targets, upgrades/downgrades</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📅 Earnings Data (4)</h6>
+              <p class="text-blue-700 text-xs">Earnings calendar, transcripts, history, surprises</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">🏢 Corporate Events (3)</h6>
+              <p class="text-blue-700 text-xs">IPO calendar, stock splits, dividend calendar</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">🏛️ Institutional Data (6)</h6>
+              <p class="text-blue-700 text-xs">13F filings, institutional holdings, insider trading</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📋 SEC Filings (5)</h6>
+              <p class="text-blue-700 text-xs">10-K, 10-Q, 8-K filings, RSS feeds</p>
+            </div>
+          </div>
           </div>
           
-          <div class="bg-white p-4 rounded-lg border border-blue-200">
-            <h5 class="font-semibold text-blue-800 mb-2">📈 Indices</h5>
-            <p class="text-blue-700 text-sm">Financial indices data with real-time values and historical performance tracking.</p>
-          </div>
-          
-          <div class="bg-white p-4 rounded-lg border border-blue-200">
-            <h5 class="font-semibold text-blue-800 mb-2">🛒 Futures Contracts</h5>
-            <p class="text-blue-700 text-sm">Real-time and historical futures contract data with comprehensive market information.</p>
-          </div>
-          
-          <div class="bg-white p-4 rounded-lg border border-blue-200">
-            <h5 class="font-semibold text-blue-800 mb-2">💱 Forex (24/7)</h5>
-            <p class="text-blue-700 text-sm">Currency pairs with 24/7 market coverage. Real-time and historical OHLC data.</p>
-          </div>
-          
-          <div class="bg-white p-4 rounded-lg border border-blue-200">
-            <h5 class="font-semibold text-blue-800 mb-2">₿ Cryptocurrencies (3000+)</h5>
-            <p class="text-blue-700 text-sm">Over 3000 cryptocurrencies with 24/7 market coverage and comprehensive market data.</p>
-          </div>
-          
-          <div class="bg-white p-4 rounded-lg border border-blue-200">
-            <h5 class="font-semibold text-blue-800 mb-2">📊 Economic Indicators</h5>
-            <p class="text-blue-700 text-sm">Real-time economic data and indicators for comprehensive market analysis.</p>
+        <!-- Economic & Specialized Data -->
+        <div class="mb-6">
+          <h5 class="font-semibold text-blue-800 mb-3">🌍 Economic & Specialized Data (29+ Endpoints)</h5>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">🌍 Economic Data (5)</h6>
+              <p class="text-blue-700 text-xs">GDP, inflation, unemployment, interest rates, treasury rates</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📦 ETF & Mutual Funds (4)</h6>
+              <p class="text-blue-700 text-xs">ETF/fund lists, holdings, performance data</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">🥇 Commodities (4)</h6>
+              <p class="text-blue-700 text-xs">Metals, energy, agriculture, historical commodity prices</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">🌐 International Markets (4)</h6>
+              <p class="text-blue-700 text-xs">Global exchanges, international forex rates, global data</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📊 Technical Indicators (8)</h6>
+              <p class="text-blue-700 text-xs">SMA, EMA, RSI, MACD, Bollinger Bands, Stochastic, ADX, Williams %R</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">📦 Bulk Data (3)</h6>
+              <p class="text-blue-700 text-xs">EOD prices, bulk fundamentals, bulk insider trading</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-blue-200">
+              <h6 class="font-semibold text-blue-800 text-sm mb-1">⚙️ System Endpoints (3)</h6>
+              <p class="text-blue-700 text-xs">Health checks, documentation, batch requests</p>
+            </div>
           </div>
         </div>
         
         <div class="bg-blue-100 p-4 rounded-lg">
-          <h5 class="font-semibold text-blue-800 mb-2">📋 Data Format & Access</h5>
+          <h5 class="font-semibold text-blue-800 mb-2">📋 API Specifications & Access</h5>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
           <ul class="text-blue-700 text-sm list-disc list-inside space-y-1">
-            <li><strong>Formats:</strong> JSON and CSV formats available</li>
-            <li><strong>Access:</strong> API access only - no file downloads</li>
-            <li><strong>Authentication:</strong> Token-based with HTTPS encryption</li>
-            <li><strong>Coverage:</strong> Real-time and historical data with OHLC</li>
+                <li><strong>104+ Endpoints</strong> across 22 comprehensive categories</li>
+                <li><strong>JSON and CSV</strong> formats available</li>
+                <li><strong>API access only</strong> - no file downloads</li>
+                <li><strong>Real-time & historical</strong> data with OHLC</li>
           </ul>
+            </div>
+            <div>
+              <ul class="text-blue-700 text-sm list-disc list-inside space-y-1">
+                <li><strong>Token-based authentication</strong> with HTTPS encryption</li>
+                <li><strong>Rate limiting</strong> and usage monitoring</li>
+                <li><strong>Free tier available</strong> - 1000 daily API calls</li>
+                <li><strong>Professional pricing</strong> - 25-60% cheaper than competitors</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2602,6 +2775,650 @@ curl -X GET "https://api.financialdata.online/v1/crypto/BTC-USD/bars/?interval=1
     ]
 }</div>
           </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Complete Endpoint Reference Section -->
+    <div id="complete-endpoint-reference" class="doc-section">
+      <h2 class="text-2xl font-semibold mb-6">Complete Endpoint Reference - All 104+ Endpoints</h2>
+      
+      <div class="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
+        <h4 class="font-semibold text-blue-800 mb-4">Comprehensive Financial Data API - 22 Categories</h4>
+        <p class="text-blue-700 mb-4">
+          Our comprehensive financial data API provides 104+ endpoints organized across 22 distinct categories, 
+          covering every aspect of financial market data. Each endpoint is designed for professional use, 
+          providing real-time and historical data essential for trading, analysis, and financial applications.
+        </p>
+        <p class="text-blue-700">
+          <strong>Professional Applications:</strong> Algorithmic trading, quantitative analysis, financial modeling, 
+          portfolio management, risk assessment, market surveillance, regulatory reporting, and financial research.
+        </p>
+      </div>
+
+      <!-- Category 1: Reference Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📋 Reference Data (8 Endpoints)</h3>
+          <p class="text-blue-100 mt-2">Company profiles, market status, exchanges, and ticker information</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /reference/tickers</div>
+              <p class="text-sm text-gray-600">Get comprehensive list of all available stock tickers with metadata</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /reference/ticker/{symbol}</div>
+              <p class="text-sm text-gray-600">Get detailed company profile for specific ticker symbol</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /reference/ticker/{symbol}/profile</div>
+              <p class="text-sm text-gray-600">Extended company profile with business description and metrics</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /reference/ticker/{symbol}/executives</div>
+              <p class="text-sm text-gray-600">Company leadership team and key executives information</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /reference/ticker/{symbol}/peers</div>
+              <p class="text-sm text-gray-600">Similar companies and industry peers for comparison analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /reference/exchanges</div>
+              <p class="text-sm text-gray-600">List of all stock exchanges with trading information</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /reference/market-status</div>
+              <p class="text-sm text-gray-600">Real-time market status - open, closed, or pre/after hours</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 2: Market Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-green-600 to-green-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📈 Market Data (13 Endpoints)</h3>
+          <p class="text-green-100 mt-2">Real-time quotes, historical prices, market movers, and trading data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /quotes/{symbol}</div>
+              <p class="text-sm text-gray-600">Real-time stock quote with bid/ask, volume, and market data</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /quotes/batch</div>
+              <p class="text-sm text-gray-600">Multiple stock quotes in single request for portfolio tracking</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /quotes/gainers</div>
+              <p class="text-sm text-gray-600">Top gaining stocks by percentage for market analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /quotes/losers</div>
+              <p class="text-sm text-gray-600">Top losing stocks by percentage for risk monitoring</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /quotes/active</div>
+              <p class="text-sm text-gray-600">Most actively traded stocks by volume</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /historical/{symbol}</div>
+              <p class="text-sm text-gray-600">Historical daily OHLC data for backtesting and analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /historical/{symbol}/intraday</div>
+              <p class="text-sm text-gray-600">Intraday historical data (1min, 5min, 15min, 1hour intervals)</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /historical/{symbol}/splits</div>
+              <p class="text-sm text-gray-600">Stock split history for portfolio adjustment calculations</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-green-800">GET /historical/{symbol}/dividends</div>
+              <p class="text-sm text-gray-600">Dividend payment history for income analysis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 3: Options Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📊 Options Data (5 Endpoints)</h3>
+          <p class="text-purple-100 mt-2">Options contracts, chains, Greeks, and derivatives data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-purple-800">GET /options/contracts</div>
+              <p class="text-sm text-gray-600">List all available options contracts with strike prices and expiration dates</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-purple-800">GET /options/chain/{symbol}</div>
+              <p class="text-sm text-gray-600">Complete options chain for symbol with calls and puts</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-purple-800">GET /options/{symbol}/snapshot</div>
+              <p class="text-sm text-gray-600">Real-time options snapshot with Greeks, volume, and open interest</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-purple-800">GET /options/{contract}/details</div>
+              <p class="text-sm text-gray-600">Detailed information for specific options contract</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-purple-800">GET /options/{contract}/historical</div>
+              <p class="text-sm text-gray-600">Historical options pricing data for volatility analysis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 4: Futures Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">🛒 Futures Data (3 Endpoints)</h3>
+          <p class="text-amber-100 mt-2">Futures contracts, commodities, and derivatives market data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-amber-800">GET /futures/contracts</div>
+              <p class="text-sm text-gray-600">Available futures contracts across commodities, currencies, and indices</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-amber-800">GET /futures/{symbol}/snapshot</div>
+              <p class="text-sm text-gray-600">Real-time futures snapshot with current prices and volume</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-amber-800">GET /futures/{symbol}/historical</div>
+              <p class="text-sm text-gray-600">Historical futures pricing for contract analysis and trading strategies</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 5: Tick-level Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-red-600 to-red-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">⚡ Tick-level Data (3 Endpoints)</h3>
+          <p class="text-red-100 mt-2">High-frequency trade and quote data for algorithmic trading</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-red-800">GET /ticks/{symbol}/trades</div>
+              <p class="text-sm text-gray-600">Real-time trade ticks with timestamp, price, and volume</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-red-800">GET /ticks/{symbol}/quotes</div>
+              <p class="text-sm text-gray-600">Level 1 bid/ask quotes for market making and arbitrage</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-red-800">GET /ticks/{symbol}/aggregates</div>
+              <p class="text-sm text-gray-600">Aggregated bars from tick data with custom timeframes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 6: Fundamental Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">💼 Fundamental Data (8 Endpoints)</h3>
+          <p class="text-indigo-100 mt-2">Financial statements, ratios, and company fundamentals</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /fundamentals/{symbol}/income-statement</div>
+              <p class="text-sm text-gray-600">Quarterly and annual income statements with revenue and profit data</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /fundamentals/{symbol}/balance-sheet</div>
+              <p class="text-sm text-gray-600">Balance sheet data with assets, liabilities, and equity</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /fundamentals/{symbol}/cash-flow</div>
+              <p class="text-sm text-gray-600">Cash flow statements for liquidity and operational analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /fundamentals/{symbol}/ratios</div>
+              <p class="text-sm text-gray-600">Financial ratios including P/E, ROE, debt ratios for valuation</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /fundamentals/{symbol}/metrics</div>
+              <p class="text-sm text-gray-600">Key financial metrics and performance indicators</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /fundamentals/{symbol}/growth</div>
+              <p class="text-sm text-gray-600">Growth rates for revenue, earnings, and other key metrics</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /valuation/{symbol}/dcf</div>
+              <p class="text-sm text-gray-600">Discounted cash flow valuation models and intrinsic value</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-indigo-800">GET /valuation/screener</div>
+              <p class="text-sm text-gray-600">Stock screening based on fundamental criteria and ratios</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 7: News & Sentiment -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-orange-600 to-orange-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📰 News & Sentiment (5 Endpoints)</h3>
+          <p class="text-orange-100 mt-2">Market news, sentiment analysis, and media coverage</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-orange-800">GET /news</div>
+              <p class="text-sm text-gray-600">Latest financial market news across all sectors and companies</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-orange-800">GET /news/{symbol}</div>
+              <p class="text-sm text-gray-600">Company-specific news and press releases for sentiment analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-orange-800">GET /news/sentiment/{symbol}</div>
+              <p class="text-sm text-gray-600">AI-powered sentiment analysis of news articles and social media</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-orange-800">GET /news/press-releases/{symbol}</div>
+              <p class="text-sm text-gray-600">Official company press releases and announcements</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 8: Analyst Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">🔍 Analyst Data (4 Endpoints)</h3>
+          <p class="text-teal-100 mt-2">Professional analyst estimates, recommendations, and price targets</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-teal-800">GET /analysts/{symbol}/estimates</div>
+              <p class="text-sm text-gray-600">Earnings estimates and consensus forecasts from Wall Street analysts</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-teal-800">GET /analysts/{symbol}/recommendations</div>
+              <p class="text-sm text-gray-600">Buy/hold/sell recommendations from major investment banks</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-teal-800">GET /analysts/{symbol}/price-targets</div>
+              <p class="text-sm text-gray-600">Analyst price targets and valuation ranges for investment decisions</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-teal-800">GET /analysts/{symbol}/upgrades-downgrades</div>
+              <p class="text-sm text-gray-600">Recent analyst upgrades and downgrades with rationale</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 9: Earnings Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-pink-600 to-pink-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📅 Earnings Data (5 Endpoints)</h3>
+          <p class="text-pink-100 mt-2">Earnings calendar, reports, transcripts, and historical data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-pink-800">GET /earnings/calendar</div>
+              <p class="text-sm text-gray-600">Upcoming earnings announcements calendar for all companies</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-pink-800">GET /earnings/{symbol}/calendar</div>
+              <p class="text-sm text-gray-600">Company-specific earnings dates and expected announcement times</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-pink-800">GET /earnings/{symbol}/history</div>
+              <p class="text-sm text-gray-600">Historical earnings results with EPS and revenue data</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-pink-800">GET /earnings/{symbol}/surprises</div>
+              <p class="text-sm text-gray-600">Earnings surprises vs estimates for pattern analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-pink-800">GET /earnings/{symbol}/transcripts</div>
+              <p class="text-sm text-gray-600">Earnings call transcripts for detailed company insights</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 10: Economic Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">🌍 Economic Data (5 Endpoints)</h3>
+          <p class="text-gray-100 mt-2">Macroeconomic indicators and government data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-gray-800">GET /economy/gdp</div>
+              <p class="text-sm text-gray-600">GDP data and economic growth indicators for market context</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-gray-800">GET /economy/inflation</div>
+              <p class="text-sm text-gray-600">Consumer Price Index (CPI) and inflation metrics</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-gray-800">GET /economy/unemployment</div>
+              <p class="text-sm text-gray-600">Unemployment rates and labor market statistics</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-gray-800">GET /economy/interest-rates</div>
+              <p class="text-sm text-gray-600">Federal funds rates and central bank policy data</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-gray-800">GET /economy/treasury-rates</div>
+              <p class="text-sm text-gray-600">Treasury bill and bond rates across all maturities</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 11: Forex Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">💱 Forex Data (4 Endpoints)</h3>
+          <p class="text-blue-100 mt-2">Currency exchange rates and foreign exchange market data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /forex/rates</div>
+              <p class="text-sm text-gray-600">Real-time currency exchange rates for major and minor pairs</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /forex/{pair}/historical</div>
+              <p class="text-sm text-gray-600">Historical forex data for currency pair analysis and backtesting</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-blue-800">GET /forex/{pair}/intraday</div>
+              <p class="text-sm text-gray-600">Intraday forex data for short-term trading strategies</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 12: Cryptocurrency Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">₿ Cryptocurrency Data (3 Endpoints)</h3>
+          <p class="text-yellow-100 mt-2">Digital asset prices and blockchain market data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-yellow-800">GET /crypto/prices</div>
+              <p class="text-sm text-gray-600">Real-time cryptocurrency prices for 3000+ digital assets</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-yellow-800">GET /crypto/{symbol}/historical</div>
+              <p class="text-sm text-gray-600">Historical crypto pricing data for portfolio tracking and analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-yellow-800">GET /crypto/{symbol}/intraday</div>
+              <p class="text-sm text-gray-600">Intraday crypto data for active trading and volatility analysis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 13: Indices Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📊 Indices Data (3 Endpoints)</h3>
+          <p class="text-emerald-100 mt-2">Market indices, benchmarks, and index components</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-emerald-800">GET /indices/list</div>
+              <p class="text-sm text-gray-600">Major market indices including S&P 500, NASDAQ, Dow Jones</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-emerald-800">GET /indices/{symbol}/historical</div>
+              <p class="text-sm text-gray-600">Historical index performance for market trend analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-emerald-800">GET /indices/{symbol}/components</div>
+              <p class="text-sm text-gray-600">Index constituent stocks and their weightings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 14: Technical Analysis -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-violet-600 to-purple-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📊 Technical Analysis (8 Endpoints)</h3>
+          <p class="text-violet-100 mt-2">Technical indicators for chart analysis and trading signals</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/sma</div>
+              <p class="text-sm text-gray-600">Simple Moving Average for trend identification</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/ema</div>
+              <p class="text-sm text-gray-600">Exponential Moving Average for responsive trend analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/rsi</div>
+              <p class="text-sm text-gray-600">Relative Strength Index for overbought/oversold conditions</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/macd</div>
+              <p class="text-sm text-gray-600">MACD indicator for momentum and trend changes</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/bollinger-bands</div>
+              <p class="text-sm text-gray-600">Bollinger Bands for volatility and price channel analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/stochastic</div>
+              <p class="text-sm text-gray-600">Stochastic oscillator for momentum analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/adx</div>
+              <p class="text-sm text-gray-600">Average Directional Index for trend strength measurement</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-violet-800">GET /technical/{symbol}/williams-r</div>
+              <p class="text-sm text-gray-600">Williams %R for momentum and reversal signals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 15: SEC Filings -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-slate-600 to-gray-700 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📋 SEC Filings (5 Endpoints)</h3>
+          <p class="text-slate-100 mt-2">Official regulatory filings and corporate disclosures</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-slate-800">GET /sec/{symbol}/filings</div>
+              <p class="text-sm text-gray-600">All SEC filings for comprehensive regulatory analysis</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-slate-800">GET /sec/{symbol}/10k</div>
+              <p class="text-sm text-gray-600">Annual reports (10-K) with complete business overview</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-slate-800">GET /sec/{symbol}/10q</div>
+              <p class="text-sm text-gray-600">Quarterly reports (10-Q) for periodic business updates</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-slate-800">GET /sec/{symbol}/8k</div>
+              <p class="text-sm text-gray-600">Current reports (8-K) for material events and changes</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-slate-800">GET /sec/rss-feed</div>
+              <p class="text-sm text-gray-600">Real-time RSS feed of new SEC filings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 16: Institutional Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">🏛️ Institutional Data (6 Endpoints)</h3>
+          <p class="text-cyan-100 mt-2">Institutional holdings, 13F filings, and insider trading</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-cyan-800">GET /institutional/{symbol}/holdings</div>
+              <p class="text-sm text-gray-600">Institutional ownership and holdings by major funds</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-cyan-800">GET /institutional/{symbol}/13f</div>
+              <p class="text-sm text-gray-600">13F filings showing institutional portfolio changes</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-cyan-800">GET /institutional/funds/{cik}</div>
+              <p class="text-sm text-gray-600">Specific fund holdings by CIK identifier</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-cyan-800">GET /insider/{symbol}/transactions</div>
+              <p class="text-sm text-gray-600">Insider trading transactions and Form 4 filings</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-cyan-800">GET /insider/{symbol}/ownership</div>
+              <p class="text-sm text-gray-600">Insider ownership percentages and stake changes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 17: ETF & Mutual Funds -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-lime-600 to-green-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📦 ETF & Mutual Funds (4 Endpoints)</h3>
+          <p class="text-lime-100 mt-2">Exchange-traded funds and mutual fund data</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-lime-800">GET /etf/list</div>
+              <p class="text-sm text-gray-600">Complete list of ETFs with performance metrics</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-lime-800">GET /etf/{symbol}/holdings</div>
+              <p class="text-sm text-gray-600">ETF holdings and asset allocation breakdown</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-lime-800">GET /funds/list</div>
+              <p class="text-sm text-gray-600">Mutual fund listings with fund family information</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-lime-800">GET /funds/{symbol}/holdings</div>
+              <p class="text-sm text-gray-600">Mutual fund portfolio holdings and top positions</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 18: Commodities -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-amber-600 to-yellow-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">🥇 Commodities (4 Endpoints)</h3>
+          <p class="text-amber-100 mt-2">Precious metals, energy, and agricultural commodity prices</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-amber-800">GET /commodities/metals</div>
+              <p class="text-sm text-gray-600">Gold, silver, platinum prices for portfolio diversification</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-amber-800">GET /commodities/energy</div>
+              <p class="text-sm text-gray-600">Oil, natural gas, energy commodity prices</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-amber-800">GET /commodities/agriculture</div>
+              <p class="text-sm text-gray-600">Agricultural commodity prices including wheat, corn, soybeans</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-amber-800">GET /commodities/{symbol}/historical</div>
+              <p class="text-sm text-gray-600">Historical commodity pricing for trend analysis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 19: Bulk Data -->
+      <div class="mb-8 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gradient-to-r from-stone-600 to-gray-600 text-white p-4 rounded-t-lg">
+          <h3 class="text-xl font-bold">📦 Bulk Data (3 Endpoints)</h3>
+          <p class="text-stone-100 mt-2">Large dataset downloads for institutional analysis</p>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="endpoint-item">
+              <div class="font-semibold text-stone-800">GET /bulk/eod/{date}</div>
+              <p class="text-sm text-gray-600">End-of-day prices for entire market in single request</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-stone-800">GET /bulk/fundamentals/{date}</div>
+              <p class="text-sm text-gray-600">Bulk fundamental data for quantitative screening</p>
+            </div>
+            <div class="endpoint-item">
+              <div class="font-semibold text-stone-800">GET /bulk/insider-trading/{date}</div>
+              <p class="text-sm text-gray-600">Bulk insider trading data for market surveillance</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Integration Summary -->
+      <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-lg">
+        <h3 class="text-xl font-bold mb-4">🚀 Complete API Integration</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold mb-3">📊 Data Coverage</h4>
+            <ul class="text-blue-100 space-y-1 text-sm">
+              <li>✅ 104+ Endpoints across 22 categories</li>
+              <li>✅ Real-time and historical data</li>
+              <li>✅ Professional-grade accuracy</li>
+              <li>✅ Multiple asset classes covered</li>
+              <li>✅ Global market coverage</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-3">⚡ Technical Features</h4>
+            <ul class="text-blue-100 space-y-1 text-sm">
+              <li>✅ JSON and CSV output formats</li>
+              <li>✅ RESTful API design</li>
+              <li>✅ Token-based authentication</li>
+              <li>✅ Rate limiting and monitoring</li>
+              <li>✅ Comprehensive error handling</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-6 p-4 bg-black bg-opacity-20 rounded-lg">
+          <h4 class="font-semibold mb-2">🎯 Launch Details</h4>
+          <p class="text-sm">
+            <strong>Launch Date:</strong> July 2025 | <strong>Pricing:</strong> 25-60% cheaper than competitors | 
+            <strong>Free Tier:</strong> 1,000 daily API calls | <strong>Support:</strong> Professional documentation and examples
+          </p>
         </div>
     </div>
   </div>

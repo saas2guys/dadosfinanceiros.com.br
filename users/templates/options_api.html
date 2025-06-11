@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Options API 2025 - Real-Time Options Contracts Data for Financial Applications{% endblock %}
+{% block title %}Options API 2025 - Part of 104+ Endpoint Financial Data Platform | 5 Options & Derivatives Endpoints{% endblock %}
 
-{% block meta_description %}Professional options API for financial applications launching July 2025. Get real-time options contracts data with comprehensive pricing and analytics. API access only with JSON/CSV formats. Free tier available for developers, analysts, and financial institutions.{% endblock %}
+{% block meta_description %}Professional options API as part of comprehensive financial data platform with 104+ endpoints across 22 categories. Real-time options contracts, chains, Greeks, and derivatives data. Launching July 2025 with 25-60% cheaper pricing than competitors.{% endblock %}
 
-{% block meta_keywords %}options API 2025, real-time options data, options contracts API, options pricing API, implied volatility API, options chain API, financial options data, derivatives API, options analytics API, american options, european options, option Greeks API, strike prices API, expiration dates API, options volume API, put call ratio API{% endblock %}
+{% block meta_keywords %}options API 2025, real-time options data, options contracts API, options pricing API, comprehensive financial data API, 104 endpoints, 22 categories, derivatives API, options analytics API, options chain API, option Greeks API, financial options data{% endblock %}
 
 {% block canonical_url %}https://api.dadosfinanceiros.com.br/options-api/{% endblock %}
 
-{% block og_title %}Options API 2025 - Real-Time Options Contracts Data{% endblock %}
-{% block og_description %}Professional options API for financial applications. Real-time options contracts data with comprehensive pricing information and analytics. Perfect for developers, analysts, and financial institutions.{% endblock %}
+{% block og_title %}Options API 2025 - Part of 104+ Endpoint Financial Data Platform{% endblock %}
+{% block og_description %}Professional options API within comprehensive financial data platform. Real-time options contracts, chains, and derivatives data. 5 options endpoints from 104+ total across 22 categories. Launching July 2025.{% endblock %}
 
 {% block extra_meta %}
 <!-- Advanced SEO Meta Tags -->
@@ -128,28 +128,52 @@
 
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-indigo-900 to-gray-900">
+    <!-- Coming Soon Notice -->
+    <div class="bg-blue-900 border border-blue-700 p-4 text-center">
+        <div class="flex items-center justify-center mb-2">
+            <svg class="h-5 w-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-sm font-semibold text-blue-300">🚀 Options API - 5 Endpoints from 104+ Total Across 22 Categories - Launching July 2025</span>
+        </div>
+        <p class="text-xs text-blue-300">
+            Part of our comprehensive financial data API with 104+ endpoints. Join waiting list for early access with 25-60% cheaper pricing than competitors.
+        </p>
+    </div>
+
     <!-- Hero Section -->
     <div class="pt-20 pb-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-indigo-900 border border-indigo-700">
-                                                <span class="text-sm font-medium text-indigo-300">🚀 Options API Launching July 2025 - Join Waiting List for Priority Access</span>
+                    <span class="text-sm font-medium text-indigo-300">📊 Professional Options API - 5 Comprehensive Endpoints</span>
                 </div>
                 
-                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                    Professional Options API for Financial Applications
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Options & Derivatives Data API<br>
+                    <span class="text-indigo-400">Part of 104+ Endpoint Financial Platform</span>
                 </h1>
                 <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                    We're building a comprehensive options API with real-time contracts data and comprehensive pricing information for American markets. 
-                    Perfect for developers, analysts, and financial institutions building financial applications, custom queries, trading bot training, and strategy backtesting. 
-                    API access only with JSON and CSV formats. Launching July 2025 with pricing 25-60% cheaper than competitors.
+                    Professional options API with <strong class="text-indigo-300">5 specialized endpoints</strong> for real-time options contracts, chains, Greeks, and derivatives analytics for American markets. 
+                    Part of our <strong class="text-blue-300">104+ endpoint financial data platform across 22 categories</strong>. 
+                    Perfect for options trading platforms, risk management, and derivatives analytics. 
+                    <strong class="text-yellow-300">Launching July 2025 with pricing 25-60% cheaper than competitors.</strong>
                 </p>
+                
+                <!-- Platform Integration Notice -->
+                <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 mb-8 max-w-3xl mx-auto">
+                    <p class="text-gray-300 text-sm">
+                        <strong class="text-blue-300">Complete Financial Data Solution:</strong> This Options API integrates seamlessly with our Market Data (13 endpoints), 
+                        Fundamentals (8 endpoints), News & Sentiment (5 endpoints), and 19 other financial data categories for comprehensive options trading and risk management platforms.
+                    </p>
+                </div>
+                
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200">
-                        Join Waiting List - Free Tier Available
+                        Join Waiting List - Early Access to All 104+ Endpoints
                     </a>
                     <a href="#features" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                        Explore Planned Features
+                        Explore Options Features
                     </a>
                 </div>
                 
@@ -160,24 +184,114 @@
                         <div class="text-sm text-gray-400">Options Contracts</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-indigo-400">JSON/CSV</div>
-                        <div class="text-sm text-gray-400">API Access Only</div>
+                        <div class="text-2xl font-bold text-indigo-400">Greeks</div>
+                        <div class="text-sm text-gray-400">Delta, Gamma, Theta, Vega</div>
+                    </div>
+                    <div class="text-2xl font-bold text-indigo-400">Chains</div>
+                        <div class="text-sm text-gray-400">Complete Option Chains</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-indigo-400">25-60%</div>
-                        <div class="text-sm text-gray-400">Cheaper Than Competitors</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-bold text-indigo-400">July 2025</div>
-                        <div class="text-sm text-gray-400">Launch Date</div>
+                        <div class="text-2xl font-bold text-indigo-400">5 Endpoints</div>
+                        <div class="text-sm text-gray-400">From 104+ Total Platform</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Options Features Section -->
+    <!-- Options Endpoints Overview -->
     <div class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">5 Options & Derivatives Endpoints - Complete Options Coverage</h2>
+                <p class="text-gray-400">Professional options data endpoints as part of our 104+ endpoint financial data platform</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-900 rounded-full p-2 mr-3">
+                            <svg class="h-6 w-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">/options/contracts</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm">Complete options contracts database with real-time data</p>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-900 rounded-full p-2 mr-3">
+                            <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">/options/chain/{symbol}</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm">Complete options chains for stocks and ETFs with all strikes</p>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-900 rounded-full p-2 mr-3">
+                            <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">/options/{symbol}/snapshot</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm">Real-time options snapshots with bid/ask and volume data</p>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-900 rounded-full p-2 mr-3">
+                            <svg class="h-6 w-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">/options/{contract}/details</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm">Detailed contract specifications and Greeks calculations</p>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-900 rounded-full p-2 mr-3">
+                            <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">/options/{contract}/historical</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm">Historical options pricing data for backtesting strategies</p>
+                </div>
+            </div>
+
+            <!-- Platform Integration Highlight -->
+            <div class="bg-blue-900 bg-opacity-30 rounded-lg p-6 border border-blue-700">
+                <h3 class="text-xl font-semibold text-white mb-4">🔗 Seamless Integration with 21 Other API Categories</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div class="text-blue-300">📈 Market Data (13 endpoints)</div>
+                    <div class="text-purple-300">💼 Fundamentals (8 endpoints)</div>
+                    <div class="text-green-300">💱 Forex & Currency (7 endpoints)</div>
+                    <div class="text-orange-300">₿ Cryptocurrency (7 endpoints)</div>
+                    <div class="text-yellow-300">📰 News & Sentiment (5 endpoints)</div>
+                    <div class="text-red-300">📅 Earnings (4 endpoints)</div>
+                    <div class="text-indigo-300">🔍 Analyst Data (4 endpoints)</div>
+                    <div class="text-gray-300">+ 15 More Categories...</div>
+                </div>
+                <p class="text-blue-200 text-sm mt-4">
+                    Build sophisticated options trading platforms by combining options data with underlying stock data, earnings calendar, 
+                    analyst estimates, and volatility indicators - all from a single, unified API platform.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Options Features Section -->
+    <div class="py-16 bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-white mb-4">Comprehensive Options Contracts Coverage</h2>
