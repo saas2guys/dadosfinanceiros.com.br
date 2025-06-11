@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Technical Analysis API 2025 - Part of 104+ Endpoint Financial Data Platform | 8 Technical Indicators Endpoints{% endblock %}
+{% block title %}{% trans 'Technical Analysis API 2025 - Part of 104+ Endpoint Financial Data Platform | 8 Technical Indicators Endpoints' %}{% endblock %}
 
-{% block meta_description %}Professional technical analysis API with 8 indicator endpoints, part of our comprehensive 104+ endpoint financial data platform launching July 2025. SMA, EMA, RSI, MACD, Bollinger Bands. 25-60% cheaper than competitors.{% endblock %}
+{% block meta_description %}{% trans 'Professional technical analysis API with 8 indicator endpoints, part of our comprehensive 104+ endpoint financial data platform launching July 2025. SMA, EMA, RSI, MACD, Bollinger Bands. 25-60% cheaper than competitors.' %}{% endblock %}
 
 {% block content %}
     <!-- Hero Section -->
@@ -10,44 +11,42 @@
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-violet-900 border border-violet-700">
-                <span class="text-sm font-medium text-violet-300">🚀 Technical Analysis API: 8 Indicator Endpoints - Part of Comprehensive 104+ Endpoint Platform Launching July 2025</span>
+                <span class="text-sm font-medium text-violet-300">🚀 {% trans 'Technical Analysis API: 8 Indicator Endpoints - Part of Comprehensive 104+ Endpoint Platform Launching July 2025' %}</span>
             </div>
             
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                Technical Analysis API: 8 Indicator Endpoints
+                {% trans 'Technical Analysis API: 8 Indicator Endpoints' %}
             </h1>
             <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                Professional technical analysis API with 8 specialized indicator endpoints including SMA, EMA, RSI, MACD, Bollinger Bands, and more.
-                Part of our comprehensive 104+ endpoint financial data platform launching July 2025. 
-                Perfect for algorithmic trading, chart analysis, and technical strategy development.
+                {% trans 'Professional technical analysis API with 8 specialized indicator endpoints including SMA, EMA, RSI, MACD, Bollinger Bands, and more. Part of our comprehensive 104+ endpoint financial data platform launching July 2025. Perfect for algorithmic trading, chart analysis, and technical strategy development.' %}
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <a href="{% url 'waiting_list' %}" class="bg-violet-600 hover:bg-violet-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                    Join Waiting List - Priority Access
+                    {% trans 'Join Waiting List - Priority Access' %}
                 </a>
                 <a href="{% url 'api_comparison' %}" class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors border border-gray-600">
-                    Compare APIs
+                    {% trans 'Compare APIs' %}
                 </a>
             </div>
             
             <!-- Key metrics -->
             <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 <div>
-                    <div class="text-2xl font-bold text-violet-400">8 Endpoints</div>
-                    <div class="text-sm text-gray-400">Technical Indicators</div>
+                    <div class="text-2xl font-bold text-violet-400">8 {% trans 'Endpoints' %}</div>
+                    <div class="text-sm text-gray-400">{% trans 'Technical Indicators' %}</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-violet-400">104+ Total</div>
-                    <div class="text-sm text-gray-400">Complete Platform</div>
+                    <div class="text-2xl font-bold text-violet-400">104+ {% trans 'Total' %}</div>
+                    <div class="text-sm text-gray-400">{% trans 'Complete Platform' %}</div>
                 </div>
                 <div>
                     <div class="text-2xl font-bold text-violet-400">25-60%</div>
-                    <div class="text-sm text-gray-400">Cheaper Than Competitors</div>
+                    <div class="text-sm text-gray-400">{% trans 'Cheaper Than Competitors' %}</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-violet-400">July 2025</div>
-                    <div class="text-sm text-gray-400">Launch Date</div>
+                    <div class="text-2xl font-bold text-violet-400">{% trans 'July 2025' %}</div>
+                    <div class="text-sm text-gray-400">{% trans 'Launch Date' %}</div>
                 </div>
             </div>
         </div>

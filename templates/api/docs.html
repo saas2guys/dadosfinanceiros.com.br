@@ -1,7 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
-{% block title %}Professional Financial Data API Documentation 2025 - 104+ Endpoints Across 22 Categories{% endblock %}
+{% block title %}{% trans 'API Documentation - Global Financial Data API' %}{% endblock %}
 
 {% block meta_description %}Professional API documentation for our upcoming financial data API with 104+ endpoints across 22 categories. Real-time market data, fundamental analysis, news sentiment, earnings data, SEC filings launching July 2025.{% endblock %}
 
@@ -31,51 +32,340 @@
 {% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-900 py-8">
-    <div class="max-w-6xl mx-auto px-4">
-        <div class="mb-8 text-center">
-            <span class="text-lg font-semibold text-blue-300"><i class="fas fa-rocket mr-2"></i>Professional Financial Data API - Launching July 2025</span>
-            <p class="text-gray-400 mt-2">
-                This documentation covers our upcoming professional financial data API with 104+ endpoints across 22 categories.
-                Join our waiting list for early access when we launch in July 2025.
+<section class="py-16 bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-bold text-white mb-6">
+                {% trans 'API Documentation' %}
+            </h1>
+            <p class="text-xl text-gray-300">
+                {% trans 'Professional financial data API documentation and developer resources' %}
             </p>
         </div>
 
-        <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-            <div class="bg-blue-900 px-6 py-4">
-                <h1 class="text-2xl font-bold text-white">Professional Financial Data API Documentation</h1>
-                <p class="text-blue-100 mt-2">
-                    Complete API reference for our upcoming professional financial data service providing 104+ endpoints across 22 categories.
-                    Get real-time market data, fundamental analysis, news sentiment, earnings data, and more.
-                </p>
+        <!-- Getting Started -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-rocket text-blue-400 mr-3"></i>
+                {% trans 'Getting Started' %}
+            </h2>
+            <p class="text-gray-300 mb-4">
+                {% trans 'Our Global Financial Data API provides professional-grade access to real-time and historical financial data across multiple asset classes and global markets.' %}
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4">
+                <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Base URL' %}</h3>
+                <code class="text-green-400">https://api.dadosfinanceiros.com.br/v1/</code>
             </div>
+        </div>
 
-            <div class="p-6">
-                <div class="mb-8">
-                    <h2 class="text-xl font-semibold text-white mb-4">Professional API Overview</h2>
-                    <p class="text-gray-400 mb-4">
-                        Our professional API provides 104+ endpoints organized across 22 distinct categories covering all major financial data types.
-                        Whether you're building trading applications, investment platforms, or financial research tools,
-                        our API offers the data you need with professional-grade reliability and performance.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div class="bg-gray-700 p-4 rounded-lg">
-                            <h3 class="font-semibold text-blue-300 mb-2"><i class="fas fa-database mr-2"></i>104+ Endpoints</h3>
-                            <p class="text-gray-400 text-sm">Professional coverage across 22 categories</p>
+        <!-- Authentication -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-key text-green-400 mr-3"></i>
+                {% trans 'Authentication' %}
+            </h2>
+            <p class="text-gray-300 mb-4">
+                {% trans 'All API requests require authentication using an API key. Include your API key in the request header:' %}
+            </p>
+            <div class="bg-gray-700 rounded-lg p-4">
+                <pre class="text-green-400"><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+            </div>
+        </div>
+
+        <!-- Data Formats -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-code text-purple-400 mr-3"></i>
+                {% trans 'Data Formats' %}
+            </h2>
+            <p class="text-gray-300 mb-4">
+                {% trans 'Our API supports multiple data formats to suit different use cases:' %}
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">JSON</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'Default format for real-time applications and API integrations' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">CSV</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'Ideal for bulk data downloads and spreadsheet analysis' %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Endpoints -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-list text-yellow-400 mr-3"></i>
+                {% trans 'Main API Endpoints' %}
+            </h2>
+            
+            <div class="space-y-6">
+                <!-- Stocks -->
+                <div class="border-l-4 border-blue-400 pl-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Stock Market Data' %}</h3>
+                    <div class="space-y-2">
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /quotes/{symbol}</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get real-time stock quote' %}</p>
                         </div>
-                        <div class="bg-gray-700 p-4 rounded-lg">
-                            <h3 class="font-semibold text-green-300 mb-2"><i class="fas fa-clock mr-2"></i>Real-time Data</h3>
-                            <p class="text-gray-400 text-sm">Live market feeds and historical archives</p>
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /quotes/gainers</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get top gaining stocks' %}</p>
                         </div>
-                        <div class="bg-gray-700 p-4 rounded-lg">
-                            <h3 class="font-semibold text-purple-300 mb-2"><i class="fas fa-code mr-2"></i>Developer-First</h3>
-                            <p class="text-gray-400 text-sm">Clean API design with extensive documentation</p>
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /historical/{symbol}</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get historical price data' %}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="border-l-4 border-green-400 pl-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Options Data' %}</h3>
+                    <div class="space-y-2">
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /options/chain/{symbol}</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get complete options chain' %}</p>
+                        </div>
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /options/greeks/{contract}</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get options Greeks (Delta, Gamma, Theta, Vega)' %}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forex -->
+                <div class="border-l-4 border-purple-400 pl-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Forex Data' %}</h3>
+                    <div class="space-y-2">
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /forex/{pair}</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get currency pair rate' %}</p>
+                        </div>
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /forex/majors</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get major currency pairs' %}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crypto -->
+                <div class="border-l-4 border-yellow-400 pl-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Cryptocurrency Data' %}</h3>
+                    <div class="space-y-2">
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /crypto/{symbol}</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get cryptocurrency price' %}</p>
+                        </div>
+                        <div class="bg-gray-700 rounded p-3">
+                            <code class="text-green-400">GET /crypto/top</code>
+                            <p class="text-gray-300 text-sm mt-1">{% trans 'Get top cryptocurrencies by market cap' %}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Rate Limits -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-tachometer-alt text-red-400 mr-3"></i>
+                {% trans 'Rate Limits' %}
+            </h2>
+            <p class="text-gray-300 mb-4">
+                {% trans 'Rate limits vary by subscription plan to ensure optimal performance:' %}
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Free Tier' %}</h3>
+                    <p class="text-gray-300">{% trans '1,000 calls/day' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Professional' %}</h3>
+                    <p class="text-gray-300">{% trans '100,000 calls/day' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Enterprise' %}</h3>
+                    <p class="text-gray-300">{% trans 'Custom limits' %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Handling -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-exclamation-triangle text-orange-400 mr-3"></i>
+                {% trans 'Error Handling' %}
+            </h2>
+            <p class="text-gray-300 mb-4">
+                {% trans 'Our API uses standard HTTP status codes and returns detailed error messages:' %}
+            </p>
+            <div class="space-y-3">
+                <div class="bg-gray-700 rounded p-3">
+                    <div class="flex items-center justify-between">
+                        <code class="text-red-400">400 Bad Request</code>
+                        <span class="text-gray-300 text-sm">{% trans 'Invalid request parameters' %}</span>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded p-3">
+                    <div class="flex items-center justify-between">
+                        <code class="text-red-400">401 Unauthorized</code>
+                        <span class="text-gray-300 text-sm">{% trans 'Invalid or missing API key' %}</span>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded p-3">
+                    <div class="flex items-center justify-between">
+                        <code class="text-red-400">429 Too Many Requests</code>
+                        <span class="text-gray-300 text-sm">{% trans 'Rate limit exceeded' %}</span>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded p-3">
+                    <div class="flex items-center justify-between">
+                        <code class="text-red-400">500 Internal Server Error</code>
+                        <span class="text-gray-300 text-sm">{% trans 'Server error - please try again' %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Examples -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-code text-indigo-400 mr-3"></i>
+                {% trans 'Code Examples' %}
+            </h2>
+            
+            <div class="space-y-6">
+                <!-- Python Example -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-3">Python</h3>
+                    <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                        <pre class="text-green-400 text-sm"><code>import requests
+
+api_key = "YOUR_API_KEY"
+symbol = "AAPL"
+
+headers = {
+    "Authorization": f"Bearer {api_key}"
+}
+
+response = requests.get(
+    f"https://api.dadosfinanceiros.com.br/v1/quotes/{symbol}",
+    headers=headers
+)
+
+data = response.json()
+print(f"Price: ${data['price']}")
+</code></pre>
+                    </div>
+                </div>
+
+                <!-- JavaScript Example -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-3">JavaScript</h3>
+                    <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                        <pre class="text-green-400 text-sm"><code>const apiKey = "YOUR_API_KEY";
+const symbol = "AAPL";
+
+fetch(`https://api.dadosfinanceiros.com.br/v1/quotes/${symbol}`, {
+    headers: {
+        "Authorization": `Bearer ${apiKey}`
+    }
+})
+.then(response => response.json())
+.then(data => {
+    console.log(`Price: $${data.price}`);
+})
+.catch(error => console.error(error));
+</code></pre>
+                    </div>
+                </div>
+
+                <!-- cURL Example -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-3">cURL</h3>
+                    <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                        <pre class="text-green-400 text-sm"><code>curl -X GET \
+  https://api.dadosfinanceiros.com.br/v1/quotes/AAPL \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SDKs and Libraries -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-download text-cyan-400 mr-3"></i>
+                {% trans 'SDKs and Libraries' %}
+            </h2>
+            <p class="text-gray-300 mb-4">
+                {% trans 'Official SDKs and libraries to accelerate your integration:' %}
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <i class="fab fa-python text-3xl text-yellow-400 mb-2"></i>
+                    <h3 class="text-white font-semibold">Python SDK</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'pip install dadosfinanceiros' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <i class="fab fa-js text-3xl text-yellow-400 mb-2"></i>
+                    <h3 class="text-white font-semibold">JavaScript SDK</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'npm install dadosfinanceiros' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <i class="fab fa-java text-3xl text-red-400 mb-2"></i>
+                    <h3 class="text-white font-semibold">Java SDK</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'Maven/Gradle available' %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-headset text-pink-400 mr-3"></i>
+                {% trans 'Support and Resources' %}
+            </h2>
+            <p class="text-gray-300 mb-4">
+                {% trans 'Need help? We provide comprehensive support for all our API users:' %}
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Documentation' %}</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'Comprehensive guides, tutorials, and API reference' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Email Support' %}</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'Technical support via email for all plan levels' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Community Forum' %}</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'Connect with other developers and share knowledge' %}</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-white mb-2">{% trans 'Priority Support' %}</h3>
+                    <p class="text-gray-300 text-sm">{% trans 'Dedicated support for Enterprise customers' %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">
+                {% trans 'Ready to get started?' %}
+            </h2>
+            <p class="text-gray-300 mb-6">
+                {% trans 'Join our waiting list to be among the first to access our professional financial data API' %}
+            </p>
+            <a href="{% url 'waiting_list' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors">
+                <i class="fas fa-rocket mr-2"></i>
+                {% trans 'Join Waiting List' %}
+            </a>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %} 

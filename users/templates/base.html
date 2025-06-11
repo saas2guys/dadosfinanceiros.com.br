@@ -1,16 +1,18 @@
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
-<html lang="en">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - Financial Data API</title>
+    <title>{% block title %}{% endblock %} - {% trans 'Financial Data API' %}</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="{% block meta_description %}Professional financial data API providing real-time market data for stocks, forex, crypto, indices, options, and economic indicators{% endblock %}">
-    <meta name="keywords" content="{% block meta_keywords %}financial data API, stock market API, forex API, cryptocurrency API, real-time market data, trading API{% endblock %}">
-    <meta name="author" content="Financial Data API">
+    <meta name="description" content="{% block meta_description %}{% trans 'Professional financial data API providing real-time market data for stocks, forex, crypto, indices, options, and economic indicators' %}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{% trans 'financial data API, stock market API, forex API, cryptocurrency API, real-time market data, trading API' %}{% endblock %}">
+    <meta name="author" content="{% trans 'Financial Data API' %}">
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
     <meta name="bingbot" content="index, follow">
@@ -119,7 +121,7 @@
                         <!-- API Endpoints Dropdown -->
                         <div class="relative group">
                             <button class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center">
-                                API Endpoints
+                                {% trans "API Endpoints" %}
                                 <svg class="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
@@ -130,27 +132,27 @@
                                 <div class="p-4 grid grid-cols-2 gap-4">
                                     <!-- Market Data Column -->
                                     <div>
-                                        <h4 class="text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-2">Market Data</h4>
+                                        <h4 class="text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-2">{% trans "Market Data" %}</h4>
                                         <div class="space-y-1">
-                                            <a href="{% url 'stock_market_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Stock Market</a>
-                                            <a href="{% url 'forex_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Forex</a>
-                                            <a href="{% url 'crypto_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Cryptocurrency</a>
-                                            <a href="{% url 'options_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Options</a>
-                                            <a href="{% url 'indices_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Indices</a>
-                                            <a href="{% url 'futures_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Futures</a>
-                                            <a href="{% url 'commodities_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Commodities</a>
+                                            <a href="{% url 'stock_market_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Stock Market" %}</a>
+                                            <a href="{% url 'forex_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Forex" %}</a>
+                                            <a href="{% url 'crypto_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Cryptocurrency" %}</a>
+                                            <a href="{% url 'options_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Options" %}</a>
+                                            <a href="{% url 'indices_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Indices" %}</a>
+                                            <a href="{% url 'futures_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Futures" %}</a>
+                                            <a href="{% url 'commodities_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Commodities" %}</a>
                                         </div>
                                     </div>
                                     
                                     <!-- Analysis & Data Column -->
                                     <div>
-                                        <h4 class="text-green-400 font-semibold text-xs uppercase tracking-wider mb-2">Analysis & Data</h4>
+                                        <h4 class="text-green-400 font-semibold text-xs uppercase tracking-wider mb-2">{% trans "Analysis & Data" %}</h4>
                                         <div class="space-y-1">
-                                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Fundamentals</a>
-                                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Technical Analysis</a>
-                                            <a href="{% url 'earnings_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Earnings</a>
-                                            <a href="{% url 'news_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">News & Sentiment</a>
-                                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">Economic Data</a>
+                                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Fundamentals" %}</a>
+                                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Technical Analysis" %}</a>
+                                            <a href="{% url 'earnings_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Earnings" %}</a>
+                                            <a href="{% url 'news_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "News & Sentiment" %}</a>
+                                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Economic Data" %}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -158,18 +160,40 @@
                                 <!-- Bottom section -->
                                 <div class="border-t border-gray-700 px-4 py-3">
                                     <a href="{% url 'home' %}#features" class="text-indigo-400 hover:text-indigo-300 text-sm font-medium">
-                                        View All 104+ Endpoints →
+                                        {% trans "View All 104+ Endpoints" %} →
                                     </a>
                                 </div>
                             </div>
                         </div>
                         
-                        <a href="/api/docs/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">API Docs</a>
-                        <a href="/faq/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
-                        <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
+                        <a href="/api/docs/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "API Docs" %}</a>
+                        <a href="/faq/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "FAQ" %}</a>
+                        <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "Pricing" %}</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <!-- Language Selector -->
+                    <div class="language-selector relative">
+                        <button class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium flex items-center">
+                            <i class="fas fa-globe mr-1"></i> 
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% if LANGUAGE_CODE == 'pt-br' %}PT{% else %}EN{% endif %}
+                            <i class="fas fa-chevron-down ml-1"></i>
+                        </button>
+                        <div class="language-dropdown absolute right-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg opacity-0 invisible hover:opacity-100 hover:visible transition-all duration-200 z-50">
+                            <form action="{% url 'set_language' %}" method="post" class="p-2">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+                                <button type="submit" name="language" value="en" class="block w-full text-left px-2 py-1 text-gray-300 hover:text-white hover:bg-gray-600 rounded text-sm">
+                                    <i class="fas fa-flag mr-2"></i>English
+                                </button>
+                                <button type="submit" name="language" value="pt-br" class="block w-full text-left px-2 py-1 text-gray-300 hover:text-white hover:bg-gray-600 rounded text-sm">
+                                    <i class="fas fa-flag mr-2"></i>Português
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
                     <!-- Mobile menu button -->
                     <div class="md:hidden">
                         <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none focus:text-white">
@@ -180,11 +204,11 @@
                     </div>
                     
                     {% if user.is_authenticated %}
-                        <a href="{% url 'profile' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Profile</a>
-                        <a href="{% url 'logout' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
+                        <a href="{% url 'profile' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Profile" %}</a>
+                        <a href="{% url 'logout' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Logout" %}</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                        <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Join Waiting List</a>
+                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Login" %}</a>
+                        <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">{% trans "Join Waiting List" %}</a>
                     {% endif %}
                 </div>
             </div>
@@ -196,7 +220,7 @@
                 <!-- API Endpoints Mobile Section -->
                 <div class="mobile-dropdown">
                     <button id="mobile-api-toggle" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center justify-between">
-                        API Endpoints
+                        {% trans "API Endpoints" %}
                         <svg class="h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -204,43 +228,43 @@
                     <div id="mobile-api-menu" class="hidden pl-4 space-y-1 bg-gray-800 rounded mt-1">
                         <!-- Market Data -->
                         <div class="py-2">
-                            <div class="text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-2">Market Data</div>
-                            <a href="{% url 'stock_market_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Stock Market</a>
-                            <a href="{% url 'forex_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Forex</a>
-                            <a href="{% url 'crypto_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Cryptocurrency</a>
-                            <a href="{% url 'options_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Options</a>
-                            <a href="{% url 'indices_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Indices</a>
-                            <a href="{% url 'futures_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Futures</a>
-                            <a href="{% url 'commodities_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Commodities</a>
+                            <div class="text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-2">{% trans "Market Data" %}</div>
+                            <a href="{% url 'stock_market_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Stock Market" %}</a>
+                            <a href="{% url 'forex_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Forex" %}</a>
+                            <a href="{% url 'crypto_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Cryptocurrency" %}</a>
+                            <a href="{% url 'options_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Options" %}</a>
+                            <a href="{% url 'indices_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Indices" %}</a>
+                            <a href="{% url 'futures_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Futures" %}</a>
+                            <a href="{% url 'commodities_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Commodities" %}</a>
                         </div>
                         <!-- Analysis & Data -->
                         <div class="py-2 border-t border-gray-600">
-                            <div class="text-green-400 font-semibold text-xs uppercase tracking-wider mb-2">Analysis & Data</div>
-                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Fundamentals</a>
-                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Technical Analysis</a>
-                            <a href="{% url 'earnings_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Earnings</a>
-                            <a href="{% url 'news_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">News & Sentiment</a>
-                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">Economic Data</a>
+                            <div class="text-green-400 font-semibold text-xs uppercase tracking-wider mb-2">{% trans "Analysis & Data" %}</div>
+                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Fundamentals" %}</a>
+                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Technical Analysis" %}</a>
+                            <a href="{% url 'earnings_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Earnings" %}</a>
+                            <a href="{% url 'news_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "News & Sentiment" %}</a>
+                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 px-2">{% trans "Economic Data" %}</a>
                         </div>
                         <div class="border-t border-gray-600 pt-2">
                             <a href="{% url 'home' %}#features" class="text-indigo-400 hover:text-indigo-300 text-sm font-medium block px-2">
-                                View All 104+ Endpoints →
+                                {% trans "View All 104+ Endpoints" %} →
                             </a>
                         </div>
                     </div>
                 </div>
                 
-                <a href="/api/docs/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">API Docs</a>
-                <a href="/faq/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
-                <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pricing</a>
+                <a href="/api/docs/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "API Docs" %}</a>
+                <a href="/faq/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "FAQ" %}</a>
+                <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Pricing" %}</a>
                 
                 <!-- Mobile Auth Links -->
                 {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Profile</a>
-                    <a href="{% url 'logout' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Logout</a>
+                    <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Profile" %}</a>
+                    <a href="{% url 'logout' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Logout" %}</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Login</a>
-                    <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 block px-3 py-2 rounded-md text-base font-medium">Join Waiting List</a>
+                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Login" %}</a>
+                    <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 block px-3 py-2 rounded-md text-base font-medium">{% trans "Join Waiting List" %}</a>
                 {% endif %}
             </div>
         </div>

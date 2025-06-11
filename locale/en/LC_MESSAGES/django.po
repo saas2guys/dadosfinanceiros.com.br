@@ -1,0 +1,1587 @@
+# Global Financial Data API - English Translation
+# Copyright (C) 2024 Global Markets Financial Data API
+# This file is distributed under the same license as the PACKAGE package.
+# Global Markets API Team <admin@dadosfinanceiros.com.br>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Global Financial Data API 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-11 01:21-0300\n"
+"PO-Revision-Date: 2024-06-11 01:15-0300\n"
+"Last-Translator: Global Markets API Team <admin@dadosfinanceiros.com.br>\n"
+"Language-Team: English <admin@dadosfinanceiros.com.br>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/api/docs.html:5
+#, fuzzy
+#| msgid "Join Waiting List - Global Financial Data API"
+msgid "API Documentation - Global Financial Data API"
+msgstr "Join Waiting List - Global Financial Data API"
+
+#: templates/api/docs.html:39
+#, fuzzy
+#| msgid "Documentation"
+msgid "API Documentation"
+msgstr "Documentation"
+
+#: templates/api/docs.html:42
+#, fuzzy
+#| msgid "Professional Financial Data API for Global Markets"
+msgid "Professional financial data API documentation and developer resources"
+msgstr "Professional Financial Data API for Global Markets"
+
+#: templates/api/docs.html:50
+msgid "Getting Started"
+msgstr ""
+
+#: templates/api/docs.html:53
+msgid ""
+"Our Global Financial Data API provides professional-grade access to real-"
+"time and historical financial data across multiple asset classes and global "
+"markets."
+msgstr ""
+
+#: templates/api/docs.html:56
+msgid "Base URL"
+msgstr ""
+
+#: templates/api/docs.html:65
+#, fuzzy
+#| msgid "Documentation"
+msgid "Authentication"
+msgstr "Documentation"
+
+#: templates/api/docs.html:68
+msgid ""
+"All API requests require authentication using an API key. Include your API "
+"key in the request header:"
+msgstr ""
+
+#: templates/api/docs.html:79
+msgid "Data Formats"
+msgstr ""
+
+#: templates/api/docs.html:82
+msgid "Our API supports multiple data formats to suit different use cases:"
+msgstr ""
+
+#: templates/api/docs.html:87
+msgid "Default format for real-time applications and API integrations"
+msgstr ""
+
+#: templates/api/docs.html:91
+msgid "Ideal for bulk data downloads and spreadsheet analysis"
+msgstr ""
+
+#: templates/api/docs.html:100
+msgid "Main API Endpoints"
+msgstr ""
+
+#: templates/api/docs.html:106
+#, fuzzy
+#| msgid "Market Data"
+msgid "Stock Market Data"
+msgstr "Market Data"
+
+#: templates/api/docs.html:110
+msgid "Get real-time stock quote"
+msgstr ""
+
+#: templates/api/docs.html:114
+msgid "Get top gaining stocks"
+msgstr ""
+
+#: templates/api/docs.html:118
+msgid "Get historical price data"
+msgstr ""
+
+#: templates/api/docs.html:125
+#, fuzzy
+#| msgid "Options"
+msgid "Options Data"
+msgstr "Options"
+
+#: templates/api/docs.html:129
+msgid "Get complete options chain"
+msgstr ""
+
+#: templates/api/docs.html:133
+msgid "Get options Greeks (Delta, Gamma, Theta, Vega)"
+msgstr ""
+
+#: templates/api/docs.html:140
+#, fuzzy
+#| msgid "Forex markets"
+msgid "Forex Data"
+msgstr "Forex markets"
+
+#: templates/api/docs.html:144
+msgid "Get currency pair rate"
+msgstr ""
+
+#: templates/api/docs.html:148
+msgid "Get major currency pairs"
+msgstr ""
+
+#: templates/api/docs.html:155
+#, fuzzy
+#| msgid "Cryptocurrency"
+msgid "Cryptocurrency Data"
+msgstr "Cryptocurrency"
+
+#: templates/api/docs.html:159
+#, fuzzy
+#| msgid "Cryptocurrencies"
+msgid "Get cryptocurrency price"
+msgstr "Cryptocurrencies"
+
+#: templates/api/docs.html:163
+msgid "Get top cryptocurrencies by market cap"
+msgstr ""
+
+#: templates/api/docs.html:174
+msgid "Rate Limits"
+msgstr ""
+
+#: templates/api/docs.html:177
+msgid "Rate limits vary by subscription plan to ensure optimal performance:"
+msgstr ""
+
+#: templates/api/docs.html:181 users/templates/stock_market_api.html:457
+msgid "Free Tier"
+msgstr ""
+
+#: templates/api/docs.html:182
+msgid "1,000 calls/day"
+msgstr ""
+
+#: templates/api/docs.html:185 users/templates/stock_market_api.html:513
+#, fuzzy
+#| msgid "Profile"
+msgid "Professional"
+msgstr "Profile"
+
+#: templates/api/docs.html:186
+msgid "100,000 calls/day"
+msgstr ""
+
+#: templates/api/docs.html:189 users/templates/stock_market_api.html:571
+msgid "Enterprise"
+msgstr ""
+
+#: templates/api/docs.html:190
+msgid "Custom limits"
+msgstr ""
+
+#: templates/api/docs.html:199
+msgid "Error Handling"
+msgstr ""
+
+#: templates/api/docs.html:202
+msgid ""
+"Our API uses standard HTTP status codes and returns detailed error messages:"
+msgstr ""
+
+#: templates/api/docs.html:208
+msgid "Invalid request parameters"
+msgstr ""
+
+#: templates/api/docs.html:214
+msgid "Invalid or missing API key"
+msgstr ""
+
+#: templates/api/docs.html:220
+msgid "Rate limit exceeded"
+msgstr ""
+
+#: templates/api/docs.html:226
+msgid "Server error - please try again"
+msgstr ""
+
+#: templates/api/docs.html:236
+msgid "Code Examples"
+msgstr ""
+
+#: templates/api/docs.html:303
+msgid "SDKs and Libraries"
+msgstr ""
+
+#: templates/api/docs.html:306
+msgid "Official SDKs and libraries to accelerate your integration:"
+msgstr ""
+
+#: templates/api/docs.html:312
+msgid "pip install dadosfinanceiros"
+msgstr ""
+
+#: templates/api/docs.html:317
+msgid "npm install dadosfinanceiros"
+msgstr ""
+
+#: templates/api/docs.html:322
+msgid "Maven/Gradle available"
+msgstr ""
+
+#: templates/api/docs.html:331
+#, fuzzy
+#| msgid "Resources"
+msgid "Support and Resources"
+msgstr "Resources"
+
+#: templates/api/docs.html:334
+msgid "Need help? We provide comprehensive support for all our API users:"
+msgstr ""
+
+#: templates/api/docs.html:338 templates/base.html:195
+msgid "Documentation"
+msgstr "Documentation"
+
+#: templates/api/docs.html:339
+msgid "Comprehensive guides, tutorials, and API reference"
+msgstr ""
+
+#: templates/api/docs.html:342
+#, fuzzy
+#| msgid "Support"
+msgid "Email Support"
+msgstr "Support"
+
+#: templates/api/docs.html:343
+msgid "Technical support via email for all plan levels"
+msgstr ""
+
+#: templates/api/docs.html:346
+msgid "Community Forum"
+msgstr ""
+
+#: templates/api/docs.html:347
+msgid "Connect with other developers and share knowledge"
+msgstr ""
+
+#: templates/api/docs.html:350
+#, fuzzy
+#| msgid "Support"
+msgid "Priority Support"
+msgstr "Support"
+
+#: templates/api/docs.html:351
+msgid "Dedicated support for Enterprise customers"
+msgstr ""
+
+#: templates/api/docs.html:359
+msgid "Ready to get started?"
+msgstr ""
+
+#: templates/api/docs.html:362
+msgid ""
+"Join our waiting list to be among the first to access our professional "
+"financial data API"
+msgstr ""
+
+#: templates/api/docs.html:366 templates/base.html:113 templates/base.html:155
+#: templates/base.html:197 users/templates/faq.html:206
+#: users/templates/options_api.html:155 users/templates/options_api.html:418
+#: users/templates/stock_market_api.html:156
+#: users/templates/stock_market_api.html:501
+#: users/templates/stock_market_api.html:563
+#: users/templates/waiting_list.html:120
+msgid "Join Waiting List"
+msgstr "Join Waiting List"
+
+#: templates/base.html:9
+msgid ""
+"Global Financial Data API for Developers & Analysts - Real-time and "
+"historical data for stocks, options, indices, futures, forex, and crypto. "
+"Professional-grade API access with JSON/CSV formats."
+msgstr ""
+"Global Financial Data API for Developers & Analysts - Real-time and "
+"historical data for stocks, options, indices, futures, forex, and crypto. "
+"Professional-grade API access with JSON/CSV formats."
+
+#: templates/base.html:10
+msgid ""
+"global financial data api, stock market api, real-time stock quotes, "
+"historical market data, forex api, cryptocurrency api, options api, futures "
+"api, financial data provider, trading api, market data api, developer api, "
+"financial analytics"
+msgstr ""
+"global financial data api, stock market api, real-time stock quotes, "
+"historical market data, forex api, cryptocurrency api, options api, futures "
+"api, financial data provider, trading api, market data api, developer api, "
+"financial analytics"
+
+#: templates/base.html:11 templates/base.html:12 templates/base.html:57
+msgid "Global Markets Financial Data API"
+msgstr "Global Markets Financial Data API"
+
+#: templates/base.html:58 templates/base.html:173
+msgid ""
+"Professional financial data API for global markets. Real-time and historical "
+"data for stocks, options, indices, futures, forex, and cryptocurrency "
+"markets worldwide."
+msgstr ""
+"Professional financial data API for global markets. Real-time and historical "
+"data for stocks, options, indices, futures, forex, and cryptocurrency "
+"markets worldwide."
+
+#: templates/base.html:75
+msgid "Global Markets API"
+msgstr "Global Markets API"
+
+#: templates/base.html:80
+msgid "Markets"
+msgstr "Markets"
+
+#: templates/base.html:81 templates/base.html:185
+msgid "Options"
+msgstr "Options"
+
+#: templates/base.html:82
+msgid "Fundamentals"
+msgstr "Fundamentals"
+
+#: templates/base.html:83 templates/base.html:186
+msgid "Forex"
+msgstr "Forex"
+
+#: templates/base.html:84 templates/base.html:187
+msgid "Crypto"
+msgstr "Crypto"
+
+#: templates/base.html:85
+msgid "Economic"
+msgstr "Economic"
+
+#: templates/base.html:86 templates/base.html:135 templates/base.html:194
+msgid "FAQ"
+msgstr "FAQ"
+
+#: templates/base.html:111 templates/base.html:153
+msgid "Profile"
+msgstr "Profile"
+
+#: templates/base.html:129
+msgid "Markets API"
+msgstr "Markets API"
+
+#: templates/base.html:130
+msgid "Options API"
+msgstr "Options API"
+
+#: templates/base.html:131
+msgid "Fundamentals API"
+msgstr "Fundamentals API"
+
+#: templates/base.html:132
+msgid "Forex API"
+msgstr "Forex API"
+
+#: templates/base.html:133
+msgid "Crypto API"
+msgstr "Crypto API"
+
+#: templates/base.html:134
+msgid "Economic Indicators API"
+msgstr "Economic Indicators API"
+
+#: templates/base.html:139
+msgid "Language"
+msgstr "Language"
+
+#: templates/base.html:172
+msgid "Global Financial Data API"
+msgstr "Global Financial Data API"
+
+#: templates/base.html:182
+msgid "APIs"
+msgstr "APIs"
+
+#: templates/base.html:184
+msgid "Market Data"
+msgstr "Market Data"
+
+#: templates/base.html:192
+msgid "Resources"
+msgstr "Resources"
+
+#: templates/base.html:196
+msgid "Support"
+msgstr "Support"
+
+#: templates/base.html:203
+msgid "© 2024 Global Markets Financial Data API. All rights reserved."
+msgstr "© 2024 Global Markets Financial Data API. All rights reserved."
+
+#: templates/base.html:205
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+#: templates/base.html:206
+msgid "Terms of Service"
+msgstr "Terms of Service"
+
+#: users/templates/faq.html:4
+#, fuzzy
+#| msgid "Global Financial Data API"
+msgid "FAQ - Global Financial Data API"
+msgstr "Global Financial Data API"
+
+#: users/templates/faq.html:60
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: users/templates/faq.html:63
+#, fuzzy
+#| msgid "Get notified when our Global Financial Data API launches"
+msgid "Everything you need to know about our Global Financial Data API"
+msgstr "Get notified when our Global Financial Data API launches"
+
+#: users/templates/faq.html:73
+msgid "How do I get API access?"
+msgstr ""
+
+#: users/templates/faq.html:76
+msgid ""
+"Currently, we are in development phase. Join our waiting list to get "
+"priority access when we launch. We will notify you via email with your API "
+"credentials and documentation."
+msgstr ""
+
+#: users/templates/faq.html:84
+msgid "What markets and data do you cover?"
+msgstr ""
+
+#: users/templates/faq.html:87
+msgid ""
+"Our API provides comprehensive coverage of global financial markets "
+"including:"
+msgstr ""
+
+#: users/templates/faq.html:90
+msgid "Stock markets: NYSE, NASDAQ, LSE, TSE, DAX, and more"
+msgstr ""
+
+#: users/templates/faq.html:91
+msgid "Options and derivatives from major exchanges"
+msgstr ""
+
+#: users/templates/faq.html:92
+msgid "Forex markets with 24/7 currency data"
+msgstr ""
+
+#: users/templates/faq.html:93
+msgid "3000+ cryptocurrencies and digital assets"
+msgstr ""
+
+#: users/templates/faq.html:94
+msgid "Commodities, futures, and economic indicators"
+msgstr ""
+
+#: users/templates/faq.html:95
+#, fuzzy
+#| msgid "Real-time and historical data from global stock exchanges"
+msgid "Real-time quotes and historical data"
+msgstr "Real-time and historical data from global stock exchanges"
+
+#: users/templates/faq.html:103
+msgid "What is your pricing model?"
+msgstr ""
+
+#: users/templates/faq.html:106
+#, python-format
+msgid ""
+"We offer transparent, usage-based pricing that is 25-60%% cheaper than "
+"competitors. Our pricing is designed for developers, analysts, and "
+"institutions with flexible plans based on API calls, data types, and real-"
+"time access needs. Detailed pricing will be available at launch."
+msgstr ""
+
+#: users/templates/faq.html:114
+msgid "What data formats do you support?"
+msgstr ""
+
+#: users/templates/faq.html:117
+msgid ""
+"Our API returns data in JSON format by default. We also support CSV exports "
+"for bulk historical data downloads. All responses follow RESTful conventions "
+"with comprehensive error handling and status codes."
+msgstr ""
+
+#: users/templates/faq.html:125
+msgid "Are there any rate limits?"
+msgstr ""
+
+#: users/templates/faq.html:128
+msgid ""
+"Yes, rate limits vary by subscription plan to ensure optimal performance for "
+"all users. Professional plans include higher rate limits suitable for most "
+"trading applications and analytical tools. Enterprise customers can request "
+"custom rate limits."
+msgstr ""
+
+#: users/templates/faq.html:136
+msgid "How real-time is your data?"
+msgstr ""
+
+#: users/templates/faq.html:139
+msgid ""
+"Our real-time data has minimal latency, typically under 100ms for major "
+"markets. We provide live quotes during market hours and maintain 24/7 "
+"coverage for forex and cryptocurrency markets. Historical data is updated "
+"continuously."
+msgstr ""
+
+#: users/templates/faq.html:147
+msgid "How secure is your API?"
+msgstr ""
+
+#: users/templates/faq.html:150
+msgid ""
+"We implement enterprise-grade security including API key authentication, "
+"HTTPS encryption, rate limiting, and compliance with financial data "
+"regulations. All data transmission is encrypted and we maintain SOC 2 "
+"compliance standards."
+msgstr ""
+
+#: users/templates/faq.html:158
+msgid "What support do you provide?"
+msgstr ""
+
+#: users/templates/faq.html:161
+msgid ""
+"We provide comprehensive documentation, code examples, and email support. "
+"Professional plans include priority support with faster response times. "
+"Enterprise customers get dedicated account management and technical support."
+msgstr ""
+
+#: users/templates/faq.html:169
+msgid "What can I build with your API?"
+msgstr ""
+
+#: users/templates/faq.html:172
+msgid "Our API is perfect for building:"
+msgstr ""
+
+#: users/templates/faq.html:175
+msgid "Financial applications and portfolio trackers"
+msgstr ""
+
+#: users/templates/faq.html:176
+msgid "Trading bots and algorithmic trading systems"
+msgstr ""
+
+#: users/templates/faq.html:177
+msgid "Market analysis and research tools"
+msgstr ""
+
+#: users/templates/faq.html:178
+msgid "Investment screening and backtesting platforms"
+msgstr ""
+
+#: users/templates/faq.html:179
+msgid "Risk management and compliance tools"
+msgstr ""
+
+#: users/templates/faq.html:180
+msgid "Custom dashboards and reporting systems"
+msgstr ""
+
+#: users/templates/faq.html:188
+msgid "When will the API be available?"
+msgstr ""
+
+#: users/templates/faq.html:191
+msgid ""
+"We are currently in final development and testing phases. Join our waiting "
+"list to be among the first to access the API when we launch. Waiting list "
+"subscribers will receive priority access and special launch pricing."
+msgstr ""
+
+#: users/templates/faq.html:199
+msgid "Still have questions?"
+msgstr ""
+
+#: users/templates/faq.html:202
+msgid ""
+"Join our waiting list and we will reach out with more details about our API"
+msgstr ""
+
+#: users/templates/home.html:4
+msgid "Professional Financial Data API for Global Markets"
+msgstr "Professional Financial Data API for Global Markets"
+
+#: users/templates/options_api.html:4
+#, fuzzy
+#| msgid "Options chains, Greeks, and derivatives analytics"
+msgid "Global Options API - Options Chains, Greeks & Derivatives Data"
+msgstr "Options chains, Greeks, and derivatives analytics"
+
+#: users/templates/options_api.html:147
+#, fuzzy
+#| msgid "Global Markets API"
+msgid "Global Options Markets API"
+msgstr "Global Markets API"
+
+#: users/templates/options_api.html:150
+msgid ""
+"Professional options data API for derivatives trading. Access options "
+"chains, Greeks, implied volatility, and comprehensive options analytics for "
+"global markets."
+msgstr ""
+
+#: users/templates/options_api.html:167
+msgid "Comprehensive Options Data"
+msgstr ""
+
+#: users/templates/options_api.html:170
+#, fuzzy
+#| msgid "Options chains, Greeks, and derivatives analytics"
+msgid "Everything you need for options trading and derivatives analysis"
+msgstr "Options chains, Greeks, and derivatives analytics"
+
+#: users/templates/options_api.html:180
+#, fuzzy
+#| msgid "Options"
+msgid "Options Chains"
+msgstr "Options"
+
+#: users/templates/options_api.html:182
+msgid "Complete option chains"
+msgstr ""
+
+#: users/templates/options_api.html:183
+msgid "All strikes and expirations"
+msgstr ""
+
+#: users/templates/options_api.html:184
+msgid "Call and put contracts"
+msgstr ""
+
+#: users/templates/options_api.html:185
+msgid "Real-time pricing"
+msgstr ""
+
+#: users/templates/options_api.html:194
+#, fuzzy
+#| msgid "Options"
+msgid "Options Greeks"
+msgstr "Options"
+
+#: users/templates/options_api.html:196
+msgid "Delta, Gamma, Theta"
+msgstr ""
+
+#: users/templates/options_api.html:197
+msgid "Vega and Rho"
+msgstr ""
+
+#: users/templates/options_api.html:198
+msgid "Real-time calculations"
+msgstr ""
+
+#: users/templates/options_api.html:199
+msgid "Portfolio Greeks"
+msgstr ""
+
+#: users/templates/options_api.html:208
+msgid "Implied Volatility"
+msgstr ""
+
+#: users/templates/options_api.html:210
+msgid "IV surface data"
+msgstr ""
+
+#: users/templates/options_api.html:211
+msgid "Volatility skew"
+msgstr ""
+
+#: users/templates/options_api.html:212
+msgid "Historical IV trends"
+msgstr ""
+
+#: users/templates/options_api.html:213
+msgid "VIX and volatility indices"
+msgstr ""
+
+#: users/templates/options_api.html:222
+#, fuzzy
+#| msgid "Options"
+msgid "Options Flow"
+msgstr "Options"
+
+#: users/templates/options_api.html:224
+msgid "Unusual options activity"
+msgstr ""
+
+#: users/templates/options_api.html:225
+msgid "Large volume alerts"
+msgstr ""
+
+#: users/templates/options_api.html:226
+msgid "Open interest changes"
+msgstr ""
+
+#: users/templates/options_api.html:227
+msgid "Smart money tracking"
+msgstr ""
+
+#: users/templates/options_api.html:236
+msgid "Strategy Analytics"
+msgstr ""
+
+#: users/templates/options_api.html:238
+msgid "Multi-leg strategies"
+msgstr ""
+
+#: users/templates/options_api.html:239
+msgid "P&L calculations"
+msgstr ""
+
+#: users/templates/options_api.html:240
+msgid "Risk metrics"
+msgstr ""
+
+#: users/templates/options_api.html:241
+msgid "Payoff diagrams"
+msgstr ""
+
+#: users/templates/options_api.html:250
+#, fuzzy
+#| msgid "Global Markets API"
+msgid "Global Markets"
+msgstr "Global Markets API"
+
+#: users/templates/options_api.html:252
+msgid "US options exchanges"
+msgstr ""
+
+#: users/templates/options_api.html:253
+msgid "European options"
+msgstr ""
+
+#: users/templates/options_api.html:254
+#, fuzzy
+#| msgid "Options"
+msgid "Index options"
+msgstr "Options"
+
+#: users/templates/options_api.html:255
+#, fuzzy
+#| msgid "Options"
+msgid "ETF options"
+msgstr "Options"
+
+#: users/templates/options_api.html:267
+msgid "Professional Options API Features"
+msgstr ""
+
+#: users/templates/options_api.html:270
+#, fuzzy
+#| msgid "Options chains, Greeks, and derivatives analytics"
+msgid "Built for options traders, quants, and derivatives professionals"
+msgstr "Options chains, Greeks, and derivatives analytics"
+
+#: users/templates/options_api.html:279
+msgid "Real-time Data"
+msgstr ""
+
+#: users/templates/options_api.html:280
+msgid "Live options prices and Greeks with minimal latency for active trading"
+msgstr ""
+
+#: users/templates/options_api.html:287
+msgid "Historical Options Data"
+msgstr ""
+
+#: users/templates/options_api.html:288
+msgid "Extensive historical options data for backtesting and research"
+msgstr ""
+
+#: users/templates/options_api.html:295
+msgid "Advanced Analytics"
+msgstr ""
+
+#: users/templates/options_api.html:296
+msgid "Sophisticated options analytics and risk management tools"
+msgstr ""
+
+#: users/templates/options_api.html:303
+#, fuzzy
+#| msgid "Enterprise-grade security & compliance"
+msgid "Enterprise Security"
+msgstr "Enterprise-grade security & compliance"
+
+#: users/templates/options_api.html:304
+#, fuzzy
+#| msgid "Enterprise-grade security & compliance"
+msgid "Bank-grade security with authentication and compliance"
+msgstr "Enterprise-grade security & compliance"
+
+#: users/templates/options_api.html:311
+msgid "High Performance"
+msgstr ""
+
+#: users/templates/options_api.html:312
+msgid "Optimized for high-frequency options trading applications"
+msgstr ""
+
+#: users/templates/options_api.html:319
+#, fuzzy
+#| msgid "Developers"
+msgid "Developer Friendly"
+msgstr "Developers"
+
+#: users/templates/options_api.html:320
+msgid "RESTful API with comprehensive documentation and SDKs"
+msgstr ""
+
+#: users/templates/options_api.html:331
+msgid "Options Trading Use Cases"
+msgstr ""
+
+#: users/templates/options_api.html:334
+msgid "Power your options trading strategies with professional-grade data"
+msgstr ""
+
+#: users/templates/options_api.html:342
+msgid "Algorithmic Options Trading"
+msgstr ""
+
+#: users/templates/options_api.html:345
+msgid ""
+"Build sophisticated options trading algorithms with real-time Greeks, "
+"volatility data, and market analytics."
+msgstr ""
+
+#: users/templates/options_api.html:348
+msgid "Delta-neutral strategies"
+msgstr ""
+
+#: users/templates/options_api.html:349
+msgid "Volatility trading systems"
+msgstr ""
+
+#: users/templates/options_api.html:350
+msgid "Market making algorithms"
+msgstr ""
+
+#: users/templates/options_api.html:351
+msgid "Arbitrage detection"
+msgstr ""
+
+#: users/templates/options_api.html:358
+msgid "Risk Management"
+msgstr ""
+
+#: users/templates/options_api.html:361
+msgid ""
+"Monitor and manage options portfolio risk with real-time Greeks and exposure "
+"analytics."
+msgstr ""
+
+#: users/templates/options_api.html:364
+msgid "Portfolio Greeks monitoring"
+msgstr ""
+
+#: users/templates/options_api.html:365
+msgid "Risk exposure alerts"
+msgstr ""
+
+#: users/templates/options_api.html:366
+msgid "Stress testing tools"
+msgstr ""
+
+#: users/templates/options_api.html:367
+msgid "VaR calculations"
+msgstr ""
+
+#: users/templates/options_api.html:374
+#, fuzzy
+#| msgid "Options"
+msgid "Options Research"
+msgstr "Options"
+
+#: users/templates/options_api.html:377
+msgid ""
+"Conduct comprehensive options research and analysis with historical data and "
+"advanced analytics."
+msgstr ""
+
+#: users/templates/options_api.html:380
+msgid "Volatility surface analysis"
+msgstr ""
+
+#: users/templates/options_api.html:381
+msgid "Strategy backtesting"
+msgstr ""
+
+#: users/templates/options_api.html:382
+msgid "Market structure research"
+msgstr ""
+
+#: users/templates/options_api.html:383
+msgid "Academic research tools"
+msgstr ""
+
+#: users/templates/options_api.html:390
+#, fuzzy
+#| msgid "Trading Bots"
+msgid "Trading Applications"
+msgstr "Trading Bots"
+
+#: users/templates/options_api.html:393
+msgid ""
+"Build professional options trading platforms and mobile applications for "
+"retail and institutional clients."
+msgstr ""
+
+#: users/templates/options_api.html:396
+msgid "Options screeners"
+msgstr ""
+
+#: users/templates/options_api.html:397
+msgid "Strategy builders"
+msgstr ""
+
+#: users/templates/options_api.html:398
+msgid "Real-time pricing tools"
+msgstr ""
+
+#: users/templates/options_api.html:399
+msgid "Educational platforms"
+msgstr ""
+
+#: users/templates/options_api.html:410
+msgid "Ready to Access Professional Options Data?"
+msgstr ""
+
+#: users/templates/options_api.html:413
+msgid ""
+"Join our waiting list to be notified when our comprehensive options API "
+"becomes available"
+msgstr ""
+
+#: users/templates/options_api.html:422
+#: users/templates/stock_market_api.html:650
+msgid "Learn More"
+msgstr ""
+
+#: users/templates/stock_market_api.html:4
+msgid "Global Stock Market API - Real-time & Historical Data"
+msgstr ""
+
+#: users/templates/stock_market_api.html:149
+#, fuzzy
+#| msgid "Global Markets API"
+msgid "Global Stock Market API"
+msgstr "Global Markets API"
+
+#: users/templates/stock_market_api.html:152
+msgid ""
+"Professional stock market data API covering global exchanges. Real-time "
+"quotes, historical prices, and comprehensive market data for developers and "
+"analysts."
+msgstr ""
+
+#: users/templates/stock_market_api.html:159
+msgid "Explore Planned Features"
+msgstr ""
+
+#: users/templates/stock_market_api.html:189
+#, fuzzy
+#| msgid "Global Market Data"
+msgid "Global Stock Market Coverage"
+msgstr "Global Market Data"
+
+#: users/templates/stock_market_api.html:190
+msgid "Access stock market data from major exchanges around the world"
+msgstr ""
+
+#: users/templates/stock_market_api.html:195
+msgid "Complete coverage of the world"
+msgstr ""
+
+#: users/templates/stock_market_api.html:196
+msgid "Complete US Coverage"
+msgstr ""
+
+#: users/templates/stock_market_api.html:200
+msgid "London, Tokyo, Frankfurt, Toronto, and other major exchanges"
+msgstr ""
+
+#: users/templates/stock_market_api.html:201
+msgid "International Markets"
+msgstr ""
+
+#: users/templates/stock_market_api.html:206
+msgid ""
+"Focused on global markets for high-quality, consistent data delivery via "
+"JSON and CSV formats"
+msgstr ""
+
+#: users/templates/stock_market_api.html:208
+msgid "24/7 Coverage"
+msgstr ""
+
+#: users/templates/stock_market_api.html:218
+msgid "Professional API Features"
+msgstr ""
+
+#: users/templates/stock_market_api.html:220
+msgid "Enterprise-grade stock market API built for developers"
+msgstr ""
+
+#: users/templates/stock_market_api.html:233
+msgid "Real-time Quotes"
+msgstr ""
+
+#: users/templates/stock_market_api.html:236
+msgid ""
+"Live stock prices with 50ms average response time via REST API. Real-time "
+"pricing from 40+ global exchanges during market hours."
+msgstr ""
+
+#: users/templates/stock_market_api.html:239
+msgid "Current price, daily high/low"
+msgstr ""
+
+#: users/templates/stock_market_api.html:240
+msgid "Volume and market cap data"
+msgstr ""
+
+#: users/templates/stock_market_api.html:241
+msgid "Pre/after-market pricing"
+msgstr ""
+
+#: users/templates/stock_market_api.html:242
+msgid "15-minute delayed for free tier"
+msgstr ""
+
+#: users/templates/stock_market_api.html:254
+msgid "Historical Prices"
+msgstr ""
+
+#: users/templates/stock_market_api.html:257
+msgid ""
+"Complete historical stock data going back 20+ years for backtesting and "
+"analysis. Multiple time intervals supported."
+msgstr ""
+
+#: users/templates/stock_market_api.html:260
+msgid "1min, 5min, 15min, 1hour, daily"
+msgstr ""
+
+#: users/templates/stock_market_api.html:261
+msgid "Adjusted for splits and dividends"
+msgstr ""
+
+#: users/templates/stock_market_api.html:262
+msgid "CSV and JSON export formats"
+msgstr ""
+
+#: users/templates/stock_market_api.html:263
+msgid "Bulk download capabilities"
+msgstr ""
+
+#: users/templates/stock_market_api.html:275
+msgid "Company Data"
+msgstr ""
+
+#: users/templates/stock_market_api.html:278
+msgid ""
+"Essential company data including financials, ratios, and key metrics for "
+"investment analysis and screening."
+msgstr ""
+
+#: users/templates/stock_market_api.html:281
+msgid "Market cap, P/E ratio, EPS"
+msgstr ""
+
+#: users/templates/stock_market_api.html:282
+msgid "Revenue and profit margins"
+msgstr ""
+
+#: users/templates/stock_market_api.html:283
+msgid "Dividend yield and payout ratio"
+msgstr ""
+
+#: users/templates/stock_market_api.html:284
+msgid "Quarterly earnings updates"
+msgstr ""
+
+#: users/templates/stock_market_api.html:296
+msgid "Technical Analysis"
+msgstr ""
+
+#: users/templates/stock_market_api.html:299
+msgid ""
+"Pre-calculated technical indicators to save computation time and accelerate "
+"trading algorithm development."
+msgstr ""
+
+#: users/templates/stock_market_api.html:302
+msgid "Moving averages (SMA, EMA)"
+msgstr ""
+
+#: users/templates/stock_market_api.html:303
+msgid "RSI, MACD, Bollinger Bands"
+msgstr ""
+
+#: users/templates/stock_market_api.html:304
+msgid "Support/resistance levels"
+msgstr ""
+
+#: users/templates/stock_market_api.html:305
+msgid "Custom indicator parameters"
+msgstr ""
+
+#: users/templates/stock_market_api.html:317
+#, fuzzy
+#| msgid "Markets"
+msgid "Market Events"
+msgstr "Markets"
+
+#: users/templates/stock_market_api.html:320
+msgid ""
+"Financial news, earnings announcements, and market-moving events with "
+"sentiment analysis and impact scoring."
+msgstr ""
+
+#: users/templates/stock_market_api.html:323
+msgid "Real-time financial news feed"
+msgstr ""
+
+#: users/templates/stock_market_api.html:324
+msgid "Earnings calendar and results"
+msgstr ""
+
+#: users/templates/stock_market_api.html:325
+msgid "Corporate actions and splits"
+msgstr ""
+
+#: users/templates/stock_market_api.html:326
+msgid "News sentiment scoring"
+msgstr ""
+
+#: users/templates/stock_market_api.html:336
+msgid "Perfect for Your Use Case"
+msgstr ""
+
+#: users/templates/stock_market_api.html:342
+msgid ""
+"Build professional algorithmic trading systems with ultra-low latency stock "
+"market data. Perfect for quantitative trading strategies, statistical "
+"arbitrage, and market making algorithms."
+msgstr ""
+
+#: users/templates/stock_market_api.html:345
+msgid "Sub-50ms API response times for HFT"
+msgstr ""
+
+#: users/templates/stock_market_api.html:346
+msgid "Level 2 market data for order book analysis"
+msgstr ""
+
+#: users/templates/stock_market_api.html:347
+msgid "Real-time tick data and microsecond timestamps"
+msgstr ""
+
+#: users/templates/stock_market_api.html:348
+msgid "Historical data for strategy backtesting"
+msgstr ""
+
+#: users/templates/stock_market_api.html:349
+msgid "WebSocket feeds for continuous data streaming"
+msgstr ""
+
+#: users/templates/stock_market_api.html:356
+msgid ""
+"Build sophisticated financial applications with real-time stock prices, "
+"technical indicators, and market analytics. Perfect for developers creating "
+"custom financial solutions."
+msgstr ""
+
+#: users/templates/stock_market_api.html:359
+msgid "Real-time stock quotes and price alerts"
+msgstr ""
+
+#: users/templates/stock_market_api.html:360
+msgid "Technical analysis indicators and charts"
+msgstr ""
+
+#: users/templates/stock_market_api.html:361
+msgid "Stock screeners and market scanners"
+msgstr ""
+
+#: users/templates/stock_market_api.html:362
+msgid "Custom queries and data analysis"
+msgstr ""
+
+#: users/templates/stock_market_api.html:363
+msgid "After-hours and pre-market data access"
+msgstr ""
+
+#: users/templates/stock_market_api.html:370
+msgid ""
+"Develop and train sophisticated trading algorithms with comprehensive "
+"historical data and real-time feeds. Essential for strategy backtesting and "
+"algorithmic trading development."
+msgstr ""
+
+#: users/templates/stock_market_api.html:373
+msgid "Historical OHLC data for backtesting"
+msgstr ""
+
+#: users/templates/stock_market_api.html:374
+msgid "Machine learning training datasets"
+msgstr ""
+
+#: users/templates/stock_market_api.html:375
+msgid "Strategy performance analysis"
+msgstr ""
+
+#: users/templates/stock_market_api.html:376
+msgid "Real-time data for live trading bots"
+msgstr ""
+
+#: users/templates/stock_market_api.html:377
+msgid "Risk metrics and portfolio optimization"
+msgstr ""
+
+#: users/templates/stock_market_api.html:384
+msgid ""
+"Power sophisticated investment research platforms with fundamental data, "
+"earnings analysis, and market intelligence. Essential for institutional "
+"research and financial advisory tools."
+msgstr ""
+
+#: users/templates/stock_market_api.html:387
+msgid "Company fundamentals and financial statements"
+msgstr ""
+
+#: users/templates/stock_market_api.html:388
+msgid "Earnings estimates and analyst consensus"
+msgstr ""
+
+#: users/templates/stock_market_api.html:389
+msgid "Sector analysis and peer comparisons"
+msgstr ""
+
+#: users/templates/stock_market_api.html:390
+msgid "ESG ratings and sustainability metrics"
+msgstr ""
+
+#: users/templates/stock_market_api.html:391
+msgid "Custom research reports and alerts"
+msgstr ""
+
+#: users/templates/stock_market_api.html:401
+msgid "Technical Specifications & Integration Details"
+msgstr ""
+
+#: users/templates/stock_market_api.html:407
+msgid "< 50ms average API response time"
+msgstr ""
+
+#: users/templates/stock_market_api.html:408
+#, python-format
+msgid "99.99%% uptime SLA with automatic failover"
+msgstr ""
+
+#: users/templates/stock_market_api.html:409
+msgid "Global CDN with edge caching"
+msgstr ""
+
+#: users/templates/stock_market_api.html:410
+msgid "Rate limiting: up to 1000 requests/minute"
+msgstr ""
+
+#: users/templates/stock_market_api.html:411
+msgid "Real-time WebSocket connections"
+msgstr ""
+
+#: users/templates/stock_market_api.html:412
+msgid "Redundant data centers worldwide"
+msgstr ""
+
+#: users/templates/stock_market_api.html:419
+msgid "RESTful JSON API with OpenAPI specs"
+msgstr ""
+
+#: users/templates/stock_market_api.html:420
+msgid "Official SDKs for Python, JavaScript, Java"
+msgstr ""
+
+#: users/templates/stock_market_api.html:421
+msgid "JWT authentication and API key security"
+msgstr ""
+
+#: users/templates/stock_market_api.html:422
+msgid "Comprehensive API documentation"
+msgstr ""
+
+#: users/templates/stock_market_api.html:423
+msgid "Code examples and integration tutorials"
+msgstr ""
+
+#: users/templates/stock_market_api.html:424
+msgid "Postman collections and testing tools"
+msgstr ""
+
+#: users/templates/stock_market_api.html:431
+msgid "50+ global stock exchanges"
+msgstr ""
+
+#: users/templates/stock_market_api.html:432
+msgid "20+ years of historical data"
+msgstr ""
+
+#: users/templates/stock_market_api.html:433
+msgid "Real-time updates every 1 second"
+msgstr ""
+
+#: users/templates/stock_market_api.html:434
+msgid "Support for 10,000+ stock symbols"
+msgstr ""
+
+#: users/templates/stock_market_api.html:435
+msgid "Multiple data formats and time zones"
+msgstr ""
+
+#: users/templates/stock_market_api.html:436
+msgid "Corporate actions and adjustments"
+msgstr ""
+
+#: users/templates/stock_market_api.html:447
+msgid "Simple, Competitive Pricing"
+msgstr ""
+
+#: users/templates/stock_market_api.html:449
+#, python-format
+msgid ""
+"Professional-grade stock market data at 60%% lower cost than premium "
+"providers. All plans include REST API access with competitive rate limits."
+msgstr ""
+
+#: users/templates/stock_market_api.html:459
+msgid "Perfect for learning and prototyping"
+msgstr ""
+
+#: users/templates/stock_market_api.html:509
+msgid "Most Popular"
+msgstr ""
+
+#: users/templates/stock_market_api.html:515
+#: users/templates/stock_market_api.html:573
+msgid "per month"
+msgstr ""
+
+#: users/templates/stock_market_api.html:621
+msgid "Contact for Enterprise"
+msgstr ""
+
+#: users/templates/stock_market_api.html:629
+msgid ""
+"All plans include documentation, community support, and access to our REST "
+"API. WebSocket streaming capabilities will be available starting Q4 2025."
+msgstr ""
+
+#: users/templates/stock_market_api.html:632
+#, python-format
+msgid ""
+"Save 60%% compared to premium providers - Professional plan costs just $49/"
+"month vs $199+"
+msgstr ""
+
+#: users/templates/stock_market_api.html:641
+#, fuzzy
+#| msgid "Global Market Data"
+msgid "Ready to Access Global Stock Market Data?"
+msgstr "Global Market Data"
+
+#: users/templates/stock_market_api.html:643
+msgid ""
+"Join our waiting list to be notified when our professional stock market API "
+"becomes available"
+msgstr ""
+
+#: users/templates/stock_market_api.html:647
+#, fuzzy
+#| msgid "Join Waiting List"
+msgid "Join Waiting List Today"
+msgstr "Join Waiting List"
+
+#: users/templates/stock_market_api.html:654
+msgid "No setup fees"
+msgstr ""
+
+#: users/templates/stock_market_api.html:654
+msgid "Free tier planned"
+msgstr ""
+
+#: users/templates/stock_market_api.html:654
+#, fuzzy
+#| msgid "Documentation"
+msgid "Developer documentation"
+msgstr "Documentation"
+
+#: users/templates/stock_market_api.html:654
+msgid "Email support available"
+msgstr ""
+
+#: users/templates/waiting_list.html:5
+msgid "Join Waiting List - Global Financial Data API"
+msgstr "Join Waiting List - Global Financial Data API"
+
+#: users/templates/waiting_list.html:15
+msgid "Join the Waiting List"
+msgstr "Join the Waiting List"
+
+#: users/templates/waiting_list.html:18
+msgid "Get notified when our Global Financial Data API launches"
+msgstr "Get notified when our Global Financial Data API launches"
+
+#: users/templates/waiting_list.html:37
+msgid "What You\\"
+msgstr "What You'll Get"
+
+#: users/templates/waiting_list.html:44
+msgid "Global Market Data"
+msgstr "Global Market Data"
+
+#: users/templates/waiting_list.html:45
+msgid "Real-time and historical data from global stock exchanges"
+msgstr "Real-time and historical data from global stock exchanges"
+
+#: users/templates/waiting_list.html:52
+msgid "Options & Derivatives"
+msgstr "Options & Derivatives"
+
+#: users/templates/waiting_list.html:53
+msgid "Options chains, Greeks, and derivatives analytics"
+msgstr "Options chains, Greeks, and derivatives analytics"
+
+#: users/templates/waiting_list.html:60
+msgid "Forex & Commodities"
+msgstr "Forex & Commodities"
+
+#: users/templates/waiting_list.html:61
+msgid "24/7 currency data and commodities pricing"
+msgstr "24/7 currency data and commodities pricing"
+
+#: users/templates/waiting_list.html:68
+msgid "Cryptocurrency"
+msgstr "Cryptocurrency"
+
+#: users/templates/waiting_list.html:69
+msgid "3000+ digital assets with real-time pricing"
+msgstr "3000+ digital assets with real-time pricing"
+
+#: users/templates/waiting_list.html:76
+msgid "Fundamental Data"
+msgstr "Fundamental Data"
+
+#: users/templates/waiting_list.html:77
+msgid "Financial statements, earnings, and company profiles"
+msgstr "Financial statements, earnings, and company profiles"
+
+#: users/templates/waiting_list.html:84
+msgid "News & Events"
+msgstr "News & Events"
+
+#: users/templates/waiting_list.html:85
+msgid "Financial news, earnings calendar, and economic events"
+msgstr "Financial news, earnings calendar, and economic events"
+
+#: users/templates/waiting_list.html:95
+msgid "Email address"
+msgstr "Email address"
+
+#: users/templates/waiting_list.html:102
+msgid "Enter your email address"
+msgstr "Enter your email address"
+
+#: users/templates/waiting_list.html:129
+msgid "Early Access Benefits"
+msgstr "Early Access Benefits"
+
+#: users/templates/waiting_list.html:134
+msgid "Priority access when we launch"
+msgstr "Priority access when we launch"
+
+#: users/templates/waiting_list.html:138
+msgid "Special launch pricing"
+msgstr "Special launch pricing"
+
+#: users/templates/waiting_list.html:142
+msgid "Exclusive beta access"
+msgstr "Exclusive beta access"
+
+#: users/templates/waiting_list.html:146
+msgid "Direct feedback channel"
+msgstr "Direct feedback channel"
+
+#: users/templates/waiting_list.html:155
+msgid "Why Choose Our API?"
+msgstr "Why Choose Our API?"
+
+#: users/templates/waiting_list.html:160
+msgid "Cheaper than competitors"
+msgstr "Cheaper than competitors"
+
+#: users/templates/waiting_list.html:164
+msgid "Uptime guarantee"
+msgstr "Uptime guarantee"
+
+#: users/templates/waiting_list.html:168
+msgid "Cryptocurrencies"
+msgstr "Cryptocurrencies"
+
+#: users/templates/waiting_list.html:172
+msgid "Forex markets"
+msgstr "Forex markets"
+
+#: users/templates/waiting_list.html:181
+msgid "Perfect For"
+msgstr "Perfect For"
+
+#: users/templates/waiting_list.html:186
+msgid "Developers"
+msgstr "Developers"
+
+#: users/templates/waiting_list.html:190
+msgid "Analysts"
+msgstr "Analysts"
+
+#: users/templates/waiting_list.html:194
+msgid "Trading Bots"
+msgstr "Trading Bots"
+
+#: users/templates/waiting_list.html:198
+msgid "Institutions"
+msgstr "Institutions"
+
+#: users/templates/waiting_list.html:202
+msgid "App Builders"
+msgstr "App Builders"
+
+#: users/templates/waiting_list.html:206
+msgid "Researchers"
+msgstr "Researchers"
+
+#: users/templates/waiting_list.html:215
+msgid "Enterprise-grade security & compliance"
+msgstr "Enterprise-grade security & compliance"
+
+#: users/templates/waiting_list.html:218
+msgid "Your email will only be used for API launch notifications. No spam."
+msgstr "Your email will only be used for API launch notifications. No spam."
+
+#: users/templates/waiting_list.html:226
+msgid "Back to Home"
+msgstr "Back to Home"

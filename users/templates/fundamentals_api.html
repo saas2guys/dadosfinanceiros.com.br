@@ -64,19 +64,17 @@
             </div>
 
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                Fundamental Data API for Financial Analysis
+                {% trans "Fundamental Data API for Financial Analysis" %}
             </h1>
             <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                Professional fundamental data API providing comprehensive financial statements, ratios, valuation metrics, 
-                and company analysis. Real-time income statements, balance sheets, cash flows, financial ratios, 
-                DCF analysis, and growth metrics. Perfect for fundamental analysis, financial research, and investment applications.
+                {% trans "Professional fundamental data API providing comprehensive financial statements, ratios, valuation metrics, and company analysis. Real-time income statements, balance sheets, cash flows, financial ratios, DCF analysis, and growth metrics. Perfect for fundamental analysis, financial research, and investment applications." %}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
-                    Join Waiting List for Early Access
+                    {% trans "Join Waiting List for Early Access" %}
                 </a>
                 <a href="{% url 'home' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                    Explore All APIs
+                    {% trans "Explore All APIs" %}
                 </a>
             </div>
         </div>
@@ -557,10 +555,10 @@ getFundamentals('AAPL');
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
-                    Join Waiting List for Early Access
+                    {% trans "Join Waiting List for Early Access" %}
                 </a>
                 <a href="{% url 'api_comparison' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition duration-200">
-                    Compare Financial APIs
+                    {% trans "Compare Financial APIs" %}
                 </a>
             </div>
             <p class="text-sm text-gray-500 mt-6">

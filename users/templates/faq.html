@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Global Financial Data API FAQ 2025 - 104+ Endpoints Across 22 Categories{% endblock %}
+{% block title %}{% trans 'FAQ - Global Financial Data API' %}{% endblock %}
 
 {% block meta_description %}Frequently asked questions about our professional financial data API launching July 2025. 104+ endpoints covering stocks, options, futures, forex, crypto, fundamentals, news, earnings, SEC filings, and more.{% endblock %}
 
@@ -53,253 +53,161 @@
 {% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-900 py-12">
-    <div class="max-w-4xl mx-auto px-4">
-        
-        <!-- Header -->
+<section class="py-16 bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <span class="text-lg font-semibold text-blue-300"><i class="fas fa-rocket mr-2"></i>Professional Financial Data API - Launching July 2025</span>
-            <h1 class="text-4xl font-bold text-white mt-4 mb-6">Frequently Asked Questions</h1>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-                Professional FAQ for our upcoming financial data API with 104+ endpoints across 22 categories.
-                Get answers to common questions about pricing, features, integration, and more.
+            <h1 class="text-4xl sm:text-5xl font-bold text-white mb-6">
+                {% trans 'Frequently Asked Questions' %}
+            </h1>
+            <p class="text-xl text-gray-300">
+                {% trans 'Everything you need to know about our Global Financial Data API' %}
             </p>
         </div>
 
-        <!-- FAQ Categories Navigation -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8">
-            <h3 class="text-lg font-semibold text-white mb-4">Professional Financial Data API FAQ</h3>
-            <p class="text-gray-400 mb-4">
-                Get answers to common questions about our professional financial data API with 104+ endpoints,
-                competitive pricing, and developer-friendly features launching July 2025.
+        <!-- FAQ Items -->
+        <div class="space-y-8">
+            <!-- API Access -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-key text-blue-400 mr-3"></i>
+                    {% trans 'How do I get API access?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Currently, we are in development phase. Join our waiting list to get priority access when we launch. We will notify you via email with your API credentials and documentation.' %}
+                </p>
+            </div>
+
+            <!-- Data Coverage -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-globe text-green-400 mr-3"></i>
+                    {% trans 'What markets and data do you cover?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    {% trans 'Our API provides comprehensive coverage of global financial markets including:' %}
+                </p>
+                <ul class="text-gray-300 space-y-2 ml-6">
+                    <li>• {% trans 'Stock markets: NYSE, NASDAQ, LSE, TSE, DAX, and more' %}</li>
+                    <li>• {% trans 'Options and derivatives from major exchanges' %}</li>
+                    <li>• {% trans 'Forex markets with 24/7 currency data' %}</li>
+                    <li>• {% trans '3000+ cryptocurrencies and digital assets' %}</li>
+                    <li>• {% trans 'Commodities, futures, and economic indicators' %}</li>
+                    <li>• {% trans 'Real-time quotes and historical data' %}</li>
+                </ul>
+            </div>
+
+            <!-- Pricing -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-dollar-sign text-yellow-400 mr-3"></i>
+                    {% trans 'What is your pricing model?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We offer transparent, usage-based pricing that is 25-60% cheaper than competitors. Our pricing is designed for developers, analysts, and institutions with flexible plans based on API calls, data types, and real-time access needs. Detailed pricing will be available at launch.' %}
+                </p>
+            </div>
+
+            <!-- Data Formats -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-code text-purple-400 mr-3"></i>
+                    {% trans 'What data formats do you support?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Our API returns data in JSON format by default. We also support CSV exports for bulk historical data downloads. All responses follow RESTful conventions with comprehensive error handling and status codes.' %}
+                </p>
+            </div>
+
+            <!-- Rate Limits -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-tachometer-alt text-red-400 mr-3"></i>
+                    {% trans 'Are there any rate limits?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Yes, rate limits vary by subscription plan to ensure optimal performance for all users. Professional plans include higher rate limits suitable for most trading applications and analytical tools. Enterprise customers can request custom rate limits.' %}
+                </p>
+            </div>
+
+            <!-- Real-time Data -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-clock text-indigo-400 mr-3"></i>
+                    {% trans 'How real-time is your data?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Our real-time data has minimal latency, typically under 100ms for major markets. We provide live quotes during market hours and maintain 24/7 coverage for forex and cryptocurrency markets. Historical data is updated continuously.' %}
+                </p>
+            </div>
+
+            <!-- Security -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-shield-alt text-orange-400 mr-3"></i>
+                    {% trans 'How secure is your API?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We implement enterprise-grade security including API key authentication, HTTPS encryption, rate limiting, and compliance with financial data regulations. All data transmission is encrypted and we maintain SOC 2 compliance standards.' %}
+                </p>
+            </div>
+
+            <!-- Support -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-headset text-cyan-400 mr-3"></i>
+                    {% trans 'What support do you provide?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We provide comprehensive documentation, code examples, and email support. Professional plans include priority support with faster response times. Enterprise customers get dedicated account management and technical support.' %}
+                </p>
+            </div>
+
+            <!-- Use Cases -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-lightbulb text-yellow-400 mr-3"></i>
+                    {% trans 'What can I build with your API?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    {% trans 'Our API is perfect for building:' %}
+                </p>
+                <ul class="text-gray-300 space-y-2 ml-6">
+                    <li>• {% trans 'Financial applications and portfolio trackers' %}</li>
+                    <li>• {% trans 'Trading bots and algorithmic trading systems' %}</li>
+                    <li>• {% trans 'Market analysis and research tools' %}</li>
+                    <li>• {% trans 'Investment screening and backtesting platforms' %}</li>
+                    <li>• {% trans 'Risk management and compliance tools' %}</li>
+                    <li>• {% trans 'Custom dashboards and reporting systems' %}</li>
+                </ul>
+            </div>
+
+            <!-- Launch Timeline -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-calendar text-pink-400 mr-3"></i>
+                    {% trans 'When will the API be available?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We are currently in final development and testing phases. Join our waiting list to be among the first to access the API when we launch. Waiting list subscribers will receive priority access and special launch pricing.' %}
+                </p>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">
+                {% trans 'Still have questions?' %}
+            </h2>
+            <p class="text-gray-300 mb-6">
+                {% trans 'Join our waiting list and we will reach out with more details about our API' %}
             </p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
-                <a href="#general" class="text-blue-400 hover:text-blue-300"><i class="fas fa-info-circle mr-1"></i> General</a>
-                <a href="#pricing" class="text-blue-400 hover:text-blue-300"><i class="fas fa-dollar-sign mr-1"></i> Pricing</a>
-                <a href="#technical" class="text-blue-400 hover:text-blue-300"><i class="fas fa-code mr-1"></i> Technical</a>
-                <a href="#support" class="text-blue-400 hover:text-blue-300"><i class="fas fa-life-ring mr-1"></i> Support</a>
-            </div>
-        </div>
-
-        <!-- General Questions -->
-        <div id="general" class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6"><i class="fas fa-info-circle mr-2"></i> General Questions</h2>
-            
-            <div class="space-y-6">
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">What endpoints does the Financial Data API provide?</h3>
-                    <p class="text-gray-400 mb-4">
-                        Our professional financial data API provides 104+ endpoints organized across 22 distinct categories:
-                    </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <p class="font-semibold text-blue-300 mb-2"><i class="fas fa-chart-line mr-2"></i>Core Market Data (29 endpoints):</p>
-                            <ul class="text-gray-400 space-y-1 ml-4">
-                                <li><i class="fas fa-dot-circle mr-2"></i> Reference Data (8) - Company profiles, exchanges</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Market Data (13) - Real-time quotes, historical data</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Options Data (5) - Contracts, chains, Greeks</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Futures Data (3) - Contracts, snapshots</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Tick-level Data (3) - Real-time trades, quotes</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Forex Data (4) - 24/7 currency pairs</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Cryptocurrencies (3) - 3000+ crypto prices</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Indices Data (3) - Market indices, components</li>
-                            </ul>
-                        </div>
-                        
-                        <div>
-                            <p class="font-semibold text-blue-300 mb-2"><i class="fas fa-building mr-2"></i>Analysis & Fundamentals (35+ endpoints):</p>
-                            <ul class="text-gray-400 space-y-1 ml-4">
-                                <li><i class="fas fa-dot-circle mr-2"></i> Fundamental Data (8) - Financial statements, ratios</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> News & Sentiment (5) - Stock news, analysis</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Analyst Data (4) - Estimates, recommendations</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Earnings Data (4) - Calendar, transcripts</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Corporate Events (3) - IPOs, splits, dividends</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Institutional Data (6) - 13F filings, holdings</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> SEC Filings (5) - 10-K, 10-Q, 8-K filings</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <p class="font-semibold text-orange-300 mb-2"><i class="fas fa-globe mr-2"></i>Additional Categories:</p>
-                            <ul class="text-gray-400 space-y-1 ml-4">
-                                <li><i class="fas fa-dot-circle mr-2"></i> Economic Data (5) - GDP, inflation, rates</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> ETF & Funds (4) - Holdings, performance</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Commodities (4) - Metals, energy, agriculture</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> International Markets (4) - Global exchanges</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Technical Indicators (8) - SMA, RSI, MACD</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> Bulk Data (3) - EOD prices, bulk fundamentals</li>
-                                <li><i class="fas fa-dot-circle mr-2"></i> System Endpoints (3) - Health, docs, batch</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">When will the API be available?</h3>
-                    <p class="text-gray-400">
-                        We're launching in <strong>July 2025</strong>. Join our waiting list for early access and priority notification 
-                        when we go live. Early members will get access to beta testing and special launch pricing.
-                    </p>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">What makes this API different from competitors?</h3>
-                    <div class="text-gray-400 space-y-2">
-                        <p><i class="fas fa-check text-green-400 mr-2"></i> <strong>25-60% cheaper than competitors</strong> with equivalent data quality</p>
-                        <p><i class="fas fa-check text-green-400 mr-2"></i> <strong>Generous free tier:</strong> 1000 API calls per day</p>
-                        <p><i class="fas fa-check text-green-400 mr-2"></i> <strong>Developer-focused:</strong> Clean API design, extensive documentation</p>
-                        <p><i class="fas fa-check text-green-400 mr-2"></i> <strong>104+ endpoints</strong> across 22 categories in one unified platform</p>
-                        <p><i class="fas fa-check text-green-400 mr-2"></i> <strong>Professional support</strong> and community-driven development</p>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">What markets and exchanges are covered?</h3>
-                    <div class="text-gray-400 space-y-2">
-                        <p><i class="fas fa-flag-usa mr-2"></i> US exchanges: NYSE, NASDAQ, AMEX</p>
-                        <p><i class="fas fa-globe mr-2"></i> International stock markets: London, Tokyo, Frankfurt, Toronto</p>
-                        <p><i class="fas fa-exchange-alt mr-2"></i> Forex markets: Major, minor, and exotic currency pairs</p>
-                        <p><i class="fab fa-bitcoin mr-2"></i> Cryptocurrency exchanges: Binance, Coinbase, Kraken, and more</p>
-                        <p><i class="fas fa-seedling mr-2"></i> Commodity markets: Gold, silver, oil, agricultural products</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pricing Questions -->
-        <div id="pricing" class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6"><i class="fas fa-dollar-sign mr-2"></i> Pricing & Plans</h2>
-            
-            <div class="space-y-6">
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">Is there a free tier available?</h3>
-                    <p class="text-gray-400 mb-4">
-                        Yes! We offer a generous free tier with:
-                    </p>
-                    <ul class="text-gray-400 space-y-2">
-                        <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>1,000 API calls per day</strong></li>
-                        <li><i class="fas fa-check text-green-400 mr-2"></i> Access to all data types and endpoints</li>
-                        <li><i class="fas fa-check text-green-400 mr-2"></i> Real-time and historical data</li>
-                        <li><i class="fas fa-check text-green-400 mr-2"></i> JSON and CSV formats</li>
-                        <li><i class="fas fa-check text-green-400 mr-2"></i> Community support and documentation</li>
-                    </ul>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">How much does the paid plan cost?</h3>
-                    <p class="text-gray-400 mb-4">
-                        We're offering launch pricing that's 25-60% cheaper than competitors. Our paid plans include:
-                    </p>
-                    <ul class="text-gray-400 space-y-2">
-                        <li><i class="fas fa-star text-yellow-400 mr-2"></i> <strong>Professional Plan:</strong> Enhanced API call limits</li>
-                        <li><i class="fas fa-star text-yellow-400 mr-2"></i> All data types: stocks, options, indices, futures</li>
-                        <li><i class="fas fa-star text-yellow-400 mr-2"></i> Forex (24/7) and crypto (3000+)</li>
-                        <li><i class="fas fa-star text-yellow-400 mr-2"></i> JSON and CSV formats</li>
-                        <li><i class="fas fa-star text-yellow-400 mr-2"></i> Email support</li>
-                    </ul>
-                    <p class="text-gray-400 mt-4">
-                        <strong>Enterprise Plan:</strong> High-volume API access, premium data feeds, custom rate limits, 
-                        dedicated support & SLA, and custom integrations.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Technical Questions -->
-        <div id="technical" class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6"><i class="fas fa-code mr-2"></i> Technical Integration</h2>
-            
-            <div class="space-y-6">
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">What programming languages are supported?</h3>
-                    <p class="text-gray-400 mb-4">
-                        Our API works with any programming language that can make HTTP requests. We provide SDKs 
-                        and examples for Python, JavaScript, Java, PHP, Ruby, and Java. Our documentation includes extensive code examples, tutorials, and integration 
-                        guides for popular frameworks and libraries.
-                    </p>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">Is the API suitable for algorithmic trading?</h3>
-                    <p class="text-gray-400">
-                        Absolutely! Our financial data API is designed for algorithmic trading with low-latency 
-                        data feeds, high reliability, and extensive market coverage. We support both REST 
-                        and WebSocket connections for real-time trading applications.
-                    </p>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">What data formats are available?</h3>
-                    <p class="text-gray-400 mb-4">
-                        We support both JSON and CSV formats for maximum flexibility:
-                    </p>
-                    <ul class="text-gray-400 space-y-2">
-                        <li><i class="fas fa-code text-blue-400 mr-2"></i> <strong>JSON:</strong> Perfect for applications, APIs, and real-time data processing</li>
-                        <li><i class="fas fa-table text-green-400 mr-2"></i> <strong>CSV:</strong> Ideal for data analysis, Excel integration, and bulk imports</li>
-                    </ul>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">What's the API performance and reliability?</h3>
-                    <p class="text-gray-400">
-                        We're committed to enterprise-grade performance with 99.9% uptime SLA, low-latency responses, 
-                        and global CDN distribution. Our infrastructure is built for financial institutions requiring reliability for 
-                        tools, financial analytics platforms, and investment apps. We provide the professional 
-                        market data infrastructure you need to build robust applications.
-                    </p>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">How do I get started with integration?</h3>
-                    <p class="text-gray-400">
-                        Join our waiting list now to receive early access to our development environment 
-                        and explore our extensive documentation. We provide tutorials, code examples, 
-                        and SDKs to help you integrate quickly and efficiently.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Support Questions -->
-        <div id="support" class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6"><i class="fas fa-life-ring mr-2"></i> Support & Documentation</h2>
-            
-            <div class="space-y-6">
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">What support channels are available?</h3>
-                    <p class="text-gray-400">
-                        We offer multiple support channels including email support, extensive documentation,
-                        community forums, and tutorials. Enterprise customers get dedicated support with SLA guarantees.
-                    </p>
-                </div>
-
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-white mb-3">How can I stay updated on the launch?</h3>
-                    <p class="text-gray-400">
-                        The best way to stay updated is to join our waiting list. We'll send you regular updates on 
-                        development progress, beta testing opportunities, and launch announcements. You'll be among 
-                        the first to know when we go live in July 2025.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Call to Action -->
-        <div class="bg-blue-900 bg-opacity-50 rounded-lg p-8 text-center">
-            <h3 class="text-2xl font-bold text-white mb-4">Ready to Get Started?</h3>
-            <p class="text-blue-100 mb-6">
-                Join our waiting list today and be among the first to access our professional financial data API 
-                when we launch in July 2025.
-            </p>
-            <a href="{% url 'waiting_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                <i class="fas fa-rocket mr-2"></i>Join Waiting List - Free Tier Available
+            <a href="{% url 'waiting_list' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors">
+                <i class="fas fa-rocket mr-2"></i>
+                {% trans 'Join Waiting List' %}
             </a>
         </div>
     </div>
-</div>
+</section>
 
 <style>
     /* Smooth scrolling for anchor links */

@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -12,7 +13,12 @@ from rest_framework_simplejwt.views import (
 
 from sitemaps import sitemaps
 
+def redirect_to_default_language(request):
+    """Redirect root path to default language"""
+    return redirect('/en/')
+
 urlpatterns = [
+    path("", redirect_to_default_language, name="root_redirect"),
     path("i18n/", include("django.conf.urls.i18n")),
     path("set_language/", set_language, name="set_language"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
@@ -29,7 +35,7 @@ urlpatterns += i18n_patterns(
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
-    prefix_default_language=False,
+    prefix_default_language=True,
 )
 
 # Add debug toolbar URLs for development

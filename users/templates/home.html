@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Global Markets Financial Data API 2025 - Real-Time Stocks, Options, Indices, Futures, Forex & Crypto API{% endblock %}
+{% block title %}{% trans 'Professional Financial Data API for Global Markets' %}{% endblock %}
 
 {% block meta_description %}Professional financial data API for developers, analysts, and financial institutions. Get real-time global market data: stocks, options, indices, futures, forex (24/7), and 3000+ cryptocurrencies. API access only. Launching July 2025.{% endblock %}
 
@@ -253,25 +253,22 @@
             </div>
         
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                Global Markets Financial Data API for Developers & Analysts
+                {% trans "Global Markets Financial Data API for Developers & Analysts" %}
             </h1>
             <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                Professional financial data API for global markets. Real-time and historical data for stocks, options, 
-                indices, futures, forex (24/7), and 3000+ cryptocurrencies. JSON and CSV formats via API access only. 
-                Designed for developers, analysts, and financial institutions building applications, custom queries, 
-                trading bot training, and strategy backtesting. 25-60% cheaper than competitors.
+                {% trans "Professional financial data API for global markets. Real-time and historical data for stocks, options, indices, futures, forex (24/7), and 3000+ cryptocurrencies. JSON and CSV formats via API access only. Designed for developers, analysts, and financial institutions building applications, custom queries, trading bot training, and strategy backtesting. 25-60% cheaper than competitors." %}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
-                    Join Waiting List - Special Launch Pricing
+                    {% trans "Join Waiting List - Special Launch Pricing" %}
                 </a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'profile' %}" class="bg-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-200">
-                        Access Your Dashboard
+                        {% trans "Access Your Dashboard" %}
                     </a>
                 {% else %}
                     <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                        Existing Customer? Sign In
+                        {% trans "Existing Customer? Sign In" %}
                     </a>
                 {% endif %}
             </div>

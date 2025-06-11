@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Earnings API 2025 - Part of 104+ Endpoint Financial Data Platform | 5 Earnings Data Endpoints{% endblock %}
+{% block title %}{% trans 'Earnings API 2025 - Part of 104+ Endpoint Financial Data Platform | 5 Earnings Data Endpoints' %}{% endblock %}
 
-{% block meta_description %}Professional earnings API with 5 earnings data endpoints, part of our comprehensive 104+ endpoint financial data platform launching July 2025. Calendar, history, surprises, transcripts. 25-60% cheaper than competitors.{% endblock %}
+{% block meta_description %}{% trans 'Professional earnings API with 5 earnings data endpoints, part of our comprehensive 104+ endpoint financial data platform launching July 2025. Calendar, history, surprises, transcripts. 25-60% cheaper than competitors.' %}{% endblock %}
 
 {% block content %}
     <!-- Hero Section -->
@@ -10,24 +11,22 @@
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-pink-900 border border-pink-700">
-                <span class="text-sm font-medium text-pink-300">🚀 Earnings API: 5 Earnings Data Endpoints - Part of Comprehensive 104+ Endpoint Platform Launching July 2025</span>
+                <span class="text-sm font-medium text-pink-300">🚀 {% trans 'Earnings API: 5 Earnings Data Endpoints - Part of Comprehensive 104+ Endpoint Platform Launching July 2025' %}</span>
             </div>
             
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                Earnings API: 5 Earnings Data Endpoints
+                {% trans 'Earnings API: 5 Earnings Data Endpoints' %}
             </h1>
             <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                Professional earnings data API with 5 specialized endpoints including earnings calendar, historical data, surprises, and transcripts.
-                Part of our comprehensive 104+ endpoint financial data platform launching July 2025. 
-                Perfect for fundamental analysis, earnings research, and investment strategy development.
+                {% trans 'Professional earnings data API with 5 specialized endpoints including earnings calendar, historical data, surprises, and transcripts. Part of our comprehensive 104+ endpoint financial data platform launching July 2025. Perfect for fundamental analysis, earnings research, and investment strategy development.' %}
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <a href="{% url 'waiting_list' %}" class="bg-pink-600 hover:bg-pink-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                    Join Waiting List - Priority Access
+                    {% trans 'Join Waiting List - Priority Access' %}
                 </a>
                 <a href="{% url 'api_comparison' %}" class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors border border-gray-600">
-                    Compare APIs
+                    {% trans 'Compare APIs' %}
                 </a>
             </div>
             
