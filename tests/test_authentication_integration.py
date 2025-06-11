@@ -27,7 +27,6 @@ class RequestTokenAuthenticationFlowTest(APITestCase):
         # Create a plan first
         self.plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -86,7 +85,6 @@ class DailyApiLimitEnforcementTest(APITestCase):
         # Create a plan first
         self.plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=2,
             price_monthly=Decimal("10.00"),
         )
@@ -101,12 +99,19 @@ class DailyApiLimitEnforcementTest(APITestCase):
         self.client = APIClient()
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
-    @patch("proxy_app.views.PolygonProxyView._handle_request")
-    def test_successful_request_increments_daily_count(self, mock_handle):
-        mock_handle.return_value = Response({"status": "OK"}, status=status.HTTP_200_OK)
+    @patch("proxy_app.views.UnifiedFinancialAPIView._call_fmp_api")
+    def test_successful_request_increments_daily_count(self, mock_api_call):
+        # Mock the actual API call instead of _handle_request
+        # This allows the view logic (including request counting) to run
+        mock_api_call.return_value = {
+            'data': [{'symbol': 'AAPL', 'price': 150.00}],
+            'provider': 'fmp',
+            'endpoint': '/v3/quote/AAPL',
+            'status_code': 200
+        }
 
         initial_count = self.user.daily_requests_made
-        response = self.client.get("/v1/stocks/AAPL/")
+        response = self.client.get("/v1/quotes/AAPL")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.user.refresh_from_db()

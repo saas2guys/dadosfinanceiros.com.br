@@ -458,10 +458,19 @@ class JwtAuthenticationIntegrationTest(APITestCase):
         self.user = UserFactory()
         self.client = APIClient()
 
-    def test_authenticates_user_with_valid_jwt_token(self):
+    @patch("proxy_app.views.PolygonProxyView._handle_request")
+    def test_authenticates_user_with_valid_jwt_token(self, mock_handle):
         """Test successful JWT authentication."""
-        # Assuming JWT authentication is set up
-        self.client.force_authenticate(user=self.user)
+        # Mock the proxy response
+        from rest_framework.response import Response
+        mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
+
+        # Generate a real JWT token for the user
+        from rest_framework_simplejwt.tokens import AccessToken
+        token = AccessToken.for_user(self.user)
+
+        # Set JWT authorization header
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
         # Test accessing a protected endpoint
         response = self.client.get("/v1/quotes/gainers")  # Clean /v1/ URL
@@ -899,8 +908,13 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         self.user = UserFactory()
         self.client = APIClient()
 
-    def test_complete_user_registration_and_authentication_flow(self):
+    @patch("proxy_app.views.PolygonProxyView._handle_request")
+    def test_complete_user_registration_and_authentication_flow(self, mock_handle):
         """Test complete registration to authentication flow."""
+        # Mock the proxy response
+        from rest_framework.response import Response
+        mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
+        
         # Step 1: Register user
         registration_data = {
             "email": "testflow@example.com",
@@ -939,8 +953,13 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         unique_statuses = set(responses)
         self.assertLessEqual(len(unique_statuses), 2)  # Only success/failure statuses
 
-    def test_maintains_authentication_state_across_requests(self):
+    @patch("proxy_app.views.PolygonProxyView._handle_request")
+    def test_maintains_authentication_state_across_requests(self, mock_handle):
         """Test authentication state consistency."""
+        # Mock the proxy response
+        from rest_framework.response import Response
+        mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
+        
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
         # Make multiple requests
@@ -952,10 +971,14 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         else:
             self.fail("Authentication failed across multiple requests")
 
-    def test_handles_mixed_authentication_methods_appropriately(self):
+    @patch("proxy_app.views.PolygonProxyView._handle_request")
+    def test_handles_mixed_authentication_methods_appropriately(self, mock_handle):
         """Test handling of multiple authentication methods."""
-        # Set both JWT and request token
-        self.client.force_authenticate(user=self.user)
+        # Mock the proxy response
+        from rest_framework.response import Response
+        mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
+        
+        # Set request token authentication
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
         response = self.client.get("/v1/quotes/gainers")

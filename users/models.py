@@ -448,7 +448,8 @@ class User(AbstractUser):
 
     def reset_daily_requests_if_needed(self):
         today = timezone.now().date()
-        if self.last_request_date is None or self.last_request_date < today:
+        if self.last_request_date is None or self.last_request_date != today:
+            # Reset if last request date is None, in the past, or in the future (anomalous)
             self.daily_requests_made = 0
             self.last_request_date = today
             self.save(update_fields=["daily_requests_made", "last_request_date"])
@@ -466,8 +467,16 @@ class User(AbstractUser):
         """Check if user can make another API request today."""
         self.reset_daily_requests_if_needed()
         
+        # Check if user has a valid plan
+        if not self.current_plan:
+            return False, "no active plan"
+        
         # Check if subscription is active
-        if not self.is_subscription_active and not (self.current_plan and self.current_plan.is_free):
+        # Past due, unpaid, or other problematic statuses should deny access even for free plans
+        if self.subscription_status in [SubscriptionStatus.PAST_DUE, SubscriptionStatus.UNPAID]:
+            return False, "payment required"
+        
+        if not self.is_subscription_active and not self.current_plan.is_free:
             return False, "subscription not active"
         
         if self.daily_requests_made >= self.daily_request_limit:

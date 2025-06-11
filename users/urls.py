@@ -148,7 +148,7 @@ urlpatterns = [
         views.reactivate_subscription,
         name="reactivate-subscription",
     ),
-    path("stripe/webhook/", views.stripe_webhook, name="stripe_webhook"),
+
     
     # Include API URLs with namespace
     path("api/", include((api_urlpatterns, "api"), namespace="api")),

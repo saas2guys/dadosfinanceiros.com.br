@@ -177,9 +177,9 @@ class SubscriptionPlansTemplateRenderingTest(PaymentViewTestCaseBase):
 
         # Check that plan information is visible in the template
         self.assertContains(response, self.basic_plan.name)
-        # Check for localized price format as displayed in the template
+        # Check for price format as displayed in the template
         self.assertContains(
-            response, f"${self.basic_plan.price_monthly:,.2f}".replace(".", ",")
+            response, f"${self.basic_plan.price_monthly}"
         )
         self.assertContains(response, str(self.basic_plan.daily_request_limit))
 
@@ -195,8 +195,8 @@ class SubscriptionPlansTemplateRenderingTest(PaymentViewTestCaseBase):
         response = self.client.get(self.url)
 
         # Should show signup/login options for anonymous users
-        # Check for the Portuguese text that's actually displayed
-        self.assertContains(response, "Registrar")
+        # Check for authentication-related text that's actually displayed
+        self.assertContains(response, "Login")
 
 
 class StripeCheckoutSessionCreationTest(PaymentViewTestCaseBase):

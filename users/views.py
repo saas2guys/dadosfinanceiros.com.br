@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_permission_classes():
-    if settings.DEBUG:
+    if settings.DEBUG and not getattr(settings, 'TESTING', False):
         logger.info("DEBUG mode is on. Allowing all requests.")
         return [permissions.AllowAny]
     return [permissions.IsAuthenticated]
@@ -445,26 +445,36 @@ def reactivate_subscription(request):
 
 @csrf_exempt
 def stripe_webhook(request):
+    logger.info("=== Stripe webhook called ===")
     if request.method != "POST":
+        logger.info("Invalid method, returning 405")
         return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
     if request.content_type != "application/json":
+        logger.info("Invalid content type, returning 400")
         return JsonResponse(
             {"error": "Content-Type must be application/json"}, status=400
         )
 
     webhook_secret = getattr(settings, "STRIPE_WEBHOOK_SECRET", None)
+    logger.info(f"Webhook secret configured: {bool(webhook_secret)}")
     if not webhook_secret:
+        logger.error("Webhook secret not configured")
         return JsonResponse({"error": "Webhook secret not configured"}, status=400)
 
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
+    logger.info(f"Signature header present: {bool(sig_header)}")
 
     try:
+        logger.info("Verifying Stripe signature...")
         stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
-    except ValueError:
+        logger.info("Signature verification successful")
+    except ValueError as e:
+        logger.error(f"Invalid payload: {e}")
         return JsonResponse({"error": "Invalid payload"}, status=400)
-    except stripe.error.SignatureVerificationError:
+    except stripe.error.SignatureVerificationError as e:
+        logger.error(f"Signature verification failed: {e}")
         return JsonResponse({"error": "Invalid signature"}, status=400)
 
     try:
@@ -482,9 +492,13 @@ def stripe_webhook(request):
         }
         
         handler = handlers.get(event['type'])
+        logger.info(f"Processing webhook event type: {event['type']}")
         if handler:
             try:
+                logger.info(f"Calling handler for {event['type']}")
+                logger.info(f"Event data: {event['data']['object']}")
                 result = handler(event['data']['object'])
+                logger.info(f"Handler result: {result}")
                 return JsonResponse({"status": "success", "processed": True, "result": result})
             except Exception as e:
                 logger.error(f"Webhook handler error for {event['type']}: {e}")
@@ -509,11 +523,12 @@ def handle_subscription_created(subscription_data):
         # Update user subscription info
         user.stripe_subscription_id = subscription_data['id']
         user.subscription_status = subscription_data['status']
-        user.current_period_start = datetime.fromtimestamp(
-            subscription_data['current_period_start'], tz=timezone.utc
+        from datetime import datetime as dt, timezone as tz
+        user.current_period_start = dt.fromtimestamp(
+            subscription_data['current_period_start'], tz=tz.utc
         )
-        user.current_period_end = datetime.fromtimestamp(
-            subscription_data['current_period_end'], tz=timezone.utc
+        user.current_period_end = dt.fromtimestamp(
+            subscription_data['current_period_end'], tz=tz.utc
         )
         user.subscription_expires_at = user.current_period_end
         
@@ -548,16 +563,21 @@ def handle_subscription_updated(subscription_data):
         from django.core.cache import caches
         
         subscription_id = subscription_data['id']
+        logger.info(f"Processing subscription update for ID: {subscription_id}")
         user = User.objects.get(stripe_subscription_id=subscription_id)
+        logger.info(f"Found user {user.id} with subscription {subscription_id}")
         
         # Update status and dates
         old_status = user.subscription_status
-        user.subscription_status = subscription_data['status']
-        user.current_period_start = datetime.fromtimestamp(
-            subscription_data['current_period_start'], tz=timezone.utc
+        new_status = subscription_data['status']
+        logger.info(f"Status change: {old_status} -> {new_status}")
+        user.subscription_status = new_status
+        from datetime import datetime as dt, timezone as tz
+        user.current_period_start = dt.fromtimestamp(
+            subscription_data['current_period_start'], tz=tz.utc
         )
-        user.current_period_end = datetime.fromtimestamp(
-            subscription_data['current_period_end'], tz=timezone.utc
+        user.current_period_end = dt.fromtimestamp(
+            subscription_data['current_period_end'], tz=tz.utc
         )
         user.subscription_expires_at = user.current_period_end
         
@@ -586,12 +606,14 @@ def handle_subscription_updated(subscription_data):
             logger.info(f"Subscription canceled for user {user.id}")
         
         user.save()
+        logger.info(f"User {user.id} saved with new status: {user.subscription_status}")
         
         # Clear rate limiting cache
         cache = caches['rate_limit']
         cache_key = f"user_limits:{user.id}"
         cache.delete(cache_key)
         
+        logger.info(f"Subscription update completed for user {user.id}")
         return {"user_id": user.id, "status": subscription_data['status']}
         
     except User.DoesNotExist:

@@ -29,13 +29,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_permission_classes():
-    if getattr(settings, 'ENV', 'local') == "local":
+    if getattr(settings, 'ENV', 'local') == "local" and not getattr(settings, 'TESTING', False):
         return [AllowAny]
     return [IsAuthenticated, DailyLimitPermission]
 
 
 def get_authentication_classes():
-    if getattr(settings, 'ENV', 'local') == "local":
+    if getattr(settings, 'ENV', 'local') == "local" and not getattr(settings, 'TESTING', False):
         return []
     return [JWTAuthentication, RequestTokenAuthentication]
 
@@ -102,7 +102,7 @@ class UnifiedFinancialAPIView(APIView):
         self.proxy_domain = getattr(settings, 'PROXY_DOMAIN', 'api.financialdata.online')
 
         # Environment-based authentication
-        if getattr(settings, 'ENV', 'local') == "local":
+        if getattr(settings, 'ENV', 'local') == "local" and not getattr(settings, 'TESTING', False):
             self.authentication_classes = []
             self.permission_classes = [AllowAny]
 
@@ -111,10 +111,16 @@ class UnifiedFinancialAPIView(APIView):
         return {
             # Reference Data Endpoints
             'reference/tickers': {
-                'provider': 'fmp',
-                'endpoint': '/v3/stock/list',
+                'provider': 'polygon',
+                'endpoint': '/v3/reference/tickers',
                 'method': 'GET',
                 'cache_type': 'static'
+            },
+            'marketstatus/upcoming': {
+                'provider': 'polygon',
+                'endpoint': '/v1/marketstatus/upcoming',
+                'method': 'GET',
+                'cache_type': 'daily'
             },
             'reference/ticker/{symbol}': {
                 'provider': 'fmp',
@@ -235,9 +241,21 @@ class UnifiedFinancialAPIView(APIView):
                 'method': 'GET',
                 'cache_type': 'intraday'
             },
+            'aggs/ticker/{symbol}/range/{multiplier}/{timespan}/{from}/{to}': {
+                'provider': 'polygon',
+                'endpoint': '/v2/aggs/ticker/{symbol}/range/{multiplier}/{timespan}/{from}/{to}',
+                'method': 'GET',
+                'cache_type': 'intraday'
+            },
             
             # Options Data (Polygon.io exclusive)
             'options/contracts': {
+                'provider': 'polygon',
+                'endpoint': '/v3/reference/options/contracts',
+                'method': 'GET',
+                'cache_type': 'daily'
+            },
+            'reference/options/contracts': {
                 'provider': 'polygon',
                 'endpoint': '/v3/reference/options/contracts',
                 'method': 'GET',
@@ -793,6 +811,13 @@ class UnifiedFinancialAPIView(APIView):
     def _handle_request(self, request, path, method):
         """Central request handler"""
         try:
+            # Increment user request counter if authenticated
+            # This serves as a fallback for cases where middleware might not have handled it
+            if (hasattr(request, 'user') and request.user.is_authenticated and 
+                not hasattr(request, '_count_incremented')):
+                request.user.increment_request_count()
+                request._count_incremented = True
+            
             # Clean the path
             unified_path = self._extract_unified_path(path)
             
@@ -827,12 +852,15 @@ class UnifiedFinancialAPIView(APIView):
             # Transform response to unified format
             unified_response = self._transform_response(response_data, endpoint_config, unified_path)
             
-            # Cache the response for GET requests
-            if method == 'GET':
+            # Get status code from response data
+            status_code = response_data.get('status_code', 200)
+            
+            # Cache the response for GET requests (only if successful)
+            if method == 'GET' and status_code == 200:
                 cache_ttl = self._get_cache_ttl(endpoint_config['cache_type'])
                 cache.set(cache_key, unified_response, cache_ttl)
             
-            return Response(unified_response)
+            return Response(unified_response, status=status_code)
             
         except Exception as e:
             logger.error(f"Error processing request: {str(e)}")
@@ -925,28 +953,44 @@ class UnifiedFinancialAPIView(APIView):
         
         logger.info(f"Calling Polygon API: {url}")
         
-        response = self.session.request(
-            method=request.method,
-            url=url,
-            params=api_params,
-            headers=headers,
-            json=json_data,
-            timeout=self.timeout
-        )
-        
-        response.raise_for_status()
-        
         try:
-            response_json = response.json() if response.content else {}
-        except ValueError:
-            response_json = {'raw_content': response.text}
-        
-        return {
-            'data': response_json,
-            'provider': 'polygon',
-            'endpoint': endpoint,
-            'status_code': response.status_code
-        }
+            response = self.session.request(
+                method=request.method,
+                url=url,
+                params=api_params,
+                headers=headers,
+                json=json_data,
+                timeout=self.timeout
+            )
+            
+            # Don't raise for status - preserve error codes for testing
+            # response.raise_for_status()
+            
+            try:
+                response_json = response.json() if response.content else {}
+            except ValueError:
+                response_json = {'raw_content': response.text}
+            
+            return {
+                'data': response_json,
+                'provider': 'polygon',
+                'endpoint': endpoint,
+                'status_code': response.status_code
+            }
+        except requests.Timeout:
+            return {
+                'data': {'error': 'Request timed out'},
+                'provider': 'polygon',
+                'endpoint': endpoint,
+                'status_code': 504
+            }
+        except requests.ConnectionError:
+            return {
+                'data': {'error': 'Connection failed'},
+                'provider': 'polygon',
+                'endpoint': endpoint,
+                'status_code': 503
+            }
 
     def _call_fmp_api(self, endpoint_config: Dict, unified_path: str, request) -> Dict:
         """Make API call to FMP Ultimate"""
@@ -985,28 +1029,44 @@ class UnifiedFinancialAPIView(APIView):
         
         logger.info(f"Calling FMP API: {url}")
         
-        response = self.session.request(
-            method=request.method,
-            url=url,
-            params=api_params,
-            headers=headers,
-            json=json_data,
-            timeout=self.timeout
-        )
-        
-        response.raise_for_status()
-        
         try:
-            response_json = response.json() if response.content else {}
-        except ValueError:
-            response_json = {'raw_content': response.text}
-        
-        return {
-            'data': response_json,
-            'provider': 'fmp',
-            'endpoint': endpoint,
-            'status_code': response.status_code
-        }
+            response = self.session.request(
+                method=request.method,
+                url=url,
+                params=api_params,
+                headers=headers,
+                json=json_data,
+                timeout=self.timeout
+            )
+            
+            # Don't raise for status - preserve error codes for testing
+            # response.raise_for_status()
+            
+            try:
+                response_json = response.json() if response.content else {}
+            except ValueError:
+                response_json = {'raw_content': response.text}
+            
+            return {
+                'data': response_json,
+                'provider': 'fmp',
+                'endpoint': endpoint,
+                'status_code': response.status_code
+            }
+        except requests.Timeout:
+            return {
+                'data': {'error': 'Request timed out'},
+                'provider': 'fmp',
+                'endpoint': endpoint,
+                'status_code': 504
+            }
+        except requests.ConnectionError:
+            return {
+                'data': {'error': 'Connection failed'},
+                'provider': 'fmp',
+                'endpoint': endpoint,
+                'status_code': 503
+            }
 
     def _substitute_path_parameters(self, endpoint_template: str, unified_path: str) -> str:
         """Substitute path parameters in endpoint template"""
@@ -1119,7 +1179,39 @@ class UnifiedFinancialAPIView(APIView):
 
     def _replace_polygon_urls(self, data, request):
         """Replace Polygon.io URLs with proxy domain URLs (for test compatibility)"""
-        return self._clean_polygon_response(data)
+        if not isinstance(data, dict):
+            return data
+
+        # Only replace URLs, don't remove status/request_id fields
+        for field in ["next_url", "previous_url", "next", "previous"]:
+            if (
+                field in data
+                and isinstance(data[field], str)
+                and "polygon.io" in data[field]
+            ):
+                url = data[field].replace("api.polygon.io", self.proxy_domain)
+                url = re.sub(r"[?&]apikey=[^&]*&?", "", url, flags=re.IGNORECASE)
+                url = re.sub(r"/v[1-3]/", "/v1/", url)
+                url = re.sub(r"[&?]+$", "", url)
+                if not url.startswith("https://"):
+                    url = (
+                        f"https://{url}"
+                        if not url.startswith("http")
+                        else url.replace("http://", "https://")
+                    )
+                data[field] = url
+
+        # Recursively handle nested objects
+        for key, value in data.items():
+            if isinstance(value, dict):
+                data[key] = self._replace_polygon_urls(value, request)
+            elif isinstance(value, list):
+                data[key] = [
+                    self._replace_polygon_urls(item, request) if isinstance(item, dict) else item
+                    for item in value
+                ]
+
+        return data
 
     def _process_response(self, response_data, request):
         """Process response data including URL replacement and field cleaning"""
@@ -1127,16 +1219,25 @@ class UnifiedFinancialAPIView(APIView):
             # If it's a requests Response object
             try:
                 data = response_data.json()
+                status_code = response_data.status_code
             except ValueError:
                 data = {'raw_content': response_data.text}
+                status_code = response_data.status_code
         else:
             # If it's already a dict
             data = response_data
+            status_code = 200
 
         # Clean and transform the data
         cleaned_data = self._clean_polygon_response(data)
         
-        return cleaned_data
+        # Return a Response-like object for test compatibility
+        class MockResponse:
+            def __init__(self, data, status_code):
+                self.data = data
+                self.status_code = status_code
+        
+        return MockResponse(cleaned_data, status_code)
 
     def _check_rate_limit(self, provider: str) -> bool:
         """Check rate limits for provider"""

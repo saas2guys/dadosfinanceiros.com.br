@@ -51,6 +51,22 @@ class PolygonProxyTestCaseBase(APITestCase):
         self.access_token = str(refresh.access_token)
         self.request_token = str(self.user.request_token)
 
+    def tearDown(self):
+        """Ensure proper cleanup of mocks and state between tests"""
+        # Stop all active patches to prevent mock leakage
+        patch.stopall()
+        
+        # Clear any cached data that might interfere between tests
+        if hasattr(self, 'view') and hasattr(self.view, 'session'):
+            # Reset the session if it exists
+            self.view.session = requests.Session()
+        
+        # Reset any module-level caches
+        from django.core.cache import cache
+        cache.clear()
+        
+        super().tearDown()
+
     def _create_authenticated_request(
         self, method="GET", path="/", data=None, use_jwt=True
     ):
@@ -432,10 +448,12 @@ class PolygonProxyEdgeCaseHandlingTest(PolygonProxyTestCaseBase):
 
     def test_unauthenticated_request(self):
         """Test handling of unauthenticated requests"""
-        request = self.factory.get("/v1/reference/tickers")
-        request.user = AnonymousUser()
-
-        response = self.view.get(request, path="reference/tickers")
+        # Use the test client instead of calling view methods directly
+        # This ensures authentication and permission classes are properly enforced
+        from rest_framework.test import APIClient
+        client = APIClient()
+        
+        response = client.get("/v1/reference/tickers")
 
         # Should return unauthorized
         self.assertEqual(response.status_code, 401)

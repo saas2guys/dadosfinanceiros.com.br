@@ -64,11 +64,51 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
         if not self.should_rate_limit(request):
             return None
         
+        # Try to authenticate the user for API requests
+        user = self._authenticate_user(request)
+        
         # Get user or IP identifier
-        if request.user.is_authenticated:
-            return self.check_authenticated_user_limits(request)
+        if user and user.is_authenticated:
+            # Temporarily set the user for rate limiting
+            original_user = request.user
+            request.user = user
+            result = self.check_authenticated_user_limits(request)
+            request.user = original_user  # Restore original user
+            return result
         else:
             return self.check_anonymous_limits(request)
+    
+    def _authenticate_user(self, request):
+        """Attempt to authenticate user using available methods"""
+        from users.authentication import RequestTokenAuthentication
+        from rest_framework_simplejwt.authentication import JWTAuthentication
+        
+        # Check if user is already authenticated (e.g., via session)
+        if hasattr(request, 'user') and request.user.is_authenticated:
+            return request.user
+        
+        # Try RequestTokenAuthentication
+        request_token_auth = RequestTokenAuthentication()
+        try:
+            auth_result = request_token_auth.authenticate(request)
+            if auth_result:
+                user, token = auth_result
+                return user
+        except Exception:
+            pass
+        
+        # Try JWT Authentication
+        jwt_auth = JWTAuthentication()
+        try:
+            auth_result = jwt_auth.authenticate(request)
+            if auth_result:
+                user, token = auth_result
+                return user
+        except Exception:
+            pass
+        
+        # Return the current user (might be anonymous)
+        return request.user
     
     def should_rate_limit(self, request):
         """Determine if request should be rate limited"""
@@ -77,8 +117,21 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
             if request.path.startswith(excluded):
                 return False
         
-        # Skip non-API requests for now (can be configured)
-        if not request.path.startswith('/api/'):
+        # Check for API requests, accounting for language prefixes
+        path = request.path
+        # Handle language prefixes like /en/, /pt-br/, etc.
+        if '/' in path[1:]:  # If there's more than just the leading slash
+            path_parts = path.strip('/').split('/')
+            if len(path_parts) >= 2 and path_parts[1] == 'api':
+                # Path like /en/api/... or /pt-br/api/...
+                pass  # This is an API request, continue to rate limiting
+            elif path_parts[0] == 'api':
+                # Path like /api/...
+                pass  # This is an API request, continue to rate limiting  
+            else:
+                # Not an API request
+                return False
+        elif not path.startswith('/api/'):
             return False
             
         # Skip OPTIONS requests
@@ -141,6 +194,15 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
         """Extract meaningful endpoint name for rate limiting"""
         path = request.path
         
+        # Handle language prefixes first
+        path_parts = path.strip('/').split('/')
+        if len(path_parts) >= 2 and path_parts[1] == 'api':
+            # Path like /en/api/... or /pt-br/api/...
+            path = '/' + '/'.join(path_parts[1:])  # Remove language prefix
+        elif len(path_parts) >= 1 and path_parts[0] == 'api':
+            # Path like /api/...
+            path = '/' + '/'.join(path_parts)
+        
         # Normalize API paths
         if path.startswith('/api/v1/'):
             path = path[8:]  # Remove '/api/v1/'
@@ -149,9 +211,9 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
         
         # Extract base endpoint (remove specific IDs/parameters)
         path_parts = path.split('/')
-        if len(path_parts) >= 2:
-            # Take first two parts for grouping (e.g., 'quotes/AAPL' -> 'quotes')
-            return path_parts[0] or 'general'
+        if len(path_parts) >= 1 and path_parts[0]:
+            # Take first part for grouping (e.g., 'profile', 'quotes', etc.)
+            return path_parts[0]
         
         return 'general'
     
