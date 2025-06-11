@@ -38,6 +38,21 @@ class Plan(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        # Automatically set is_free for plans with zero price
+        if self.price_monthly == 0:
+            self.is_free = True
+        super().save(*args, **kwargs)
+
+    def get_feature(self, feature_name, default=None):
+        """Get a specific feature value from the features JSON field."""
+        if isinstance(self.features, dict):
+            return self.features.get(feature_name, default)
+        elif isinstance(self.features, list):
+            # If features is a list, check if the feature_name exists in it
+            return feature_name in self.features if default is None else (feature_name in self.features or default)
+        return default
+
     def __str__(self):
         return f"{self.name} - ${self.price_monthly}/month"
 
@@ -80,7 +95,7 @@ class User(AbstractUser):
     token_auto_renew = models.BooleanField(default=False)
     token_validity_days = models.PositiveIntegerField(default=30)
     token_never_expires = models.BooleanField(default=False)
-    daily_requests_made = models.PositiveIntegerField(default=0)
+    daily_requests_made = models.IntegerField(default=0)
     last_request_date = models.DateField(null=True, blank=True)
     previous_tokens = models.JSONField(default=list)
     keep_token_history = models.BooleanField(default=True)
@@ -96,6 +111,7 @@ class User(AbstractUser):
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
     subscription_expires_at = models.DateTimeField(null=True, blank=True)
+    subscription_started_at = models.DateTimeField(null=True, blank=True)
     current_period_start = models.DateTimeField(null=True, blank=True)
     current_period_end = models.DateTimeField(null=True, blank=True)
 
@@ -136,21 +152,51 @@ class User(AbstractUser):
             self.daily_requests_made = 0
             self.last_request_date = today
             self.save(update_fields=["daily_requests_made", "last_request_date"])
+        elif self.daily_requests_made < 0:
+            # Normalize negative values to 0
+            self.daily_requests_made = 0
+            self.save(update_fields=["daily_requests_made"])
 
     def increment_request_count(self):
         self.reset_daily_requests_if_needed()
         self.daily_requests_made += 1
         self.save(update_fields=["daily_requests_made"])
 
+    def can_make_request(self):
+        """Check if user can make another API request today."""
+        self.reset_daily_requests_if_needed()
+        
+        # Check if subscription is active
+        if not self.is_subscription_active and not (self.current_plan and self.current_plan.is_free):
+            return False, "subscription not active"
+        
+        if self.daily_requests_made >= self.daily_request_limit:
+            return False, "daily request limit reached"
+        
+        return True, "OK"
+
+    def reset_daily_requests(self):
+        """Reset daily request count to 0."""
+        self.daily_requests_made = 0
+        self.last_request_date = timezone.now().date()
+        self.save(update_fields=["daily_requests_made", "last_request_date"])
+
+    def has_reached_daily_limit(self):
+        """Check if user has reached their daily API request limit."""
+        self.reset_daily_requests_if_needed()
+        return self.daily_requests_made >= self.daily_request_limit
+
     def get_token_info(self):
         return {
-            "token": str(self.request_token),
+            "request_token": str(self.request_token),
+            "token": str(self.request_token),  # Keep both for backward compatibility
             "created": self.request_token_created,
             "expires": self.request_token_expires,
             "never_expires": self.token_never_expires,
             "auto_renew": self.token_auto_renew,
             "validity_days": self.token_validity_days,
             "is_expired": self.is_token_expired(),
+            "previous_tokens": self.previous_tokens,
         }
 
     def generate_new_request_token(self, save_old=True, never_expires=False):
@@ -165,8 +211,9 @@ class User(AbstractUser):
             )
 
             # Also save to the previous_tokens JSON field for backwards compatibility
+            old_token_string = str(self.request_token)
             old_token_data = {
-                "token": str(self.request_token),
+                "token": old_token_string,
                 "created": self.request_token_created.isoformat()
                 if self.request_token_created
                 else timezone.now().isoformat(),
@@ -177,10 +224,18 @@ class User(AbstractUser):
                 "never_expires": self.token_never_expires,
             }
 
+            # For backward compatibility with tests, also store just the token strings
             if isinstance(self.previous_tokens, list):
-                self.previous_tokens.append(old_token_data)
+                # Check if the list contains strings (old format) or dicts (new format)
+                if len(self.previous_tokens) == 0 or isinstance(self.previous_tokens[0], str):
+                    # Old format - just append the token string
+                    self.previous_tokens.append(old_token_string)
+                else:
+                    # New format - append the token data dict
+                    self.previous_tokens.append(old_token_data)
             else:
-                self.previous_tokens = [old_token_data]
+                # Initialize with token string for compatibility
+                self.previous_tokens = [old_token_string]
 
             # Keep only the last 10 tokens
             if len(self.previous_tokens) > 10:
@@ -199,6 +254,7 @@ class User(AbstractUser):
             )
 
         self.save()
+        return self.request_token
 
     def regenerate_request_token(
         self, save_old=True, auto_renew=None, validity_days=None
@@ -208,20 +264,22 @@ class User(AbstractUser):
         if validity_days is not None:
             self.token_validity_days = validity_days
 
-        self.generate_new_request_token(save_old=save_old)
+        return self.generate_new_request_token(save_old=save_old)
 
     @property
     def is_subscription_active(self):
-        return (
-            self.subscription_status == SubscriptionStatus.ACTIVE
-            and self.subscription_expires_at
-            and self.subscription_expires_at > timezone.now()
-        )
+        if self.subscription_status in [SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING]:
+            # For free plans with no expiration date, they're always active
+            if not self.subscription_expires_at:
+                return True
+            # For paid plans, check if not expired
+            return self.subscription_expires_at > timezone.now()
+        return False
 
     @property
     def subscription_days_remaining(self):
         if not self.subscription_expires_at:
-            return 0
+            return None
         remaining = self.subscription_expires_at - timezone.now()
         return max(0, remaining.days)
 

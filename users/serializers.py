@@ -92,10 +92,9 @@ class PlanSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "slug",
             "daily_request_limit",
             "price_monthly",
             "features",
             "is_active",
         )
-        read_only_fields = ("id", "slug", "is_active")
+        read_only_fields = ("id", "is_active")

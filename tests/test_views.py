@@ -95,7 +95,7 @@ class SubscriptionPlansListApiTest(PaymentViewTestCaseBase):
         """Test that only active plans are returned."""
         # Create inactive plan with unique slug to avoid get_or_create conflict
         inactive_plan = BasicPlanFactory(
-            is_active=False, slug="inactive-basic", name="Inactive Basic"
+            is_active=False, name="Inactive Basic"
         )
 
         response = self.client.get(self.url)

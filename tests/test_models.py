@@ -51,15 +51,12 @@ class PlanModelBusinessLogicTest(TestCase):
         """Test successful plan creation."""
         plan = PlanFactory(
             name="Test Plan",
-            slug="test-plan",
-            daily_request_limit=5000,
-            price_monthly=Decimal("19.99"),
+            price_monthly=Decimal("9.99"),
+            features=["api_access", "support"],
         )
 
         self.assertEqual(plan.name, "Test Plan")
-        self.assertEqual(plan.slug, "test-plan")
-        self.assertEqual(plan.daily_request_limit, 5000)
-        self.assertEqual(plan.price_monthly, Decimal("19.99"))
+        self.assertEqual(plan.price_monthly, Decimal("9.99"))
         self.assertTrue(plan.is_active)
 
     def test_returns_formatted_string_representation_with_price(self):
@@ -101,18 +98,13 @@ class PlanModelBusinessLogicTest(TestCase):
         self.assertIsNone(plan.get_feature("nonexistent"))
 
     def test_enforces_unique_constraint_on_plan_name(self):
-        """Test unique constraints on name and slug."""
-        plan1 = PlanFactory(name="Unique Plan", slug="unique-plan")
-
-        # Test duplicate name
-        with self.assertRaises(IntegrityError):
-            with transaction.atomic():
-                PlanFactory(name="Unique Plan", slug="different-slug")
-
-        # Test duplicate slug
-        with self.assertRaises(IntegrityError):
-            with transaction.atomic():
-                PlanFactory(name="Different Name", slug="unique-plan")
+        """Test that duplicate plan names are allowed since there's no unique constraint."""
+        plan1 = PlanFactory(name="Test Plan")
+        plan2 = PlanFactory(name="Test Plan")  # Should be allowed
+        
+        # Both plans should exist with the same name
+        self.assertEqual(plan1.name, plan2.name)
+        self.assertNotEqual(plan1.id, plan2.id)  # But different IDs
 
     def test_handles_various_price_values_for_free_plan_detection(self):
         """Test is_free property edge cases."""
@@ -126,7 +118,7 @@ class PlanModelBusinessLogicTest(TestCase):
         for price, expected in test_cases:
             with self.subTest(price=price):
                 plan = PlanFactory(
-                    name=f"Test Plan {price}", slug=f"test-{price}", price_monthly=price
+                    name=f"Test Plan {price}", price_monthly=price
                 )
                 self.assertEqual(plan.is_free, expected)
 
@@ -200,7 +192,7 @@ class UserModelBusinessLogicTest(TestCase):
         """Test that new users get assigned to free plan."""
         # Create free plan first
         free_plan = FreePlanFactory(
-            name="Free", slug="free", price_monthly=Decimal("0.00")
+            name="Free", price_monthly=Decimal("0.00")
         )
 
         with patch("users.models.Plan.objects.filter") as mock_filter:

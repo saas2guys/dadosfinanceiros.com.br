@@ -161,41 +161,43 @@ if DEBUG:
     except ImportError:
         pass
 
-    try:
-        import debug_toolbar
+    if 'test' not in sys.argv:
+        try:
+            import debug_toolbar
 
-        INSTALLED_APPS += ["debug_toolbar"]
+            INSTALLED_APPS += ["debug_toolbar"]
 
-        INTERNAL_IPS = [
-            "127.0.0.1",
-            "localhost",
-        ]
+            INTERNAL_IPS = [
+                "127.0.0.1",
+                "localhost",
+            ]
 
-        DEBUG_TOOLBAR_CONFIG = {
-            "SHOW_TOOLBAR_CALLBACK": lambda request: True,
-            "INSERT_BEFORE": "</body>",
-            "HIDE_DJANGO_SQL": False,
-            "TAG": "div",
-            "ENABLE_STACKTRACES": True,
-        }
+            DEBUG_TOOLBAR_CONFIG = {
+                "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+                "INSERT_BEFORE": "</body>",
+                "HIDE_DJANGO_SQL": False,
+                "TAG": "div",
+                "ENABLE_STACKTRACES": True,
+                "IS_RUNNING_TESTS": False,
+            }
 
-        DEBUG_TOOLBAR_PANELS = [
-            "debug_toolbar.panels.history.HistoryPanel",
-            "debug_toolbar.panels.versions.VersionsPanel",
-            "debug_toolbar.panels.timer.TimerPanel",
-            "debug_toolbar.panels.settings.SettingsPanel",
-            "debug_toolbar.panels.headers.HeadersPanel",
-            "debug_toolbar.panels.request.RequestPanel",
-            "debug_toolbar.panels.sql.SQLPanel",
-            "debug_toolbar.panels.staticfiles.StaticFilesPanel",
-            "debug_toolbar.panels.templates.TemplatesPanel",
-            "debug_toolbar.panels.cache.CachePanel",
-            "debug_toolbar.panels.signals.SignalsPanel",
-            "debug_toolbar.panels.redirects.RedirectsPanel",
-            "debug_toolbar.panels.profiling.ProfilingPanel",
-        ]
-    except ImportError:
-        pass
+            DEBUG_TOOLBAR_PANELS = [
+                "debug_toolbar.panels.history.HistoryPanel",
+                "debug_toolbar.panels.versions.VersionsPanel",
+                "debug_toolbar.panels.timer.TimerPanel",
+                "debug_toolbar.panels.settings.SettingsPanel",
+                "debug_toolbar.panels.headers.HeadersPanel",
+                "debug_toolbar.panels.request.RequestPanel",
+                "debug_toolbar.panels.sql.SQLPanel",
+                "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+                "debug_toolbar.panels.templates.TemplatesPanel",
+                "debug_toolbar.panels.cache.CachePanel",
+                "debug_toolbar.panels.signals.SignalsPanel",
+                "debug_toolbar.panels.redirects.RedirectsPanel",
+                "debug_toolbar.panels.profiling.ProfilingPanel",
+            ]
+        except ImportError:
+            pass
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -212,7 +214,7 @@ MIDDLEWARE = [
 ]
 
 
-if DEBUG:
+if DEBUG and 'test' not in sys.argv:
     try:
         import debug_toolbar
 
@@ -297,16 +299,23 @@ else:
 
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"{REDIS_URL}/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
-        },
+if 'test' in sys.argv:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        }
     }
-}
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{REDIS_URL}/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+            },
+        }
+    }
 
 CHANNEL_LAYERS = {
     "default": {

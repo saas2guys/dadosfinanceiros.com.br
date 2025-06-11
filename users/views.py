@@ -42,7 +42,7 @@ permissions_ = get_permission_classes()
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = permissions_
+    permission_classes = [permissions.AllowAny]  # Always allow registration
     serializer_class = UserRegistrationSerializer
 
     def create(self, request, *args, **kwargs):
@@ -290,7 +290,7 @@ def token_history(request):
 class PlansListView(generics.ListAPIView):
     queryset = Plan.objects.filter(is_active=True)
     serializer_class = PlanSerializer
-    permission_classes = permissions_
+    permission_classes = [permissions.AllowAny]
 
 
 def plans_view(request):

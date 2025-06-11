@@ -31,7 +31,6 @@ class PolygonProxyTestCaseBase(APITestCase):
         # Create a plan first
         self.plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=1000,
             price_monthly=Decimal("9.99"),
         )

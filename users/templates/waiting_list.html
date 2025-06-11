@@ -1,254 +1,222 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Join Waiting List - Comprehensive Financial Data API 2025 | 104+ Endpoints Across 22 Categories{% endblock %}
+{% block title %}Join Waiting List - Global Financial Data API 2025 | 104+ Endpoints Across 22 Categories{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-2xl mx-auto">
-        <!-- Header Section -->
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 py-12">
+    <div class="max-w-4xl mx-auto px-4">
+        
+        <!-- Header -->
         <div class="text-center mb-12">
-            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-blue-900 mb-4">
-                <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </div>
-            <h1 class="text-4xl font-bold text-white mb-4">Comprehensive Financial Data API</h1>
-            <h2 class="text-2xl font-semibold text-blue-400 mb-4">🚀 Launching July 2025</h2>
-            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
-                Join our waiting list for early access to the most comprehensive financial data API with 
-                <strong class="text-blue-300">104+ endpoints across 22 categories</strong>. 
-                Get priority access when we launch in July 2025 with competitive pricing 25-60% cheaper than competitors.
+            <h1 class="text-4xl font-bold text-white mb-4">Global Financial Data API</h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                Join our waiting list for early access to the most professional financial data API with
+                104+ endpoints across 22 categories, launching July 2025.
             </p>
         </div>
 
-        <!-- Comprehensive Features Preview -->
-        <div class="bg-gray-800 rounded-lg shadow-sm p-6 mb-8 border border-gray-700">
-            <h3 class="text-xl font-semibold text-white mb-4">Comprehensive API Coverage - 104+ Endpoints Across 22 Categories</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Core Market Data -->
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">📈 Market Data (13 endpoints)</h4>
-                        <p class="text-sm text-gray-400">Real-time quotes, historical data, gainers/losers, active stocks</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">📊 Options & Futures Data (8 endpoints)</h4>
-                        <p class="text-sm text-gray-400">Options chains, Greeks, futures contracts, snapshots</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">💼 Fundamental Data (8 endpoints)</h4>
-                        <p class="text-sm text-gray-400">Financial statements, ratios, DCF analysis, growth metrics</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">📰 News & Sentiment (5 endpoints)</h4>
-                        <p class="text-sm text-gray-400">Stock news, sentiment analysis, press releases</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">📅 Earnings Data (4 endpoints)</h4>
-                        <p class="text-sm text-gray-400">Earnings calendar, transcripts, surprises, history</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">🔍 Analyst Data (4 endpoints)</h4>
-                        <p class="text-sm text-gray-400">Estimates, recommendations, price targets, upgrades</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">💱 Forex & Crypto (7 endpoints)</h4>
-                        <p class="text-sm text-gray-400">24/7 currency pairs, 3000+ cryptocurrencies</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">📋 SEC Filings (5 endpoints)</h4>
-                        <p class="text-sm text-gray-400">10-K, 10-Q, 8-K filings, RSS feeds</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">📊 Technical Indicators (8 endpoints)</h4>
-                        <p class="text-sm text-gray-400">SMA, EMA, RSI, MACD, Bollinger Bands, ADX</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">🌍 Economic Data (5 endpoints)</h4>
-                        <p class="text-sm text-gray-400">GDP, inflation, unemployment, interest rates</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <div>
-                        <h4 class="font-medium text-white">And 12 More Categories...</h4>
-                        <p class="text-sm text-gray-400">ETF/Funds, Commodities, International Markets, Bulk Data, and more</p>
-                    </div>
-                </div>
-            </div>
+        <!-- API Coverage Preview -->
+        <div class="bg-gray-800 rounded-lg p-8 mb-8">
+            <h3 class="text-xl font-semibold text-white mb-4">Professional API Coverage - 104+ Endpoints Across 22 Categories</h3>
             
-            <!-- Key Benefits -->
-            <div class="mt-6 bg-blue-900 bg-opacity-30 rounded-lg p-4">
-                <h4 class="font-semibold text-blue-300 mb-2">🎯 Why Choose Our API?</h4>
-                <ul class="text-sm text-blue-200 space-y-1">
-                    <li>• <strong>25-60% cheaper</strong> than competitors with identical data quality</li>
-                    <li>• <strong>Free tier:</strong> 1000 daily API calls to get started</li>
-                    <li>• <strong>JSON & CSV formats</strong> with comprehensive documentation</li>
-                    <li>• <strong>Professional support</strong> and developer-friendly implementation</li>
-                </ul>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                <!-- Core Market Data -->
+                <div class="space-y-2">
+                    <h4 class="font-medium text-blue-300"><i class="fas fa-chart-line mr-2"></i>Core Market Data (25 endpoints)</h4>
+                    <ul class="text-gray-400 space-y-1">
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Reference Data (8)</strong> - Company profiles, exchanges</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Market Data (13)</strong> - Real-time quotes, historical data</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Tick-level Data (3)</strong> - Real-time trades, quotes</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Forex Data (4)</strong> - 24/7 currency pairs</li>
+                    </ul>
+                </div>
+
+                <!-- Derivatives & Advanced -->
+                <div class="space-y-2">
+                    <h4 class="font-medium text-purple-300"><i class="fas fa-chart-bar mr-2"></i>Derivatives & Advanced (11 endpoints)</h4>
+                    <ul class="text-gray-400 space-y-1">
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Options Data (5)</strong> - Contracts, chains, Greeks</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Futures Data (3)</strong> - Contracts, snapshots</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Cryptocurrencies (3)</strong> - 3000+ crypto prices</li>
+                    </ul>
+                </div>
+
+                <!-- Analysis & Fundamentals -->
+                <div class="space-y-2">
+                    <h4 class="font-medium text-green-300"><i class="fas fa-building mr-2"></i>Analysis & Fundamentals (35+ endpoints)</h4>
+                    <ul class="text-gray-400 space-y-1">
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Fundamental Data (8)</strong> - Financial statements, ratios</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>News & Sentiment (5)</strong> - Stock news, analysis</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Analyst Data (4)</strong> - Estimates, recommendations</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Earnings Data (4)</strong> - Calendar, transcripts</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Corporate Events (3)</strong> - IPOs, splits, dividends</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Institutional Data (6)</strong> - 13F filings, holdings</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>SEC Filings (5)</strong> - 10-K, 10-Q, 8-K filings</li>
+                    </ul>
+                </div>
+
+                <!-- Specialized Data -->
+                <div class="space-y-2">
+                    <h4 class="font-medium text-orange-300"><i class="fas fa-globe mr-2"></i>Specialized Data (33+ endpoints)</h4>
+                    <ul class="text-gray-400 space-y-1">
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Indices Data (3)</strong> - Market indices, components</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Economic Data (5)</strong> - GDP, inflation, rates</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>ETF & Funds (4)</strong> - Holdings, performance</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Commodities (4)</strong> - Metals, energy, agriculture</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>International Markets (4)</strong> - Global exchanges</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Technical Indicators (8)</strong> - SMA, RSI, MACD</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>Bulk Data (3)</strong> - EOD prices, bulk fundamentals</li>
+                        <li><i class="fas fa-dot-circle mr-1"></i> <strong>System Endpoints (3)</strong> - Health, docs, batch</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Waiting List Form -->
-        <div class="bg-gray-800 rounded-lg shadow-lg p-8 border border-gray-700">
-            <h3 class="text-2xl font-semibold text-white mb-6 text-center">Join the Waiting List for Early Access</h3>
-            
+        <!-- Registration Form -->
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Join the Waiting List</h2>
+                <p class="text-gray-600">Be among the first to access our professional financial data API when we launch in July 2025.</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-4 rounded-md {% if message.tags == 'success' %}bg-green-100 border border-green-400 text-green-700{% elif message.tags == 'error' %}bg-red-100 border border-red-400 text-red-700{% elif message.tags == 'info' %}bg-blue-100 border border-blue-400 text-blue-700{% else %}bg-gray-100 border border-gray-400 text-gray-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <form method="post" class="space-y-6">
                 {% csrf_token %}
                 
-                <div>
-                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        First Name *
-                    </label>
-                    {{ form.first_name }}
-                    {% if form.first_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.first_name.errors.0 }}</p>
-                    {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            First Name
+                        </label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Last Name
+                        </label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div>
-                    <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Last Name *
-                    </label>
-                    {{ form.last_name }}
-                    {% if form.last_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.last_name.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                         Email Address *
                     </label>
                     {{ form.email }}
                     {% if form.email.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.email.errors.0 }}</p>
+                        <p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label for="{{ form.company_size.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Company Size
+                    <label for="{{ form.company.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        Company/Organization
                     </label>
-                    {{ form.company_size }}
-                    {% if form.company_size.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.company_size.errors.0 }}</p>
+                    {{ form.company }}
+                    {% if form.company.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.company.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label for="{{ form.use_case.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        What will you use our API for? (Optional)
+                    <label for="{{ form.use_case.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        How will you use our Financial Data API?
                     </label>
                     {{ form.use_case }}
                     {% if form.use_case.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.use_case.errors.0 }}</p>
+                        <p class="mt-1 text-sm text-red-600">{{ form.use_case.errors.0 }}</p>
                     {% endif %}
                 </div>
 
-                <div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 font-medium text-lg transition duration-150 ease-in-out">
-                        Join Waiting List - Early Access to 104+ Endpoints
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-rocket mr-2"></i>Join Waiting List
                     </button>
                 </div>
             </form>
+        </div>
 
-            <div class="mt-6 text-center">
-                <p class="text-sm text-gray-400">
-                    Already have an account? 
-                    <a href="{% url 'login' %}" class="text-blue-400 hover:text-blue-300 font-medium">Sign in here</a>
-                </p>
+        <!-- Benefits -->
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center">
+                <div class="text-3xl mb-4"><i class="fas fa-dollar-sign text-green-400"></i></div>
+                <h3 class="font-semibold text-white mb-2">Early Bird Pricing</h3>
+                <p class="text-gray-400 text-sm">Get access to special launch pricing, 25-60% cheaper than competitors</p>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl mb-4"><i class="fas fa-code text-blue-400"></i></div>
+                <h3 class="font-semibold text-white mb-2">Developer-First</h3>
+                <p class="text-gray-400 text-sm">Clean REST API design with extensive documentation and code examples</p>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl mb-4"><i class="fas fa-shield-alt text-purple-400"></i></div>
+                <h3 class="font-semibold text-white mb-2">Enterprise Ready</h3>
+                <p class="text-gray-400 text-sm">99.9% uptime SLA, premium support, and enterprise-grade security</p>
             </div>
         </div>
 
-        <!-- Launch Timeline -->
-        <div class="mt-12 text-center">
-            <h3 class="text-xl font-semibold text-white mb-6">Launch Timeline - July 2025</h3>
-            <div class="bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-700">
-                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-                    <div class="flex flex-col items-center">
-                        <div class="bg-green-900 rounded-full p-3 mb-2">
-                            <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                        <h4 class="font-medium text-white">104+ Endpoints Development</h4>
-                        <p class="text-sm text-gray-400">Completed ✅</p>
-                    </div>
-                    <div class="hidden md:block w-8 h-px bg-gray-600"></div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-yellow-900 rounded-full p-3 mb-2">
-                            <svg class="h-6 w-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h4 class="font-medium text-white">Testing & Optimization</h4>
-                        <p class="text-sm text-gray-400">In Progress 🔄</p>
-                    </div>
-                    <div class="hidden md:block w-8 h-px bg-gray-600"></div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-blue-900 rounded-full p-3 mb-2">
-                            <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <h4 class="font-medium text-white">Public Launch</h4>
-                        <p class="text-sm text-gray-400">July 2025 🚀</p>
-                    </div>
-                </div>
+        <!-- What You Get -->
+        <div class="mt-12 bg-gray-800 rounded-lg p-8">
+            <h3 class="text-xl font-semibold text-white mb-6 text-center">What You Get</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <ul class="space-y-3 text-gray-300">
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>Free tier with 1000 daily API calls</strong></li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>Real-time & historical market data</strong></li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>Global market coverage</strong> (NYSE, NASDAQ, LSE, TSX, and more)</li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>24/7 Forex & crypto data</strong> (3000+ cryptocurrencies)</li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>Options, futures, and derivatives data</strong></li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>Company fundamentals & financial statements</strong></li>
+                </ul>
+                <ul class="space-y-3 text-gray-300">
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>News, sentiment & earnings data</strong></li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>Technical indicators & analytics</strong></li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>JSON & CSV formats</strong> with extensive documentation</li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>SDKs for Python, JavaScript, Java, PHP</strong></li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>Professional support</strong> and community forums</li>
+                    <li><i class="fas fa-check text-green-400 mr-2"></i> <strong>25-60% cheaper</strong> than premium competitors</li>
+                </ul>
             </div>
         </div>
+        
     </div>
 </div>
+
+<style>
+    /* Form styling */
+    input[type="text"], input[type="email"], textarea, select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    
+    input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+</style>
+
 {% endblock %} 
