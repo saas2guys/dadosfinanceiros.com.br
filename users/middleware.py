@@ -54,6 +54,15 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
         start_time = time.time()
         response = self.get_response(request)
         
+        # Ensure response is not a coroutine
+        import asyncio
+        if asyncio.iscoroutine(response):
+            logger.error(f"Received coroutine instead of response object: {type(response)}")
+            return JsonResponse({
+                'error': 'Internal server error',
+                'message': 'Invalid response type'
+            }, status=500)
+        
         # Track usage after response (async for performance)
         self.track_usage_async(request, response, start_time)
         
@@ -282,9 +291,9 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
         
         response = JsonResponse(response_data, status=429)
         response['Retry-After'] = str(retry_after)
-        
+
         return response
-    
+
     def create_payment_failure_response(self):
         """Create response for users with payment issues"""
         response_data = {
@@ -336,6 +345,11 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
     def track_usage_async(self, request, response, start_time):
         """Track detailed usage data asynchronously"""
         try:
+            # Check if response is a proper response object
+            if not hasattr(response, 'status_code'):
+                logger.warning(f"Response object does not have status_code attribute: {type(response)}")
+                return
+            
             # Calculate response time
             response_time_ms = int((time.time() - start_time) * 1000)
             
@@ -351,7 +365,7 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
             }
             
             # Add user if authenticated
-            if request.user.is_authenticated:
+            if hasattr(request, 'user') and request.user.is_authenticated:
                 usage_data['user'] = request.user
             
             # Create usage record (this could be made async with Celery)
