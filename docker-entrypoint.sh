@@ -6,6 +6,10 @@ set -e
 echo "Applying database migrations..."
 python manage.py migrate
 
+# Create cache table for database cache backend
+echo "Creating cache table..."
+python manage.py createcachetable rate_limit_cache
+
 # Collect static files
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
