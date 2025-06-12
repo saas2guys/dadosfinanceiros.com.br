@@ -1,11 +1,13 @@
 import logging
 import time
+import asyncio
 from datetime import datetime, timedelta
 from django.utils.deprecation import MiddlewareMixin
 from django.http import JsonResponse
 from django.core.cache import caches
 from django.utils import timezone
 from django.db import transaction
+from asgiref.sync import iscoroutinefunction, markcoroutinefunction
 from .models import APIUsage, RateLimitService, PaymentFailure
 
 logger = logging.getLogger(__name__)
@@ -21,15 +23,19 @@ class UserRequestCountMiddleware(MiddlewareMixin):
         return None
 
 
-class DatabaseRateLimitMiddleware(MiddlewareMixin):
+class DatabaseRateLimitMiddleware:
     """
-    Advanced database-based rate limiting middleware with multiple time windows,
+    ASGI-compatible database-based rate limiting middleware with multiple time windows,
     subscription awareness, and detailed usage tracking.
     """
     
     def __init__(self, get_response):
         self.get_response = get_response
         self.cache = caches['rate_limit']
+        
+        # Check if the get_response callable is a coroutine
+        if iscoroutinefunction(self.get_response):
+            markcoroutinefunction(self)
         
         # Paths to exclude from rate limiting
         self.excluded_paths = {
@@ -54,14 +60,29 @@ class DatabaseRateLimitMiddleware(MiddlewareMixin):
         start_time = time.time()
         response = self.get_response(request)
         
-        # Ensure response is not a coroutine
-        import asyncio
+        # Handle both sync and async responses
         if asyncio.iscoroutine(response):
-            logger.error(f"Received coroutine instead of response object: {type(response)}")
-            return JsonResponse({
-                'error': 'Internal server error',
-                'message': 'Invalid response type'
-            }, status=500)
+            # If response is a coroutine, we need to await it
+            async def handle_async_response():
+                actual_response = await response
+                # Track usage after response (async for performance)
+                self.track_usage_async(request, actual_response, start_time)
+                return actual_response
+            return handle_async_response()
+        else:
+            # Track usage after response (async for performance)
+            self.track_usage_async(request, response, start_time)
+            return response
+    
+    async def __acall__(self, request):
+        # Process request through rate limiting
+        response = self.process_request(request)
+        if response:
+            return response
+            
+        # Continue with normal request processing
+        start_time = time.time()
+        response = await self.get_response(request)
         
         # Track usage after response (async for performance)
         self.track_usage_async(request, response, start_time)
