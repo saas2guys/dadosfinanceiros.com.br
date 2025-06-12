@@ -1,4 +1,4 @@
-# CSRF Debugging Guide for dadosfinanceiros.com.br
+# CSRF Debugging Guide for financialdata.online
 
 ## Recent Fixes Applied
 
@@ -7,12 +7,12 @@ Fixed the CSRF and session cookie domains to remove the leading dot:
 
 ```python
 # Before (problematic)
-CSRF_COOKIE_DOMAIN = ".dadosfinanceiros.com.br"
-SESSION_COOKIE_DOMAIN = ".dadosfinanceiros.com.br"
+CSRF_COOKIE_DOMAIN = ".financialdata.online"
+SESSION_COOKIE_DOMAIN = ".financialdata.online"
 
 # After (fixed)
-CSRF_COOKIE_DOMAIN = "dadosfinanceiros.com.br"
-SESSION_COOKIE_DOMAIN = "dadosfinanceiros.com.br"
+CSRF_COOKIE_DOMAIN = "financialdata.online"
+SESSION_COOKIE_DOMAIN = "financialdata.online"
 ```
 
 ### 2. CSRF Security Settings
@@ -41,13 +41,13 @@ path("reset/done/", auth_views.PasswordResetCompleteView.as_view(...), name="pas
 ## How to Test CSRF Fix
 
 ### 1. Clear Browser Data
-First, clear all cookies and site data for dadosfinanceiros.com.br to ensure fresh state.
+First, clear all cookies and site data for financialdata.online to ensure fresh state.
 
 ### 2. Test Login Process
-1. Visit https://dadosfinanceiros.com.br/login/
+1. Visit https://financialdata.online/login/
 2. Open browser developer tools (F12)
 3. Check the "Application" or "Storage" tab for cookies
-4. Look for `csrftoken` cookie with domain `dadosfinanceiros.com.br`
+4. Look for `csrftoken` cookie with domain `financialdata.online`
 
 ### 3. Browser Console Debugging
 Add this to browser console to check CSRF token:

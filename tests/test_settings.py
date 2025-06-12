@@ -4,6 +4,19 @@ This file contains settings optimizations for running tests.
 """
 
 from proxy_project.settings import *
+import warnings
+
+# Suppress cache warnings for clean test output
+warnings.filterwarnings("ignore", category=UserWarning, module="django.core.cache")
+warnings.filterwarnings("ignore", message=".*CacheKeyWarning.*")
+warnings.filterwarnings("ignore", message=".*longer than 250.*")
+
+# Import and suppress CacheKeyWarning specifically
+try:
+    from django.core.cache.backends.base import CacheKeyWarning
+    warnings.filterwarnings("ignore", category=CacheKeyWarning)
+except ImportError:
+    pass
 
 # Override settings for testing
 DEBUG = False
@@ -28,20 +41,46 @@ class DisableMigrations:
 
 MIGRATION_MODULES = DisableMigrations()
 
-# Disable logging during tests to reduce noise
+# Disable all logging during tests for clean output
 LOGGING_CONFIG = None
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": "ERROR",
+        "null": {
+            "class": "logging.NullHandler",
         },
     },
     "root": {
-        "handlers": ["console"],
-        "level": "ERROR",
+        "handlers": ["null"],
+        "level": "CRITICAL",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["null"],
+            "level": "CRITICAL",
+            "propagate": False,
+        },
+        "django.cache": {
+            "handlers": ["null"],
+            "level": "CRITICAL",
+            "propagate": False,
+        },
+        "users": {
+            "handlers": ["null"],
+            "level": "CRITICAL",
+            "propagate": False,
+        },
+        "proxy_app": {
+            "handlers": ["null"],
+            "level": "CRITICAL",
+            "propagate": False,
+        },
+        "stripe": {
+            "handlers": ["null"],
+            "level": "CRITICAL",
+            "propagate": False,
+        },
     },
 }
 
@@ -50,6 +89,10 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "test-cache",
+    },
+    "rate_limit": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "test-rate-limit-cache",
     }
 }
 
@@ -90,3 +133,7 @@ SECURE_HSTS_PRELOAD = False
 
 # Set environment to test to enable authentication
 ENV = "test"
+TESTING = True
+
+# Remove django_ratelimit from installed apps for testing since we're using database-based rate limiting
+INSTALLED_APPS = [app for app in INSTALLED_APPS if app != "django_ratelimit"]

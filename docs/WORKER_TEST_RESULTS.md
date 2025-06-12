@@ -25,7 +25,7 @@ This Django project is a **financial data API proxy service** that provides:
    - Cleans response data and replaces URLs
 
 3. **Main Features**:
-   - Multi-domain support (dadosfinanceiros.com.br, financialdata.online, etc.)
+   - Multi-domain support (financialdata.online, financialdata.online, etc.)
    - Subscription-based access with different rate limits
    - Token-based API access for developers
    - Comprehensive error handling and logging
@@ -133,7 +133,7 @@ All tests passed successfully:
 ### Commands Used
 ```bash
 # Start Django server
-cd /Users/iklo/dadosfinanceiros.com.br
+cd /Users/iklo/financialdata.online
 uv run python manage.py runserver 8000
 
 # Start Cloudflare Worker

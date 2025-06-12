@@ -6,17 +6,20 @@ from rest_framework.permissions import BasePermission
 class DailyLimitPermission(BasePermission):
     def has_permission(self, request, view):
         if not request.user or not request.user.is_authenticated:
-            return True
+            return True  # Allow unauthenticated users - authentication handled elsewhere
 
         today = timezone.now().date()
         if request.user.last_request_date != today:
-            request.user.reset_daily_requests()
+            request.user.reset_daily_requests_if_needed()
 
         can_request, message = request.user.can_make_request()
 
         if not can_request:
             request._permission_error = message
             return False
+
+        # Request counting is handled by middleware
+        # Permission only checks if request is allowed
 
         return True
 

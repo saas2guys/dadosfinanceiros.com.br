@@ -1,71 +1,289 @@
 {% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - Financial Data API</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.js"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/whitenoise-test.css' %}">
-    {% block extra_css %}{% endblock %}
+    <meta name="description" content="{% trans 'Global Financial Data API for Developers & Analysts - Real-time and historical data for stocks, options, indices, futures, forex, and crypto. Professional-grade API access with JSON/CSV formats.' %}">
+    <meta name="keywords" content="{% trans 'global financial data api, stock market api, real-time stock quotes, historical market data, forex api, cryptocurrency api, options api, futures api, financial data provider, trading api, market data api, developer api, financial analytics' %}">
+    <meta name="author" content="{% trans 'Global Markets Financial Data API' %}">
+    <title>{% block title %}{% endblock %} - {% trans 'Global Markets Financial Data API' %}</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Tailwind CSS from CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            important: false,
-            theme: {
-                extend: {},
-            },
-            corePlugins: {
-                preflight: false,
-            },
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bg-gradient-financial {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #6366f1 100%);
         }
+        .language-selector {
+            position: relative;
+        }
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            min-width: 10rem;
+            z-index: 50;
+            margin-top: 0.25rem;
+        }
+        .language-selector:hover .language-dropdown {
+            display: block;
+        }
+        .language-dropdown button {
+            transition: all 0.2s ease;
+        }
+        .language-dropdown button:hover {
+            background-color: #4b5563;
+            transform: translateX(2px);
+        }
+        .flag-icon {
+            width: 16px;
+            height: 12px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        .flag-en {
+            background: linear-gradient(to bottom, #012169 33%, white 33%, white 66%, #C8102E 66%);
+        }
+        .flag-br {
+            background: linear-gradient(45deg, #009639 25%, #FEDD00 25%, #FEDD00 75%, #002776 75%);
+        }
+    </style>
+    
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "{% trans 'Global Markets Financial Data API' %}",
+        "description": "{% trans 'Professional financial data API for global markets. Real-time and historical data for stocks, options, indices, futures, forex, and cryptocurrency markets worldwide.' %}",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
     </script>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-900 text-white min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-gray-800 shadow-lg">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="{% url 'home' %}" class="text-xl font-bold text-white">Financial Data API</a>
-                    </div>
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-xl font-bold text-white">{% trans 'Global Markets API' %}</a>
                 </div>
-                <div class="flex items-center space-x-4">
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="{% url 'stock_market_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fas fa-chart-line mr-1"></i> {% trans 'Markets' %}</a>
+                    <a href="{% url 'options_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fas fa-chart-bar mr-1"></i> {% trans 'Options' %}</a>
+                    <a href="{% url 'fundamentals_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fas fa-building mr-1"></i> {% trans 'Fundamentals' %}</a>
+                    <a href="{% url 'forex_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fas fa-exchange-alt mr-1"></i> {% trans 'Forex' %}</a>
+                    <a href="{% url 'crypto_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fab fa-bitcoin mr-1"></i> {% trans 'Crypto' %}</a>
+                    <a href="{% url 'economic_indicators_api' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fas fa-chart-area mr-1"></i> {% trans 'Economic' %}</a>
+                    <a href="{% url 'faq' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fas fa-question-circle mr-1"></i> {% trans 'FAQ' %}</a>
+                    
+                    <!-- Enhanced Language Selector -->
+                    <div class="language-selector">
+                        <button class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center border border-transparent hover:border-gray-600 transition-all duration-200">
+                            <i class="fas fa-globe mr-2"></i> 
+                            {% if LANGUAGE_CODE == 'pt-br' %}
+                                <span class="flag-icon flag-br"></span>PT
+                            {% else %}
+                                <span class="flag-icon flag-en"></span>EN
+                            {% endif %}
+                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                        </button>
+                        <div class="language-dropdown">
+                            <div class="p-1">
+                                <p class="text-gray-400 text-xs px-3 py-1 border-b border-gray-600 mb-1">{% trans 'Choose Language' %}</p>
+                                <form action="{% url 'set_language' %}" method="post">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+                                    <button type="submit" name="language" value="en" class="flex items-center w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-600 rounded text-sm {% if LANGUAGE_CODE == 'en' %}bg-gray-600 text-white{% endif %}">
+                                        <span class="flag-icon flag-en"></span>English
+                                        {% if LANGUAGE_CODE == 'en' %}<i class="fas fa-check ml-auto text-green-400"></i>{% endif %}
+                                    </button>
+                                    <button type="submit" name="language" value="pt-br" class="flex items-center w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-600 rounded text-sm {% if LANGUAGE_CODE == 'pt-br' %}bg-gray-600 text-white{% endif %}">
+                                        <span class="flag-icon flag-br"></span>Português (BR)
+                                        {% if LANGUAGE_CODE == 'pt-br' %}<i class="fas fa-check ml-auto text-green-400"></i>{% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
                     {% if user.is_authenticated %}
-                        <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white">Profile</a>
-                        <form action="{% url 'logout' %}" method="post" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="text-gray-300 hover:text-white">Logout</button>
-                        </form>
+                        <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white px-2 py-2 rounded-md text-sm font-medium"><i class="fas fa-user mr-1"></i> {% trans 'Profile' %}</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-white">Login</a>
-                        <a href="{% url 'register' %}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Register</a>
+                        <a href="{% url 'waiting_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"><i class="fas fa-rocket mr-1"></i> {% trans 'Join Waiting List' %}</a>
                     {% endif %}
                 </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button type="button" class="text-gray-300 hover:text-white focus:outline-none focus:text-white" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 bg-gray-700">
+                <a href="{% url 'stock_market_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-chart-line mr-2"></i> {% trans 'Markets API' %}</a>
+                <a href="{% url 'options_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-chart-bar mr-2"></i> {% trans 'Options API' %}</a>
+                <a href="{% url 'fundamentals_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-building mr-2"></i> {% trans 'Fundamentals API' %}</a>
+                <a href="{% url 'forex_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-exchange-alt mr-2"></i> {% trans 'Forex API' %}</a>
+                <a href="{% url 'crypto_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fab fa-bitcoin mr-2"></i> {% trans 'Crypto API' %}</a>
+                <a href="{% url 'economic_indicators_api' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-chart-area mr-2"></i> {% trans 'Economic Indicators API' %}</a>
+                <a href="{% url 'faq' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-question-circle mr-2"></i> {% trans 'FAQ' %}</a>
+                
+                <!-- Mobile Language Selector -->
+                <div class="px-6 py-3 border-t border-gray-600">
+                    <p class="text-gray-400 text-xs mb-3">
+                        <i class="fas fa-globe mr-2"></i>{% trans 'Choose Language' %}:
+                    </p>
+                    <form action="{% url 'set_language' %}" method="post" class="space-y-2">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+                        <button type="submit" name="language" value="en" class="flex items-center w-full text-left text-gray-300 hover:text-white text-sm py-2 px-3 rounded hover:bg-gray-600 transition-colors {% if LANGUAGE_CODE == 'en' %}bg-gray-600 text-white{% endif %}">
+                            <span class="flag-icon flag-en"></span>English
+                            {% if LANGUAGE_CODE == 'en' %}<i class="fas fa-check ml-auto text-green-400"></i>{% endif %}
+                        </button>
+                        <button type="submit" name="language" value="pt-br" class="flex items-center w-full text-left text-gray-300 hover:text-white text-sm py-2 px-3 rounded hover:bg-gray-600 transition-colors {% if LANGUAGE_CODE == 'pt-br' %}bg-gray-600 text-white{% endif %}">
+                            <span class="flag-icon flag-br"></span>Português (BR)
+                            {% if LANGUAGE_CODE == 'pt-br' %}<i class="fas fa-check ml-auto text-green-400"></i>{% endif %}
+                        </button>
+                    </form>
+                </div>
+                
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-user mr-2"></i> {% trans 'Profile' %}</a>
+                {% else %}
+                    <a href="{% url 'waiting_list' %}" class="text-gray-300 hover:text-white block px-6 py-2 text-sm"><i class="fas fa-rocket mr-2"></i> {% trans 'Join Waiting List' %}</a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
-    <!-- Content -->
-    <main class="min-h-screen">
-        {% block content %}{% endblock %}
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800">
-        <div class="max-w-7xl mx-auto py-6 px-4">
-            <div class="flex flex-col sm:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-2 sm:mb-0">© 2024 Financial Data API. All rights reserved.</p>
-                <div class="text-gray-400">
-                    Contact us: <a href="mailto:talk@financialdata.online" class="text-indigo-400 hover:text-indigo-300">talk@financialdata.online</a>
+    <footer class="bg-gray-800 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <h3 class="text-white font-semibold mb-4">{% trans 'Global Financial Data API' %}</h3>
+                    <p class="text-gray-400 text-sm mb-4">{% trans 'Professional financial data API for global markets. Real-time and historical data for stocks, options, indices, futures, forex, and cryptocurrency markets worldwide.' %}</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-3">{% trans 'APIs' %}</h4>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><a href="{% url 'stock_market_api' %}" class="hover:text-white"><i class="fas fa-chart-line mr-1"></i> {% trans 'Market Data' %}</a></li>
+                        <li><a href="{% url 'options_api' %}" class="hover:text-white"><i class="fas fa-chart-bar mr-1"></i> {% trans 'Options' %}</a></li>
+                        <li><a href="{% url 'forex_api' %}" class="hover:text-white"><i class="fas fa-exchange-alt mr-1"></i> {% trans 'Forex' %}</a></li>
+                        <li><a href="{% url 'crypto_api' %}" class="hover:text-white"><i class="fab fa-bitcoin mr-1"></i> {% trans 'Crypto' %}</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-3">{% trans 'Resources' %}</h4>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><a href="{% url 'faq' %}" class="hover:text-white"><i class="fas fa-question-circle mr-1"></i> {% trans 'FAQ' %}</a></li>
+                        <li><a href="#" class="hover:text-white"><i class="fas fa-book mr-1"></i> {% trans 'Documentation' %}</a></li>
+                        <li><a href="#" class="hover:text-white"><i class="fas fa-envelope mr-1"></i> {% trans 'Support' %}</a></li>
+                        <li><a href="{% url 'waiting_list' %}" class="hover:text-white"><i class="fas fa-rocket mr-1"></i> {% trans 'Join Waiting List' %}</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-2 sm:mb-0">{% blocktrans %}© 2024 Global Markets Financial Data API. All rights reserved.{% endblocktrans %}</p>
+                <div class="flex space-x-4 text-gray-400 text-sm">
+                    <a href="#" class="hover:text-white">{% trans 'Privacy Policy' %}</a>
+                    <a href="#" class="hover:text-white">{% trans 'Terms of Service' %}</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    {% block extra_js %}{% endblock %}
+    <!-- JavaScript for interactive elements -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Language dropdown toggle
+            const languageSelector = document.querySelector('.language-selector');
+            if (languageSelector) {
+                const languageButton = languageSelector.querySelector('button');
+                const languageDropdown = languageSelector.querySelector('.language-dropdown');
+                
+                if (languageButton && languageDropdown) {
+                    languageButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        languageDropdown.classList.toggle('opacity-0');
+                        languageDropdown.classList.toggle('invisible');
+                        languageDropdown.classList.toggle('opacity-100');
+                        languageDropdown.classList.toggle('visible');
+                    });
+                    
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!languageSelector.contains(e.target)) {
+                            languageDropdown.classList.add('opacity-0', 'invisible');
+                            languageDropdown.classList.remove('opacity-100', 'visible');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+    
+    {% block extra_js %}
+    {% endblock %}
 </body>
 </html> 

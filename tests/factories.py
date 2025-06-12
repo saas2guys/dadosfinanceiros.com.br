@@ -82,6 +82,7 @@ class FreePlanFactory(PlanFactory):
     daily_request_limit = 100
     price_monthly = Decimal("0.00")
     stripe_price_id = None
+    is_free = True
 
     class Meta:
         model = Plan
@@ -354,15 +355,13 @@ class StripeWebhookEventFactory(factory.DictFactory):
     }
 
 
-# Error factories for testing failure scenarios
 class StripeErrorFactory(factory.DictFactory):
     """Factory for Stripe error responses."""
 
     error = {
-        "type": "card_error",
-        "code": "card_declined",
-        "message": "Your card was declined.",
-        "param": None,
+        "type": "invalid_request_error",
+        "message": "No such customer",
+        "param": "customer",
     }
 
 
@@ -377,6 +376,6 @@ class StripeInvalidRequestErrorFactory(factory.DictFactory):
 
     error = {
         "type": "invalid_request_error",
-        "message": "No such customer",
-        "param": "customer",
-    }
+        "message": "You cannot use this field name",
+        "param": "invalid_field",
+    } 

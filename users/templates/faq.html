@@ -1,277 +1,224 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Financial Data API FAQ - Common Questions About Market Data APIs{% endblock %}
+{% block title %}{% trans 'FAQ - Global Financial Data API' %}{% endblock %}
 
-{% block meta_description %}Frequently asked questions about our financial data API, stock market data, pricing, features, and integration. Get answers to common questions about real-time market data APIs.{% endblock %}
+{% block meta_description %}Frequently asked questions about our professional financial data API launching July 2025. 104+ endpoints covering stocks, options, futures, forex, crypto, fundamentals, news, earnings, SEC filings, and more.{% endblock %}
 
-{% block meta_keywords %}financial data API FAQ, stock market API questions, market data API help, financial API pricing, real-time data API, trading API questions, financial data API integration{% endblock %}
+{% block meta_keywords %}financial data API FAQ, 104+ endpoints API, 22 categories financial data, stocks options futures API, earnings news sentiment API, SEC filings API, fundamental data API, July 2025 launch, global markets API, developer FAQ{% endblock %}
 
-{% block canonical_url %}https://api.dadosfinanceiros.com.br/faq/{% endblock %}
+{% block canonical_url %}https://api.financialdata.online/faq/{% endblock %}
 
 {% block extra_meta %}
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What types of financial data do you provide?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We provide comprehensive financial market data including real-time stock prices, forex rates, cryptocurrency prices, market indices, options data, and economic indicators. Our API covers global markets with enterprise-grade reliability."
-      }
-    },
-    {
-      "@type": "Question", 
-      "name": "Is your financial data API free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We offer a free tier with basic access to financial data. Premium plans provide higher rate limits, real-time data, and advanced features for professional trading and analytics applications."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How reliable will your financial data API be?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We're building our API with a focus on reliability and accuracy. Our system will include redundancy and monitoring to provide consistent access to financial market data for developers."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What will be your API response times?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Our API is designed for good performance with optimized infrastructure for real-time data delivery. We will provide both streaming and REST API access for real-time stock prices, forex rates, and crypto data with competitive response times."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which markets and exchanges do you cover?",
-      "acceptedAnswer": {
-        "@type": "Answer", 
-        "text": "We cover major global markets including US exchanges (NYSE, NASDAQ), international stock markets, forex markets, cryptocurrency exchanges, and commodity markets. Our data includes stocks, indices, currencies, and digital assets."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I use your API for algorithmic trading?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, our financial data API is designed for algorithmic trading with low-latency data feeds, high reliability, and comprehensive market coverage. We support both REST and WebSocket connections for trading applications."
-      }
-    }
-  ]
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "What is the Global Markets Financial Data API?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our professional financial data API provides 104+ endpoints across 22 categories including real-time market data, fundamental analysis, news & sentiment, earnings data, SEC filings, options chains, futures data, and more."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "When will the API be available?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We're launching in July 2025. Join our waiting list for early access and priority notification when we go live."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Is the API suitable for algorithmic trading?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, our financial data API is designed for algorithmic trading with low-latency data feeds, high reliability, and extensive market coverage. We support both REST and WebSocket connections for trading applications."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What programming languages are supported?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our API works with any programming language that can make HTTP requests. We provide SDKs and examples for Python, JavaScript, Java, PHP, Ruby, and Java. Our documentation includes extensive code examples, tutorials, and integration guides."
+            }
+        }
+    ]
 }
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
-    <!-- Header -->
-    <div class="pt-20 pb-12">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                    Frequently Asked Questions
-                </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    Get answers to common questions about our financial data API, 
-                    pricing, features, and integration.
+<section class="py-16 bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-bold text-white mb-6">
+                {% trans 'Frequently Asked Questions' %}
+            </h1>
+            <p class="text-xl text-gray-300">
+                {% trans 'Everything you need to know about our Global Financial Data API' %}
+            </p>
+        </div>
+
+        <!-- FAQ Items -->
+        <div class="space-y-8">
+            <!-- API Access -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-key text-blue-400 mr-3"></i>
+                    {% trans 'How do I get API access?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Currently, we are in development phase. Join our waiting list to get priority access when we launch. We will notify you via email with your API credentials and documentation.' %}
                 </p>
             </div>
-        </div>
-    </div>
 
-    <!-- FAQ Content -->
-    <div class="pb-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <!-- General Questions -->
-            <div class="mb-12">
-                <h2 class="text-3xl font-bold text-white mb-8">General Questions</h2>
-                
-                <div class="space-y-6">
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">What types of financial data do you provide?</h3>
-                        <p class="text-gray-300">
-                            We provide comprehensive financial market data including:
-                        </p>
-                        <ul class="text-gray-300 mt-3 space-y-1">
-                            <li>• Real-time stock prices and historical OHLC data</li>
-                            <li>• Foreign exchange rates and currency conversion</li>
-                            <li>• Cryptocurrency prices from major exchanges</li>
-                            <li>• Market indices (S&P 500, NASDAQ, international indices)</li>
-                            <li>• Options data including chains, greeks, and implied volatility</li>
-                            <li>• Economic indicators and treasury data</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">Is your financial data API free?</h3>
-                        <p class="text-gray-300">
-                            We offer a free tier with basic access to financial data, perfect for personal projects and development. 
-                            Premium plans provide higher rate limits, real-time data, and advanced features for professional 
-                            trading and analytics applications.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">How accurate is your market data?</h3>
-                        <p class="text-gray-300">
-                            Our financial data comes from reliable institutional sources and major exchanges. We maintain 
-                            high data quality standards with real-time validation, error checking, and 99.9% uptime SLA 
-                            for enterprise customers.
-                        </p>
-                    </div>
-                </div>
+            <!-- Data Coverage -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-globe text-green-400 mr-3"></i>
+                    {% trans 'What markets and data do you cover?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    {% trans 'Our API provides comprehensive coverage of global financial markets including:' %}
+                </p>
+                <ul class="text-gray-300 space-y-2 ml-6">
+                    <li>• {% trans 'Stock markets: NYSE, NASDAQ, LSE, TSE, DAX, and more' %}</li>
+                    <li>• {% trans 'Options and derivatives from major exchanges' %}</li>
+                    <li>• {% trans 'Forex markets with 24/7 currency data' %}</li>
+                    <li>• {% trans '3000+ cryptocurrencies and digital assets' %}</li>
+                    <li>• {% trans 'Commodities, futures, and economic indicators' %}</li>
+                    <li>• {% trans 'Real-time quotes and historical data' %}</li>
+                </ul>
             </div>
 
-            <!-- Technical Questions -->
-            <div class="mb-12">
-                <h2 class="text-3xl font-bold text-white mb-8">Technical Questions</h2>
-                
-                <div class="space-y-6">
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">How fast is your real-time market data?</h3>
-                        <p class="text-gray-300">
-                            Our real-time market data has ultra-low latency with typical response times under 100ms. 
-                            We provide both streaming WebSocket connections and REST API access for real-time stock prices, 
-                            forex rates, and cryptocurrency data.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">What API formats do you support?</h3>
-                        <p class="text-gray-300">
-                            Our financial data API returns data in JSON format with RESTful endpoints. We also support 
-                            WebSocket connections for real-time streaming data, CSV exports for historical data, 
-                            and webhook notifications for market events.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">Do you provide SDKs or code examples?</h3>
-                        <p class="text-gray-300">
-                            Yes, we provide SDKs for popular programming languages including Python, JavaScript, PHP, 
-                            and Java. Our documentation includes comprehensive code examples, tutorials, and integration 
-                            guides for common use cases.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">What are your API rate limits?</h3>
-                        <p class="text-gray-300">
-                            Rate limits vary by plan. Free tier includes 1,000 requests per day. Premium plans offer 
-                            10,000 to 1,000,000+ requests per day. Enterprise customers get custom rate limits 
-                            based on their specific needs.
-                        </p>
-                    </div>
-                </div>
+            <!-- Pricing -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-dollar-sign text-yellow-400 mr-3"></i>
+                    {% trans 'What is your pricing model?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We offer transparent, usage-based pricing that is 25-60% cheaper than competitors. Our pricing is designed for developers, analysts, and institutions with flexible plans based on API calls, data types, and real-time access needs. Detailed pricing will be available at launch.' %}
+                </p>
             </div>
 
-            <!-- Market Coverage -->
-            <div class="mb-12">
-                <h2 class="text-3xl font-bold text-white mb-8">Market Coverage</h2>
-                
-                <div class="space-y-6">
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">Which markets and exchanges do you cover?</h3>
-                        <p class="text-gray-300 mb-3">
-                            We cover major global markets including:
-                        </p>
-                        <ul class="text-gray-300 space-y-1">
-                            <li>• US exchanges: NYSE, NASDAQ, AMEX</li>
-                            <li>• International stock markets: London, Tokyo, Frankfurt, Toronto</li>
-                            <li>• Forex markets: Major, minor, and exotic currency pairs</li>
-                            <li>• Cryptocurrency exchanges: Binance, Coinbase, Kraken, and more</li>
-                            <li>• Commodity markets: Gold, silver, oil, agricultural products</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">Do you provide international market data?</h3>
-                        <p class="text-gray-300">
-                            Yes, we provide market data from major international exchanges including European, 
-                            Asian, and emerging markets. Our global coverage includes stocks, indices, and currencies 
-                            from over 50 countries.
-                        </p>
-                    </div>
-                </div>
+            <!-- Data Formats -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-code text-purple-400 mr-3"></i>
+                    {% trans 'What data formats do you support?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Our API returns data in JSON format by default. We also support CSV exports for bulk historical data downloads. All responses follow RESTful conventions with comprehensive error handling and status codes.' %}
+                </p>
             </div>
 
-            <!-- Use Cases -->
-            <div class="mb-12">
-                <h2 class="text-3xl font-bold text-white mb-8">Use Cases & Applications</h2>
-                
-                <div class="space-y-6">
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">Can I use your API for algorithmic trading?</h3>
-                        <p class="text-gray-300">
-                            Absolutely! Our financial data API is designed for algorithmic trading with low-latency 
-                            data feeds, high reliability, and comprehensive market coverage. We support both REST 
-                            and WebSocket connections for trading applications.
-                        </p>
-                    </div>
+            <!-- Rate Limits -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-tachometer-alt text-red-400 mr-3"></i>
+                    {% trans 'Are there any rate limits?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Yes, rate limits vary by subscription plan to ensure optimal performance for all users. Professional plans include higher rate limits suitable for most trading applications and analytical tools. Enterprise customers can request custom rate limits.' %}
+                </p>
+            </div>
 
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">Is your API suitable for mobile apps?</h3>
-                        <p class="text-gray-300">
-                            Yes, our RESTful API is perfect for mobile financial apps. We provide optimized endpoints 
-                            for mobile use cases, support for offline caching, and efficient data formats to minimize 
-                            bandwidth usage on mobile devices.
-                        </p>
-                    </div>
+            <!-- Real-time Data -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-clock text-indigo-400 mr-3"></i>
+                    {% trans 'How real-time is your data?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'Our real-time data has minimal latency, typically under 100ms for major markets. We provide live quotes during market hours and maintain 24/7 coverage for forex and cryptocurrency markets. Historical data is updated continuously.' %}
+                </p>
+            </div>
 
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">Can I build a fintech application with your API?</h3>
-                        <p class="text-gray-300">
-                            Our API is ideal for fintech applications including robo-advisors, portfolio management 
-                            tools, financial analytics platforms, and investment apps. We provide the comprehensive 
-                            data and reliability needed for professional fintech solutions.
-                        </p>
-                    </div>
-                </div>
+            <!-- Security -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-shield-alt text-orange-400 mr-3"></i>
+                    {% trans 'How secure is your API?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We implement enterprise-grade security including API key authentication, HTTPS encryption, rate limiting, and compliance with financial data regulations. All data transmission is encrypted and we maintain SOC 2 compliance standards.' %}
+                </p>
             </div>
 
             <!-- Support -->
-            <div class="mb-12">
-                <h2 class="text-3xl font-bold text-white mb-8">Support & Getting Started</h2>
-                
-                <div class="space-y-6">
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">How do I get started with your financial data API?</h3>
-                        <p class="text-gray-300">
-                            Getting started is easy! Join our waiting list to get early access, receive your API key, 
-                            and explore our comprehensive documentation. We provide tutorials, code examples, 
-                            and sample applications to help you integrate quickly.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">What kind of support do you provide?</h3>
-                        <p class="text-gray-300">
-                            We offer multiple support channels including email support, comprehensive documentation, 
-                            code examples, and community forums. Premium customers get priority support with faster 
-                            response times and dedicated technical assistance.
-                        </p>
-                    </div>
-                </div>
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-headset text-cyan-400 mr-3"></i>
+                    {% trans 'What support do you provide?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We provide comprehensive documentation, code examples, and email support. Professional plans include priority support with faster response times. Enterprise customers get dedicated account management and technical support.' %}
+                </p>
             </div>
 
-            <!-- CTA -->
-            <div class="text-center bg-indigo-900 rounded-lg p-8">
-                <h2 class="text-2xl font-bold text-white mb-4">Ready to Get Started?</h2>
-                <p class="text-indigo-200 mb-6">
-                    Join our waiting list to get early access to professional financial data API.
+            <!-- Use Cases -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-lightbulb text-yellow-400 mr-3"></i>
+                    {% trans 'What can I build with your API?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    {% trans 'Our API is perfect for building:' %}
                 </p>
-                <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200">
-                    Join Waiting List
-                </a>
+                <ul class="text-gray-300 space-y-2 ml-6">
+                    <li>• {% trans 'Financial applications and portfolio trackers' %}</li>
+                    <li>• {% trans 'Trading bots and algorithmic trading systems' %}</li>
+                    <li>• {% trans 'Market analysis and research tools' %}</li>
+                    <li>• {% trans 'Investment screening and backtesting platforms' %}</li>
+                    <li>• {% trans 'Risk management and compliance tools' %}</li>
+                    <li>• {% trans 'Custom dashboards and reporting systems' %}</li>
+                </ul>
+            </div>
+
+            <!-- Launch Timeline -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="fas fa-calendar text-pink-400 mr-3"></i>
+                    {% trans 'When will the API be available?' %}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                    {% trans 'We are currently in final development and testing phases. Join our waiting list to be among the first to access the API when we launch. Waiting list subscribers will receive priority access and special launch pricing.' %}
+                </p>
             </div>
         </div>
+
+        <!-- CTA Section -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">
+                {% trans 'Still have questions?' %}
+            </h2>
+            <p class="text-gray-300 mb-6">
+                {% trans 'Join our waiting list and we will reach out with more details about our API' %}
+            </p>
+            <a href="{% url 'waiting_list' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors">
+                <i class="fas fa-rocket mr-2"></i>
+                {% trans 'Join Waiting List' %}
+            </a>
+        </div>
     </div>
-</div>
+</section>
+
+<style>
+    /* Smooth scrolling for anchor links */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* FAQ section styling */
+    .space-y-6 > * + * {
+        margin-top: 1.5rem;
+    }
+</style>
+
 {% endblock %} 

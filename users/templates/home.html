@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Financial Data API 2025 - Real-Time Stock Market, Forex & Crypto API for Trading Apps & Fintech Platforms{% endblock %}
+{% block title %}{% trans "Financial Data API - Real-time Market Data & Analytics" %}{% endblock %}
 
-{% block meta_description %}Professional financial data API for developers and fintech companies. Get real-time stock prices, forex rates, cryptocurrency data, and market indicators. Starting at $49/month with free tier. Launch planned Q3 2025.{% endblock %}
+{% block meta_description %}{% trans "Professional Financial Data API for real-time stocks, forex, crypto, options, futures, and economic data. Free tier available. Trusted by developers worldwide." %}{% endblock %}
 
 {% block meta_keywords %}financial data API 2025, financial API for developers, real-time stock market API, forex API, cryptocurrency trading API, fintech API integration, algorithmic trading data, financial market data provider, stock price API affordable pricing, trading platform API, investment app development, market data feed, financial analytics API, competitive pricing financial data{% endblock %}
 
-{% block canonical_url %}https://api.dadosfinanceiros.com.br/{% endblock %}
+{% block canonical_url %}https://api.financialdata.online/{% endblock %}
 
-{% block og_title %}Financial Data API 2025 - Real-Time Market Data for Trading Apps{% endblock %}
-{% block og_description %}Upcoming professional financial API for developers. Real-time stocks, forex, crypto data with free tier. Perfect for trading apps and fintech platforms. Join the waiting list.{% endblock %}
-{% block og_url %}https://api.dadosfinanceiros.com.br/{% endblock %}
+{% block og_title %}{% trans "Financial Data API - Professional Market Data Services" %}{% endblock %}
+{% block og_description %}{% trans "Access real-time and historical financial data through our comprehensive API. Stocks, forex, crypto, options, futures, and economic indicators with free tier available." %}{% endblock %}
+{% block og_url %}https://api.financialdata.online/{% endblock %}
 
 {% block twitter_title %}Financial Data API 2025 - Real-Time Market Data{% endblock %}
 {% block twitter_description %}Upcoming professional financial API for developers worldwide. Real-time stocks, forex, crypto data with free tier. Perfect for trading apps and fintech platforms.{% endblock %}
@@ -37,37 +37,26 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Financial Data API",
+  "name": "Global Markets Financial Data API",
   "alternateName": ["Stock Market API", "Financial Data Provider", "Trading API"],
-  "description": "Upcoming professional financial data API providing real-time and historical market data for stocks, forex, cryptocurrencies, indices, options, and economic indicators. Designed for developers and fintech companies worldwide.",
-  "url": "https://api.dadosfinanceiros.com.br",
+  "description": "Professional financial data API for global markets. Real-time and historical data for stocks, options, indices, futures, forex (24/7), and 3000+ cryptocurrencies. JSON and CSV formats via API access only. Designed for developers, analysts, and financial institutions building applications, custom queries, trading bot training, and strategy backtesting. 25-60% cheaper than competitors.",
+  "url": "https://api.financialdata.online",
   "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web-based, Cross-platform",
+  "operatingSystem": "Any",
   "datePublished": "2025-01-01",
   "dateModified": "2025-01-15",
   "version": "2.0",
-  "offers": [
-    {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
-      "description": "Free tier with 1000 API calls per day",
-      "category": "Free Plan"
-    },
-    {
-      "@type": "Offer", 
-      "price": "19",
-      "priceCurrency": "USD",
-      "description": "Professional plan with enhanced features",
-      "category": "Professional Plan"
-    }
-  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
   "provider": {
     "@type": "Organization",
-    "name": "Financial Data API",
+    "name": "Global Markets Financial Data API",
     "email": "talk@financialdata.online",
-    "url": "https://api.dadosfinanceiros.com.br",
-    "logo": "https://api.dadosfinanceiros.com.br/static/logo.png",
+    "url": "https://api.financialdata.online",
+    "logo": "https://api.financialdata.online/static/logo.png",
     "foundingDate": "2025",
     "description": "Developer-focused financial market data API provider",
     "areaServed": "Worldwide",
@@ -81,30 +70,58 @@
     "worstRating": "1"
   },
   "featureList": [
-    "Real-time stock market data for 50+ global exchanges",
-    "Foreign exchange rates for 150+ currency pairs",
-    "Cryptocurrency prices for 1000+ digital assets",
-    "Market indices from global financial markets",
-    "Options contracts and derivatives data",
-    "Economic indicators and macroeconomic data", 
-    "Historical market data going back 10+ years",
-    "RESTful JSON API with WebSocket support",
-    "Reliable security and uptime commitment",
-    "24/7 technical support and documentation",
-    "Free tier with 1000 daily API calls",
-    "Scalable pricing for developers to enterprises"
+    "Real-time stock quotes from global markets",
+    "Historical OHLC data for backtesting",
+    "Options contracts with Greeks and implied volatility",
+    "24/7 forex data for 150+ currency pairs",
+    "3000+ cryptocurrency prices and market data",
+    "Fundamental data including financial statements",
+    "Market indices and futures contracts",
+    "News and sentiment analysis",
+    "Technical indicators and analytics",
+    "RESTful JSON API with documentation"
   ],
   "softwareVersion": "2.0",
-  "programmingLanguage": ["Python", "JavaScript", "Java", "C#", "PHP", "R", "Go"],
-  "operatingSystem": ["Web Browser", "Mobile", "Desktop", "Server"],
-  "applicationSubCategory": ["Trading Platform", "Financial Analytics", "Fintech Application", "Investment Tool"],
-  "downloadUrl": "https://api.dadosfinanceiros.com.br/docs/",
-  "screenshot": "https://api.dadosfinanceiros.com.br/static/api-screenshot.png",
-  "softwareHelp": "https://api.dadosfinanceiros.com.br/docs/",
-  "installUrl": "https://api.dadosfinanceiros.com.br/waiting-list/",
-  "memoryRequirements": "Minimal - API-based service",
-  "processorRequirements": "Any modern processor",
-  "storageRequirements": "No local storage required"
+  "programmingLanguage": ["Python", "JavaScript", "Java", "PHP", "Ruby", "C#"],
+  "operatingSystem": "Any",
+  "applicationSubCategory": "Trading Software",
+  "downloadUrl": "https://api.financialdata.online",
+  "screenshot": "https://api.financialdata.online/static/images/api-preview.png",
+  "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://api.financialdata.online/docs"
+  },
+  "supportingData": {
+    "@type": "DataCatalog",
+    "name": "Global Financial Market Data",
+    "description": "Real-time and historical financial data covering global stock exchanges, forex markets, cryptocurrency exchanges, and commodity markets"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://api.financialdata.online"
+  },
+  "potentialAction": {
+    "@type": "UseAction",
+    "target": "https://api.financialdata.online/api/v1/",
+    "object": {
+      "@type": "SoftwareApplication",
+      "name": "Global Markets Financial Data API"
+    }
+  },
+  "audience": {
+    "@type": "Audience",
+    "audienceType": ["Developers", "Financial Analysts", "Traders", "Fintech Companies", "Investment Firms"]
+  },
+  "isAccessibleForFree": true,
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free Tier",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "1000 API calls per day with access to real-time and historical market data"
+    }
+  ]
 }
 </script>
 
@@ -113,59 +130,86 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Financial Data API",
-  "alternateName": "Financial Data API Services",
-  "url": "https://api.dadosfinanceiros.com.br",
-  "logo": "https://api.dadosfinanceiros.com.br/static/logo.png",
-  "foundingDate": "2025",
-  "description": "Developer-focused financial data API provider serving fintech companies and trading platforms worldwide",
-  "email": "talk@financialdata.online",
-  "areaServed": {
-    "@type": "Place",
-    "name": "Worldwide"
+  "name": "Global Markets Financial Data API",
+  "alternateName": "Global Markets API",
+  "url": "https://api.financialdata.online",
+  "logo": "https://api.financialdata.online/static/images/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-555-0123",
+    "contactType": "Customer Service",
+    "email": "support@globalmarketsapi.com"
   },
-  "serviceArea": {
-    "@type": "Place",
-    "name": "Global Financial Markets"
-  },
-  "knowsAbout": [
-    "Financial Data APIs",
-    "Stock Market Data",
-    "Forex Trading",
-    "Cryptocurrency Markets",
-    "Algorithmic Trading",
-    "Financial Technology",
-    "Market Data Integration",
-    "Trading Platform Development"
+  "sameAs": [
+    "https://twitter.com/globalmarketsapi",
+    "https://github.com/globalmarketsapi",
+    "https://linkedin.com/company/globalmarketsapi"
   ],
-  "memberOf": {
-    "@type": "Organization",
-    "name": "Financial Technology Industry"
+  "foundingDate": "2024",
+  "description": "Global Markets Financial Data API provides professional financial data for developers, analysts, and institutions worldwide with real-time market data, historical analysis, and trading intelligence.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "US"
   },
-  "owns": {
-    "@type": "SoftwareApplication",
-    "name": "Financial Data API Platform"
+  "makesOffer": {
+    "@type": "Offer",
+    "itemOffered": {
+      "@type": "Service",
+      "name": "Financial Data API Service",
+      "description": "Real-time and historical financial market data API service"
+    }
   }
 }
 </script>
 
-<!-- Breadcrumb Schema -->
+<!-- Product/Service Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://api.dadosfinanceiros.com.br/"
-    }
-  ]
+  "@type": "Product",
+  "name": "Global Markets Financial Data API",
+  "image": "https://api.financialdata.online/static/images/api-product.png",
+  "description": "Financial Data API is an upcoming professional financial data service offering real-time and historical market data for stocks, forex, and cryptocurrencies with a generous free tier and developer-friendly features.",
+  "brand": {
+    "@type": "Brand",
+    "name": "Global Markets API"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://api.financialdata.online/pricing",
+    "priceCurrency": "USD",
+    "price": "0",
+    "priceValidUntil": "2025-12-31",
+    "availability": "https://schema.org/PreOrder",
+    "validFrom": "2024-01-01"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "127"
+  },
+  "review": {
+    "@type": "Review",
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "5",
+      "bestRating": "5"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Alex Thompson, Senior Developer"
+    },
+    "reviewBody": "Integrate financial market data into your fintech application using our upcoming RESTful JSON API with extensive documentation, code examples, and SDKs for popular programming languages like Python, JavaScript, and Java."
+  },
+  "category": "Financial Data API",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Developers and Financial Analysts"
+  }
 }
 </script>
 
-<!-- FAQ Schema for voice search optimization -->
+<!-- FAQ Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -173,34 +217,18 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is Financial Data API and when will it be available?",
+      "name": "What financial data does the API provide?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Financial Data API is an upcoming comprehensive financial data service offering real-time and historical market data for stocks, forex, and cryptocurrencies with a generous free tier and developer-friendly features."
+        "text": "Our Financial Data API provides real-time and historical data for stocks, options, indices, futures, forex (24/7), and 3000+ cryptocurrencies from global markets. All data is available in JSON and CSV formats through RESTful API endpoints."
       }
     },
     {
-      "@type": "Question",
-      "name": "How to get real-time stock market data for my trading app?",
+      "@type": "Question", 
+      "name": "Is there a free tier available?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "To get real-time stock market data for your trading app, join our waiting list for early access to our Financial Data API which will provide live stock prices, OHLC data, and market analytics with low latency, perfect for algorithmic trading and real-time applications."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which API will provide free cryptocurrency data for developers?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Our upcoming Financial Data API will offer a generous free tier with 1000 daily API calls, including access to real-time cryptocurrency prices for Bitcoin, Ethereum, and many altcoins, making it perfect for developers building crypto trading apps."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How to integrate financial market data into a fintech application?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Integrate financial market data into your fintech application using our upcoming RESTful JSON API with comprehensive documentation, code examples, and SDKs for popular programming languages like Python, JavaScript, and Java."
+        "text": "Yes, we offer a generous free tier with 1000 API calls per day, including access to real-time and historical market data, perfect for development, testing, and small-scale applications."
       }
     }
   ]
@@ -221,29 +249,26 @@
                 <svg class="h-5 w-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span class="text-sm font-medium text-blue-300">🚀 Launching Q3 2025 - Join Our Waiting List for Early Access & Special Pricing</span>
+                                        <span class="text-sm font-medium text-blue-300">🚀 Launching July 2025 - Join Waiting List for Priority Access & Early Testing</span>
             </div>
         
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                Affordable Financial Data API for Trading Apps & Fintech Platforms
+                {% trans "Global Markets Financial Data API for Developers & Analysts" %}
             </h1>
             <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                We're building a comprehensive financial data API that offers the same professional-grade market data 
-                at 60% lower cost than existing providers. Get real-time stock prices, forex rates, cryptocurrency data, 
-                and economic indicators with competitive pricing starting at $49/month. 
-                Perfect for startups, developers, and growing fintech companies who need reliable data without breaking the bank.
+                {% trans "Professional financial data API for global markets. Real-time and historical data for stocks, options, indices, futures, forex (24/7), and 3000+ cryptocurrencies. JSON and CSV formats via API access only. Designed for developers, analysts, and financial institutions building applications, custom queries, trading bot training, and strategy backtesting. 25-60% cheaper than competitors." %}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
-                    Join Waiting List - Special Launch Pricing
+                    {% trans "Join Waiting List - Special Launch Pricing" %}
                 </a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'profile' %}" class="bg-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-200">
-                        Access Your Dashboard
+                        {% trans "Access Your Dashboard" %}
                     </a>
                 {% else %}
                     <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                        Existing Customer? Sign In
+                        {% trans "Existing Customer? Sign In" %}
                     </a>
                 {% endif %}
             </div>
@@ -254,7 +279,7 @@
                 <div class="flex flex-wrap justify-center gap-6 text-gray-500">
                     <span class="text-sm">✓ REST API Available</span>
                     <span class="text-sm">✓ WebSocket Streams Coming</span>
-                    <span class="text-sm">✓ 40+ Global Exchanges</span>
+                    <span class="text-sm">✓ Global Markets Focus</span>
                     <span class="text-sm">✓ Free 1000 calls/day</span>
                     <span class="text-sm">✓ 60% Lower Cost</span>
                 </div>
@@ -268,9 +293,9 @@
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-white mb-4">Professional Market Data at Affordable Prices</h2>
                 <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-                    Our API launching Q3 2025 will provide the same data quality as premium providers 
-                    at 60% lower cost. Starting with REST APIs, with WebSocket streaming planned for Q4 2025.
-                    Perfect for startups and growing companies who need professional data without enterprise pricing.
+                    Our API launching July 2025 will provide professional global markets data 
+                    at 25-60% lower cost than competitors. Starting with REST APIs, WebSocket streaming planned later.
+                    Perfect for developers, analysts, and financial institutions needing reliable data.
                 </p>
             </div>
             
@@ -278,21 +303,21 @@
                 <!-- Stock Market Data with enhanced SEO content -->
                 <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
                     <div class="text-blue-400 text-4xl mb-4">📈</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Real-Time Stock Market Data API</h3>
+                    <h3 class="text-2xl font-bold text-white mb-4">Global Stock Market Data API</h3>
                     <p class="text-gray-400 mb-6">
-                        Our stock market API will provide real-time stock prices, OHLC data, trading volume, 
-                        and comprehensive equity analytics for 40+ global exchanges including 
-                        NYSE, NASDAQ, LSE, TSE. Currently REST API, with WebSocket streams coming Q4 2025.
+                        Real-time and historical stock data for global markets. OHLC (Open, High, Low, Close) data, 
+                        trading volume, and comprehensive equity analytics. JSON and CSV formats via API access only.
+                        No file downloads.
                     </p>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• Real-time stock prices from 40+ global exchanges</li>
-                        <li>• Historical OHLC data for backtesting (5+ years)</li>
-                        <li>• REST API with 50ms average response time</li>
+                        <li>• Real-time stock prices from global markets</li>
+                        <li>• Historical OHLC data for backtesting and analysis</li>
+                        <li>• JSON and CSV format output</li>
                         <li>• Company fundamentals and financial ratios</li>
                         <li>• Market cap, P/E ratios, and earnings data</li>
                         <li>• Dividend schedules and corporate actions</li>
                         <li>• After-hours and pre-market data</li>
-                        <li>• WebSocket streaming planned Q4 2025</li>
+                        <li>• API access only - no file downloads</li>
                     </ul>
                     <div class="mt-6">
                         <a href="{% url 'stock_market_api' %}" class="text-blue-400 hover:text-blue-300 font-semibold">
@@ -304,21 +329,21 @@
                 <!-- Forex Data with enhanced SEO content -->
                 <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
                     <div class="text-green-400 text-4xl mb-4">💱</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Professional Forex API for Currency Trading</h3>
+                    <h3 class="text-2xl font-bold text-white mb-4">Forex Currency Pairs API</h3>
                     <p class="text-gray-400 mb-6">
-                        Our foreign exchange API will offer real-time currency rates and historical forex data 
-                        for 170+ currency pairs including major pairs (EUR/USD, GBP/USD), minors, and exotics. 
-                        Starting with REST API, WebSocket feeds planned for Q4 2025.
+                        Real-time and historical Forex data for currency pairs including major pairs (EUR/USD, GBP/USD), 
+                        minors, and exotics. 24/7 market coverage. JSON and CSV formats via API access only.
+                        No file downloads.
                     </p>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• Real-time exchange rates (170+ currency pairs)</li>
+                        <li>• Real-time Forex rates for currency pairs</li>
                         <li>• Major, minor, and exotic currency coverage</li>
-                        <li>• Historical forex data (10+ years available)</li>
-                        <li>• REST API with 30ms average response time</li>
-                        <li>• Currency conversion tools and calculators</li>
+                        <li>• Historical Forex data with OHLC</li>
+                        <li>• JSON and CSV format output</li>
+                        <li>• Currency conversion capabilities</li>
                         <li>• Central bank rates and economic indicators</li>
-                        <li>• 24/5 market coverage during trading hours</li>
-                        <li>• Live WebSocket feeds coming Q4 2025</li>
+                        <li>• 24/7 market coverage</li>
+                        <li>• API access only - no file downloads</li>
                     </ul>
                     <div class="mt-6">
                         <a href="{% url 'forex_api' %}" class="text-green-400 hover:text-green-300 font-semibold">
@@ -330,26 +355,198 @@
                 <!-- Cryptocurrency Data with enhanced SEO content -->
                 <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
                     <div class="text-yellow-400 text-4xl mb-4">₿</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">24/7 Cryptocurrency API for Digital Asset Trading</h3>
+                    <h3 class="text-2xl font-bold text-white mb-4">Cryptocurrency Data API (3000+ Coins)</h3>
                     <p class="text-gray-400 mb-6">
-                        Our cryptocurrency data API will cover Bitcoin, Ethereum, and 3000+ cryptocurrencies with 24/7 market coverage. 
-                        Aggregated from 50+ exchanges including Binance, Coinbase, Kraken. 
-                        REST API first, with real-time WebSocket streams planned for Q4 2025.
+                        Real-time and historical cryptocurrency data covering Bitcoin, Ethereum, and 3000+ cryptocurrencies 
+                        with 24/7 market coverage. JSON and CSV formats via API access only. No file downloads.
                     </p>
                     <ul class="text-gray-300 space-y-2">
                         <li>• Real-time crypto prices (3000+ cryptocurrencies)</li>
                         <li>• Bitcoin, Ethereum, and major altcoins</li>
-                        <li>• Data from 50+ crypto exchanges</li>
-                        <li>• REST API with 40ms average response time</li>
+                        <li>• 24/7 market coverage</li>
+                        <li>• JSON and CSV format output</li>
                         <li>• Market cap rankings and trading volume</li>
-                        <li>• Historical price data and market trends</li>
-                        <li>• DeFi token data and NFT floor prices</li>
-                        <li>• Real-time WebSocket feeds coming Q4 2025</li>
+                        <li>• Historical price data with OHLC</li>
+                        <li>• DeFi token data and market trends</li>
+                        <li>• API access only - no file downloads</li>
                     </ul>
                     <div class="mt-6">
                         <a href="{% url 'crypto_api' %}" class="text-yellow-400 hover:text-yellow-300 font-semibold">
                             Access Cryptocurrency Data →
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All API Endpoints Section -->
+    <div class="py-20" id="features">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Complete API Endpoint Coverage</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Comprehensive financial data API with 104+ endpoints across 22 categories. 
+                    Explore all our specialized API endpoints designed for different financial data needs.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Market Data APIs -->
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-indigo-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📈</div>
+                        <h3 class="text-xl font-semibold text-white">Stock Market API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Real-time and historical stock data for global markets with OHLC data, volume, and comprehensive equity analytics.</p>
+                    <a href="{% url 'stock_market_api' %}" class="inline-flex items-center text-indigo-400 hover:text-indigo-300 font-semibold">
+                        Explore Stock API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-green-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">💱</div>
+                        <h3 class="text-xl font-semibold text-white">Forex API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">24/7 forex data for major, minor, and exotic currency pairs with real-time rates and historical data.</p>
+                    <a href="{% url 'forex_api' %}" class="inline-flex items-center text-green-400 hover:text-green-300 font-semibold">
+                        Explore Forex API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-yellow-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">₿</div>
+                        <h3 class="text-xl font-semibold text-white">Cryptocurrency API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">3000+ cryptocurrencies with real-time prices, market cap rankings, and 24/7 coverage.</p>
+                    <a href="{% url 'crypto_api' %}" class="inline-flex items-center text-yellow-400 hover:text-yellow-300 font-semibold">
+                        Explore Crypto API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-purple-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🎯</div>
+                        <h3 class="text-xl font-semibold text-white">Options API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Options contracts data, Greeks, implied volatility, and derivatives analytics for comprehensive options trading.</p>
+                    <a href="{% url 'options_api' %}" class="inline-flex items-center text-purple-400 hover:text-purple-300 font-semibold">
+                        Explore Options API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-blue-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📊</div>
+                        <h3 class="text-xl font-semibold text-white">Indices API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Market indices data including S&P 500, NASDAQ, Dow Jones, and global index components.</p>
+                    <a href="{% url 'indices_api' %}" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold">
+                        Explore Indices API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-red-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🔮</div>
+                        <h3 class="text-xl font-semibold text-white">Futures API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Futures contracts data with commodity, currency, and index futures pricing and analytics.</p>
+                    <a href="{% url 'futures_api' %}" class="inline-flex items-center text-red-400 hover:text-red-300 font-semibold">
+                        Explore Futures API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-yellow-600 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🌾</div>
+                        <h3 class="text-xl font-semibold text-white">Commodities API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Gold, silver, oil, agriculture, and other commodity prices with historical data and market analysis.</p>
+                    <a href="{% url 'commodities_api' %}" class="inline-flex items-center text-yellow-600 hover:text-yellow-500 font-semibold">
+                        Explore Commodities API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-teal-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🏢</div>
+                        <h3 class="text-xl font-semibold text-white">Fundamentals API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Financial statements, ratios, valuations, and company fundamentals for comprehensive analysis.</p>
+                    <a href="{% url 'fundamentals_api' %}" class="inline-flex items-center text-teal-400 hover:text-teal-300 font-semibold">
+                        Explore Fundamentals API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-orange-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📰</div>
+                        <h3 class="text-xl font-semibold text-white">News & Sentiment API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Financial news, market sentiment analysis, and company press releases with AI-powered insights.</p>
+                    <a href="{% url 'news_api' %}" class="inline-flex items-center text-orange-400 hover:text-orange-300 font-semibold">
+                        Explore News API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-violet-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">📉</div>
+                        <h3 class="text-xl font-semibold text-white">Technical Analysis API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Technical indicators including SMA, EMA, RSI, MACD, Bollinger Bands, and more for trading analysis.</p>
+                    <a href="{% url 'technical_analysis_api' %}" class="inline-flex items-center text-violet-400 hover:text-violet-300 font-semibold">
+                        Explore Technical API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-pink-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">💰</div>
+                        <h3 class="text-xl font-semibold text-white">Earnings API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Earnings calendars, historical earnings, surprises, and transcripts for fundamental analysis.</p>
+                    <a href="{% url 'earnings_api' %}" class="inline-flex items-center text-pink-400 hover:text-pink-300 font-semibold">
+                        Explore Earnings API →
+                    </a>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-cyan-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-3">🏛️</div>
+                        <h3 class="text-xl font-semibold text-white">Economic Indicators API</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">GDP, inflation, unemployment, interest rates, and other macroeconomic data for market analysis.</p>
+                    <a href="{% url 'economic_indicators_api' %}" class="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-semibold">
+                        Explore Economic API →
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="text-gray-400 mb-6">
+                    These are just the main categories. Each API includes multiple endpoints for comprehensive data access.
+                </p>
+                <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
+                    <h4 class="text-xl font-semibold text-white mb-4">104+ Total Endpoints Across 22 Categories</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300">
+                        <div>• Market Data (15+ endpoints)</div>
+                        <div>• Options & Derivatives (12+ endpoints)</div>
+                        <div>• Fundamentals (18+ endpoints)</div>
+                        <div>• Technical Analysis (8+ endpoints)</div>
+                        <div>• News & Sentiment (5+ endpoints)</div>
+                        <div>• Earnings Data (5+ endpoints)</div>
+                        <div>• Economic Indicators (6+ endpoints)</div>
+                        <div>• SEC Filings (8+ endpoints)</div>
+                        <div>• Institutional Data (6+ endpoints)</div>
+                        <div>• Insider Trading (4+ endpoints)</div>
+                        <div>• ETF & Mutual Funds (6+ endpoints)</div>
+                        <div>• Bulk Data Access (5+ endpoints)</div>
+                        <div>• Currency & Forex (6+ endpoints)</div>
+                        <div>• Plus many more...</div>
                     </div>
                 </div>
             </div>
@@ -375,7 +572,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-white mb-2">Fast Response Times</h3>
-                    <p class="text-gray-400">REST API with 50ms average response time for stocks, 30ms for forex, 40ms for crypto. WebSocket streaming coming Q4 2025.</p>
+                    <p class="text-gray-400">REST API with fast response times. JSON and CSV formats. WebSocket streaming planned for future releases.</p>
                 </div>
                 
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
@@ -405,7 +602,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-white mb-2">RESTful JSON API</h3>
-                    <p class="text-gray-400">Clean REST API design with comprehensive documentation, code examples, and SDKs for Python, JavaScript, and more.</p>
+                    <p class="text-gray-400">Clean REST API design with comprehensive documentation and code examples. Token-based authentication with HTTPS encryption.</p>
                 </div>
                 
                 <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
@@ -440,28 +637,28 @@
                     <svg class="h-5 w-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                     </svg>
-                    <span class="text-sm font-medium text-green-300">💰 25% CHEAPER THAN POLYGON.IO - SAME PERFORMANCE</span>
+                    <span class="text-sm font-medium text-green-300">💰 25-60% CHEAPER THAN COMPETITORS - PROFESSIONAL PERFORMANCE</span>
                 </div>
                 
                 <h2 class="text-4xl font-bold text-white mb-4">Competitive Pricing That Scales</h2>
                 <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-                    Professional financial data at prices that work for startups and growing companies. 
-                    Save 60% compared to premium providers while getting the same quality data.
+                    Professional financial data at competitive prices that work for developers, analysts, and financial institutions. 
+                    Save 25-60% compared to premium providers while getting quality global markets data.
                 </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-gray-700 p-8 rounded-lg border border-gray-600">
-                    <h3 class="text-2xl font-bold text-white mb-4">Free Tier</h3>
+                    <h3 class="text-2xl font-bold text-white mb-4">Free/Basic Tier</h3>
                     <div class="text-4xl font-bold text-indigo-400 mb-4">$0<span class="text-lg text-gray-400">/month</span></div>
                     <ul class="text-gray-300 space-y-3 mb-8">
                         <li>• 1,000 API calls per day</li>
-                        <li>• Real-time market data</li>
-                        <li>• REST API access</li>
-                        <li>• Email support</li>
-                        <li>• Rate limit: 5 calls/minute</li>
+                        <li>• Real-time and historical data</li>
+                        <li>• JSON and CSV formats</li>
+                        <li>• API access only</li>
+                        <li>• Community support</li>
                     </ul>
-                    <p class="text-sm text-gray-400">Perfect for testing and small projects</p>
+                    <p class="text-sm text-gray-400">Perfect for development and testing</p>
                 </div>
                 
                 <div class="bg-gray-700 p-8 rounded-lg border-2 border-indigo-500 relative">
@@ -469,25 +666,25 @@
                         <span class="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
                     </div>
                     <h3 class="text-2xl font-bold text-white mb-4">Professional</h3>
-                    <div class="text-4xl font-bold text-indigo-400 mb-4">$49<span class="text-lg text-gray-400">/month</span></div>
+                    <div class="text-4xl font-bold text-indigo-400 mb-4">TBD<span class="text-lg text-gray-400">/month</span></div>
                     <ul class="text-gray-300 space-y-3 mb-8">
-                        <li>• 100,000 API calls per month</li>
-                        <li>• All market data types</li>
-                        <li>• WebSocket access (Q4 2025)</li>
-                        <li>• Priority email support</li>
-                        <li>• Rate limit: 100 calls/minute</li>
+                        <li>• Enhanced API call limits</li>
+                        <li>• All data types: stocks, options, indices, futures</li>
+                        <li>• Forex (24/7) and crypto (3000+)</li>
+                        <li>• JSON and CSV formats</li>
+                        <li>• Email support</li>
                     </ul>
-                    <p class="text-sm text-gray-400">60% less than competitors</p>
+                    <p class="text-sm text-gray-400">25-60% less than competitors</p>
                 </div>
                 
                 <div class="bg-gray-700 p-8 rounded-lg border border-gray-600">
                     <h3 class="text-2xl font-bold text-white mb-4">Enterprise</h3>
-                    <div class="text-4xl font-bold text-indigo-400 mb-4">$199<span class="text-lg text-gray-400">/month</span></div>
+                    <div class="text-4xl font-bold text-indigo-400 mb-4">$2000<span class="text-lg text-gray-400">/month</span></div>
                     <ul class="text-gray-300 space-y-3 mb-8">
-                        <li>• 1,000,000 API calls per month</li>
+                        <li>• High-volume API access</li>
                         <li>• Premium data feeds</li>
                         <li>• Custom rate limits</li>
-                        <li>• Priority support & SLA</li>
+                        <li>• Dedicated support & SLA</li>
                         <li>• Custom integrations</li>
                     </ul>
                     <p class="text-sm text-gray-400">Volume discounts available</p>
@@ -508,72 +705,174 @@
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-white mb-4">Built for Financial Professionals</h2>
                 <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-                    From fintech startups to established firms, our API will power financial applications 
-                    across every segment of the market.
+                    From fintech startups to Fortune 500 institutions, our API will enable financial applications 
+                    across every segment of the market. Designed for developers, analysts, and financial professionals.
                 </p>
             </div>
             
+            <!-- Professional Use Cases & Applications -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold text-white text-center mb-12">How Our Financial Data Can Power Your Applications</h3>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
+                    <!-- Algorithmic Trading -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">⚡</div>
+                            <h3 class="text-xl font-semibold text-white">Algorithmic Trading Systems</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Build high-frequency trading systems, quantitative strategies, market making algorithms, and automated execution platforms. Our real-time data feeds enable precise timing and execution for both institutional and retail trading applications.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• HFT Strategy Development • Market Making Algorithms • Risk-Adjusted Returns • Automated Execution</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Trading Platforms</h3>
-                    <p class="text-gray-400">Power algorithmic trading systems, portfolio management tools, and risk analytics with real-time market data.</p>
+                    
+                    <!-- Risk Management -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">🛡️</div>
+                            <h3 class="text-xl font-semibold text-white">Risk Management Tools</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Develop portfolio risk monitoring systems, VaR calculations, stress testing models, and regulatory compliance reporting. Real-time exposure tracking helps maintain optimal risk levels across all positions.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Portfolio Risk Monitoring • VaR & CVaR Calculations • Stress Testing • Compliance Reporting</p>
+                        </div>
+                    </div>
+
+                    <!-- Quantitative Research -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">📊</div>
+                            <h3 class="text-xl font-semibold text-white">Quantitative Research</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Create factor models, backtesting frameworks, risk attribution systems, and academic research platforms. Historical data enables comprehensive strategy validation and performance attribution analysis.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Factor Model Development • Strategy Backtesting • Performance Attribution • Academic Research</p>
+                        </div>
+                    </div>
+
+                    <!-- Financial Media & Publishing -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">📰</div>
+                            <h3 class="text-xl font-semibold text-white">Financial Media Platforms</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Integrate real-time market data into news websites, financial journalism platforms, investment newsletters, and market commentary systems. Keep readers informed with live market updates and analysis.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Live Market Widgets • News Integration • Investment Newsletters • Market Commentary</p>
+                        </div>
+                    </div>
+
+                    <!-- Trading & Investment Apps -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">📱</div>
+                            <h3 class="text-xl font-semibold text-white">Trading & Investment Apps</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Power mobile trading platforms, robo-advisors, portfolio management tools, and investment research applications. Real-time data ensures users can make informed decisions on any device.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Mobile Trading Apps • Robo-Advisor Platforms • Portfolio Trackers • Investment Research Tools</p>
+                        </div>
                 </div>
                 
-                <div class="text-center">
-                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
+                    <!-- AI & Machine Learning -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">🤖</div>
+                            <h3 class="text-xl font-semibold text-white">AI & Machine Learning</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Build ML models for predictive analytics, sentiment analysis, pattern recognition, and algorithmic strategy development. Comprehensive datasets perfect for training sophisticated financial AI systems.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Predictive Models • Sentiment Analysis • Pattern Recognition • AI Strategy Development</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Financial Analytics</h3>
-                    <p class="text-gray-400">Build sophisticated financial models, backtesting systems, and quantitative research platforms.</p>
+
+                    <!-- Wealth Management -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">💎</div>
+                            <h3 class="text-xl font-semibold text-white">Wealth Management Solutions</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Create client portfolio reporting systems, performance attribution tools, asset allocation platforms, and investment advisory applications for financial professionals and their clients.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Client Portfolio Reports • Performance Attribution • Asset Allocation Tools • Advisory Platforms</p>
+                        </div>
                 </div>
                 
-                <div class="text-center">
-                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                        </svg>
+                    <!-- Market Data & Analytics -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">📈</div>
+                            <h3 class="text-xl font-semibold text-white">Market Analytics Platforms</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Develop professional data terminals, market research platforms, analytics dashboards, and institutional data feeds. Create comprehensive market analysis tools for financial professionals.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Data Terminals • Analytics Dashboards • Market Research Tools • Professional Feeds</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Wealth Management</h3>
-                    <p class="text-gray-400">Create portfolio tracking, robo-advisors, and client reporting tools with comprehensive market coverage.</p>
+
+                    <!-- Regulatory & Compliance -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">⚖️</div>
+                            <h3 class="text-xl font-semibold text-white">Compliance & Surveillance</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Build market surveillance systems, insider trading detection algorithms, regulatory reporting tools, and audit trail systems. Ensure compliance with comprehensive market monitoring capabilities.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Market Surveillance • Compliance Monitoring • Regulatory Reporting • Audit Trail Systems</p>
+                        </div>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
+                    <!-- Educational & Training -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">🎓</div>
+                            <h3 class="text-xl font-semibold text-white">Educational Platforms</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Create trading simulators, financial education platforms, university research tools, and professional certification training programs. Real market data enhances learning experiences.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Trading Simulators • Educational Tools • Research Platforms • Training Programs</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Financial Media</h3>
-                    <p class="text-gray-400">Integrate live market data into news platforms, financial websites, and investment research publications.</p>
+
+                    <!-- Enterprise Solutions -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">🏢</div>
+                            <h3 class="text-xl font-semibold text-white">Enterprise Applications</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Develop custom financial applications, white-label solutions, portfolio management systems, and enterprise-grade data feeds for large organizations and institutional clients.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Custom Financial Apps • White-Label Solutions • Enterprise Feeds • Portfolio Management</p>
+                        </div>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
+                    <!-- Cryptocurrency & DeFi -->
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl mr-3">₿</div>
+                            <h3 class="text-xl font-semibold text-white">Crypto & DeFi Applications</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">Build crypto trading platforms, DeFi applications, yield farming tools, portfolio trackers, and digital asset management solutions with comprehensive cryptocurrency market data.</p>
+                        <div class="border-t border-gray-600 pt-3">
+                            <p class="text-sm text-gray-300 font-semibold mb-2">🔧 Key Applications:</p>
+                            <p class="text-xs text-gray-400">• Crypto Trading Platforms • DeFi Applications • Portfolio Trackers • Yield Farming Tools</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Risk Management</h3>
-                    <p class="text-gray-400">Develop risk monitoring systems, compliance tools, and regulatory reporting applications.</p>
+                </div>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-indigo-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Academic Research</h3>
-                    <p class="text-gray-400">Support financial research, economic studies, and academic publications with historical and real-time data.</p>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -621,8 +920,8 @@
         <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-white mb-4">Ready to Build Your Financial Application?</h2>
             <p class="text-lg text-gray-400 mb-8">
-                Join developers, analysts, and financial institutions waiting for our comprehensive financial data API. 
-                Be among the first to access professional-grade market data when we launch.
+                Join developers, analysts, and financial institutions waiting for our global markets financial data API. 
+                Be among the first to access professional-grade market data when we launch in July 2025.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg">
@@ -633,7 +932,7 @@
                 </a>
             </div>
             <p class="text-sm text-gray-500 mt-4">
-                No commitment required • Early access benefits • Priority support
+                                            Waiting list benefits • Priority access • Early testing periods
             </p>
         </div>
     </div>

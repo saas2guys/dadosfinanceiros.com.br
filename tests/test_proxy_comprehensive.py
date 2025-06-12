@@ -31,7 +31,6 @@ class PolygonProxyTestCaseBase(APITestCase):
         # Create a plan first
         self.plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=1000,
             price_monthly=Decimal("9.99"),
         )
@@ -51,6 +50,22 @@ class PolygonProxyTestCaseBase(APITestCase):
         refresh = RefreshToken.for_user(self.user)
         self.access_token = str(refresh.access_token)
         self.request_token = str(self.user.request_token)
+
+    def tearDown(self):
+        """Ensure proper cleanup of mocks and state between tests"""
+        # Stop all active patches to prevent mock leakage
+        patch.stopall()
+        
+        # Clear any cached data that might interfere between tests
+        if hasattr(self, 'view') and hasattr(self.view, 'session'):
+            # Reset the session if it exists
+            self.view.session = requests.Session()
+        
+        # Reset any module-level caches
+        from django.core.cache import cache
+        cache.clear()
+        
+        super().tearDown()
 
     def _create_authenticated_request(
         self, method="GET", path="/", data=None, use_jwt=True
@@ -139,7 +154,7 @@ class PolygonStocksApiComprehensiveTest(PolygonProxyTestCaseBase):
 
         # Check URL replacement
         expected_next_url = (
-            "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=next123"
+            "https://api.financialdata.online/v1/reference/tickers?cursor=next123"
         )
         self.assertEqual(response.data["next_url"], expected_next_url)
 
@@ -433,10 +448,12 @@ class PolygonProxyEdgeCaseHandlingTest(PolygonProxyTestCaseBase):
 
     def test_unauthenticated_request(self):
         """Test handling of unauthenticated requests"""
-        request = self.factory.get("/v1/reference/tickers")
-        request.user = AnonymousUser()
-
-        response = self.view.get(request, path="reference/tickers")
+        # Use the test client instead of calling view methods directly
+        # This ensures authentication and permission classes are properly enforced
+        from rest_framework.test import APIClient
+        client = APIClient()
+        
+        response = client.get("/v1/reference/tickers")
 
         # Should return unauthorized
         self.assertEqual(response.status_code, 401)
@@ -476,8 +493,8 @@ class PolygonUrlTransformationComprehensiveTest(PolygonProxyTestCaseBase):
 
         result = self.view._replace_polygon_urls(test_data, request)
 
-        expected_next = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=asc&page_marker=ABC123&sort=ticker"
-        expected_prev = "https://api.dadosfinanceiros.com.br/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=desc&page_marker=XYZ789&sort=ticker"
+        expected_next = "https://api.financialdata.online/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=asc&page_marker=ABC123&sort=ticker"
+        expected_prev = "https://api.financialdata.online/v1/reference/tickers?active=true&date=2023-01-01&limit=1000&order=desc&page_marker=XYZ789&sort=ticker"
 
         self.assertEqual(result["next_url"], expected_next)
         self.assertEqual(result["previous_url"], expected_prev)
@@ -505,7 +522,7 @@ class PolygonUrlTransformationComprehensiveTest(PolygonProxyTestCaseBase):
 
         # Only pagination URLs should be replaced, not nested URLs in data
         expected_next_url = (
-            "https://api.dadosfinanceiros.com.br/v1/reference/tickers?cursor=next"
+            "https://api.financialdata.online/v1/reference/tickers?cursor=next"
         )
 
         # Nested URLs should NOT be replaced by this method

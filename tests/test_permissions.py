@@ -57,7 +57,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         # Create plan and user
         plan = Plan.objects.create(
             name="Basic Plan",
-            slug="basic-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -78,7 +77,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         # Create plan and user
         plan = Plan.objects.create(
             name="Basic Plan",
-            slug="basic-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -100,7 +98,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         # Create plan and user
         plan = Plan.objects.create(
             name="Basic Plan",
-            slug="basic-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -121,7 +118,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         # Create free plan
         plan = Plan.objects.create(
             name="Free Plan",
-            slug="free-plan",
             daily_request_limit=10,
             price_monthly=Decimal("0.00"),
         )
@@ -142,7 +138,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         # Create free plan
         plan = Plan.objects.create(
             name="Free Plan",
-            slug="free-plan",
             daily_request_limit=10,
             price_monthly=Decimal("0.00"),
         )
@@ -163,7 +158,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """When a new day begins, the request count should reset and access should be allowed"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=10,
             price_monthly=Decimal("5.00"),
         )
@@ -210,7 +204,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """Permission should handle timezone edge cases correctly"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -231,7 +224,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """User with expired subscription should be denied permission"""
         plan = Plan.objects.create(
             name="Premium Plan",
-            slug="premium-plan",
             daily_request_limit=1000,
             price_monthly=Decimal("50.00"),
         )
@@ -251,7 +243,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """User in trial period should have permission"""
         plan = Plan.objects.create(
             name="Premium Plan",
-            slug="premium-plan",
             daily_request_limit=1000,
             price_monthly=Decimal("50.00"),
         )
@@ -271,7 +262,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """User with past due subscription should be denied permission"""
         plan = Plan.objects.create(
             name="Premium Plan",
-            slug="premium-plan",
             daily_request_limit=1000,
             price_monthly=Decimal("50.00"),
         )
@@ -291,7 +281,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """Permission should properly track and update request counts"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -311,7 +300,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """Last request date should update when daily count is reset"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=10,
             price_monthly=Decimal("5.00"),
         )
@@ -336,7 +324,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """Permission should handle concurrent requests without race conditions"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -384,7 +371,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """Permission should handle users with very high request counts"""
         plan = Plan.objects.create(
             name="Enterprise Plan",
-            slug="enterprise-plan",
             daily_request_limit=1000000,
             price_monthly=Decimal("1000.00"),
         )
@@ -404,7 +390,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """Permission should handle negative request counts by normalizing them"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -424,7 +409,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """When daily limit is reached, should return specific error message"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=10,
             price_monthly=Decimal("5.00"),
         )
@@ -446,7 +430,6 @@ class DailyLimitPermissionLogicTest(TestCase):
         """When subscription is inactive, should return specific error message"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -475,7 +458,6 @@ class PermissionApiIntegrationTest(APITestCase):
     def setUp(self):
         self.plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=5,
             price_monthly=Decimal("10.00"),
         )
@@ -515,7 +497,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Permission should handle leap year date boundaries correctly"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -537,7 +518,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Permission should handle year boundary crossings correctly"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -569,7 +549,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Plan with zero request limit should deny all requests"""
         plan = Plan.objects.create(
             name="Blocked Plan",
-            slug="blocked-plan",
             daily_request_limit=0,
             price_monthly=Decimal("0.00"),
         )
@@ -590,7 +569,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Plan with extremely high request limit should allow requests"""
         plan = Plan.objects.create(
             name="Unlimited Plan",
-            slug="unlimited-plan",
             daily_request_limit=999999999,
             price_monthly=Decimal("10000.00"),
         )
@@ -611,7 +589,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """User created today should have proper initial state for permissions"""
         plan = Plan.objects.create(
             name="New User Plan",
-            slug="new-user-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -632,7 +609,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Permission should handle future last_request_date gracefully"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -659,7 +635,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Permission should handle null values in user fields gracefully"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -681,7 +656,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Permission should handle soft-deleted plans appropriately"""
         plan = Plan.objects.create(
             name="Deleted Plan",
-            slug="deleted-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
             is_active=False,  # Soft deleted
@@ -703,7 +677,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         """Permission should handle plan deletion during request processing"""
         plan = Plan.objects.create(
             name="Test Plan",
-            slug="test-plan",
             daily_request_limit=100,
             price_monthly=Decimal("10.00"),
         )
@@ -735,7 +708,6 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         for i in range(100):
             plan = Plan.objects.create(
                 name=f"Plan {i}",
-                slug=f"plan-{i}",
                 daily_request_limit=100,
                 price_monthly=Decimal("10.00"),
             )

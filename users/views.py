@@ -1,8 +1,10 @@
 import json
 import logging
+from datetime import datetime, timedelta
 
 import stripe
 from django.conf import settings
+from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
@@ -16,7 +18,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .forms import WaitingListForm
-from .models import Plan, TokenHistory, User
+from .models import Plan, TokenHistory, User, PaymentFailure
 from .serializers import (
     PlanSerializer,
     TokenHistorySerializer,
@@ -25,13 +27,14 @@ from .serializers import (
     UserSerializer,
 )
 from .stripe_service import StripeService
+from .middleware import set_payment_failure_flags, clear_payment_failure_flags
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
 
 def get_permission_classes():
-    if settings.DEBUG:
+    if settings.DEBUG and not getattr(settings, 'TESTING', False):
         logger.info("DEBUG mode is on. Allowing all requests.")
         return [permissions.AllowAny]
     return [permissions.IsAuthenticated]
@@ -42,7 +45,7 @@ permissions_ = get_permission_classes()
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = permissions_
+    permission_classes = [permissions.AllowAny]  # Always allow registration
     serializer_class = UserRegistrationSerializer
 
     def create(self, request, *args, **kwargs):
@@ -290,7 +293,7 @@ def token_history(request):
 class PlansListView(generics.ListAPIView):
     queryset = Plan.objects.filter(is_active=True)
     serializer_class = PlanSerializer
-    permission_classes = permissions_
+    permission_classes = [permissions.AllowAny]
 
 
 def plans_view(request):
@@ -442,39 +445,310 @@ def reactivate_subscription(request):
 
 @csrf_exempt
 def stripe_webhook(request):
+    logger.info("=== Stripe webhook called ===")
     if request.method != "POST":
+        logger.info("Invalid method, returning 405")
         return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
     if request.content_type != "application/json":
+        logger.info("Invalid content type, returning 400")
         return JsonResponse(
             {"error": "Content-Type must be application/json"}, status=400
         )
 
     webhook_secret = getattr(settings, "STRIPE_WEBHOOK_SECRET", None)
+    logger.info(f"Webhook secret configured: {bool(webhook_secret)}")
     if not webhook_secret:
+        logger.error("Webhook secret not configured")
         return JsonResponse({"error": "Webhook secret not configured"}, status=400)
 
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
+    logger.info(f"Signature header present: {bool(sig_header)}")
 
     try:
+        logger.info("Verifying Stripe signature...")
         stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
-    except ValueError:
+        logger.info("Signature verification successful")
+    except ValueError as e:
+        logger.error(f"Invalid payload: {e}")
         return JsonResponse({"error": "Invalid payload"}, status=400)
-    except stripe.error.SignatureVerificationError:
+    except stripe.error.SignatureVerificationError as e:
+        logger.error(f"Signature verification failed: {e}")
         return JsonResponse({"error": "Invalid signature"}, status=400)
 
     try:
         event = json.loads(payload)
 
-        stripe_service = StripeService()
-        result = stripe_service.process_webhook_event(event)
-
-        return JsonResponse({"status": "success", "processed": result is not None})
+        # Enhanced webhook event handling
+        handlers = {
+            'customer.subscription.created': handle_subscription_created,
+            'customer.subscription.updated': handle_subscription_updated,
+            'customer.subscription.deleted': handle_subscription_canceled,
+            'invoice.payment_failed': handle_payment_failed,
+            'invoice.payment_succeeded': handle_payment_succeeded,
+            'customer.subscription.trial_will_end': handle_trial_ending,
+            'invoice.payment_action_required': handle_payment_action_required,
+        }
+        
+        handler = handlers.get(event['type'])
+        logger.info(f"Processing webhook event type: {event['type']}")
+        if handler:
+            try:
+                logger.info(f"Calling handler for {event['type']}")
+                logger.info(f"Event data: {event['data']['object']}")
+                result = handler(event['data']['object'])
+                logger.info(f"Handler result: {result}")
+                return JsonResponse({"status": "success", "processed": True, "result": result})
+            except Exception as e:
+                logger.error(f"Webhook handler error for {event['type']}: {e}")
+                return JsonResponse({"status": "error", "message": str(e)}, status=500)
+        else:
+            logger.info(f"Unhandled webhook event type: {event['type']}")
+            return JsonResponse({"status": "success", "processed": False})
 
     except Exception as e:
         logger.error(f"Unexpected error in webhook: {e}")
         return JsonResponse({"status": "error"}, status=500)
+
+
+def handle_subscription_created(subscription_data):
+    """Handle new subscription creation"""
+    try:
+        from .models import Plan
+        
+        customer_id = subscription_data['customer']
+        user = User.objects.get(stripe_customer_id=customer_id)
+        
+        # Update user subscription info
+        user.stripe_subscription_id = subscription_data['id']
+        user.subscription_status = subscription_data['status']
+        from datetime import datetime as dt, timezone as tz
+        user.current_period_start = dt.fromtimestamp(
+            subscription_data['current_period_start'], tz=tz.utc
+        )
+        user.current_period_end = dt.fromtimestamp(
+            subscription_data['current_period_end'], tz=tz.utc
+        )
+        user.subscription_expires_at = user.current_period_end
+        
+        # Update plan based on price ID
+        if subscription_data['items']['data']:
+            price_id = subscription_data['items']['data'][0]['price']['id']
+            try:
+                plan = Plan.objects.get(stripe_price_id=price_id)
+                user.current_plan = plan
+            except Plan.DoesNotExist:
+                logger.warning(f"Plan not found for price ID: {price_id}")
+        
+        # Clear any payment restrictions
+        clear_payment_failure_flags(user)
+        user.save()
+        
+        logger.info(f"Subscription created for user {user.id}: {subscription_data['id']}")
+        return {"user_id": user.id, "subscription_id": subscription_data['id']}
+        
+    except User.DoesNotExist:
+        logger.error(f"User not found for customer ID: {customer_id}")
+        return {"error": "User not found"}
+    except Exception as e:
+        logger.error(f"Error handling subscription creation: {e}")
+        return {"error": str(e)}
+
+
+def handle_subscription_updated(subscription_data):
+    """Handle subscription updates with enhanced rate limiting integration"""
+    try:
+        from .models import Plan
+        from django.core.cache import caches
+        
+        subscription_id = subscription_data['id']
+        logger.info(f"Processing subscription update for ID: {subscription_id}")
+        user = User.objects.get(stripe_subscription_id=subscription_id)
+        logger.info(f"Found user {user.id} with subscription {subscription_id}")
+        
+        # Update status and dates
+        old_status = user.subscription_status
+        new_status = subscription_data['status']
+        logger.info(f"Status change: {old_status} -> {new_status}")
+        user.subscription_status = new_status
+        from datetime import datetime as dt, timezone as tz
+        user.current_period_start = dt.fromtimestamp(
+            subscription_data['current_period_start'], tz=tz.utc
+        )
+        user.current_period_end = dt.fromtimestamp(
+            subscription_data['current_period_end'], tz=tz.utc
+        )
+        user.subscription_expires_at = user.current_period_end
+        
+        # Handle plan changes
+        if subscription_data['items']['data']:
+            price_id = subscription_data['items']['data'][0]['price']['id']
+            try:
+                new_plan = Plan.objects.get(stripe_price_id=price_id)
+                if user.current_plan != new_plan:
+                    logger.info(f"Plan changed for user {user.id}: {user.current_plan} -> {new_plan}")
+                    user.current_plan = new_plan
+                    # Clear cached limits to force refresh
+                    user.limits_cache_updated = None
+            except Plan.DoesNotExist:
+                logger.error(f"Plan not found for price ID: {price_id}")
+        
+        # Handle status-specific actions
+        if subscription_data['status'] == 'active':
+            clear_payment_failure_flags(user)
+            if old_status in ['past_due', 'incomplete']:
+                logger.info(f"Subscription reactivated for user {user.id}")
+        elif subscription_data['status'] in ['past_due', 'incomplete']:
+            set_payment_failure_flags(user, 'limited')
+            logger.warning(f"Subscription payment issues for user {user.id}")
+        elif subscription_data['status'] == 'canceled':
+            logger.info(f"Subscription canceled for user {user.id}")
+        
+        user.save()
+        logger.info(f"User {user.id} saved with new status: {user.subscription_status}")
+        
+        # Clear rate limiting cache
+        cache = caches['rate_limit']
+        cache_key = f"user_limits:{user.id}"
+        cache.delete(cache_key)
+        
+        logger.info(f"Subscription update completed for user {user.id}")
+        return {"user_id": user.id, "status": subscription_data['status']}
+        
+    except User.DoesNotExist:
+        logger.error(f"User not found for subscription ID: {subscription_id}")
+        return {"error": "User not found"}
+    except Exception as e:
+        logger.error(f"Error handling subscription update: {e}")
+        return {"error": str(e)}
+
+
+def handle_subscription_canceled(subscription_data):
+    """Handle subscription cancellation"""
+    try:
+        subscription_id = subscription_data['id']
+        user = User.objects.get(stripe_subscription_id=subscription_id)
+        
+        user.cancel_subscription()
+        clear_payment_failure_flags(user)  # Clear restrictions but subscription is still canceled
+        
+        logger.info(f"Subscription canceled for user {user.id}")
+        return {"user_id": user.id, "canceled": True}
+        
+    except User.DoesNotExist:
+        logger.error(f"User not found for canceled subscription: {subscription_id}")
+        return {"error": "User not found"}
+    except Exception as e:
+        logger.error(f"Error handling subscription cancellation: {e}")
+        return {"error": str(e)}
+
+
+def handle_payment_failed(invoice_data):
+    """Handle payment failures with progressive restrictions"""
+    try:
+        subscription_id = invoice_data.get('subscription')
+        if not subscription_id:
+            return {"error": "No subscription ID in invoice"}
+        
+        user = User.objects.get(stripe_subscription_id=subscription_id)
+        
+        # Check number of recent payment failures
+        recent_failures = PaymentFailure.objects.filter(
+            user=user,
+            failed_at__gte=timezone.now() - timedelta(days=7)
+        ).count()
+        
+        # Apply progressive restrictions
+        if recent_failures == 0:
+            restriction_level = 'warning'
+        elif recent_failures == 1:
+            restriction_level = 'limited'
+        else:
+            restriction_level = 'suspended'
+        
+        set_payment_failure_flags(user, restriction_level)
+        
+        logger.warning(f"Payment failed for user {user.id}, restriction level: {restriction_level}")
+        return {"user_id": user.id, "restriction_level": restriction_level}
+        
+    except User.DoesNotExist:
+        logger.error(f"User not found for failed payment, subscription: {subscription_id}")
+        return {"error": "User not found"}
+    except Exception as e:
+        logger.error(f"Error handling payment failure: {e}")
+        return {"error": str(e)}
+
+
+def handle_payment_succeeded(invoice_data):
+    """Handle successful payments"""
+    try:
+        subscription_id = invoice_data.get('subscription')
+        if not subscription_id:
+            return {"success": True, "message": "No subscription to update"}
+        
+        user = User.objects.get(stripe_subscription_id=subscription_id)
+        
+        # Clear payment failure restrictions
+        clear_payment_failure_flags(user)
+        
+        # If subscription was in a problematic state, reactivate it
+        if user.subscription_status in ['past_due', 'incomplete']:
+            user.subscription_status = 'active'
+            user.save()
+        
+        logger.info(f"Payment succeeded for user {user.id}")
+        return {"user_id": user.id, "payment_cleared": True}
+        
+    except User.DoesNotExist:
+        logger.error(f"User not found for successful payment, subscription: {subscription_id}")
+        return {"error": "User not found"}
+    except Exception as e:
+        logger.error(f"Error handling payment success: {e}")
+        return {"error": str(e)}
+
+
+def handle_trial_ending(subscription_data):
+    """Handle trial ending notification"""
+    try:
+        subscription_id = subscription_data['id']
+        user = User.objects.get(stripe_subscription_id=subscription_id)
+        
+        # Log trial ending for monitoring
+        logger.info(f"Trial ending for user {user.id}, subscription: {subscription_id}")
+        
+        # Could send notification email here
+        return {"user_id": user.id, "trial_ending": True}
+        
+    except User.DoesNotExist:
+        logger.error(f"User not found for trial ending, subscription: {subscription_id}")
+        return {"error": "User not found"}
+    except Exception as e:
+        logger.error(f"Error handling trial ending: {e}")
+        return {"error": str(e)}
+
+
+def handle_payment_action_required(invoice_data):
+    """Handle when payment requires customer action"""
+    try:
+        subscription_id = invoice_data.get('subscription')
+        if not subscription_id:
+            return {"message": "No subscription to update"}
+        
+        user = User.objects.get(stripe_subscription_id=subscription_id)
+        
+        # Apply limited restrictions but not as severe as failed payment
+        set_payment_failure_flags(user, 'warning')
+        
+        logger.info(f"Payment action required for user {user.id}")
+        return {"user_id": user.id, "action_required": True}
+        
+    except User.DoesNotExist:
+        logger.error(f"User not found for payment action required, subscription: {subscription_id}")
+        return {"error": "User not found"}
+    except Exception as e:
+        logger.error(f"Error handling payment action required: {e}")
+        return {"error": str(e)}
 
 
 @api_view(["GET"])

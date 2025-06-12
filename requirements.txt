@@ -3,7 +3,9 @@
 aiohappyeyeballs==2.6.1
     # via aiohttp
 aiohttp==3.12.4
-    # via proxy-project (pyproject.toml)
+    # via
+    #   proxy-project (pyproject.toml)
+    #   lightapi
 aiosignal==1.3.2
     # via aiohttp
 anyio==4.9.0
@@ -69,6 +71,8 @@ django-cors-headers==4.7.0
     # via proxy-project (pyproject.toml)
 django-csp==4.0
     # via proxy-project (pyproject.toml)
+django-ratelimit==4.1.0
+    # via proxy-project (pyproject.toml)
 django-redis==5.4.0
     # via proxy-project (pyproject.toml)
 djangorestframework==3.14.0
@@ -81,6 +85,8 @@ frozenlist==1.6.0
     # via
     #   aiohttp
     #   aiosignal
+greenlet==3.2.3
+    # via sqlalchemy
 h11==0.16.0
     # via
     #   httpcore
@@ -103,6 +109,8 @@ idna==3.10
     #   yarl
 incremental==24.7.2
     # via twisted
+lightapi==0.1.3
+    # via proxy-project (pyproject.toml)
 msgpack==1.1.0
     # via channels-redis
 multidict==6.4.4
@@ -128,7 +136,9 @@ pyasn1-modules==0.4.2
 pycparser==2.22
     # via cffi
 pyjwt==2.8.0
-    # via djangorestframework-simplejwt
+    # via
+    #   djangorestframework-simplejwt
+    #   lightapi
 pyopenssl==25.1.0
     # via twisted
 python-decouple==3.8
@@ -142,6 +152,7 @@ redis==5.0.1
     #   proxy-project (pyproject.toml)
     #   channels-redis
     #   django-redis
+    #   lightapi
 requests==2.32.3
     # via
     #   proxy-project (pyproject.toml)
@@ -156,10 +167,14 @@ setuptools==80.9.0
     #   zope-interface
 sniffio==1.3.1
     # via anyio
+sqlalchemy==2.0.41
+    # via lightapi
 sqlparse==0.5.3
     # via django
 starlette==0.46.2
-    # via proxy-project (pyproject.toml)
+    # via
+    #   proxy-project (pyproject.toml)
+    #   lightapi
 stripe==12.2.0
     # via proxy-project (pyproject.toml)
 twisted==24.11.0
@@ -169,6 +184,7 @@ txaio==23.1.1
 typing-extensions==4.13.2
     # via
     #   dj-database-url
+    #   sqlalchemy
     #   stripe
     #   twisted
 urllib3==2.4.0
@@ -176,7 +192,9 @@ urllib3==2.4.0
     #   polygon-api-client
     #   requests
 uvicorn==0.34.2
-    # via proxy-project (pyproject.toml)
+    # via
+    #   proxy-project (pyproject.toml)
+    #   lightapi
 websockets==14.2
     # via
     #   proxy-project (pyproject.toml)

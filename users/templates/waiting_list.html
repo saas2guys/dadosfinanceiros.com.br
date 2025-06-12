@@ -16,7 +16,7 @@
             <h1 class="text-4xl font-bold text-white mb-4">Financial Data API</h1>
             <h2 class="text-2xl font-semibold text-indigo-400 mb-4">Coming Soon</h2>
             <p class="text-lg text-gray-300 max-w-3xl mx-auto">
-                We're putting the finishing touches on our comprehensive financial data API. 
+                We're putting the finishing touches on our comprehensive financial data API.
                 Join our waiting list to be the first to know when we launch and get exclusive early access.
             </p>
         </div>
@@ -67,10 +67,10 @@
         <!-- Waiting List Form -->
         <div class="bg-gray-800 rounded-lg shadow-lg p-8 border border-gray-700">
             <h3 class="text-2xl font-semibold text-white mb-6 text-center">Join the Waiting List</h3>
-            
+
             <form method="post" class="space-y-6">
                 {% csrf_token %}
-                
+
                 <div>
                     <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
                         First Name *
@@ -130,7 +130,7 @@
 
             <div class="mt-6 text-center">
                 <p class="text-sm text-gray-400">
-                    Already have an account? 
+                    Already have an account?
                     <a href="{% url 'login' %}" class="text-indigo-400 hover:text-indigo-300 font-medium">Sign in here</a>
                 </p>
             </div>

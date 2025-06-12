@@ -1,0 +1,428 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Global Options API - Options Chains, Greeks & Derivatives Data' %}{% endblock %}
+
+{% block meta_description %}Professional options API as part of comprehensive financial data platform with 104+ endpoints across 22 categories. Real-time options contracts, chains, Greeks, and derivatives data. Launching July 2025 with 25-60% cheaper pricing than competitors.{% endblock %}
+
+{% block meta_keywords %}options API 2025, real-time options data, options contracts API, options pricing API, comprehensive financial data API, 104 endpoints, 22 categories, derivatives API, options analytics API, options chain API, option Greeks API, financial options data{% endblock %}
+
+{% block canonical_url %}https://api.financialdata.online/options-api/{% endblock %}
+
+{% block og_title %}Options API 2025 - Part of 104+ Endpoint Financial Data Platform{% endblock %}
+{% block og_description %}Professional options API within comprehensive financial data platform. Real-time options contracts, chains, and derivatives data. 5 options endpoints from 104+ total across 22 categories. Launching July 2025.{% endblock %}
+
+{% block extra_meta %}
+<!-- Advanced SEO Meta Tags -->
+<meta name="author" content="Financial Data API - Options Team">
+<meta name="geo.region" content="US">
+    <meta name="geo.placename" content="Global Options Markets">
+<meta name="target" content="developers, analysts, financial institutions, options traders">
+<meta name="audience" content="financial developers, options analysts, derivatives specialists">
+<meta name="classification" content="Options Data, Derivatives, Financial Technology">
+
+<!-- Schema.org structured data for Options API -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Options Trading API",
+  "alternateName": ["Options Contracts API", "Derivatives API", "Options Chain API", "Options Pricing API"],
+          "description": "Professional options API providing real-time options contracts data, pricing information, and analytics for global markets. Essential for financial applications requiring derivatives data.",
+  "url": "https://api.financialdata.online/options-api/",
+  "applicationCategory": "FinanceApplication",
+  "applicationSubCategory": ["Options Trading", "Derivatives Analytics", "Financial Applications"],
+  "datePublished": "2024-01-01",
+  "dateModified": "2024-12-15",
+  "version": "2.0",
+  "operatingSystem": "Web-based, Cross-platform",
+  "programmingLanguage": ["Python", "JavaScript", "Java", "C#", "PHP", "R", "Go"],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free tier with 1000 daily API calls"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Financial Data API",
+    "description": "Professional provider of options and derivatives APIs for global markets"
+  },
+  "features": [
+    "Real-time options contracts data with pricing information",
+    "Options chains for all major global stocks and ETFs",
+    "Greeks calculation (Delta, Gamma, Theta, Vega, Rho)",
+    "Implied volatility and time decay analytics",
+    "Historical options data for backtesting strategies",
+    "Strike price and expiration date filtering",
+    "Bid/ask spreads and volume analytics",
+    "American and European style options support",
+    "Options market scanner and alerts",
+    "Multiple output formats (JSON, CSV)",
+    "Market intelligence"
+  ],
+  "softwareHelp": "https://api.financialdata.online/docs/options/",
+  "installUrl": "https://api.financialdata.online/waiting-list/",
+  "screenshot": "https://api.financialdata.online/static/options-api-screenshot.png"
+}
+</script>
+
+<!-- FAQ Schema for voice search optimization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the best options API for real-time contracts data in 2025?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our Options API provides comprehensive real-time options contracts data for American markets, including pricing information, implied volatility, Greeks, and historical data perfect for financial applications and trading bot training."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How to get options chain data for my financial application?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Get options chain data by integrating our Options API which provides real-time contracts information, strike prices, expiration dates, and comprehensive analytics for building sophisticated financial applications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which options API provides free tier for developers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our Options API offers a free tier for developers, analysts, and financial institutions, including access to real-time options contracts data and comprehensive derivatives analytics."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Breadcrumb Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://api.financialdata.online/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Options API",
+      "item": "https://api.financialdata.online/options-api/"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-900 to-gray-900">
+    <!-- Coming Soon Notice -->
+    <div class="bg-blue-900 border border-blue-700 p-4 text-center">
+        <div class="flex items-center justify-center mb-2">
+            <svg class="h-5 w-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-sm font-semibold text-blue-300">🚀 Options API - 5 Endpoints from 104+ Total Across 22 Categories - Launching July 2025</span>
+        </div>
+        <p class="text-xs text-blue-300">
+            Part of our comprehensive financial data API with 104+ endpoints. Join waiting list for early access with 25-60% cheaper pricing than competitors.
+        </p>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-financial py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+                    {% trans 'Global Options Markets API' %}
+                </h1>
+                <p class="text-xl sm:text-2xl text-blue-100 mb-8 max-w-4xl mx-auto">
+                    {% trans 'Professional options data API for derivatives trading. Access options chains, Greeks, implied volatility, and comprehensive options analytics for global markets.' %}
+                </p>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+                    <a href="{% url 'waiting_list' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-rocket mr-2"></i>
+                        {% trans 'Join Waiting List' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Options Data Types -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+                    {% trans 'Comprehensive Options Data' %}
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    {% trans 'Everything you need for options trading and derivatives analysis' %}
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Options Chains -->
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">{% trans 'Options Chains' %}</h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Complete option chains' %}</li>
+                        <li>• {% trans 'All strikes and expirations' %}</li>
+                        <li>• {% trans 'Call and put contracts' %}</li>
+                        <li>• {% trans 'Real-time pricing' %}</li>
+                    </ul>
+                </div>
+                
+                <!-- Greeks -->
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="text-green-400 text-3xl mb-4">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">{% trans 'Options Greeks' %}</h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Delta, Gamma, Theta' %}</li>
+                        <li>• {% trans 'Vega and Rho' %}</li>
+                        <li>• {% trans 'Real-time calculations' %}</li>
+                        <li>• {% trans 'Portfolio Greeks' %}</li>
+                    </ul>
+                </div>
+                
+                <!-- Implied Volatility -->
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="text-purple-400 text-3xl mb-4">
+                        <i class="fas fa-chart-area"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">{% trans 'Implied Volatility' %}</h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'IV surface data' %}</li>
+                        <li>• {% trans 'Volatility skew' %}</li>
+                        <li>• {% trans 'Historical IV trends' %}</li>
+                        <li>• {% trans 'VIX and volatility indices' %}</li>
+                    </ul>
+                </div>
+                
+                <!-- Options Flow -->
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="text-yellow-400 text-3xl mb-4">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">{% trans 'Options Flow' %}</h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Unusual options activity' %}</li>
+                        <li>• {% trans 'Large volume alerts' %}</li>
+                        <li>• {% trans 'Open interest changes' %}</li>
+                        <li>• {% trans 'Smart money tracking' %}</li>
+                    </ul>
+                </div>
+                
+                <!-- Strategies -->
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="text-red-400 text-3xl mb-4">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">{% trans 'Strategy Analytics' %}</h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Multi-leg strategies' %}</li>
+                        <li>• {% trans 'P&L calculations' %}</li>
+                        <li>• {% trans 'Risk metrics' %}</li>
+                        <li>• {% trans 'Payoff diagrams' %}</li>
+                    </ul>
+                </div>
+                
+                <!-- Market Data -->
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <div class="text-indigo-400 text-3xl mb-4">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">{% trans 'Global Markets' %}</h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'US options exchanges' %}</li>
+                        <li>• {% trans 'European options' %}</li>
+                        <li>• {% trans 'Index options' %}</li>
+                        <li>• {% trans 'ETF options' %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Features -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+                    {% trans 'Professional Options API Features' %}
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    {% trans 'Built for options traders, quants, and derivatives professionals' %}
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">{% trans 'Real-time Data' %}</h3>
+                    <p class="text-gray-300">{% trans 'Live options prices and Greeks with minimal latency for active trading' %}</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="text-green-400 text-3xl mb-4">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">{% trans 'Historical Options Data' %}</h3>
+                    <p class="text-gray-300">{% trans 'Extensive historical options data for backtesting and research' %}</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="text-purple-400 text-3xl mb-4">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">{% trans 'Advanced Analytics' %}</h3>
+                    <p class="text-gray-300">{% trans 'Sophisticated options analytics and risk management tools' %}</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="text-yellow-400 text-3xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">{% trans 'Enterprise Security' %}</h3>
+                    <p class="text-gray-300">{% trans 'Bank-grade security with authentication and compliance' %}</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="text-red-400 text-3xl mb-4">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">{% trans 'High Performance' %}</h3>
+                    <p class="text-gray-300">{% trans 'Optimized for high-frequency options trading applications' %}</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="text-indigo-400 text-3xl mb-4">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">{% trans 'Developer Friendly' %}</h3>
+                    <p class="text-gray-300">{% trans 'RESTful API with comprehensive documentation and SDKs' %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+                    {% trans 'Options Trading Use Cases' %}
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    {% trans 'Power your options trading strategies with professional-grade data' %}
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-robot text-blue-400 mr-3"></i>
+                        {% trans 'Algorithmic Options Trading' %}
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        {% trans 'Build sophisticated options trading algorithms with real-time Greeks, volatility data, and market analytics.' %}
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Delta-neutral strategies' %}</li>
+                        <li>• {% trans 'Volatility trading systems' %}</li>
+                        <li>• {% trans 'Market making algorithms' %}</li>
+                        <li>• {% trans 'Arbitrage detection' %}</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-chart-line text-green-400 mr-3"></i>
+                        {% trans 'Risk Management' %}
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        {% trans 'Monitor and manage options portfolio risk with real-time Greeks and exposure analytics.' %}
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Portfolio Greeks monitoring' %}</li>
+                        <li>• {% trans 'Risk exposure alerts' %}</li>
+                        <li>• {% trans 'Stress testing tools' %}</li>
+                        <li>• {% trans 'VaR calculations' %}</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-search text-purple-400 mr-3"></i>
+                        {% trans 'Options Research' %}
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        {% trans 'Conduct comprehensive options research and analysis with historical data and advanced analytics.' %}
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Volatility surface analysis' %}</li>
+                        <li>• {% trans 'Strategy backtesting' %}</li>
+                        <li>• {% trans 'Market structure research' %}</li>
+                        <li>• {% trans 'Academic research tools' %}</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-mobile-alt text-yellow-400 mr-3"></i>
+                        {% trans 'Trading Applications' %}
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        {% trans 'Build professional options trading platforms and mobile applications for retail and institutional clients.' %}
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• {% trans 'Options screeners' %}</li>
+                        <li>• {% trans 'Strategy builders' %}</li>
+                        <li>• {% trans 'Real-time pricing tools' %}</li>
+                        <li>• {% trans 'Educational platforms' %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-financial">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+                {% trans 'Ready to Access Professional Options Data?' %}
+            </h2>
+            <p class="text-xl text-blue-100 mb-8">
+                {% trans 'Join our waiting list to be notified when our comprehensive options API becomes available' %}
+            </p>
+            <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+                <a href="{% url 'waiting_list' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors">
+                    <i class="fas fa-rocket mr-2"></i>
+                    {% trans 'Join Waiting List' %}
+                </a>
+                <a href="{% url 'faq' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-white bg-blue-700 hover:bg-blue-800 transition-colors">
+                    <i class="fas fa-question-circle mr-2"></i>
+                    {% trans 'Learn More' %}
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %} 

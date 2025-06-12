@@ -1,0 +1,490 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Indices API 2025 - Part of 104+ Endpoint Financial Data Platform | 3 Indices & Market Benchmarks Endpoints{% endblock %}
+
+{% block meta_description %}Professional indices API with 3 market benchmarks endpoints, part of our comprehensive 104+ endpoint financial data platform launching July 2025. S&P 500, NASDAQ, Dow Jones data. 25-60% cheaper than competitors.{% endblock %}
+
+{% block meta_keywords %}indices API 2025, market indices API, S&P 500 API, NASDAQ API, Dow Jones API, real-time indices data, stock market indices, financial indices API, market index data, index tracking API, benchmark indices API, sector indices API, international indices API{% endblock %}
+
+{% block canonical_url %}https://api.financialdata.online/indices-api/{% endblock %}
+
+{% block og_title %}Indices API 2025 - Real-Time Market Indices Data{% endblock %}
+{% block og_description %}Professional market indices API for financial applications. Real-time indices data including major market benchmarks. Perfect for developers, analysts, and financial institutions.{% endblock %}
+
+{% block extra_meta %}
+<!-- Advanced SEO Meta Tags -->
+<meta name="author" content="Financial Data API - Indices Team">
+<meta name="geo.region" content="US,Global">
+<meta name="geo.placename" content="Global Market Indices">
+<meta name="target" content="developers, analysts, financial institutions, portfolio managers">
+<meta name="audience" content="financial developers, index analysts, investment professionals">
+<meta name="classification" content="Market Indices Data, Financial Benchmarks, Financial Technology">
+
+<!-- Schema.org structured data for Indices API -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Market Indices API",
+  "alternateName": ["Indices API", "Stock Market Indices API", "Financial Benchmarks API", "Market Index Data API"],
+  "description": "Professional market indices API providing real-time data for major market benchmarks including S&P 500, NASDAQ, Dow Jones, and international indices. Essential for financial applications requiring benchmark data.",
+  "url": "https://api.financialdata.online/indices-api/",
+  "applicationCategory": "FinanceApplication",
+  "applicationSubCategory": ["Market Analysis", "Portfolio Management", "Financial Applications"],
+  "datePublished": "2024-01-01",
+  "dateModified": "2024-12-15",
+  "version": "2.0",
+  "operatingSystem": "Web-based, Cross-platform",
+  "programmingLanguage": ["Python", "JavaScript", "Java", "C#", "PHP", "R", "Go"],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free tier with API access for market indices data",
+    "category": "Free Market Indices Data Plan"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Financial Data API",
+    "description": "Professional provider of market indices and financial benchmark APIs"
+  },
+  "featureList": [
+    "Real-time market indices data with comprehensive performance tracking",
+    "Major US indices: S&P 500, NASDAQ Composite, Dow Jones Industrial Average",
+    "Sector indices and thematic benchmarks for targeted analysis",
+    "International indices for global market coverage",
+    "Historical indices data for trend analysis and backtesting",
+    "Index constituents and weighting information",
+    "Real-time index values and percentage changes",
+    "Index performance analytics and statistics",
+    "Custom index screening and filtering tools",
+    "Benchmark comparison and relative performance analysis",
+    "Index volatility and risk metrics",
+    "Comprehensive market intelligence and analytics"
+  ],
+  "softwareHelp": "https://api.financialdata.online/docs/indices/",
+  "installUrl": "https://api.financialdata.online/waiting-list/",
+  "screenshot": "https://api.financialdata.online/static/indices-api-screenshot.png"
+}
+</script>
+
+<!-- FAQ Schema for voice search optimization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the best market indices API for real-time data in 2025?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our Market Indices API provides comprehensive real-time data for major market benchmarks including S&P 500, NASDAQ, Dow Jones, and international indices, perfect for financial applications and portfolio analysis."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How to get S&P 500 and NASDAQ real-time data for my financial application?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Get S&P 500 and NASDAQ real-time data by integrating our Market Indices API which provides live index values, performance tracking, and comprehensive analytics for building sophisticated financial applications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which indices API provides free tier for developers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our Market Indices API offers a free tier for developers, analysts, and financial institutions, including access to real-time market indices data and comprehensive benchmark analytics."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Breadcrumb Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://api.financialdata.online/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Indices API",
+      "item": "https://api.financialdata.online/indices-api/"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-emerald-900 to-gray-900">
+    <!-- Hero Section -->
+    <div class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="mb-6 inline-flex items-center px-4 py-2 rounded-full bg-emerald-900 border border-emerald-700">
+                    <span class="text-sm font-medium text-emerald-300">🚀 Comprehensive Financial Data Platform: 104+ Endpoints Across 22 Categories - Launching July 2025</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                    Indices API: 3 Market Benchmarks Endpoints
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
+                    Our comprehensive indices API provides 3 specialized endpoints for market benchmarks data, including S&P 500, NASDAQ, Dow Jones, and international indices. 
+                    Part of our 104+ endpoint financial data platform covering 22+ categories. Perfect for developers, analysts, and financial institutions building sophisticated financial applications. 
+                    API access only with JSON and CSV formats. Launching July 2025 with pricing 25-60% cheaper than competitors.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'waiting_list' %}" class="bg-emerald-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-emerald-700 transition duration-200">
+                        Join Waiting List - Free Tier Available
+                    </a>
+                    <a href="#features" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
+                        Explore Planned Features
+                    </a>
+                </div>
+                
+                <!-- Key metrics -->
+                <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <div class="text-2xl font-bold text-emerald-400">3 Endpoints</div>
+                        <div class="text-sm text-gray-400">Indices & Benchmarks</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-emerald-400">104+ Total</div>
+                        <div class="text-sm text-gray-400">Financial Data Platform</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-emerald-400">25-60%</div>
+                        <div class="text-sm text-gray-400">Cheaper Than Competitors</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-emerald-400">July 2025</div>
+                        <div class="text-sm text-gray-400">Launch Date</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Major Indices Section -->
+    <div class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Comprehensive Market Indices Coverage</h2>
+                <p class="text-gray-400">Real-time indices data for major market benchmarks and international markets</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">📈</div>
+                    <div class="text-xl font-bold text-emerald-400">S&P 500</div>
+                    <div class="text-sm text-gray-400">Large-Cap US Stocks</div>
+                    <div class="text-xs text-gray-500 mt-2">SPX Index</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">💻</div>
+                    <div class="text-xl font-bold text-emerald-400">NASDAQ Composite</div>
+                    <div class="text-sm text-gray-400">Technology Focus</div>
+                    <div class="text-xs text-gray-500 mt-2">COMP Index</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">🏭</div>
+                    <div class="text-xl font-bold text-emerald-400">Dow Jones</div>
+                    <div class="text-sm text-gray-400">Industrial Average</div>
+                    <div class="text-xs text-gray-500 mt-2">DJIA Index</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">🏢</div>
+                    <div class="text-xl font-bold text-emerald-400">Russell 2000</div>
+                    <div class="text-sm text-gray-400">Small-Cap Stocks</div>
+                    <div class="text-xs text-gray-500 mt-2">RUT Index</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">🌐</div>
+                    <div class="text-xl font-bold text-emerald-400">International</div>
+                    <div class="text-sm text-gray-400">Global Markets</div>
+                    <div class="text-xs text-gray-500 mt-2">Various Indices</div>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg text-center">
+                    <div class="text-3xl mb-3">🏭</div>
+                    <div class="text-xl font-bold text-emerald-400">Sector Indices</div>
+                    <div class="text-sm text-gray-400">Industry Specific</div>
+                    <div class="text-xs text-gray-500 mt-2">GICS Sectors</div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    Complete market indices coverage with real-time data and historical analytics
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Features Section -->
+    <div id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Professional Market Indices Data Features</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">🕐 Real-Time Index Values & Performance</h3>
+                    <p class="text-gray-400 mb-4">Live market indices data with real-time values, percentage changes, and comprehensive performance tracking for all major benchmarks.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Real-time index values and changes</li>
+                        <li>• Daily high/low and trading ranges</li>
+                        <li>• Volume and market activity metrics</li>
+                        <li>• Percentage performance calculations</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">📊 Index Constituents & Composition</h3>
+                    <p class="text-gray-400 mb-4">Complete index constituents data including stock weights, sector allocations, and composition changes for comprehensive analysis.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Index constituent stocks and weights</li>
+                        <li>• Sector and industry allocations</li>
+                        <li>• Index rebalancing notifications</li>
+                        <li>• Market cap and methodology data</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">📈 Historical Index Data & Analytics</h3>
+                    <p class="text-gray-400 mb-4">Comprehensive historical index data for trend analysis, backtesting, and research with multiple timeframes and analytics.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Historical index values and returns</li>
+                        <li>• Multi-timeframe data (daily, weekly, monthly)</li>
+                        <li>• Volatility and risk metrics</li>
+                        <li>• Long-term performance analytics</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">🔍 Index Screening & Comparison</h3>
+                    <p class="text-gray-400 mb-4">Advanced index screening and comparison tools for analyzing performance, correlations, and relative strength across different benchmarks.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Multi-index performance comparison</li>
+                        <li>• Correlation analysis between indices</li>
+                        <li>• Relative strength indicators</li>
+                        <li>• Custom screening criteria</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">⚡ Sector & Thematic Indices</h3>
+                    <p class="text-gray-400 mb-4">Comprehensive sector and thematic indices for targeted analysis including technology, healthcare, energy, and specialized market segments.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• GICS sector indices tracking</li>
+                        <li>• Thematic and specialty indices</li>
+                        <li>• Industry-specific benchmarks</li>
+                        <li>• Custom index creation tools</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">🎯 Benchmark Analytics & Insights</h3>
+                    <p class="text-gray-400 mb-4">Professional benchmark analytics including risk-adjusted returns, tracking error analysis, and comprehensive market intelligence.</p>
+                    <ul class="text-gray-300 text-sm space-y-1">
+                        <li>• Risk-adjusted performance metrics</li>
+                        <li>• Tracking error calculations</li>
+                        <li>• Sharpe and Sortino ratios</li>
+                        <li>• Market regime analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">Perfect for Every Type of Index & Benchmark Application</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">🛠️ Financial Applications & Custom Queries</h3>
+                    <p class="text-gray-400 mb-4">
+                        Build sophisticated financial applications with real-time index data, benchmark analytics, and comprehensive market intelligence. 
+                        Perfect for developers creating custom portfolio and analysis solutions.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Real-time index tracking and alerts</li>
+                        <li>• Custom benchmark comparisons</li>
+                        <li>• Portfolio performance attribution</li>
+                        <li>• Market trend analysis tools</li>
+                        <li>• Sector rotation strategies</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">🤖 Trading Bot Training & Strategy Backtesting</h3>
+                    <p class="text-gray-400 mb-4">
+                        Develop and train sophisticated index-based trading algorithms with comprehensive historical data and 
+                        real-time feeds. Essential for strategy backtesting and algorithmic trading development.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Historical index data for backtesting</li>
+                        <li>• Index momentum and trend strategies</li>
+                        <li>• Mean reversion and statistical arbitrage</li>
+                        <li>• Real-time data for live trading bots</li>
+                        <li>• Multi-index correlation strategies</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">📊 Financial Research & Analytics</h3>
+                    <p class="text-gray-400 mb-4">
+                        Power sophisticated market research platforms with comprehensive index data, analytics, and market intelligence. 
+                        Essential for institutional research and financial advisory tools.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Market research and index analysis</li>
+                        <li>• Economic indicator correlations</li>
+                        <li>• Sector and style analysis</li>
+                        <li>• Market regime identification</li>
+                        <li>• Custom research reports and insights</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">🏛️ Institutional & Enterprise Solutions</h3>
+                    <p class="text-gray-400 mb-4">
+                        Enterprise-grade index data solutions for financial institutions, asset managers, and professional investment firms 
+                        requiring comprehensive benchmark and market intelligence.
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Institutional-grade index feeds</li>
+                        <li>• Portfolio benchmarking tools</li>
+                        <li>• Risk management and compliance</li>
+                        <li>• Custom integration and support</li>
+                        <li>• Enterprise security and reliability</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Integration Section -->
+    <div class="py-20 bg-gray-900 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-6">Part of Our Comprehensive Financial Data Platform</h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    Our Indices API with 3 specialized endpoints is part of a comprehensive 104+ endpoint financial data platform 
+                    covering 22+ categories. Access market benchmarks data alongside all other financial data types in one unified platform.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+                <div class="bg-gray-800 p-4 rounded-lg text-center border border-emerald-600">
+                    <div class="text-2xl mb-2">📊</div>
+                    <div class="text-sm font-semibold text-emerald-400">Indices & Benchmarks</div>
+                    <div class="text-xs text-gray-400">3 Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">📈</div>
+                    <div class="text-sm font-semibold text-white">Stock Market Data</div>
+                    <div class="text-xs text-gray-400">15+ Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <div class="text-sm font-semibold text-white">Options Data</div>
+                    <div class="text-xs text-gray-400">5 Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">📊</div>
+                    <div class="text-sm font-semibold text-white">Futures Data</div>
+                    <div class="text-xs text-gray-400">3 Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">💱</div>
+                    <div class="text-sm font-semibold text-white">Forex Data</div>
+                    <div class="text-xs text-gray-400">7 Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">₿</div>
+                    <div class="text-sm font-semibold text-white">Crypto Data</div>
+                    <div class="text-xs text-gray-400">7 Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">🏢</div>
+                    <div class="text-sm font-semibold text-white">Fundamental Data</div>
+                    <div class="text-xs text-gray-400">12+ Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">📰</div>
+                    <div class="text-sm font-semibold text-white">News & Sentiment</div>
+                    <div class="text-xs text-gray-400">8+ Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">📊</div>
+                    <div class="text-sm font-semibold text-white">Economic Data</div>
+                    <div class="text-xs text-gray-400">5 Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">📋</div>
+                    <div class="text-sm font-semibold text-white">Analyst Data</div>
+                    <div class="text-xs text-gray-400">6+ Endpoints</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg text-center">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <div class="text-sm font-semibold text-white">And 12+ More</div>
+                    <div class="text-xs text-gray-400">40+ Endpoints</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center space-x-6 bg-gray-800 px-8 py-4 rounded-lg">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-emerald-400">104+</div>
+                        <div class="text-sm text-gray-400">Total Endpoints</div>
+                    </div>
+                    <div class="h-8 w-px bg-gray-600"></div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-emerald-400">22+</div>
+                        <div class="text-sm text-gray-400">Data Categories</div>
+                    </div>
+                    <div class="h-8 w-px bg-gray-600"></div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-emerald-400">25-60%</div>
+                        <div class="text-sm text-gray-400">Cheaper</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 bg-emerald-900">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Build Your Index Application?</h2>
+            <p class="text-xl text-emerald-200 mb-8">
+                Join developers, analysts, and financial institutions building sophisticated index applications. 
+                                        Get waiting list priority access and testing benefits for our July 2025 launch.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'waiting_list' %}" class="bg-white text-emerald-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-200">
+                    Join Waiting List Today
+                </a>
+                <a href="{% url 'api_comparison' %}" class="border border-emerald-300 text-emerald-200 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-emerald-800 transition duration-200">
+                    Compare APIs
+                </a>
+            </div>
+            <p class="text-sm text-emerald-300 mt-6">
+                ✓ Free tier available ✓ API access only ✓ JSON/CSV formats ✓ 25-60% cheaper than competitors
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %} 
