@@ -3,14 +3,15 @@
 
 {% block title %}{% trans 'Global Stock Market API - Real-time & Historical Data' %}{% endblock %}
 
-{% block meta_description %}Professional market data API as part of comprehensive financial data platform with 104+ endpoints across 22 categories. Real-time stock quotes, historical data, gainers/losers, market movers. 13 market data endpoints with free tier available. Launching July 2025.{% endblock %}
+{% block meta_description %}{% trans 'Professional stock market API providing real-time and historical market data from US exchanges including NYSE and NASDAQ. Free tier available for developers.' %}{% endblock %}
 
-{% block meta_keywords %}market data API 2025, real-time stock quotes API, historical stock data API, market movers API, gainers losers API, active stocks API, stock market feed, trading data API, comprehensive financial data API, 104 endpoints, 22 categories, market intelligence API, OHLC data API, stock prices API, financial market data, trading platform API, algorithmic trading data{% endblock %}
+{% block meta_keywords %}{% trans 'stock market API, financial market data, real-time stock prices, market data API, NYSE, NASDAQ' %}{% endblock %}
+
 
 {% block canonical_url %}https://api.financialdata.online/stock-market-api/{% endblock %}
 
-{% block og_title %}Stock Market API 2024 - Real-Time NYSE & NASDAQ Data{% endblock %}
-{% block og_description %}Upcoming professional stock market API for trading platforms. Real-time stock prices from global exchanges including NYSE, NASDAQ. Free tier available for developers building trading apps.{% endblock %}
+{% block og_title %}{% trans 'Stock Market API - Real-time Market Data' %}{% endblock %}
+{% block og_description %}{% trans 'Professional stock market API providing real-time stock prices from US exchanges including NYSE and NASDAQ. Free tier available for developers.' %}{% endblock %}
 
 {% block extra_meta %}
 <!-- Advanced SEO Meta Tags -->
@@ -186,19 +187,19 @@
     <!-- Global Stock Exchanges Coverage Section -->
     <div class="bg-gradient-to-r from-blue-900 to-indigo-900 py-16">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-white mb-4">{% trans 'Global Stock Market Coverage' %}</h2>
-            <p class="text-gray-400">{% trans 'Access stock market data from major exchanges around the world' %}</p>
+            <h2 class="text-3xl font-bold text-white mb-4">{% trans 'US Stock Market Coverage' %}</h2>
+            <p class="text-gray-400">{% trans 'Access comprehensive stock market data from major US exchanges' %}</p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
                     <h3 class="text-lg font-semibold text-blue-300 mb-3"><i class="fas fa-building mr-2"></i>NYSE & NASDAQ</h3>
-                    <p class="text-gray-400 text-sm mb-3">{% trans 'Complete coverage of the world's largest stock exchanges' %}</p>
+                    <p class="text-gray-400 text-sm mb-3">{% trans 'Complete coverage of the US stock exchanges' %}</p>
                     <div class="text-xs text-gray-500 mt-2">{% trans 'Complete US Coverage' %}</div>
                 </div>
                 <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-green-300 mb-3"><i class="fas fa-globe mr-2"></i>Global Exchanges</h3>
-                    <p class="text-gray-400 text-sm mb-3">{% trans 'London, Tokyo, Frankfurt, Toronto, and other major exchanges' %}</p>
-                    <div class="text-xs text-gray-500 mt-2">{% trans 'International Markets' %}</div>
+                    <h3 class="text-lg font-semibold text-green-300 mb-3"><i class="fas fa-globe mr-2"></i>US Exchanges</h3>
+                    <p class="text-gray-400 text-sm mb-3">{% trans 'NYSE, NASDAQ, and other major US exchanges' %}</p>
+                    <div class="text-xs text-gray-500 mt-2">{% trans 'National Markets' %}</div>
                 </div>
                 <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
                     <h3 class="text-lg font-semibold text-purple-300 mb-3"><i class="fas fa-chart-line mr-2"></i>Real-time Data</h3>
@@ -414,26 +415,20 @@
                 </div>
                 
                 <div class="bg-gray-800 p-6 rounded-lg">
-                    <h3 class="text-xl font-semibold text-white mb-4">🔧 API Integration & SDKs</h3>
+                    <h3 class="text-xl font-semibold text-white mb-4">🔧 API Integration</h3>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• {% trans 'RESTful JSON API with OpenAPI specs' %}</li>
-                        <li>• {% trans 'Official SDKs for Python, JavaScript, Java' %}</li>
-                        <li>• {% trans 'JWT authentication and API key security' %}</li>
-                        <li>• {% trans 'Comprehensive API documentation' %}</li>
-                        <li>• {% trans 'Code examples and integration tutorials' %}</li>
-                        <li>• {% trans 'Postman collections and testing tools' %}</li>
+                        <li>• {% trans 'REST API with comprehensive documentation' %}</li>
+                        <li>• {% trans 'JSON and CSV data formats' %}</li>
+                        <li>• {% trans 'Extensive code examples' %}</li>
                     </ul>
                 </div>
                 
                 <div class="bg-gray-800 p-6 rounded-lg">
-                    <h3 class="text-xl font-semibold text-white mb-4">💾 Data Coverage & History</h3>
+                    <h3 class="text-xl font-semibold text-white mb-4">📊 Data Features</h3>
                     <ul class="text-gray-300 space-y-2">
-                        <li>• {% trans '50+ global stock exchanges' %}</li>
-                        <li>• {% trans '20+ years of historical data' %}</li>
-                        <li>• {% trans 'Real-time updates every 1 second' %}</li>
-                        <li>• {% trans 'Support for 10,000+ stock symbols' %}</li>
-                        <li>• {% trans 'Multiple data formats and time zones' %}</li>
-                        <li>• {% trans 'Corporate actions and adjustments' %}</li>
+                        <li>• {% trans 'Real-time market data' %}</li>
+                        <li>• {% trans 'Historical data access' %}</li>
+                        <li>• {% trans 'Market indicators' %}</li>
                     </ul>
                 </div>
             </div>
