@@ -6,7 +6,7 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h1>
+        <h1 class="text-4xl font-bold text-indigo-400 mb-4">Choose Your Plan</h1>
         <p class="text-xl text-gray-600">Select the plan that fits your API usage needs</p>
     </div>
 
@@ -33,89 +33,100 @@
     </div>
     {% endif %}
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="plan-cards">
         {% for plan in plans %}
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden {% if current_plan and current_plan.id == plan.id %}border-2 border-blue-500{% endif %}">
-            <div class="px-6 py-8">
+        <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200 {% if current_plan and current_plan.id == plan.id %}border-blue-500{% endif %}"
+             data-plan="{{ plan.name }}" data-plan-id="{{ plan.id }}" onclick="selectPlan('{{ plan.name }}', '{{ plan.id }}')">
+            <div class="px-8 py-10 flex flex-col items-center">
                 <div class="text-center">
-                    <h3 class="text-2xl font-semibold text-gray-900">{{ plan.name }}</h3>
-                    <div class="mt-4 flex items-baseline justify-center">
-                        <span class="text-5xl font-extrabold text-gray-900">${{ plan.price_monthly }}</span>
-                        <span class="text-xl font-medium text-gray-500">/month</span>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-2">{{ plan.name }}</h3>
+                    <div class="mt-2 flex items-baseline justify-center">
+                        {% with plan.price_monthly|stringformat:"0.2f" as price %}
+                        {% with price|cut:"." as parts %}
+                            <span class="text-5xl font-extrabold text-indigo-700">
+                                ${{ price|slice:":-3" }}<span class="text-xl align-bottom">.{{ price|slice:"-2:" }}</span>
+                            </span>
+                        {% endwith %}
+                    {% endwith %}
+                        <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
                     </div>
                 </div>
-                
-                <div class="mt-6">
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <p class="ml-3 text-base text-gray-700">
-                                {{ plan.daily_request_limit|floatformat:0 }} requests/day
-                            </p>
-                        </li>
-                        
-                        {% for feature_key, feature_value in plan.features.items %}
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <p class="ml-3 text-base text-gray-700">
-                                {{ feature_key|title }}: {{ feature_value }}
-                            </p>
-                        </li>
-                        {% endfor %}
+                <div class="mt-8 w-full">
+                    <ul class="space-y-2">
+                        {% if plan.name == 'Developer' %}
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Real-time Quotes</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Historical Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Chains</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Greeks</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Tick-level Data</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Futures Data</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">WebSocket</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Fundamentals: Basic</span></li>
+                            <li class="flex items-center"><span class="text-white">News & Sentiment</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Technical Indicators: 4</span></li>
+                            <li class="flex items-center"><span class="text-white">Enterprise SLA</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">API Calls/Day: 5,000</span></li>
+                            <li class="flex items-center"><span class="text-white">Total Features: 25+</span></li>
+                        {% elif plan.name == 'Professional' %}
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Real-time Quotes</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Historical Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Chains</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Greeks</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Tick-level Data</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Futures Data</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">WebSocket</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Fundamentals: Advanced</span></li>
+                            <li class="flex items-center"><span class="text-white">News & Sentiment</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Technical Indicators: 6</span></li>
+                            <li class="flex items-center"><span class="text-white">Enterprise SLA</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">API Calls/Day: 25,000</span></li>
+                            <li class="flex items-center"><span class="text-white">Total Features: 35+</span></li>
+                        {% elif plan.name == 'Options Trader' %}
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Real-time Quotes</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Historical Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Chains</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Greeks</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Tick-level Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Futures Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">WebSocket</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Fundamentals: Advanced</span></li>
+                            <li class="flex items-center"><span class="text-white">News & Sentiment</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Technical Indicators: 8</span></li>
+                            <li class="flex items-center"><span class="text-white">Enterprise SLA</span><svg class="h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">API Calls/Day: 100,000</span></li>
+                            <li class="flex items-center"><span class="text-white">Total Features: 40+</span></li>
+                        {% elif plan.name == 'Enterprise' %}
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Real-time Quotes</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Historical Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Global Coverage</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Chains</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Options Greeks</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Tick-level Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Futures Data</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">WebSocket</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Fundamentals: Advanced</span></li>
+                            <li class="flex items-center"><span class="text-white">News & Sentiment</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">Technical Indicators: 8+</span></li>
+                            <li class="flex items-center"><span class="text-white">Enterprise SLA</span><svg class="h-5 w-5 text-green-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></li>
+                            <li class="flex items-center"><span class="text-white">API Calls/Day: Unlimited</span></li>
+                            <li class="flex items-center"><span class="text-white">Total Features: 45+</span></li>
+                        {% endif %}
                     </ul>
-                </div>
-                
-                <div class="mt-8">
-                    {% if current_plan and current_plan.id == plan.id %}
-                        <div class="text-center">
-                            <span class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100">
-                                Current Plan
-                            </span>
-                            
-                            {% if user.subscription_status == 'active' and not current_plan.is_free %}
-                                <form method="post" action="{% url 'cancel-subscription' %}" class="mt-4">
-                                    {% csrf_token %}
-                                    <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm"
-                                            onclick="return confirm('Are you sure you want to cancel your subscription?')">
-                                        Cancel Subscription
-                                    </button>
-                                </form>
-                            {% elif user.subscription_status == 'canceled' %}
-                                <form method="post" action="{% url 'reactivate-subscription' %}" class="mt-4">
-                                    {% csrf_token %}
-                                    <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm">
-                                        Reactivate Subscription
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    {% else %}
-                        <form method="post" action="{% url 'create-checkout-session' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="plan_id" value="{{ plan.id }}">
-                            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 font-medium">
-                                {% if plan.is_free %}
-                                    Select Free Plan
-                                {% else %}
-                                    Upgrade to {{ plan.name }}
-                                {% endif %}
-                            </button>
-                        </form>
-                    {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     
+    <div id="plan-details" class="mt-8"></div>
+
     <div class="mt-12 text-center">
         <p class="text-gray-600">
             Need a custom plan? 
@@ -125,4 +136,113 @@
         </p>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const planFeatures = {
+    "Developer": [
+        { name: "Global Coverage", available: true },
+        { name: "Real-time Quotes", available: true },
+        { name: "Historical Data", available: true },
+        { name: "Global Coverage", available: true },
+        { name: "Options Chains", available: false },
+        { name: "Options Greeks", available: false },
+        { name: "Tick-level Data", available: false },
+        { name: "Futures Data", available: false },
+        { name: "WebSocket", available: false },
+        { name: "Fundamentals: Basic", available: null },
+        { name: "News & Sentiment", available: true },
+        { name: "Technical Indicators: 4", available: null },
+        { name: "Enterprise SLA", available: false },
+        { name: "API Calls/Day: 5,000", available: null },
+        { name: "Total Features: 25+", available: null },
+    ],
+    "Professional": [
+        { name: "Global Coverage", available: true },
+        { name: "Real-time Quotes", available: true },
+        { name: "Historical Data", available: true },
+        { name: "Global Coverage", available: true },
+        { name: "Options Chains", available: true },
+        { name: "Options Greeks", available: false },
+        { name: "Tick-level Data", available: false },
+        { name: "Futures Data", available: false },
+        { name: "WebSocket", available: true },
+        { name: "Fundamentals: Advanced", available: null },
+        { name: "News & Sentiment", available: true },
+        { name: "Technical Indicators: 6", available: null },
+        { name: "Enterprise SLA", available: false },
+        { name: "API Calls/Day: 25,000", available: null },
+        { name: "Total Features: 35+", available: null },
+    ],
+    "Options Trader": [
+        { name: "Global Coverage", available: true },
+        { name: "Real-time Quotes", available: true },
+        { name: "Historical Data", available: true },
+        { name: "Global Coverage", available: true },
+        { name: "Options Chains", available: true },
+        { name: "Options Greeks", available: true },
+        { name: "Tick-level Data", available: true },
+        { name: "Futures Data", available: true },
+        { name: "WebSocket", available: true },
+        { name: "Fundamentals: Advanced", available: null },
+        { name: "News & Sentiment", available: true },
+        { name: "Technical Indicators: 8", available: null },
+        { name: "Enterprise SLA", available: false },
+        { name: "API Calls/Day: 100,000", available: null },
+        { name: "Total Features: 40+", available: null },
+    ],
+    "Enterprise": [
+        { name: "Global Coverage", available: true },
+        { name: "Real-time Quotes", available: true },
+        { name: "Historical Data", available: true },
+        { name: "Global Coverage", available: true },
+        { name: "Options Chains", available: true },
+        { name: "Options Greeks", available: true },
+        { name: "Tick-level Data", available: true },
+        { name: "Futures Data", available: true },
+        { name: "WebSocket", available: true },
+        { name: "Fundamentals: Advanced", available: null },
+        { name: "News & Sentiment", available: true },
+        { name: "Technical Indicators: 8+", available: null },
+        { name: "Enterprise SLA", available: true },
+        { name: "API Calls/Day: Unlimited", available: null },
+        { name: "Total Features: 45+", available: null },
+    ],
+};
+
+function selectPlan(planName, planId) {
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.classList.remove('border-blue-500');
+        if (card.getAttribute('data-plan') === planName) {
+            card.classList.add('border-blue-500');
+        }
+    });
+
+    // Empty sheet
+    let html = `
+        <div class="flex flex-col items-center mt-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Competitor Comparison</h2>
+            <table class="w-full max-w-2xl text-left rounded-xl overflow-hidden border-separate border-spacing-0 mb-6">
+                <thead>
+                    <tr class="bg-indigo-700 text-white">
+                        <th class="py-3 px-4 rounded-tl-xl">Feature</th>
+                        <th class="py-3 px-4 rounded-tr-xl text-center">Our ${planName}</th>
+                        <th class="py-3 px-4 rounded-tr-xl text-center">Competitor Equivalent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Empty Body -->
+                </tbody>
+            </table>
+            <form method="post" action="{% url 'create-checkout-session' %}" class="text-center">
+                {% csrf_token %}
+                <input type="hidden" name="plan_id" value="${planId}">
+                <button type="submit" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition">Subscribe ${planName}</button>
+            </form>
+        </div>
+    `;
+    document.getElementById('plan-details').innerHTML = html;
+}
+</script>
+{% endblock %}
