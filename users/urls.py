@@ -60,7 +60,8 @@ urlpatterns = [
     
     path("fundamentals-api/", TemplateView.as_view(template_name="fundamentals_api.html"), name="fundamentals_api"),
     path("financial-statements-api/", TemplateView.as_view(template_name="fundamentals_api.html"), name="financial_statements_api"),  # Alternative URL
-    
+
+    path("products/", TemplateView.as_view(template_name="products.html"), name="products"),
     # Additional API landing pages for comprehensive platform coverage
     path("news-api/", TemplateView.as_view(template_name="news_api.html"), name="news_api"),
     path("news-sentiment-api/", TemplateView.as_view(template_name="news_api.html"), name="news_sentiment_api"),  # Alternative URL

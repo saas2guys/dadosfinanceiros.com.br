@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Our APIs - Complete Coverage & Features{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h1 class="text-5xl font-bold text-white mb-6">API Product Overview</h1>
+            <p class="text-xl text-gray-300 max-w-4xl mx-auto mb-8">
+                Discover our suite of financial APIs, each designed for professional developers, analysts, and fintechs. Explore the unique features, data coverage, and integration benefits of each API product below.
+            </p>
+            <div class="mb-12">
+              <div class="flex justify-center gap-6 border-b border-gray-600">
+                <button class="tab-button px-4 py-2 text-lg font-semibold text-indigo-300 border-b-2 border-indigo-400 bg-gray-900" data-tab="market">
+                  Market Data
+                </button>
+                <button class="tab-button px-4 py-2 text-lg font-semibold text-gray-400 hover:text-indigo-300" data-tab="analysis">
+                  Analysis & Data
+                </button>
+              </div>
+            </div>
+        </div>
+
+        <!-- Tabs Content -->
+        <div id="tab-market" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Stock Market API -->
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 17l6-6 4 4 8-8"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Stock Market API</h3>
+                    <p class="text-gray-300 mb-4">Real-time and historical stock data for global markets with OHLC data, volume, and comprehensive equity analytics.</p>
+                    <a href="{% url 'stock_market_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Stock API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 10a7.5 7.5 0 0114.9-1.5M19.5 14a7.5 7.5 0 01-14.9 1.5M3 3l3 3m0-3v3m15-3l-3 3m3 0h-3"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Forex API</h3>
+                    <p class="text-gray-300 mb-4">24/7 forex data for major, minor, and exotic currency pairs with real-time rates and historical data.</p>
+                    <a href="{% url 'forex_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Forex API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3-1.343 3-3S13.657 2 12 2 9 3.343 9 5s1.343 3 3 3zm0 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM12 8v8"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Cryptocurrency API</h3>
+                    <p class="text-gray-300 mb-4">3000+ cryptocurrencies with real-time prices, market cap rankings, and 24/7 coverage.</p>
+                    <a href="{% url 'crypto_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Crypto API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Options API</h3>
+                    <p class="text-gray-300 mb-4">Options contracts data, Greeks, implied volatility, and derivatives analytics for comprehensive options trading.</p>
+                    <a href="{% url 'options_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Options API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Indices API</h3>
+                    <p class="text-gray-300 mb-4">Market indices data including S&P 500, NASDAQ, Dow Jones, and global index components.</p>
+                    <a href="{% url 'indices_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Indices API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Futures API</h3>
+                    <p class="text-gray-300 mb-4">Futures contracts data with commodity, currency, and index futures pricing and analytics.</p>
+                    <a href="{% url 'futures_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Futures API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h14M5 20h14M7 4v16m10-16v16M5 12h14"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Commodities API (Coming Soon)</h3>
+                    <p class="text-gray-300 mb-4">Gold, silver, oil, agriculture, and other commodity prices with historical data and market analysis.</p>
+                    <a href="{% url 'commodities_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Commodities API →</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-analysis" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6M15 17v-4M12 17v-8M3 21h18"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Fundamentals API (Coming Soon)</h3>
+                    <p class="text-gray-300 mb-4">Financial statements, ratios, valuations, and company fundamentals for comprehensive analysis.</p>
+                    <a href="{% url 'fundamentals_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Fundamentals API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">News & Sentiment API (Coming Soon)</h3>
+                    <p class="text-gray-300 mb-4">Financial news, market sentiment analysis, and company press releases with AI-powered insights.</p>
+                    <a href="{% url 'news_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore News API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Technical Analysis API (Coming Soon)</h3>
+                    <p class="text-gray-300 mb-4">Technical indicators including SMA, EMA, RSI, MACD, Bollinger Bands, and more for trading analysis.</p>
+                    <a href="{% url 'technical_analysis_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Technical API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 0V4m0 10v6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Earnings API (Coming Soon)</h3>
+                    <p class="text-gray-300 mb-4">Earnings calendars, historical earnings, surprises, and transcripts for fundamental analysis.</p>
+                    <a href="{% url 'earnings_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Earnings API →</a>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-700 hover:border-indigo-500 transition-colors">
+                    <div class="bg-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 17l6-6 4 4 8-8M21 21H3"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-400 mb-4">Economic Indicators API (Coming Soon)</h3>
+                    <p class="text-gray-300 mb-4">GDP, inflation, unemployment, interest rates, and other macroeconomic data for market analysis.</p>
+                    <a href="{% url 'economic_indicators_api' %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Explore Economic API →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.tab-button');
+    const contents = document.querySelectorAll('.tab-content');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tab = button.getAttribute('data-tab');
+
+        buttons.forEach(btn => {
+            btn.classList.remove(
+              'text-indigo-300',
+              'border-indigo-400',
+              'bg-gray-900',
+              'text-white',
+              'border-b-2'
+            );
+            btn.classList.add('text-gray-400');
+        });
+        button.classList.remove('text-gray-400');
+        button.classList.add('text-indigo-300', 'border-indigo-400', 'bg-gray-900', 'text-white', 'border-b-2');
+
+        contents.forEach(content => {
+          if (content.id === `tab-${tab}`) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

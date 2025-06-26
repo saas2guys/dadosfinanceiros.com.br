@@ -55,6 +55,7 @@ ALLOWED_HOSTS = (
         "api.financialdata.online",
         "localhost",
         "127.0.0.1",
+        "dev-financialdata-com-t8ayq.ondigitalocean.app"
     ]
 )
 
