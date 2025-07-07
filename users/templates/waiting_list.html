@@ -110,7 +110,6 @@
                         <p class="mt-1 text-sm text-red-400">{{ form.company_size.errors.0 }}</p>
                     {% endif %}
                 </div>
-
                 <div>
                     <label for="{{ form.use_case.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
                         What will you use our API for? (Optional)
@@ -119,6 +118,100 @@
                     {% if form.use_case.errors %}
                         <p class="mt-1 text-sm text-red-400">{{ form.use_case.errors.0 }}</p>
                     {% endif %}
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        Which API Endpoints are you most interested in? (Select all that apply)
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <style>
+                        .endpoint-pill input[type="checkbox"]:checked + span {
+                            background: #6366f1; /* indigo-500 */
+                            color: #fff;
+                            border-color: #6366f1;
+                        }
+                        .endpoint-pill input[type="checkbox"]:focus + span {
+                            box-shadow: 0 0 0 2px #6366f1;
+                        }
+                        .endpoint-pill span {
+                            background: #27272a; /* bg-gray-800 */
+                            color: #e5e7eb; /* text-gray-200 */
+                            border-color: #27272a; /* bg-gray-800 */
+                        }
+                        </style>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Stock Market API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Stock Market API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Forex API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Forex API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Cryptocurrency API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Cryptocurrency API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Options API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Options API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Indices API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Indices API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Futures API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Futures API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Commodities API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Commodities API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Fundamentals API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Fundamentals API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="News & Sentiment API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                News & Sentiment API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Technical Analysis API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Technical Analysis API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Earnings API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Earnings API
+                            </span>
+                        </label>
+                        <label class="endpoint-pill cursor-pointer group">
+                            <input type="checkbox" name="desired_endpoints" value="Economic Indicators API" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none">
+                                Economic Indicators API
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
                 <div>
