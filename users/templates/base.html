@@ -168,7 +168,7 @@
                         
                         <a href="/api/docs/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "API Docs" %}</a>
                         <a href="/faq/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "FAQ" %}</a>
-                        <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "Pricing" %}</a>
+                        <a href="{% url 'home' %}#pricing" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "Pricing" %}</a>
                         <a href="{% url 'products' %}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{% trans "Products" %}</a>
                     </div>
                 </div>
@@ -257,7 +257,7 @@
                 
                 <a href="/api/docs/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "API Docs" %}</a>
                 <a href="/faq/" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "FAQ" %}</a>
-                <a href="{% url 'plans' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Pricing" %}</a>
+                <a href="{% url 'home' %}#pricing" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Pricing" %}</a>
                 
                 <!-- Mobile Auth Links -->
                 {% if user.is_authenticated %}
@@ -300,7 +300,7 @@
                         <li><a href="/market-data-api/" class="text-gray-400 hover:text-white">Market Data API</a></li>
                         <li><a href="/fundamentals-api/" class="text-gray-400 hover:text-white">Fundamentals API</a></li>
                         <li><a href="/options-api/" class="text-gray-400 hover:text-white">Options API</a></li>
-                        <li><a href="{% url 'plans' %}" class="text-gray-400 hover:text-white">Pricing Plans</a></li>
+                        <li><a href="{% url 'home' %}#pricing" class="text-gray-400 hover:text-white">Pricing Plans</a></li>
                     </ul>
                 </div>
                 

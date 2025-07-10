@@ -490,72 +490,150 @@
         </div>
     </div>
 
-    <!-- Pricing Preview Section -->
-    <div class="py-20 bg-gray-800">
+    <!-- Pricing Section -->
+    <div id="pricing" class="py-20 bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <!-- Competitive Badge -->
-                <div class="mb-8 inline-flex items-center px-6 py-3 rounded-full bg-green-900 border border-green-700">
-                    <svg class="h-5 w-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                    </svg>
-                    <span class="text-sm font-medium text-green-300">💰 25-60% CHEAPER THAN COMPETITORS - PROFESSIONAL PERFORMANCE</span>
-                </div>
-                
-                <h2 class="text-4xl font-bold text-white mb-4">Competitive Pricing That Scales</h2>
-                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-                    Professional financial data at competitive prices that work for developers, analysts, and financial institutions. 
-                    Save 25-60% compared to premium providers while getting quality global markets data.
-                </p>
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-indigo-400 mb-4">Choose Your Plan</h1>
+                <p class="text-xl text-gray-600">Select the plan that fits your API usage needs</p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600">
-                    <h3 class="text-2xl font-bold text-white mb-4">Free/Basic Tier</h3>
-                    <div class="text-4xl font-bold text-indigo-400 mb-4">$0<span class="text-lg text-gray-400">/month</span></div>
-                    <ul class="text-gray-300 space-y-3 mb-8">
-                        <li>• 1,000 API calls per day</li>
-                        <li>• Real-time and historical data</li>
-                        <li>• JSON and CSV formats</li>
-                        <li>• API access only</li>
-                        <li>• Community support</li>
-                    </ul>
-                    <p class="text-sm text-gray-400">Perfect for development and testing</p>
-                </div>
-                
-                <div class="bg-gray-700 p-8 rounded-lg border-2 border-indigo-500 relative">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+
+            {% if current_plan %}
+            <div class="mb-8 bg-blue-50 border-l-4 border-blue-400 p-4">
+                <div class="flex">
+                    <div class="ml-3">
+                        <p class="text-sm text-blue-700">
+                            Current Plan: <strong>{{ current_plan.name }}</strong>
+                            ({{ current_plan.daily_request_limit }} requests/day)
+                            {% if user.subscription_status == 'active' %}
+                                <span class="text-green-600">- Active</span>
+                            {% elif user.subscription_status == 'canceled' %}
+                                <span class="text-red-600">- Canceled</span>
+                            {% endif %}
+                        </p>
+                        {% if user.subscription_expires_at %}
+                            <p class="text-sm text-blue-600">
+                                Expires: {{ user.subscription_expires_at|date:"M d, Y" }}
+                            </p>
+                        {% endif %}
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Professional</h3>
-                    <div class="text-4xl font-bold text-indigo-400 mb-4">TBD<span class="text-lg text-gray-400">/month</span></div>
-                    <ul class="text-gray-300 space-y-3 mb-8">
-                        <li>• Enhanced API call limits</li>
-                        <li>• All data types: stocks, options, indices, futures</li>
-                        <li>• Forex (24/7) and crypto (3000+)</li>
-                        <li>• JSON and CSV formats</li>
-                        <li>• Email support</li>
-                    </ul>
-                    <p class="text-sm text-gray-400">25-60% less than competitors</p>
                 </div>
-                
-                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600">
-                    <h3 class="text-2xl font-bold text-white mb-4">Enterprise</h3>
-                    <div class="text-4xl font-bold text-indigo-400 mb-4">$2000<span class="text-lg text-gray-400">/month</span></div>
-                    <ul class="text-gray-300 space-y-3 mb-8">
-                        <li>• High-volume API access</li>
-                        <li>• Premium data feeds</li>
-                        <li>• Custom rate limits</li>
-                        <li>• Dedicated support & SLA</li>
-                        <li>• Custom integrations</li>
-                    </ul>
-                    <p class="text-sm text-gray-400">Volume discounts available</p>
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="plan-cards">
+                <!-- Basic Plan -->
+                <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
+                     data-plan="Basic" data-plan-id="basic" onclick="selectPlan('Basic', 'basic')">
+                    <div class="px-8 py-10 flex flex-col items-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-indigo-400 mb-2">Basic</h3>
+                            <div class="mt-2 flex items-baseline justify-center">
+                                <span class="text-5xl font-extrabold text-indigo-700">US$29</span>
+                                <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
+                            </div>
+                            <p class="text-sm text-gray-500 line-through">US$35.00</p>
+                            <p class="text-sm text-green-400">17% discount</p>
+                        </div>
+                        <div class="mt-8 w-full">
+                            <ul class="space-y-2">
+                                <li class="flex items-center"><span class="text-white">✅ Unlimited API calls</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Real-time data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ US, Brazil, and +25 other stock exchanges</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Forex</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Crypto</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 5 years of historical data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Unlimited file downloads</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ WebSockets</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Snapshot</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ 30 years of historical data</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ 47 markets</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ Global coverage</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ 13F Institutional Holdings*</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ ETF and mutual fund holdings</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ Bulk and batch delivery</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
+                     data-plan="Pro" data-plan-id="pro" onclick="selectPlan('Pro', 'pro')">
+                    <div class="px-8 py-10 flex flex-col items-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-indigo-400 mb-2">Pro</h3>
+                            <div class="mt-2 flex items-baseline justify-center">
+                                <span class="text-5xl font-extrabold text-indigo-700">US$57</span>
+                                <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
+                            </div>
+                             <p class="text-sm text-gray-500 line-through">US$69.00</p>
+                        </div>
+                        <div class="mt-8 w-full">
+                            <ul class="space-y-2">
+                                <li class="flex items-center"><span class="text-white">✅ Unlimited API calls</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Real-time data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ US, Brazil, and +25 other stock exchanges</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Forex</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Crypto</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 5 years of historical data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Unlimited file downloads</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ WebSockets</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Snapshot</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 30 years of historical data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 47 markets</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ Global coverage</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ 13F Institutional Holdings*</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ ETF and mutual fund holdings</span></li>
+                                <li class="flex items-center"><span class="text-white">❌ Bulk and batch delivery</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
+                     data-plan="Premium" data-plan-id="premium" onclick="selectPlan('Premium', 'premium')">
+                    <div class="px-8 py-10 flex flex-col items-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-indigo-400 mb-2">Premium</h3>
+                            <div class="mt-2 flex items-baseline justify-center">
+                                <span class="text-5xl font-extrabold text-indigo-700">US$148</span>
+                                <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
+                            </div>
+                            <p class="text-sm text-gray-500 line-through">US$179.00</p>
+                        </div>
+                        <div class="mt-8 w-full">
+                            <ul class="space-y-2">
+                                <li class="flex items-center"><span class="text-white">✅ Unlimited API calls</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Real-time data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ US, Brazil, and +25 other stock exchanges</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Forex</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Crypto</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 5 years of historical data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Unlimited file downloads</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ WebSockets</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Snapshot</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 30 years of historical data</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 47 markets</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Global coverage</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ 13F Institutional Holdings*</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ ETF and mutual fund holdings</span></li>
+                                <li class="flex items-center"><span class="text-white">✅ Bulk and batch delivery</span></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="text-center mt-12">
-                <p class="text-gray-400 text-sm">
-                    All plans include: HTTPS encryption, API documentation, code examples, and no setup fees
+            <div id="plan-details" class="mt-8"></div>
+
+            <div class="mt-12 text-center">
+                <p class="text-gray-600">
+                    Need a custom plan? 
+                    <a href="mailto:talk@financialdata.online" class="text-blue-600 hover:text-blue-500">
+                        Contact us
+                    </a>
                 </p>
             </div>
         </div>
@@ -922,4 +1000,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-{% endblock %} 
+{% endblock %}

@@ -134,7 +134,7 @@ urlpatterns = [
     path("api/plans/", views.PlansListView.as_view(), name="api_plans"),
     
     # Subscription URLs - Fixed to match test expectations
-    path("plans/", views.plans_view, name="plans"),
+    
     path(
         "create-checkout-session/",
         views.create_checkout_session,

@@ -84,7 +84,7 @@ if not DEBUG:
     CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_HTTPONLY = True
 
-    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_SECONDS = 31_536_000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
@@ -97,7 +97,7 @@ if not DEBUG:
     SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 CSRF_COOKIE_NAME = "csrftoken"
-CSRF_COOKIE_AGE = 31449600
+CSRF_COOKIE_AGE = 31_449_600
 CSRF_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
 CSRF_COOKIE_PATH = "/"
 CSRF_USE_SESSIONS = False
@@ -107,7 +107,7 @@ CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_FAILURE_VIEW = "users.views.csrf_failure_view"
 
 SESSION_COOKIE_NAME = "sessionid"
-SESSION_COOKIE_AGE = 1209600
+SESSION_COOKIE_AGE = 1_209_600
 SESSION_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
 SESSION_COOKIE_PATH = "/"
 SESSION_SAVE_EVERY_REQUEST = False
@@ -289,10 +289,10 @@ if DATABASE_URL:
             DATABASE_URL, conn_max_age=600, conn_health_checks=True
         )
     }
-
     DATABASES["default"]["OPTIONS"] = {
         "sslmode": "require",
     }
+    print(f"Using database URL: {DATABASE_URL}")
 else:
     DATABASES = {
         "default": {
@@ -300,6 +300,7 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+    print("Using SQLite database")
 
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 

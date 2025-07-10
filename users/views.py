@@ -296,17 +296,7 @@ class PlansListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
 
-def plans_view(request):
-    plans = Plan.objects.filter(is_active=True).order_by("price_monthly")
-    context = {
-        "plans": plans,
-        "user": request.user if request.user.is_authenticated else None,
-        "current_plan": request.user.current_plan
-        if request.user.is_authenticated
-        else None,
-        "stripe_publishable_key": settings.STRIPE_PUBLISHABLE_KEY,
-    }
-    return render(request, "subscription/plans.html", context)
+
 
 
 @login_required
@@ -345,7 +335,7 @@ def create_checkout_session(request):
                 )
             else:
                 messages.error(request, "This plan is not available for purchase.")
-                return redirect("plans")
+                return redirect("home")
 
         success_url = request.build_absolute_uri(reverse("subscription_success"))
         cancel_url = request.build_absolute_uri(reverse("plans"))
@@ -798,7 +788,7 @@ def create_checkout_session_api(request):
             "success_url", request.build_absolute_uri(reverse("subscription-success"))
         )
         cancel_url = request.data.get(
-            "cancel_url", request.build_absolute_uri(reverse("plans"))
+            "cancel_url", request.build_absolute_uri(reverse("home"))
         )
 
         session = StripeService.create_checkout_session(
