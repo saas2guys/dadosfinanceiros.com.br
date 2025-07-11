@@ -11,11 +11,15 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from rest_framework import generics, permissions, status
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import requests
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from decouple import config
 
 from .forms import WaitingListForm
 from .models import Plan, TokenHistory, User, PaymentFailure
@@ -296,7 +300,69 @@ class PlansListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
 
+class AsaasCheckoutView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [SessionAuthentication, JWTAuthentication]
 
+    def post(self, request):
+        logger.info(f"AsaasCheckoutView called by user: {request.user}")
+        logger.info(f"User authenticated: {request.user.is_authenticated}")
+        logger.info(f"Request data: {request.data}")
+        PLAN_PRICES = {
+            'basic': 29.00,
+            'pro': 57.00,
+            'premium': 148.00,
+        }
+        plan_id = request.data.get('plan_id')
+        if plan_id not in PLAN_PRICES:
+            return Response({'error': 'Invalid plan_id'}, status=400)
+        price = PLAN_PRICES[plan_id]
+        user = request.user
+        # Asaas Sandbox API Key
+        ASAAS_API_KEY = config("ASAAS_API_KEY", default="")
+        if not ASAAS_API_KEY:
+            return Response({'error': 'ASAAS_API_KEY not configured'}, status=500)
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'access_token': ASAAS_API_KEY,
+        }
+        # 1. Create customer (temporary) test
+        customer_payload = {
+            'name': user.get_full_name() or user.username,
+            'email': user.email,
+            'cpfCnpj': '00000000000',  # Optional: can be adjusted
+        }
+        customer_resp = requests.post(
+            'https://sandbox.asaas.com/api/v3/customers',
+            headers=headers,
+            json=customer_payload
+        )
+        if customer_resp.status_code not in (200, 201):
+            return Response({'error': 'Failed to create customer', 'asaas': customer_resp.json()}, status=400)
+        customer_id = customer_resp.json().get('id')
+        if not customer_id:
+            return Response({'error': 'No customer id returned from Asaas'}, status=400)
+        # 2. Create payment (temporary) test
+        payment_payload = {
+            'customer': customer_id,
+            'billingType': 'PIX',
+            'value': price,
+            'dueDate': '2025-07-15',
+            'description': f'Plano {plan_id.capitalize()} - Financial Data API',
+        }
+        payment_resp = requests.post(
+            'https://sandbox.asaas.com/api/v3/payments',
+            headers=headers,
+            json=payment_payload
+        )
+        if payment_resp.status_code not in (200, 201):
+            return Response({'error': 'Failed to create payment', 'asaas': payment_resp.json()}, status=400)
+        payment_data = payment_resp.json()
+        invoice_url = payment_data.get('invoiceUrl') or payment_data.get('bankSlipUrl')
+        if not invoice_url:
+            return Response({'error': 'No invoice url returned from Asaas', 'asaas': payment_data}, status=400)
+        return Response({'invoice_url': invoice_url})
 
 
 @login_required
@@ -375,7 +441,7 @@ def create_checkout_session(request):
             )
         else:
             messages.error(request, f"Payment error: {str(e)}")
-            return redirect("plans")
+            return redirect("pricing")
     except Http404:
         raise
     except Exception as e:
@@ -383,7 +449,7 @@ def create_checkout_session(request):
             return JsonResponse({"error": str(e)}, status=400)
         else:
             messages.error(request, f"Error creating checkout session: {str(e)}")
-            return redirect("plans")
+            return redirect("pricing")
 
 
 @login_required
@@ -836,3 +902,26 @@ def csrf_failure_view(request, reason=""):
             },
             status=403,
         )
+
+
+@login_required
+@require_GET
+def subscribe_asaas(request):
+    plan = request.GET.get('plan')
+    if not plan:
+        return redirect('home')
+    # Reuse the logic from AsaasCheckoutView
+    class DummyRequest:
+        def __init__(self, user, plan_id):
+            self.user = user
+            self.data = {'plan_id': plan_id}
+    drf_request = DummyRequest(request.user, plan)
+    view = AsaasCheckoutView()
+    response = view.post(drf_request)
+    data = response.data
+    invoice_url = data.get('invoice_url')
+    if invoice_url:
+        return redirect(invoice_url)
+    else:
+        # In case of error, redirect to home with message
+        return redirect('home')

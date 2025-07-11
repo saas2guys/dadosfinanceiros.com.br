@@ -24,6 +24,7 @@ api_urlpatterns = [
         views.create_checkout_session_api,
         name="api_create_checkout_session",
     ),
+    path("asaas/checkout/", views.AsaasCheckoutView.as_view(), name="asaas_checkout"),
 ]
 
 urlpatterns = [
@@ -149,6 +150,7 @@ urlpatterns = [
         views.reactivate_subscription,
         name="reactivate-subscription",
     ),
+    path('subscribe-asaas/', views.subscribe_asaas, name='subscribe_asaas'),
 
     
     # Include API URLs with namespace
