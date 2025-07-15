@@ -16,7 +16,9 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import requests
 
+from proxy_project.settings import ASAAS_ACCESS_TOKEN, ASAAS_BASE_URL
 from .forms import WaitingListForm
 from .models import Plan, TokenHistory, User, PaymentFailure
 from .serializers import (
@@ -308,92 +310,78 @@ def plans_view(request):
     }
     return render(request, "subscription/plans.html", context)
 
+def home(request):
+    plans = Plan.objects.all()
+    plan_id_map = {plan.name: plan.id for plan in plans}
+    return render(request, 'home.html', {
+        'plan_id_map': plan_id_map
+    })
 
-@login_required
+@csrf_exempt
 @require_POST
 def create_checkout_session(request):
     try:
-        is_api_request = request.content_type == "application/json"
-
-        if is_api_request:
-            import json
-
-            data = json.loads(request.body)
-            plan_id = data.get("plan_id")
-        else:
-            plan_id = request.POST.get("plan_id")
-
-        plan = get_object_or_404(Plan, id=plan_id, is_active=True)
-
-        if plan.is_free:
-            request.user.upgrade_to_plan(plan)
-            if is_api_request:
-                return JsonResponse(
-                    {
-                        "success": True,
-                        "message": f"Successfully upgraded to {plan.name} plan!",
-                    }
-                )
-            else:
-                messages.success(request, f"Successfully upgraded to {plan.name} plan!")
-                return redirect("profile")
-
-        if not plan.stripe_price_id:
-            if is_api_request:
-                return JsonResponse(
-                    {"error": "This plan is not available for purchase."}, status=400
-                )
-            else:
-                messages.error(request, "This plan is not available for purchase.")
-                return redirect("home")
-
-        success_url = request.build_absolute_uri(reverse("subscription_success"))
-        cancel_url = request.build_absolute_uri(reverse("plans"))
-
-        session = StripeService.create_checkout_session(
-            user=request.user, plan=plan, success_url=success_url, cancel_url=cancel_url
-        )
-
-        if is_api_request:
-            return JsonResponse({"checkout_url": session.url, "session_id": session.id})
-        else:
-            return redirect(session.url, code=303)
-
-    except stripe.error.APIConnectionError as e:
-        if is_api_request:
-            return JsonResponse(
-                {"error": "Service temporarily unavailable. Please try again later."},
-                status=503,
-            )
-        else:
-            messages.error(
-                request, "Service temporarily unavailable. Please try again later."
-            )
-            return redirect("plans")
-    except stripe.error.AuthenticationError as e:
-        if is_api_request:
-            return JsonResponse(
-                {"error": "Authentication error with payment service."}, status=500
-            )
-        else:
-            messages.error(request, "Payment service error. Please try again later.")
-            return redirect("plans")
-    except stripe.error.StripeError as e:
-        if is_api_request:
-            return JsonResponse(
-                {"error": f"Payment service error: {str(e)}"}, status=400
-            )
-        else:
-            messages.error(request, f"Payment error: {str(e)}")
-            return redirect("pricing")
-    except Http404:
-        raise
+        if request.content_type != "application/json":
+            return JsonResponse({"error": "Content-Type must be application/json"}, status=400)
+        data = json.loads(request.body.decode())
+        plan_name = data.get('plan_name')
+        plan_value_usd = data.get('plan_value')
+        quantity = data.get('quantity', 1)
+        user_id = data.get('user_id')
+        if not (plan_name and plan_value_usd and user_id):
+            return JsonResponse({'error': 'Missing required fields.'}, status=400)
+        from .models import User
+        user = User.objects.get(id=user_id)
+        # Dolar to R$ in realtime
+        try:
+            resp = requests.get('https://economia.awesomeapi.com.br/json/last/USD-BRL', timeout=5)
+            cotacao_data = resp.json()
+            usd_brl = float(cotacao_data['USDBRL']['bid'])
+        except Exception as e:
+            messages.error(request, 'Error converting from US$ to R$')
+        plan_value_brl = round(float(plan_value_usd) * usd_brl, 2)
+        from datetime import date, timedelta
+        today = date.today()
+        next_due_date = (today + timedelta(days=30)).strftime('%Y-%m-%d')
+        payload = {
+            "billingTypes": ["CREDIT_CARD"],
+            "chargeTypes": ["RECURRENT"],
+            "callback": {
+                "successUrl": "https://example.com/asaas/checkout/success",
+                "cancelUrl": "https://example.com/asaas/checkout/cancel",
+                "expiredUrl": "https://example.com/asaas/checkout/expired"
+            },
+            "items": [
+                {
+                    "name": plan_name,
+                    "quantity": quantity,
+                    "value": plan_value_brl
+                }
+            ],
+            "subscription": {
+                "cycle": "MONTHLY",
+                "nextDueDate": next_due_date
+            }
+        }
+        asaas_token = ASAAS_ACCESS_TOKEN
+        asaas_base = ASAAS_BASE_URL
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "access_token": asaas_token
+        }
+        resp = requests.post(f"{asaas_base}/checkouts", json=payload, headers=headers)
+        if resp.status_code not in (200, 201):
+            return JsonResponse({'error': 'Failed to create checkout session', 'asaas_response': resp.text}, status=500)
+        resp_json = resp.json()
+        link = resp_json.get('link')
+        if not link:
+            return JsonResponse({'error': 'No checkout link returned by Asaas', 'asaas_response': resp_json}, status=500)
+        return JsonResponse({'checkout_url': link})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found.'}, status=404)
     except Exception as e:
-        if is_api_request:
-            return JsonResponse({"error": str(e)}, status=400)
-        else:
-            messages.error(request, f"Error creating checkout session: {str(e)}")
-            return redirect("pricing")
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 @login_required

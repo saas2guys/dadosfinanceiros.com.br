@@ -532,7 +532,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="plan-cards">
                 <!-- Basic Plan -->
                 <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
-                     data-plan="Basic" data-plan-id="basic" onclick="selectPlan('Basic', 'basic')">
+                 data-plan="Basic"
+                 data-plan-id="{{ plan_id_map.Basic }}"
+                 onclick="selectPlan('Basic', '{{ plan_id_map.Basic }}', 29)">
                     <div class="px-8 py-10 flex flex-col items-center">
                         <div class="text-center">
                             <h3 class="text-2xl font-bold text-indigo-400 mb-2">Basic</h3>
@@ -567,7 +569,9 @@
 
                 <!-- Pro Plan -->
                 <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
-                     data-plan="Pro" data-plan-id="pro" onclick="selectPlan('Pro', 'pro')">
+                     data-plan="Pro"
+                     data-plan-id="{{ plan_id_map.Pro }}"
+                     onclick="selectPlan('Pro', '{{ plan_id_map.Pro }}', 57)">
                     <div class="px-8 py-10 flex flex-col items-center">
                         <div class="text-center">
                             <h3 class="text-2xl font-bold text-indigo-400 mb-2">Pro</h3>
@@ -601,7 +605,9 @@
 
                 <!-- Premium Plan -->
                 <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
-                     data-plan="Premium" data-plan-id="premium" onclick="selectPlan('Premium', 'premium')">
+                     data-plan="Premium"
+                     data-plan-id="{{ plan_id_map.Premium }}"
+                     onclick="selectPlan('Premium', '{{ plan_id_map.Premium }}', 148)">
                     <div class="px-8 py-10 flex flex-col items-center">
                         <div class="text-center">
                             <h3 class="text-2xl font-bold text-indigo-400 mb-2">Premium</h3>
@@ -632,8 +638,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
+            </div><div id="subscribe-btn-container" class="text-center mt-6"></div>
             <div id="plan-details" class="mt-10 text-center"></div>
 
             <div class="mt-12 text-center">
@@ -989,22 +994,74 @@
 
 {% block extra_js %}
 <script>
-// Enhanced tracking for waiting list conversion
-function trackWaitingListClick() {
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'click', {
-            'event_category': 'engagement',
-            'event_label': 'waiting_list_cta',
-            'custom_map': {'custom_parameter_1': 'homepage'}
-        });
-    }
+function selectPlan(planName, planId, planPrice) {
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.classList.remove('border-blue-500');
+        if (card.getAttribute('data-plan') === planName) {
+            card.classList.add('border-blue-500');
+        }
+    });
+    let html = `
+        <div class="flex flex-col items-center mt-4">
+            <button id="subscribe-btn" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition">Subscribe to ${planName} - US$${planPrice}/month</button>
+        </div>
+    `;
+    document.getElementById('subscribe-btn-container').innerHTML = html;
+
+    setTimeout(function() {
+        const btn = document.getElementById('subscribe-btn');
+        if (btn) {
+            btn.onclick = async function(e) {
+                e.preventDefault();
+                const userId = {{ user.id|default:'null' }};
+                if (!userId) {
+                    alert('You need to be logged to subscribe to a plan');
+                    window.location.href = '{% url "login" %}';
+                    return;
+                }
+                btn.disabled = true;
+                btn.textContent = 'Redirecting...';
+                try {
+                    const response = await fetch('{% url "create-checkout-session" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            plan_name: planName,
+                            plan_value: parseFloat(planPrice),
+                            user_id: userId
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.checkout_url) {
+                        window.location.href = data.checkout_url;
+                    } else if (data.link) {
+                        window.location.href = data.link;
+                    } else {
+                        alert('Error creating checkout: ' + (data.error || 'Unknown error.'));
+                        btn.disabled = false;
+                        btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
+                    }
+                } catch (err) {
+                    alert('Error creating checkout: ' + err);
+                    btn.disabled = false;
+                    btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
+                }
+            };
+        }
+    }, 100);
 }
 
-// Add click tracking to waiting list buttons
-document.addEventListener('DOMContentLoaded', function() {
-    const waitingListButtons = document.querySelectorAll('a[href*="waiting_list"]');
-    waitingListButtons.forEach(button => {
-        button.addEventListener('click', trackWaitingListClick);
+window.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const planName = card.getAttribute('data-plan');
+            const planId = card.getAttribute('data-plan-id');
+            const priceText = card.querySelector('.text-5xl')?.textContent || '';
+            const planPrice = priceText.replace(/[^\d.]/g, '');
+            selectPlan(planName, planId, planPrice);
+        });
     });
 });
 </script>
