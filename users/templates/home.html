@@ -1013,7 +1013,7 @@ function selectPlan(planName, planId, planPrice) {
         if (btn) {
             btn.onclick = async function(e) {
                 e.preventDefault();
-                const userId = {{ user.id|default:'null' }};
+                const userId = '{{ user.id|default:"" }}';
                 if (!userId) {
                     alert('You need to be logged to subscribe to a plan');
                     window.location.href = '{% url "login" %}';
@@ -1028,9 +1028,7 @@ function selectPlan(planName, planId, planPrice) {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            plan_name: planName,
-                            plan_value: parseFloat(planPrice),
-                            user_id: userId
+                            plan_id: planId,
                         })
                     });
                     const data = await response.json();
