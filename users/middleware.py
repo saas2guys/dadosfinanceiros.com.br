@@ -1,14 +1,13 @@
 import logging
 import time
 import asyncio
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.utils.deprecation import MiddlewareMixin
 from django.http import JsonResponse
 from django.core.cache import caches
 from django.utils import timezone
-from django.db import transaction
 from asgiref.sync import iscoroutinefunction, markcoroutinefunction
-from .models import APIUsage, RateLimitService, PaymentFailure
+from .models import APIUsage, RateLimitService
 
 logger = logging.getLogger(__name__)
 
@@ -211,13 +210,10 @@ class DatabaseRateLimitMiddleware:
     
     def has_payment_restrictions(self, user):
         """Check if user has payment-related restrictions"""
-        try:
-            payment_failure = PaymentFailure.objects.get(user=user, restrictions_applied=True)
+        if user.payment_restrictions_applied:
             # Apply temporary restrictions for recent payment failures
-            if payment_failure.failed_at > timezone.now() - timedelta(days=7):
+            if user.payment_failed_at and user.payment_failed_at > timezone.now() - timedelta(hours=1):
                 return True
-        except PaymentFailure.DoesNotExist:
-            pass
         return False
     
     def get_endpoint_name(self, request):
@@ -469,17 +465,15 @@ class RateLimitHeaderMiddleware(MiddlewareMixin):
 # Utility functions for payment failure handling
 def set_payment_failure_flags(user, restriction_level='limited'):
     """Set payment failure restrictions for a user"""
-    PaymentFailure.objects.update_or_create(
-        user=user,
-        defaults={
-            'failed_at': timezone.now(),
-            'restrictions_applied': True,
-            'restriction_level': restriction_level
-        }
-    )
-    
+    user.payment_failed_at = timezone.now()
+    user.payment_restrictions_applied = True
+    user.payment_restriction_level = restriction_level
+    user.save(update_fields=[
+        'payment_failed_at',
+        'payment_restrictions_applied',
+        'payment_restriction_level',
+    ])
     # Clear cached limits to force recalculation
-    from django.core.cache import caches
     cache = caches['rate_limit']
     cache_key = f"user_limits:{user.id}"
     cache.delete(cache_key)
@@ -487,15 +481,13 @@ def set_payment_failure_flags(user, restriction_level='limited'):
 
 def clear_payment_failure_flags(user):
     """Clear payment failure restrictions for a user"""
-    try:
-        payment_failure = PaymentFailure.objects.get(user=user)
-        payment_failure.restrictions_applied = False
-        payment_failure.save()
-    except PaymentFailure.DoesNotExist:
-        pass
-    
+    user.payment_restrictions_applied = False
+    user.payment_restriction_level = 'UNRESTRICTED'
+    user.save(update_fields=[
+        'payment_restrictions_applied',
+        'payment_restriction_level',
+    ])
     # Clear cached limits
-    from django.core.cache import caches
     cache = caches['rate_limit']
     cache_key = f"user_limits:{user.id}"
     cache.delete(cache_key)

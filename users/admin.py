@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Plan, TokenHistory, User, WaitingList, RateLimitCounter, 
-    APIUsage, UsageSummary, PaymentFailure, SubscriptionStatus
+    APIUsage, UsageSummary
 )
 
 
@@ -33,11 +33,6 @@ class APIUsageAdmin(BaseAdmin):
 
 @admin.register(UsageSummary)
 class UsageSummaryAdmin(BaseAdmin):
-    pass
-
-
-@admin.register(PaymentFailure)
-class PaymentFailureAdmin(BaseAdmin):
     pass
 
 

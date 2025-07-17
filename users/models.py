@@ -8,6 +8,12 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 
+class PaymentRestrictionLevel(models.TextChoices):
+    UNRESTRICTED = 'UNRESTRICTED'
+    WARNING = "warning", "Warning"
+    LIMITED = "limited_access", "Limited Access"
+    SUSPICIOUS = "suspicious", "Suspicious"
+
 
 class SubscriptionStatus(models.TextChoices):
     ACTIVE = "active", "Active"
@@ -157,26 +163,6 @@ class UsageSummary(models.Model):
         return f"{user_info} - {period} - {self.total_requests} requests"
 
 
-class PaymentFailure(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE)
-    failed_at = models.DateTimeField()
-    restrictions_applied = models.BooleanField(default=True)
-    restriction_level = models.CharField(max_length=20, choices=[
-        ('warning', 'Warning'),
-        ('limited', 'Limited Access'),
-        ('suspended', 'Suspended')
-    ], default='warning')
-    
-    class Meta:
-        indexes = [
-            models.Index(fields=['failed_at']),
-            models.Index(fields=['restrictions_applied']),
-        ]
-
-    def __str__(self):
-        return f"{self.user.email} - Payment failed at {self.failed_at}"
-
-
 class RateLimitService:
     @staticmethod
     def check_and_increment(identifier, endpoint, window_type='hour', window_duration_seconds=3600):
@@ -319,6 +305,13 @@ class User(AbstractUser):
     last_request_date = models.DateField(null=True, blank=True)
     previous_tokens = models.JSONField(default=list)
     keep_token_history = models.BooleanField(default=True)
+    payment_failed_at = models.DateTimeField(null=True, blank=True)
+    payment_restrictions_applied = models.BooleanField(default=False)
+    payment_restriction_level = models.CharField(
+        max_length=20,
+        choices=PaymentRestrictionLevel.choices,
+        default=PaymentRestrictionLevel.UNRESTRICTED
+    )
 
     current_plan = models.ForeignKey(
         Plan, on_delete=models.SET_NULL, null=True, blank=True
@@ -603,6 +596,11 @@ class User(AbstractUser):
 
     def cancel_subscription(self):
         self.subscription_status = SubscriptionStatus.CANCELED
+        self.subscription_expires_at = None
+        self.save()
+
+    def activate_subscription(self):
+        self.subscription_status = SubscriptionStatus.ACTIVE
         self.save()
 
     def reactivate_subscription(self):

@@ -233,43 +233,22 @@ class StripeService:
 
     @staticmethod
     def handle_successful_payment(session):
-        """Handle successful payment from webhook"""
-        from .models import Plan, User
-
         try:
             user_id = session.get("metadata", {}).get("user_id")
-            plan_id = session.get("metadata", {}).get("plan_id")
-
-            if not user_id or not plan_id:
-                logger.error("Missing user_id or plan_id in session metadata")
-                return False
-
-            user = User.objects.get(id=user_id)
-            plan = Plan.objects.get(id=plan_id)
-
-            # Get the subscription from Stripe
             subscription_id = session.get("subscription")
-            if subscription_id:
-                subscription = stripe.Subscription.retrieve(subscription_id)
-
-                # Update user subscription
-                user.current_plan = plan
-                user.subscription_status = "active"
-                user.stripe_subscription_id = subscription.id
-                user.subscription_started_at = timezone.now()
-                user.subscription_expires_at = timezone.make_aware(
-                    datetime.fromtimestamp(subscription.current_period_end)
-                )
-                user.save()
-
-            logger.info(f"User {user.email} successfully subscribed to {plan.name}")
+            if not user_id or not subscription_id:
+                logger.error("Missing user_id or subscription_id in session metadata")
+                return False
+            user = User.objects.get(id=user_id)
+            user.stripe_subscription_id = subscription_id
+            user.save()
+            logger.info(f"Linked subscription_id {subscription_id} to user {user.email}")
             return True
-
-        except (User.DoesNotExist, Plan.DoesNotExist) as e:
-            logger.error(f"Error handling successful payment: {e}")
+        except User.DoesNotExist:
+            logger.error(f"User not found for user_id {user_id}")
             return False
         except Exception as e:
-            logger.error(f"Unexpected error handling successful payment: {e}")
+            logger.error(f"Error linking subscription_id to user: {e}")
             return False
 
     @staticmethod

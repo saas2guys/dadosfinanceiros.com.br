@@ -1,9 +1,10 @@
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime as dt, timezone as tz
 
 import stripe
 from django.conf import settings
+from django.core.cache import caches
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -16,9 +17,10 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from users.models import SubscriptionStatus, PaymentRestrictionLevel
 
 from .forms import WaitingListForm
-from .models import Plan, TokenHistory, User, PaymentFailure
+from .models import Plan, TokenHistory, User
 from .serializers import (
     PlanSerializer,
     TokenHistorySerializer,
@@ -484,10 +486,10 @@ def stripe_webhook(request):
             'customer.subscription.updated': handle_subscription_updated,
             'customer.subscription.deleted': handle_subscription_canceled,
             'invoice.payment_failed': handle_payment_failed,
+            'payment_intent.payment_failed': handle_payment_failed,
             'invoice.payment_succeeded': handle_payment_succeeded,
-            'customer.subscription.trial_will_end': handle_trial_ending,
-            'invoice.payment_action_required': handle_payment_action_required,
-            'checkout.session.completed': StripeService.handle_successful_payment,
+            'customer.subscription.trial_will_end': handle_trial_ending, # not used by now
+            'invoice.payment_action_required': handle_payment_action_required # not used by now
         }
         
         handler = handlers.get(event['type'])
@@ -514,23 +516,28 @@ def stripe_webhook(request):
 def handle_subscription_created(subscription_data):
     """Handle new subscription creation"""
     try:
-        from .models import Plan
-        
         customer_id = subscription_data['customer']
         user = User.objects.get(stripe_customer_id=customer_id)
-        
-        # Update user subscription info
+
         user.stripe_subscription_id = subscription_data['id']
-        user.subscription_status = subscription_data['status']
-        from datetime import datetime as dt, timezone as tz
-        user.current_period_start = dt.fromtimestamp(
-            subscription_data['current_period_start'], tz=tz.utc
-        )
-        user.current_period_end = dt.fromtimestamp(
-            subscription_data['current_period_end'], tz=tz.utc
-        )
-        user.subscription_expires_at = user.current_period_end
-        
+
+        current_period_start = subscription_data.get('current_period_start')
+        current_period_end = subscription_data.get('current_period_end')
+        if not current_period_start or not current_period_end:
+            items = subscription_data.get('items', {}).get('data', [])
+            if items:
+                if not current_period_start:
+                    current_period_start = items[0].get('current_period_start')
+                if not current_period_end:
+                    current_period_end = items[0].get('current_period_end')
+
+        if current_period_start:
+            user.current_period_start = dt.fromtimestamp(current_period_start, tz=tz.utc)
+            user.subscription_started_at = dt.fromtimestamp(current_period_start, tz=tz.utc)
+        if current_period_end:
+            user.current_period_end = dt.fromtimestamp(current_period_end, tz=tz.utc)
+            user.subscription_expires_at = user.current_period_end
+
         # Update plan based on price ID
         if subscription_data['items']['data']:
             price_id = subscription_data['items']['data'][0]['price']['id']
@@ -539,14 +546,15 @@ def handle_subscription_created(subscription_data):
                 user.current_plan = plan
             except Plan.DoesNotExist:
                 logger.warning(f"Plan not found for price ID: {price_id}")
-        
+
+        user.subscription_status = SubscriptionStatus.INCOMPLETE
         # Clear any payment restrictions
         clear_payment_failure_flags(user)
         user.save()
         
         logger.info(f"Subscription created for user {user.id}: {subscription_data['id']}")
-        return {"user_id": user.id, "subscription_id": subscription_data['id']}
-        
+        return {"user_id": user.id, "subscription_id": subscription_data['id'], "status": user.subscription_status}
+
     except User.DoesNotExist:
         logger.error(f"User not found for customer ID: {customer_id}")
         return {"error": "User not found"}
@@ -558,9 +566,6 @@ def handle_subscription_created(subscription_data):
 def handle_subscription_updated(subscription_data):
     """Handle subscription updates with enhanced rate limiting integration"""
     try:
-        from .models import Plan
-        from django.core.cache import caches
-        
         subscription_id = subscription_data['id']
         logger.info(f"Processing subscription update for ID: {subscription_id}")
         user = User.objects.get(stripe_subscription_id=subscription_id)
@@ -571,14 +576,22 @@ def handle_subscription_updated(subscription_data):
         new_status = subscription_data['status']
         logger.info(f"Status change: {old_status} -> {new_status}")
         user.subscription_status = new_status
-        from datetime import datetime as dt, timezone as tz
-        user.current_period_start = dt.fromtimestamp(
-            subscription_data['current_period_start'], tz=tz.utc
-        )
-        user.current_period_end = dt.fromtimestamp(
-            subscription_data['current_period_end'], tz=tz.utc
-        )
-        user.subscription_expires_at = user.current_period_end
+
+        current_period_start = subscription_data.get('current_period_start')
+        current_period_end = subscription_data.get('current_period_end')
+        if not current_period_start or not current_period_end:
+            items = subscription_data.get('items', {}).get('data', [])
+            if items:
+                if not current_period_start:
+                    current_period_start = items[0].get('current_period_start')
+                if not current_period_end:
+                    current_period_end = items[0].get('current_period_end')
+
+        if current_period_start:
+            user.current_period_start = dt.fromtimestamp(current_period_start, tz=tz.utc)
+        if current_period_end:
+            user.current_period_end = dt.fromtimestamp(current_period_end, tz=tz.utc)
+            user.subscription_expires_at = user.current_period_end
         
         # Handle plan changes
         if subscription_data['items']['data']:
@@ -628,11 +641,14 @@ def handle_subscription_canceled(subscription_data):
     try:
         subscription_id = subscription_data['id']
         user = User.objects.get(stripe_subscription_id=subscription_id)
-        
+        if not user or subscription_id:
+            logger.error(f"User {user.id} not found for subscription ID: {subscription_id}")
+        if user.stripe_subscription_id:
+            stripe.Subscription.delete(user.stripe_subscription_id)
         user.cancel_subscription()
         clear_payment_failure_flags(user)  # Clear restrictions but subscription is still canceled
         
-        logger.info(f"Subscription canceled for user {user.id}")
+        logger.info(f"Subscription: {subscription_id}, canceled for user {user.id}")
         return {"user_id": user.id, "canceled": True}
         
     except User.DoesNotExist:
@@ -643,29 +659,28 @@ def handle_subscription_canceled(subscription_data):
         return {"error": str(e)}
 
 
-def handle_payment_failed(invoice_data):
+def handle_payment_failed(subscription_data):
     """Handle payment failures with progressive restrictions"""
     try:
-        subscription_id = invoice_data.get('subscription')
+        subscription_id = subscription_data["id"]
         if not subscription_id:
             return {"error": "No subscription ID in invoice"}
-        
-        user = User.objects.get(stripe_subscription_id=subscription_id)
-        
-        # Check number of recent payment failures
-        recent_failures = PaymentFailure.objects.filter(
-            user=user,
-            failed_at__gte=timezone.now() - timedelta(days=7)
-        ).count()
-        
-        # Apply progressive restrictions
-        if recent_failures == 0:
-            restriction_level = 'warning'
-        elif recent_failures == 1:
-            restriction_level = 'limited'
+
+        customer_id = subscription_data['customer']
+        user = User.objects.get(stripe_customer_id=customer_id)
+
+        now = timezone.now()
+
+        if not user.payment_failed_at or (now - user.payment_failed_at).total_seconds() > 3600:
+            restriction_level = PaymentRestrictionLevel.WARNING
+        elif user.payment_restriction_level == PaymentRestrictionLevel.WARNING:
+            restriction_level = PaymentRestrictionLevel.LIMITED
         else:
-            restriction_level = 'suspended'
-        
+            restriction_level = PaymentRestrictionLevel.SUSPICIOUS
+        user.payment_failed_at = now
+        user.payment_restrictions_applied = True
+        user.payment_restriction_level = restriction_level
+        user.save()
         set_payment_failure_flags(user, restriction_level)
         
         logger.warning(f"Payment failed for user {user.id}, restriction level: {restriction_level}")
@@ -679,22 +694,21 @@ def handle_payment_failed(invoice_data):
         return {"error": str(e)}
 
 
-def handle_payment_succeeded(invoice_data):
+def handle_payment_succeeded(subscription_data):
     """Handle successful payments"""
     try:
-        subscription_id = invoice_data.get('subscription')
+        subscription_id = subscription_data["id"]
         if not subscription_id:
             return {"success": True, "message": "No subscription to update"}
         
-        user = User.objects.get(stripe_subscription_id=subscription_id)
+        customer_id = subscription_data['customer']
+        user = User.objects.get(stripe_customer_id=customer_id)
         
         # Clear payment failure restrictions
         clear_payment_failure_flags(user)
         
         # If subscription was in a problematic state, reactivate it
-        if user.subscription_status in ['past_due', 'incomplete']:
-            user.subscription_status = 'active'
-            user.save()
+        user.activate_subscription()
         
         logger.info(f"Payment succeeded for user {user.id}")
         return {"user_id": user.id, "payment_cleared": True}
