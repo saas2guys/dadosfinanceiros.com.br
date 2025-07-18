@@ -8,13 +8,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 
-class PaymentRestrictionLevel(models.TextChoices):
-    UNRESTRICTED = 'UNRESTRICTED'
-    WARNING = "warning", "Warning"
-    LIMITED = "limited_access", "Limited Access"
-    SUSPICIOUS = "suspicious", "Suspicious"
-
-
 class SubscriptionStatus(models.TextChoices):
     ACTIVE = "active", "Active"
     INACTIVE = "inactive", "Inactive"
@@ -307,11 +300,6 @@ class User(AbstractUser):
     keep_token_history = models.BooleanField(default=True)
     payment_failed_at = models.DateTimeField(null=True, blank=True)
     payment_restrictions_applied = models.BooleanField(default=False)
-    payment_restriction_level = models.CharField(
-        max_length=20,
-        choices=PaymentRestrictionLevel.choices,
-        default=PaymentRestrictionLevel.UNRESTRICTED
-    )
 
     current_plan = models.ForeignKey(
         Plan, on_delete=models.SET_NULL, null=True, blank=True

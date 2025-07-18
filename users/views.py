@@ -17,7 +17,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from users.models import SubscriptionStatus, PaymentRestrictionLevel
+from users.models import SubscriptionStatus
 
 from .forms import WaitingListForm
 from .models import Plan, TokenHistory, User
@@ -538,14 +538,14 @@ def handle_subscription_created(subscription_data):
             user.current_period_end = dt.fromtimestamp(current_period_end, tz=tz.utc)
             user.subscription_expires_at = user.current_period_end
 
-        # Update plan based on price ID
-        if subscription_data['items']['data']:
-            price_id = subscription_data['items']['data'][0]['price']['id']
-            try:
-                plan = Plan.objects.get(stripe_price_id=price_id)
-                user.current_plan = plan
-            except Plan.DoesNotExist:
-                logger.warning(f"Plan not found for price ID: {price_id}")
+        if not subscription_data['items']['data']:
+            raise ValueError('Stripe subscription items list is empty, cannot determine price_id.')
+        price_id = subscription_data['items']['data'][0]['price']['id']
+        try:
+            plan = Plan.objects.get(stripe_price_id=price_id)
+            user.current_plan = plan
+        except Plan.DoesNotExist:
+            logger.warning(f"Plan not found for price ID: {price_id}")
 
         user.subscription_status = SubscriptionStatus.INCOMPLETE
         # Clear any payment restrictions
@@ -672,20 +672,17 @@ def handle_payment_failed(subscription_data):
         now = timezone.now()
 
         if not user.payment_failed_at or (now - user.payment_failed_at).total_seconds() > 3600:
-            restriction_level = PaymentRestrictionLevel.WARNING
-        elif user.payment_restriction_level == PaymentRestrictionLevel.WARNING:
-            restriction_level = PaymentRestrictionLevel.LIMITED
+            user.payment_failed_at = now
+            user.payment_restrictions_applied = True
+            user.save(update_fields=["payment_failed_at", "payment_restrictions_applied"])
+            set_payment_failure_flags(user)
         else:
-            restriction_level = PaymentRestrictionLevel.SUSPICIOUS
-        user.payment_failed_at = now
-        user.payment_restrictions_applied = True
-        user.payment_restriction_level = restriction_level
-        user.save()
-        set_payment_failure_flags(user, restriction_level)
-        
-        logger.warning(f"Payment failed for user {user.id}, restriction level: {restriction_level}")
-        return {"user_id": user.id, "restriction_level": restriction_level}
-        
+            user.payment_failed_at = now
+            user.payment_restrictions_applied = True
+            user.save(update_fields=["payment_failed_at", "payment_restrictions_applied"])
+            set_payment_failure_flags(user)
+        logger.warning(f"Payment failed for user {user.id}")
+        return {"user_id": user.id}
     except User.DoesNotExist:
         logger.error(f"User not found for failed payment, subscription: {subscription_id}")
         return {"error": "User not found"}

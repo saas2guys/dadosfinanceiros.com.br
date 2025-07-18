@@ -463,15 +463,13 @@ class RateLimitHeaderMiddleware(MiddlewareMixin):
 
 
 # Utility functions for payment failure handling
-def set_payment_failure_flags(user, restriction_level='limited'):
+def set_payment_failure_flags(user):
     """Set payment failure restrictions for a user"""
     user.payment_failed_at = timezone.now()
     user.payment_restrictions_applied = True
-    user.payment_restriction_level = restriction_level
     user.save(update_fields=[
         'payment_failed_at',
         'payment_restrictions_applied',
-        'payment_restriction_level',
     ])
     # Clear cached limits to force recalculation
     cache = caches['rate_limit']
@@ -482,10 +480,8 @@ def set_payment_failure_flags(user, restriction_level='limited'):
 def clear_payment_failure_flags(user):
     """Clear payment failure restrictions for a user"""
     user.payment_restrictions_applied = False
-    user.payment_restriction_level = 'UNRESTRICTED'
     user.save(update_fields=[
         'payment_restrictions_applied',
-        'payment_restriction_level',
     ])
     # Clear cached limits
     cache = caches['rate_limit']
