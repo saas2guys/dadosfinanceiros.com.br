@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 def get_permission_classes():
     if settings.DEBUG and not getattr(settings, 'TESTING', False):
-        logger.info("DEBUG mode is on. Allowing all requests.")
+        logger.debug("DEBUG mode is on. Allowing all requests.")
         return [permissions.AllowAny]
     return [permissions.IsAuthenticated]
 
@@ -445,31 +445,31 @@ def reactivate_subscription(request):
 
 @csrf_exempt
 def stripe_webhook(request):
-    logger.info("=== Stripe webhook called ===")
+    logger.debug("Stripe webhook endpoint called.")
     if request.method != "POST":
-        logger.info("Invalid method, returning 405")
+        logger.debug("Invalid method for webhook, returning 405.")
         return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
     if request.content_type != "application/json":
-        logger.info("Invalid content type, returning 400")
+        logger.debug("Invalid content type for webhook, returning 400.")
         return JsonResponse(
             {"error": "Content-Type must be application/json"}, status=400
         )
 
     webhook_secret = getattr(settings, "STRIPE_WEBHOOK_SECRET", None)
-    logger.info(f"Webhook secret configured: {bool(webhook_secret)}")
+    logger.debug(f"Webhook secret configured: {bool(webhook_secret)}")
     if not webhook_secret:
         logger.error("Webhook secret not configured")
         return JsonResponse({"error": "Webhook secret not configured"}, status=400)
 
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
-    logger.info(f"Signature header present: {bool(sig_header)}")
+    logger.debug(f"Signature header present: {bool(sig_header)}")
 
     try:
-        logger.info("Verifying Stripe signature...")
+        logger.debug("Verifying Stripe signature...")
         stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
-        logger.info("Signature verification successful")
+        logger.debug("Signature verification successful.")
     except ValueError as e:
         logger.error(f"Invalid payload: {e}")
         return JsonResponse({"error": "Invalid payload"}, status=400)
@@ -493,19 +493,19 @@ def stripe_webhook(request):
         }
         
         handler = handlers.get(event['type'])
-        logger.info(f"Processing webhook event type: {event['type']}")
+        logger.debug(f"Processing webhook event type: {event['type']}")
         if handler:
             try:
-                logger.info(f"Calling handler for {event['type']}")
-                logger.info(f"Event data: {event['data']['object']}")
+                logger.debug(f"Calling handler for {event['type']}")
+                logger.debug(f"Event data: {event['data']['object']}")
                 result = handler(event['data']['object'])
-                logger.info(f"Handler result: {result}")
+                logger.debug(f"Handler result: {result}")
                 return JsonResponse({"status": "success", "processed": True, "result": result})
             except Exception as e:
                 logger.error(f"Webhook handler error for {event['type']}: {e}")
                 return JsonResponse({"status": "error", "message": str(e)}, status=500)
         else:
-            logger.info(f"Unhandled webhook event type: {event['type']}")
+            logger.debug(f"Unhandled webhook event type: {event['type']}")
             return JsonResponse({"status": "success", "processed": False})
 
     except Exception as e:
@@ -545,14 +545,14 @@ def handle_subscription_created(subscription_data):
             plan = Plan.objects.get(stripe_price_id=price_id)
             user.current_plan = plan
         except Plan.DoesNotExist:
-            logger.warning(f"Plan not found for price ID: {price_id}")
+            logger.warning(f"Plan not found for Stripe price ID: {price_id}")
 
         user.subscription_status = SubscriptionStatus.INCOMPLETE
         # Clear any payment restrictions
         clear_payment_failure_flags(user)
         user.save()
         
-        logger.info(f"Subscription created for user {user.id}: {subscription_data['id']}")
+        logger.info(f"Subscription created: user_id={user.id}, subscription_id={subscription_data['id']}")
         return {"user_id": user.id, "subscription_id": subscription_data['id'], "status": user.subscription_status}
 
     except User.DoesNotExist:
@@ -567,15 +567,15 @@ def handle_subscription_updated(subscription_data):
     """Handle subscription updates with enhanced rate limiting integration"""
     try:
         subscription_id = subscription_data['id']
-        logger.info(f"Processing subscription update for ID: {subscription_id}")
+        logger.debug(f"Processing subscription update for ID: {subscription_id}")
         user = User.objects.get(stripe_subscription_id=subscription_id)
-        logger.info(f"Found user {user.id} with subscription {subscription_id}")
+        logger.debug(f"Found user {user.id} with subscription {subscription_id}")
         
         # Update status and dates
         old_status = user.subscription_status
         new_status = subscription_data['status']
-        logger.info(f"Status change: {old_status} -> {new_status}")
-        user.subscription_status = new_status
+        logger.info(f"Subscription status change: user_id={user.id}, {old_status} -> {new_status}")
+        user.set_subscription_status(new_status)
 
         current_period_start = subscription_data.get('current_period_start')
         current_period_end = subscription_data.get('current_period_end')
@@ -599,37 +599,38 @@ def handle_subscription_updated(subscription_data):
             try:
                 new_plan = Plan.objects.get(stripe_price_id=price_id)
                 if user.current_plan != new_plan:
-                    logger.info(f"Plan changed for user {user.id}: {user.current_plan} -> {new_plan}")
+                    logger.info(f"Plan changed: user_id={user.id}, from {user.current_plan} to {new_plan}")
                     user.current_plan = new_plan
                     # Clear cached limits to force refresh
                     user.limits_cache_updated = None
             except Plan.DoesNotExist:
-                logger.error(f"Plan not found for price ID: {price_id}")
+                logger.warning(f"Plan not found for Stripe price ID: {price_id}")
         
         # Handle status-specific actions
         if subscription_data['status'] == 'active':
-            clear_payment_failure_flags(user)
+            user.handle_payment_success()
             if old_status in ['past_due', 'incomplete']:
-                logger.info(f"Subscription reactivated for user {user.id}")
+                logger.info(f"Subscription reactivated: user_id={user.id}")
         elif subscription_data['status'] in ['past_due', 'incomplete']:
-            set_payment_failure_flags(user, 'limited')
-            logger.warning(f"Subscription payment issues for user {user.id}")
+            user.handle_payment_failure()
+            logger.warning(f"Subscription payment issues: user_id={user.id}")
         elif subscription_data['status'] == 'canceled':
-            logger.info(f"Subscription canceled for user {user.id}")
+            logger.info(f"Subscription canceled: user_id={user.id}, subscription_id={subscription_id}")
         
         user.save()
-        logger.info(f"User {user.id} saved with new status: {user.subscription_status}")
+        logger.debug(f"User {user.id} saved with new subscription status: {user.subscription_status}")
         
         # Clear rate limiting cache
         cache = caches['rate_limit']
         cache_key = f"user_limits:{user.id}"
         cache.delete(cache_key)
         
-        logger.info(f"Subscription update completed for user {user.id}")
+        logger.debug(f"Subscription update completed for user {user.id}")
         return {"user_id": user.id, "status": subscription_data['status']}
         
     except User.DoesNotExist:
         logger.error(f"User not found for subscription ID: {subscription_id}")
+        logger.error(f"Error handling subscription update: {e}")
         return {"error": "User not found"}
     except Exception as e:
         logger.error(f"Error handling subscription update: {e}")
@@ -648,7 +649,7 @@ def handle_subscription_canceled(subscription_data):
         user.cancel_subscription()
         clear_payment_failure_flags(user)  # Clear restrictions but subscription is still canceled
         
-        logger.info(f"Subscription: {subscription_id}, canceled for user {user.id}")
+        logger.info(f"Subscription canceled: user_id={user.id}, subscription_id={subscription_id}")
         return {"user_id": user.id, "canceled": True}
         
     except User.DoesNotExist:
@@ -668,20 +669,8 @@ def handle_payment_failed(subscription_data):
 
         customer_id = subscription_data['customer']
         user = User.objects.get(stripe_customer_id=customer_id)
-
-        now = timezone.now()
-
-        if not user.payment_failed_at or (now - user.payment_failed_at).total_seconds() > 3600:
-            user.payment_failed_at = now
-            user.payment_restrictions_applied = True
-            user.save(update_fields=["payment_failed_at", "payment_restrictions_applied"])
-            set_payment_failure_flags(user)
-        else:
-            user.payment_failed_at = now
-            user.payment_restrictions_applied = True
-            user.save(update_fields=["payment_failed_at", "payment_restrictions_applied"])
-            set_payment_failure_flags(user)
-        logger.warning(f"Payment failed for user {user.id}")
+        user.handle_payment_failure()
+        logger.warning(f"Payment failed: user_id={user.id}")
         return {"user_id": user.id}
     except User.DoesNotExist:
         logger.error(f"User not found for failed payment, subscription: {subscription_id}")
@@ -700,14 +689,8 @@ def handle_payment_succeeded(subscription_data):
         
         customer_id = subscription_data['customer']
         user = User.objects.get(stripe_customer_id=customer_id)
-        
-        # Clear payment failure restrictions
-        clear_payment_failure_flags(user)
-        
-        # If subscription was in a problematic state, reactivate it
-        user.activate_subscription()
-        
-        logger.info(f"Payment succeeded for user {user.id}")
+        user.handle_payment_success()
+        logger.info(f"Payment succeeded: user_id={user.id}")
         return {"user_id": user.id, "payment_cleared": True}
         
     except User.DoesNotExist:
@@ -725,7 +708,7 @@ def handle_trial_ending(subscription_data):
         user = User.objects.get(stripe_subscription_id=subscription_id)
         
         # Log trial ending for monitoring
-        logger.info(f"Trial ending for user {user.id}, subscription: {subscription_id}")
+        logger.info(f"Trial ending: user_id={user.id}, subscription_id={subscription_id}")
         
         # Could send notification email here
         return {"user_id": user.id, "trial_ending": True}
@@ -750,7 +733,7 @@ def handle_payment_action_required(invoice_data):
         # Apply limited restrictions but not as severe as failed payment
         set_payment_failure_flags(user, 'warning')
         
-        logger.info(f"Payment action required for user {user.id}")
+        logger.info(f"Payment action required: user_id={user.id}")
         return {"user_id": user.id, "action_required": True}
         
     except User.DoesNotExist:

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from datetime import timezone as tz
 from enum import Enum
 
+from users.middleware import set_payment_failure_flags
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -586,6 +587,29 @@ class User(AbstractUser):
         self.subscription_status = SubscriptionStatus.CANCELED
         self.subscription_expires_at = None
         self.save()
+
+    def handle_payment_failure(self):
+        """
+        Mark payment as failed and apply payment restrictions.
+        """
+        self.payment_failed_at = timezone.now()
+        self.payment_restrictions_applied = True
+        self.save(update_fields=["payment_failed_at", "payment_restrictions_applied"])
+        set_payment_failure_flags(self)
+
+    def handle_payment_success(self):
+        """
+        Clear payment failure flags and activate subscription.
+        """
+        clear_payment_failure_flags(self)
+        self.activate_subscription()
+
+    def set_subscription_status(self, new_status):
+        """
+        Set the user's subscription status and save.
+        """
+        self.subscription_status = new_status
+        self.save(update_fields=["subscription_status"])
 
     def activate_subscription(self):
         self.subscription_status = SubscriptionStatus.ACTIVE
