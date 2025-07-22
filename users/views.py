@@ -29,7 +29,7 @@ from .serializers import (
     UserSerializer,
 )
 from .stripe_service import StripeService
-from .middleware import set_payment_failure_flags, clear_payment_failure_flags
+from .utils import set_payment_failure_flags, clear_payment_failure_flags
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
