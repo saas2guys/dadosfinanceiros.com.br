@@ -130,6 +130,8 @@ STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_LIVE_MODE = config("STRIPE_LIVE_MODE", default=False, cast=bool)
 
+ASAAS_ACCESS_TOKEN = config("ASAAS_ACCESS_TOKEN", default="")
+ASAAS_BASE_URL = config("ASAAS_BASE_URL", default="https://api-sandbox.asaas.com/v3")
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -150,9 +152,12 @@ INSTALLED_APPS = [
 if DEBUG:
     try:
         import django_extensions
+        import livereload
 
-        INSTALLED_APPS += ["django_extensions"]
-
+        INSTALLED_APPS += [
+            "django_extensions",
+            "livereload"
+        ]
         SHELL_PLUS_PRE_IMPORTS = [
             ("pprint", ["pprint", "pformat"]),
             ("datetime", ["datetime", "date", "time", "timedelta"]),
@@ -200,30 +205,44 @@ if DEBUG:
             ]
         except ImportError:
             pass
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "users.middleware.DatabaseRateLimitMiddleware",
-    "users.middleware.UserRequestCountMiddleware",
-    "users.middleware.RateLimitHeaderMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
-]
-
-
+if DEBUG:
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        "whitenoise.middleware.WhiteNoiseMiddleware",
+        "corsheaders.middleware.CorsMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "django.middleware.locale.LocaleMiddleware",
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+else:
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        "whitenoise.middleware.WhiteNoiseMiddleware",
+        "corsheaders.middleware.CorsMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "users.middleware.DatabaseRateLimitMiddleware",
+        "users.middleware.UserRequestCountMiddleware",
+        "users.middleware.RateLimitHeaderMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "django.middleware.locale.LocaleMiddleware",
+    ]
 if DEBUG and 'test' not in sys.argv:
     try:
         import debug_toolbar
+        import livereload
 
         MIDDLEWARE += [
             "debug_toolbar.middleware.DebugToolbarMiddleware",
+            "livereload.middleware.LiveReloadScript",
         ]
     except ImportError:
         pass
@@ -391,6 +410,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "users.authentication.RequestTokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",

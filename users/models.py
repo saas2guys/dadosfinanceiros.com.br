@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from datetime import timezone as tz
 from enum import Enum
 
-from users.middleware import set_payment_failure_flags, clear_payment_failure_flags
+from users.utils import set_payment_failure_flags, clear_payment_failure_flags
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinValueValidator
 from django.db import models
