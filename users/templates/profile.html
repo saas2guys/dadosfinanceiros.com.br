@@ -43,19 +43,19 @@
         <div id="profileDisplay" class="grid grid-cols-2 gap-4">
             <div>
                 <p class="text-gray-600">Email</p>
-                <p class="font-semibold">{{ user.email }}</p>
+                <p class="text-blue-400 font-semibold">{{ user.email }}</p>
             </div>
             <div>
                 <p class="text-gray-600">Name</p>
-                <p class="font-semibold">{{ user.get_full_name }}</p>
+                <p class="text-blue-400 font-semibold">{{ user.get_full_name }}</p>
             </div>
             <div>
                 <p class="text-gray-600">Daily Request Limit</p>
-                <p class="font-semibold">{{ user.daily_request_limit }}</p>
+                <p class="text-blue-400 font-semibold">{{ user.daily_request_limit }}</p>
             </div>
             <div>
                 <p class="text-gray-600">Requests Made Today</p>
-                <p class="font-semibold">{{ user.daily_requests_made }}</p>
+                <p class="text-blue-400 font-semibold">{{ user.daily_requests_made }}</p>
             </div>
         </div>
         
@@ -86,14 +86,36 @@
     </div>
 
     <!-- Subscription Information -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div id="subscription" class="bg-white rounded-lg shadow-md p-6 mb-8">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">Subscription</h2>
-            <a href="{% url 'home' %}" class="text-blue-500 hover:text-blue-600 font-medium">
-                Manage Plans
+            <a href="#" id="change-plan-btn" class="text-blue-500 hover:text-blue-600 font-medium">
+                Change Plan
             </a>
         </div>
-        
+
+        <!-- Plan options -->
+        <div id="change-plan-section" class="hidden mb-8">
+            <div id="plan-cards-profile" class="space-y-4">
+                {% for plan in plans %}
+                    {% if current_plan and plan.id != current_plan.id %}
+                    <div
+                        class="plan-card plan-option px-4 py-3 rounded-lg border border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition cursor-pointer"
+                        data-plan="{{ plan.name }}"
+                        data-plan-id="{{ plan.id }}"
+                        data-plan-price="{{ plan.price_monthly }}"
+                    >
+                        <span class="font-semibold text-gray-800">{{ plan.name }}</span>
+                        <span class="ml-2 text-gray-500">${{ plan.price_monthly|floatformat:0 }}/month</span>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Botão de assinar (gerado via JS) -->
+            <div id="subscribe-btn-container-profile" class="text-center mt-6"></div>
+        </div>
+
         {% if user.current_plan %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg">
@@ -140,14 +162,14 @@
             {% if user.subscription_expires_at %}
             <div>
                 <p class="text-gray-600">Expires</p>
-                <p class="font-semibold">{{ user.subscription_expires_at|date:"M d, Y" }}</p>
+                <p class="text-blue-500 font-semibold">{{ user.subscription_expires_at|date:"M d, Y" }}</p>
             </div>
             {% endif %}
             
             {% if user.subscription_days_remaining %}
             <div>
                 <p class="text-gray-600">Days Remaining</p>
-                <p class="font-semibold">{{ user.subscription_days_remaining }}</p>
+                <p class="text-blue-500 font-semibold">{{ user.subscription_days_remaining }}</p>
             </div>
             {% endif %}
         </div>
@@ -196,11 +218,11 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <p class="text-gray-600">Created</p>
-                    <p class="font-semibold">{{ user.request_token_created|date:"Y-m-d H:i:s" }}</p>
+                    <p class="text-blue-400 font-semibold">{{ user.request_token_created|date:"Y-m-d H:i:s" }}</p>
                 </div>
                 <div>
                     <p class="text-gray-600">Expires</p>
-                    <p class="font-semibold">
+                    <p class="text-blue-400 font-semibold">
                         {% if user.token_never_expires %}
                             Never (Forever Token)
                         {% else %}
@@ -456,6 +478,72 @@ document.addEventListener('DOMContentLoaded', function() {
             span.textContent = 'Generating Forever Token...';
         });
     }
+
+    // Change Plan expand/collapse
+    const changePlanBtn = document.getElementById('change-plan-btn');
+    const changePlanSection = document.getElementById('change-plan-section');
+    if (changePlanBtn && changePlanSection) {
+        changePlanBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            changePlanSection.classList.toggle('hidden');
+        });
+    }
+    // Plan card selection logic (adaptado da home)
+    function selectPlanProfile(planName, planId, planPrice) {
+        document.querySelectorAll('#plan-cards-profile .plan-card').forEach(card => {
+            card.classList.remove('border-blue-500');
+            if (card.getAttribute('data-plan') === planName) {
+                card.classList.add('border-blue-500');
+            }
+        });
+        let html = `
+            <div class="flex flex-col items-center mt-4">
+                <button id="subscribe-btn-profile" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition">Subscribe to ${planName} - US$${planPrice}/month</button>
+            </div>
+        `;
+        document.getElementById('subscribe-btn-container-profile').innerHTML = html;
+        setTimeout(function() {
+            const btn = document.getElementById('subscribe-btn-profile');
+            if (btn) {
+                btn.onclick = async function(e) {
+                    e.preventDefault();
+                    btn.disabled = true;
+                    btn.textContent = 'Redirecting...';
+                    try {
+                        const response = await fetch('{% url "create-checkout-session" %}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ plan_id: planId })
+                        });
+                        const data = await response.json();
+                        if (data.checkout_url) {
+                            window.location.href = data.checkout_url;
+                        } else if (data.link) {
+                            window.location.href = data.link;
+                        } else {
+                            alert('Error creating checkout: ' + (data.error || 'Unknown error.'));
+                            btn.disabled = false;
+                            btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
+                        }
+                    } catch (err) {
+                        alert('Error creating checkout: ' + err);
+                        btn.disabled = false;
+                        btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
+                    }
+                };
+            }
+        }, 100);
+    }
+    document.querySelectorAll('#plan-cards-profile .plan-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const planName = card.getAttribute('data-plan');
+            const planId = card.getAttribute('data-plan-id');
+            const planPrice = card.getAttribute('data-plan-price');
+            selectPlanProfile(planName, planId, planPrice);
+        });
+    });
 });
 </script>
 {% endblock %} 

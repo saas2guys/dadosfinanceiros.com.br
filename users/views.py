@@ -4,7 +4,7 @@ from datetime import datetime as dt, timezone as tz
 
 import stripe
 from django.conf import settings
-from django.core.cache import caches
+from django.core.cache import caches, cache
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -174,6 +174,10 @@ def profile(request):
             "remaining": max(0, daily_request_limit - daily_requests_made),
             "percentage": round(usage_percentage, 1),  # Round to 1 decimal place
         },
+        # Adicionado para exibir planos disponíveis na troca de plano
+        "plans": Plan.objects.filter(is_active=True).order_by("price_monthly"),
+        "plan_id_map": {plan.name: plan.id for plan in Plan.objects.filter(is_active=True)},
+        "current_plan": request.user.current_plan,
     }
     return render(request, "profile.html", context)
 
@@ -517,9 +521,17 @@ def handle_subscription_created(subscription_data):
     """Handle new subscription creation"""
     try:
         customer_id = subscription_data['customer']
+        subscription_id = subscription_data['id']
         user = User.objects.get(stripe_customer_id=customer_id)
 
-        user.stripe_subscription_id = subscription_data['id']
+        if user.stripe_subscription_id and user.stripe_subscription_id != subscription_id:
+            try:
+                old_sub_id=user.stripe_subscription_id
+                stripe.Subscription.delete(old_sub_id)
+                logger.info(f"Old Subscription canceled: {user.stripe_subscription_id}")
+            except Exception as e:
+                logger.error(f"Error canceling old subscription: {str(e)}")
+        user.stripe_subscription_id = subscription_id
 
         current_period_start = subscription_data.get('current_period_start')
         current_period_end = subscription_data.get('current_period_end')
@@ -547,11 +559,16 @@ def handle_subscription_created(subscription_data):
         except Plan.DoesNotExist:
             logger.warning(f"Plan not found for Stripe price ID: {price_id}")
 
-        user.subscription_status = SubscriptionStatus.INCOMPLETE
+        cache_key = f"payment_succeeded:{customer_id}"
+        if cache.get(cache_key):
+            user.subscription_status = SubscriptionStatus.ACTIVE
+            logger.info(f"Set subscription_status=ACTIVE from cached payment for user_id={user.id}")
+        elif user.subscription_status != SubscriptionStatus.ACTIVE:
+            user.subscription_status = SubscriptionStatus.INCOMPLETE
         # Clear any payment restrictions
         clear_payment_failure_flags(user)
         user.save()
-        
+
         logger.info(f"Subscription created: user_id={user.id}, subscription_id={subscription_data['id']}")
         return {"user_id": user.id, "subscription_id": subscription_data['id'], "status": user.subscription_status}
 
@@ -568,7 +585,8 @@ def handle_subscription_updated(subscription_data):
     try:
         subscription_id = subscription_data['id']
         logger.debug(f"Processing subscription update for ID: {subscription_id}")
-        user = User.objects.get(stripe_subscription_id=subscription_id)
+        customer_id = subscription_data['customer']
+        user = User.objects.get(stripe_customer_id=customer_id)
         logger.debug(f"Found user {user.id} with subscription {subscription_id}")
         
         # Update status and dates
@@ -640,12 +658,12 @@ def handle_subscription_updated(subscription_data):
 def handle_subscription_canceled(subscription_data):
     """Handle subscription cancellation"""
     try:
+        customer_id = subscription_data['customer']
         subscription_id = subscription_data['id']
-        user = User.objects.get(stripe_subscription_id=subscription_id)
-        if not user or subscription_id:
-            logger.error(f"User {user.id} not found for subscription ID: {subscription_id}")
-        if user.stripe_subscription_id:
-            stripe.Subscription.delete(user.stripe_subscription_id)
+        user = User.objects.get(stripe_customer_id=customer_id)
+        if user.stripe_subscription_id != subscription_id:
+            logger.info(f"Ignoring status change for outdated subscription: {subscription_id}")
+            return {"user_id": user.id, "ignored": True}
         user.cancel_subscription()
         clear_payment_failure_flags(user)  # Clear restrictions but subscription is still canceled
         
@@ -685,9 +703,13 @@ def handle_payment_succeeded(subscription_data):
     try:
         subscription_id = subscription_data["id"]
         if not subscription_id:
+            logger.info(f"success:" "True", "message:" "No subscription to update")
             return {"success": True, "message": "No subscription to update"}
         
         customer_id = subscription_data['customer']
+        cache_key = f"payment_succeeded:{customer_id}"
+        cache.set(cache_key, True, timeout=5)
+
         user = User.objects.get(stripe_customer_id=customer_id)
         user.handle_payment_success()
         logger.info(f"Payment succeeded: user_id={user.id}")
