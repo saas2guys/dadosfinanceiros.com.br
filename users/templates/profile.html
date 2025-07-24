@@ -112,7 +112,6 @@
                 {% endfor %}
             </div>
 
-            <!-- Botão de assinar (gerado via JS) -->
             <div id="subscribe-btn-container-profile" class="text-center mt-6"></div>
         </div>
 
@@ -488,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
             changePlanSection.classList.toggle('hidden');
         });
     }
-    // Plan card selection logic (adaptado da home)
+    // Plan card selection logic (adapted from home)
     function selectPlanProfile(planName, planId, planPrice) {
         document.querySelectorAll('#plan-cards-profile .plan-card').forEach(card => {
             card.classList.remove('border-blue-500');
