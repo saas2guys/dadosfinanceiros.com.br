@@ -2,6 +2,7 @@
 Management command to set up database-based rate limiting system.
 This command initializes the cache table and sets up default plans.
 """
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.core.cache import caches
@@ -10,6 +11,11 @@ from users.models import Plan, User, SubscriptionStatus
 
 class Command(BaseCommand):
     help = 'Set up database-based rate limiting system'
+
+    def handle(self, *args, **options):
+        if not settings.DEBUG and getattr(settings, 'ENV', 'development') not in ['dev', 'local', 'development']:
+            self.stdout.write(self.style.ERROR('❌ This command is restricted to development environments only.'))
+            return
 
     def add_arguments(self, parser):
         parser.add_argument(
