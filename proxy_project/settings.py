@@ -130,8 +130,6 @@ STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_LIVE_MODE = config("STRIPE_LIVE_MODE", default=False, cast=bool)
 
-ASAAS_ACCESS_TOKEN = config("ASAAS_ACCESS_TOKEN", default="")
-ASAAS_BASE_URL = config("ASAAS_BASE_URL", default="https://api-sandbox.asaas.com/v3")
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

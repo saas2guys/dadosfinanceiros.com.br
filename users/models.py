@@ -3,7 +3,8 @@ from datetime import datetime, timedelta
 from datetime import timezone as tz
 from enum import Enum
 
-from users.utils import set_payment_failure_flags, clear_payment_failure_flags
+from django.core.cache import caches
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -595,14 +596,41 @@ class User(AbstractUser):
         self.payment_failed_at = timezone.now()
         self.payment_restrictions_applied = True
         self.save(update_fields=["payment_failed_at", "payment_restrictions_applied"])
-        set_payment_failure_flags(self)
+        self.set_payment_failure_flags()
 
     def handle_payment_success(self):
         """
         Clear payment failure flags and activate subscription.
         """
-        clear_payment_failure_flags(self)
+        self.clear_payment_failure_flags()
         self.activate_subscription()
+
+    def set_payment_failure_flags(self):
+        # TODO when a payment fails, send an email to the user
+        """Set payment failure restrictions for a user"""
+        self.payment_failed_at = timezone.now()
+        self.payment_restrictions_applied = True
+        self.save(update_fields=[
+            'payment_failed_at',
+            'payment_restrictions_applied',
+        ]
+        )
+        # Clear cached limits to force recalculation
+        cache = caches['rate_limit']
+        cache_key = f"user_limits:{self.id}"
+        cache.delete(cache_key)
+
+    def clear_payment_failure_flags(self):
+        """Clear payment failure restrictions for a user"""
+        self.payment_restrictions_applied = False
+        self.save(update_fields=[
+            'payment_restrictions_applied',
+        ]
+        )
+        # Clear cached limits
+        cache = caches['rate_limit']
+        cache_key = f"user_limits:{self.id}"
+        cache.delete(cache_key)
 
     def set_subscription_status(self, new_status):
         """
@@ -612,6 +640,9 @@ class User(AbstractUser):
         self.save(update_fields=["subscription_status"])
 
     def activate_subscription(self):
+        """
+        Set the user's subscription status to active and save.
+        """
         self.subscription_status = SubscriptionStatus.ACTIVE
         self.save()
 
