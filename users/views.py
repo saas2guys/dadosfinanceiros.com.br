@@ -29,7 +29,6 @@ from .serializers import (
     UserSerializer,
 )
 from .stripe_service import StripeService
-from .utils import set_payment_failure_flags, clear_payment_failure_flags
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
@@ -566,7 +565,7 @@ def handle_subscription_created(subscription_data):
         elif user.subscription_status != SubscriptionStatus.ACTIVE:
             user.subscription_status = SubscriptionStatus.INCOMPLETE
         # Clear any payment restrictions
-        clear_payment_failure_flags(user)
+        user.clear_payment_failure_flags(user)
         user.save()
 
         logger.info(f"Subscription created: user_id={user.id}, subscription_id={subscription_data['id']}")
@@ -648,7 +647,6 @@ def handle_subscription_updated(subscription_data):
         
     except User.DoesNotExist:
         logger.error(f"User not found for subscription ID: {subscription_id}")
-        logger.error(f"Error handling subscription update: {e}")
         return {"error": "User not found"}
     except Exception as e:
         logger.error(f"Error handling subscription update: {e}")
@@ -665,7 +663,7 @@ def handle_subscription_canceled(subscription_data):
             logger.info(f"Ignoring status change for outdated subscription: {subscription_id}")
             return {"user_id": user.id, "ignored": True}
         user.cancel_subscription()
-        clear_payment_failure_flags(user)  # Clear restrictions but subscription is still canceled
+        user.clear_payment_failure_flags(user)  # Clear restrictions but subscription is still canceled
         
         logger.info(f"Subscription canceled: user_id={user.id}, subscription_id={subscription_id}")
         return {"user_id": user.id, "canceled": True}
@@ -753,7 +751,7 @@ def handle_payment_action_required(invoice_data):
         user = User.objects.get(stripe_subscription_id=subscription_id)
         
         # Apply limited restrictions but not as severe as failed payment
-        set_payment_failure_flags(user, 'warning')
+        user.set_payment_failure_flags(user, 'warning')
         
         logger.info(f"Payment action required: user_id={user.id}")
         return {"user_id": user.id, "action_required": True}
