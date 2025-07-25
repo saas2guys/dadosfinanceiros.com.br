@@ -287,6 +287,11 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+class StripeManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().exclude(stripe_customer_id__isnull=True).exclude(stripe_customer_id='')
+
+
 class User(AbstractUser):
     username = models.CharField(max_length=150, null=True, blank=True)
     email = models.EmailField(unique=True)
@@ -325,6 +330,7 @@ class User(AbstractUser):
     limits_cache_updated = models.DateTimeField(null=True, blank=True)
 
     objects = UserManager()
+    stripe = StripeManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
