@@ -326,9 +326,9 @@
                             {% trans "Access Your Dashboard" %}
                         </a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                            {% trans "Existing Customer? Sign In" %}
-                        </a>
+{#                        <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">#}
+{#                            {% trans "Existing Customer? Sign In" %}#}
+{#                        </a>#}
                     {% endif %}
                 </div>
                 
@@ -634,7 +634,7 @@
         function toggleBillingCycle(cycle) {
             currentBillingCycle = cycle;
             
-            // Update toggle buttons
+
             document.getElementById('monthly-toggle').className = cycle === 'monthly' 
                 ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
                 : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
@@ -643,7 +643,7 @@
                 ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
                 : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
             
-            // Update plan cards
+
             document.querySelectorAll('.plan-card').forEach(card => {
                 const monthlyPrice = card.querySelector('.monthly-price');
                 const yearlyPrice = card.querySelector('.yearly-price');
@@ -666,7 +666,7 @@
                 }
             });
             
-            // Update selected plan if any
+
             const selectedCard = document.querySelector('.plan-card.border-blue-500');
             if (selectedCard) {
                 const planName = selectedCard.getAttribute('data-plan');
@@ -687,6 +687,8 @@
             });
             
             const period = billingCycle === 'monthly' ? 'month' : 'year';
+            // Commented out subscribe functionality - replaced with waiting list
+            /*
             let html = `
                 <div class="flex flex-col items-center mt-4">
                     <button id="subscribe-btn" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition">Subscribe to ${planName} - USD ${planPrice}/${period}</button>
@@ -703,13 +705,11 @@
                         btn.textContent = 'Redirecting...';
 
                         try {
-                            // Get CSRF token
                             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                            // Use the API endpoint that doesn't require login
                             const checkoutUrl = '/api/create-checkout-session/';
 
-                            console.log('Making request to:', checkoutUrl); // Debug log
+                            console.log('Making request to:', checkoutUrl);
 
                             const response = await fetch(checkoutUrl, {
                                 method: 'POST',
@@ -723,7 +723,7 @@
                                 })
                             });
 
-                            console.log('Response status:', response.status); // Debug log
+                            console.log('Response status:', response.status);
 
                             if (!response.ok) {
                                 const errorText = await response.text();
@@ -758,14 +758,21 @@
                     };
                 }
             }, 100);
+            */
+            
+            // Replace with join waiting list button
+            let html = `
+                <div class="flex flex-col items-center mt-4">
+                    <a href="{% url 'waiting_list' %}" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition inline-block">Join Waiting List for ${planName}</a>
+                </div>
+            `;
+            document.getElementById('subscribe-btn-container').innerHTML = html;
         }
 
         window.addEventListener('DOMContentLoaded', function() {
-            // Add event listeners for billing cycle toggles
             document.getElementById('monthly-toggle').addEventListener('click', () => toggleBillingCycle('monthly'));
             document.getElementById('yearly-toggle').addEventListener('click', () => toggleBillingCycle('yearly'));
-            
-            // Update plan card click handlers
+
             document.querySelectorAll('.plan-card').forEach(card => {
                 card.addEventListener('click', function() {
                     const planName = card.getAttribute('data-plan');
