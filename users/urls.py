@@ -74,10 +74,6 @@ urlpatterns = [
     # SEO content pages
     path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),
     path("blog/", TemplateView.as_view(template_name="blog.html"), name="blog"),
-    path("api-comparison/", TemplateView.as_view(template_name="api_comparison.html"), name="api_comparison"),
-    path(
-        "financial-api-comparison/", TemplateView.as_view(template_name="api_comparison.html"), name="financial_api_comparison"
-    ),  # Alternative URL
     # User management pages
     path("profile/", views.profile, name="profile"),
     path(

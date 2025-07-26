@@ -17,7 +17,6 @@ class StaticViewSitemap(Sitemap):
             'home',
             'faq',
             'blog',
-            'api_comparison',
             'waiting_list',
             'waiting_list_success',
             'login',
@@ -112,7 +111,6 @@ class SEOLandingPagesSitemap(Sitemap):
             'ta_api',
             'earnings_calendar_api',
             'earnings_data_api',
-            'financial_api_comparison',
         ]
 
     def location(self, item):
@@ -146,7 +144,6 @@ class InternationalizedViewSitemap(Sitemap):
             'home',
             'faq',
             'blog',
-            'api_comparison',
             'waiting_list',
             'login',
             'register',
