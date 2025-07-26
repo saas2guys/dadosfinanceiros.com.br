@@ -208,7 +208,7 @@
                         <a href="{% url 'profile' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Profile" %}</a>
                         <a href="{% url 'logout' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Logout" %}</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Login" %}</a>
+{#                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Login" %}</a>#}
                         <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">{% trans "Join Waiting List" %}</a>
                     {% endif %}
                 </div>
@@ -264,7 +264,7 @@
                     <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Profile" %}</a>
                     <a href="{% url 'logout' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Logout" %}</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Login" %}</a>
+{#                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Login" %}</a>#}
                     <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 block px-3 py-2 rounded-md text-base font-medium">{% trans "Join Waiting List" %}</a>
                 {% endif %}
             </div>
