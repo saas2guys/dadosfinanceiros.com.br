@@ -71,44 +71,46 @@
             <form method="post" class="space-y-6">
                 {% csrf_token %}
 
-                <div>
-                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        First Name *
-                    </label>
-                    {{ form.first_name }}
-                    {% if form.first_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.first_name.errors.0 }}</p>
-                    {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            First Name *
+                        </label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            Last Name *
+                        </label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <div>
-                    <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Last Name *
-                    </label>
-                    {{ form.last_name }}
-                    {% if form.last_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.last_name.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address *
-                    </label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.email.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <div>
-                    <label for="{{ form.company_size.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Company Size
-                    </label>
-                    {{ form.company_size }}
-                    {% if form.company_size.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.company_size.errors.0 }}</p>
-                    {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            Email Address *
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.company_size.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            Company Size
+                        </label>
+                        {{ form.company_size }}
+                        {% if form.company_size.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.company_size.errors.0 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
                 <div>
                     <label for="{{ form.use_case.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
@@ -288,7 +290,7 @@
                                         {% if plan.is_free %}
                                             Free{% if plan.daily_request_limit %} ({{ plan.daily_request_limit }} calls/day){% endif %}
                                         {% else %}
-                                            {% if plan.price_yearly %}${{ plan.price_yearly|floatformat:0 }}/year{% else %}N/A{% endif %}
+                                            ${{ plan.price_yearly|floatformat:0 }}/year
                                         {% endif %}
                                     </span>
                                 </div>
@@ -373,12 +375,38 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Found yearly prices:', yearlyPrices.length);
         
         monthlyPrices.forEach(function(el) {
-            el.style.display = (selectedCycle.value === 'monthly') ? 'inline' : 'none';
+            if (selectedCycle.value === 'monthly') {
+                el.style.display = 'inline';
+                el.style.opacity = '1';
+            } else {
+                el.style.display = 'none';
+                el.style.opacity = '0';
+            }
         });
         
         yearlyPrices.forEach(function(el) {
-            el.style.display = (selectedCycle.value === 'yearly') ? 'inline' : 'none';
+            if (selectedCycle.value === 'yearly') {
+                el.style.display = 'inline';
+                el.style.opacity = '1';
+            } else {
+                el.style.display = 'none';
+                el.style.opacity = '0';
+            }
         });
+        
+        // Add visual feedback to the billing cycle buttons
+        document.querySelectorAll('.cycle-pill span').forEach(function(span) {
+            span.style.background = '#27272a';
+            span.style.color = '#e5e7eb';
+            span.style.borderColor = '#27272a';
+        });
+        
+        const selectedSpan = selectedCycle.closest('.cycle-pill').querySelector('span');
+        if (selectedSpan) {
+            selectedSpan.style.background = '#6366f1';
+            selectedSpan.style.color = '#fff';
+            selectedSpan.style.borderColor = '#6366f1';
+        }
     }
     
     // Add event listeners to billing cycle radio buttons
