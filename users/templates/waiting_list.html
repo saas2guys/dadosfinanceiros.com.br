@@ -71,44 +71,46 @@
             <form method="post" class="space-y-6">
                 {% csrf_token %}
 
-                <div>
-                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        First Name *
-                    </label>
-                    {{ form.first_name }}
-                    {% if form.first_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.first_name.errors.0 }}</p>
-                    {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            First Name *
+                        </label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            Last Name *
+                        </label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <div>
-                    <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Last Name *
-                    </label>
-                    {{ form.last_name }}
-                    {% if form.last_name.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.last_name.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address *
-                    </label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.email.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                <div>
-                    <label for="{{ form.company_size.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
-                        Company Size
-                    </label>
-                    {{ form.company_size }}
-                    {% if form.company_size.errors %}
-                        <p class="mt-1 text-sm text-red-400">{{ form.company_size.errors.0 }}</p>
-                    {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            Email Address *
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.company_size.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                            Company Size
+                        </label>
+                        {{ form.company_size }}
+                        {% if form.company_size.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ form.company_size.errors.0 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
                 <div>
                     <label for="{{ form.use_case.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
