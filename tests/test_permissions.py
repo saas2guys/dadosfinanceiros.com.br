@@ -166,9 +166,7 @@ class DailyLimitPermissionLogicTest(TestCase):
         user.current_plan = plan
         user.subscription_status = "active"
         user.daily_requests_made = 10  # At limit
-        user.last_request_date = timezone.now().date() - timezone.timedelta(
-            days=1
-        )  # Yesterday
+        user.last_request_date = timezone.now().date() - timezone.timedelta(days=1)  # Yesterday
         user.save()
 
         request = self.create_request_with_user(user)
@@ -616,9 +614,7 @@ class PermissionEdgeCaseHandlingTest(TestCase):
         user = User.objects.create_user(email="test@example.com")
         user.current_plan = plan
         user.subscription_status = "active"
-        user.last_request_date = timezone.now().date() + timezone.timedelta(
-            days=1
-        )  # Future date
+        user.last_request_date = timezone.now().date() + timezone.timedelta(days=1)  # Future date
         user.daily_requests_made = 50
         user.save()
 

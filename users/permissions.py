@@ -31,8 +31,4 @@ class RequestTokenPermission(permissions.BasePermission):
     message = "Request token authentication required."
 
     def has_permission(self, request, view):
-        return (
-            request.user
-            and request.user.is_authenticated
-            and hasattr(request.user, "request_token")
-        )
+        return request.user and request.user.is_authenticated and hasattr(request.user, "request_token")

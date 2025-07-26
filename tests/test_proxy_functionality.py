@@ -49,12 +49,8 @@ class PolygonApiResponseTransformationTest(TestCase):
 
         result = self.view._replace_polygon_urls(test_data, request)
 
-        expected_next = (
-            "https://api.financialdata.online/v1/stocks/tickers?cursor=next123"
-        )
-        expected_prev = (
-            "https://api.financialdata.online/v1/stocks/tickers?cursor=prev456"
-        )
+        expected_next = "https://api.financialdata.online/v1/stocks/tickers?cursor=next123"
+        expected_prev = "https://api.financialdata.online/v1/stocks/tickers?cursor=prev456"
 
         self.assertEqual(result["next_url"], expected_next)
         self.assertEqual(result["previous_url"], expected_prev)
@@ -140,9 +136,7 @@ class PolygonApiResponseTransformationTest(TestCase):
         self.assertIn("count", result.data)
         self.assertIn("results", result.data)
         self.assertIn("next_url", result.data)
-        expected_next_url = (
-            "https://api.financialdata.online/v1/reference/tickers?cursor=test123"
-        )
+        expected_next_url = "https://api.financialdata.online/v1/reference/tickers?cursor=test123"
         self.assertEqual(result.data["next_url"], expected_next_url)
 
     def test_handles_responses_without_internal_status_fields(self):
@@ -185,9 +179,7 @@ class ProxyViewTestCaseBase(TestCase):
         )
 
         # Create user without daily_request_limit parameter
-        self.user = User.objects.create_user(
-            email="test@example.com", password="testpass123"
-        )
+        self.user = User.objects.create_user(email="test@example.com", password="testpass123")
 
         # Assign the plan to the user
         self.user.current_plan = self.plan

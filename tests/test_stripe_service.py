@@ -68,9 +68,7 @@ class StripeCustomerManagementIntegrationTest(StripeServiceTestCaseBase):
         mock_customer = StripeCustomerFactory(id="cus_test123", email=self.user.email)
         mock_create.return_value = StripeObject(**mock_customer)
 
-        customer = self.stripe_service.create_customer(
-            email=self.user.email, name=f"{self.user.first_name} {self.user.last_name}"
-        )
+        customer = self.stripe_service.create_customer(email=self.user.email, name=f"{self.user.first_name} {self.user.last_name}")
 
         self.assertEqual(customer["id"], "cus_test123")
         self.assertEqual(customer["email"], self.user.email)
@@ -98,9 +96,7 @@ class StripeCustomerManagementIntegrationTest(StripeServiceTestCaseBase):
     @patch("stripe.Customer.retrieve")
     def test_handles_customer_not_found_errors_appropriately(self, mock_retrieve):
         """Test handling of customer not found errors."""
-        mock_retrieve.side_effect = stripe.error.InvalidRequestError(
-            "No such customer", None
-        )
+        mock_retrieve.side_effect = stripe.error.InvalidRequestError("No such customer", None)
 
         with self.assertRaises(stripe.error.InvalidRequestError):
             self.stripe_service.get_customer("cus_nonexistent")
@@ -108,14 +104,10 @@ class StripeCustomerManagementIntegrationTest(StripeServiceTestCaseBase):
     @patch("stripe.Customer.modify")
     def test_updates_existing_customer_details_successfully(self, mock_modify):
         """Test customer update functionality."""
-        mock_customer = StripeCustomerFactory(
-            id="cus_test123", email="updated@example.com"
-        )
+        mock_customer = StripeCustomerFactory(id="cus_test123", email="updated@example.com")
         mock_modify.return_value = StripeObject(**mock_customer)
 
-        customer = self.stripe_service.update_customer(
-            "cus_test123", email="updated@example.com"
-        )
+        customer = self.stripe_service.update_customer("cus_test123", email="updated@example.com")
 
         self.assertEqual(customer["email"], "updated@example.com")
         mock_modify.assert_called_once()
@@ -142,9 +134,7 @@ class StripeCheckoutSessionManagementTest(StripeServiceTestCaseBase):
     @patch("stripe.checkout.Session.create")
     def test_creates_checkout_session_for_subscription_plan(self, mock_create):
         """Test checkout session creation for subscriptions."""
-        mock_session = StripeCheckoutSessionFactory(
-            id="cs_test123", customer="cus_test123", mode="subscription"
-        )
+        mock_session = StripeCheckoutSessionFactory(id="cs_test123", customer="cus_test123", mode="subscription")
         mock_create.return_value = StripeObject(mock_session)
 
         session = self.stripe_service.create_checkout_session(
@@ -192,9 +182,7 @@ class StripeCheckoutSessionManagementTest(StripeServiceTestCaseBase):
     @patch("stripe.checkout.Session.create")
     def test_handles_checkout_session_creation_failures(self, mock_create):
         """Test handling of checkout session creation errors."""
-        mock_create.side_effect = stripe.error.InvalidRequestError(
-            "Invalid price", None
-        )
+        mock_create.side_effect = stripe.error.InvalidRequestError("Invalid price", None)
 
         with self.assertRaises(stripe.error.InvalidRequestError):
             self.stripe_service.create_checkout_session(
@@ -232,14 +220,10 @@ class StripeSubscriptionLifecycleManagementTest(StripeServiceTestCaseBase):
     @patch("stripe.Subscription.create")
     def test_creates_subscription_for_customer_and_plan(self, mock_create):
         """Test subscription creation."""
-        mock_subscription = StripeMockSubscriptionFactory(
-            id="sub_test123", customer="cus_test123", status="active"
-        )
+        mock_subscription = StripeMockSubscriptionFactory(id="sub_test123", customer="cus_test123", status="active")
         mock_create.return_value = StripeObject(**mock_subscription)
 
-        subscription = self.stripe_service.create_subscription(
-            customer_id="cus_test123", price_id="price_test123"
-        )
+        subscription = self.stripe_service.create_subscription(customer_id="cus_test123", price_id="price_test123")
 
         self.assertEqual(subscription["id"], "sub_test123")
         self.assertEqual(subscription["status"], "active")
@@ -259,23 +243,17 @@ class StripeSubscriptionLifecycleManagementTest(StripeServiceTestCaseBase):
     @patch("stripe.Subscription.modify")
     def test_updates_subscription_with_new_parameters(self, mock_modify):
         """Test subscription updates."""
-        mock_subscription = StripeMockSubscriptionFactory(
-            id="sub_test123", status="active"
-        )
+        mock_subscription = StripeMockSubscriptionFactory(id="sub_test123", status="active")
         mock_modify.return_value = StripeObject(**mock_subscription)
 
-        subscription = self.stripe_service.update_subscription(
-            "sub_test123", metadata={"updated": "true"}
-        )
+        subscription = self.stripe_service.update_subscription("sub_test123", metadata={"updated": "true"})
 
         mock_modify.assert_called_once()
 
     @patch("stripe.Subscription.cancel")
     def test_cancels_subscription_with_immediate_effect(self, mock_cancel):
         """Test immediate subscription cancellation."""
-        mock_subscription = StripeMockSubscriptionFactory(
-            id="sub_test123", status="canceled"
-        )
+        mock_subscription = StripeMockSubscriptionFactory(id="sub_test123", status="canceled")
         mock_cancel.return_value = StripeObject(**mock_subscription)
 
         subscription = self.stripe_service.cancel_subscription("sub_test123")
@@ -286,14 +264,10 @@ class StripeSubscriptionLifecycleManagementTest(StripeServiceTestCaseBase):
     @patch("stripe.Subscription.modify")
     def test_cancels_subscription_at_period_end(self, mock_modify):
         """Test subscription cancellation at period end."""
-        mock_subscription = StripeMockSubscriptionFactory(
-            id="sub_test123", cancel_at_period_end=True
-        )
+        mock_subscription = StripeMockSubscriptionFactory(id="sub_test123", cancel_at_period_end=True)
         mock_modify.return_value = StripeObject(**mock_subscription)
 
-        subscription = self.stripe_service.cancel_subscription_at_period_end(
-            "sub_test123"
-        )
+        subscription = self.stripe_service.cancel_subscription_at_period_end("sub_test123")
 
         self.assertTrue(subscription["cancel_at_period_end"])
         mock_modify.assert_called_once()
@@ -301,9 +275,7 @@ class StripeSubscriptionLifecycleManagementTest(StripeServiceTestCaseBase):
     @patch("stripe.Subscription.modify")
     def test_reactivates_canceled_subscription(self, mock_modify):
         """Test subscription reactivation."""
-        mock_subscription = StripeMockSubscriptionFactory(
-            id="sub_test123", status="active", cancel_at_period_end=False
-        )
+        mock_subscription = StripeMockSubscriptionFactory(id="sub_test123", status="active", cancel_at_period_end=False)
         mock_modify.return_value = StripeObject(**mock_subscription)
 
         subscription = self.stripe_service.reactivate_subscription("sub_test123")
@@ -323,9 +295,7 @@ class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
     @patch("stripe.Event.retrieve")
     def test_retrieves_and_validates_webhook_event(self, mock_retrieve):
         """Test webhook event retrieval and validation."""
-        mock_event = StripeWebhookEventFactory(
-            id="evt_test123", type="checkout.session.completed"
-        )
+        mock_event = StripeWebhookEventFactory(id="evt_test123", type="checkout.session.completed")
         mock_retrieve.return_value = StripeObject(**mock_event)
 
         event = self.stripe_service.retrieve_event("evt_test123")
@@ -343,14 +313,10 @@ class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
             metadata={"user_id": str(self.user.id), "plan_id": str(self.plan.id)},
         )
 
-        with patch(
-            "users.stripe_service.stripe.Subscription.retrieve"
-        ) as mock_retrieve:
+        with patch("users.stripe_service.stripe.Subscription.retrieve") as mock_retrieve:
             mock_retrieve.return_value = StripeObject(
                 id="sub_test123",
-                current_period_end=int(
-                    (timezone.now() + timedelta(days=30)).timestamp()
-                ),
+                current_period_end=int((timezone.now() + timedelta(days=30)).timestamp()),
             )
 
             self.stripe_service.handle_successful_payment(checkout_session)
@@ -362,9 +328,7 @@ class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
 
     def test_processes_subscription_updated_webhook_events(self):
         """Test processing of subscription update events."""
-        subscription_data = StripeMockSubscriptionFactory(
-            id="sub_test123", status="active", customer="cus_test123"
-        )
+        subscription_data = StripeMockSubscriptionFactory(id="sub_test123", status="active", customer="cus_test123")
 
         self.user.stripe_customer_id = "cus_test123"
         self.user.stripe_subscription_id = "sub_test123"
@@ -381,9 +345,7 @@ class StripeWebhookEventProcessingTest(StripeServiceTestCaseBase):
 
     def test_processes_subscription_deleted_webhook_events(self):
         """Test processing of subscription deletion events."""
-        subscription_data = StripeMockSubscriptionFactory(
-            id="sub_test123", status="canceled", customer="cus_test123"
-        )
+        subscription_data = StripeMockSubscriptionFactory(id="sub_test123", status="canceled", customer="cus_test123")
 
         self.user.stripe_customer_id = "cus_test123"
         self.user.stripe_subscription_id = "sub_test123"
@@ -430,9 +392,7 @@ class StripeApiErrorHandlingTest(StripeServiceTestCaseBase):
     @patch("stripe.Customer.create")
     def test_handles_stripe_card_declined_errors_appropriately(self, mock_create):
         """Test handling of card declined errors."""
-        mock_create.side_effect = stripe.error.CardError(
-            "Your card was declined.", None, "card_declined"
-        )
+        mock_create.side_effect = stripe.error.CardError("Your card was declined.", None, "card_declined")
 
         with self.assertRaises(stripe.error.CardError):
             self.stripe_service.create_customer(email="test@example.com")
@@ -456,9 +416,7 @@ class StripeApiErrorHandlingTest(StripeServiceTestCaseBase):
     @patch("stripe.Customer.create")
     def test_handles_stripe_invalid_request_errors(self, mock_create):
         """Test handling of invalid request errors."""
-        mock_create.side_effect = stripe.error.InvalidRequestError(
-            "Invalid email address", None
-        )
+        mock_create.side_effect = stripe.error.InvalidRequestError("Invalid email address", None)
 
         with self.assertRaises(stripe.error.InvalidRequestError):
             self.stripe_service.create_customer(email="invalid-email")
@@ -504,9 +462,7 @@ class StripeServiceEdgeCaseHandlingTest(StripeServiceTestCaseBase):
             mock_create.return_value = StripeObject(id="cus_test123")
 
             # Should truncate or handle long names appropriately
-            customer = self.stripe_service.create_customer(
-                email="test@example.com", name=long_name
-            )
+            customer = self.stripe_service.create_customer(email="test@example.com", name=long_name)
 
             mock_create.assert_called_once()
 
@@ -538,9 +494,7 @@ class StripeServiceEdgeCaseHandlingTest(StripeServiceTestCaseBase):
             # Simulate concurrent operations
             results = []
             for i in range(5):
-                result = self.stripe_service.update_subscription(
-                    "sub_test123", metadata={"operation": str(i)}
-                )
+                result = self.stripe_service.update_subscription("sub_test123", metadata={"operation": str(i)})
                 results.append(result)
 
             # All operations should complete
@@ -554,15 +508,11 @@ class StripeServiceEdgeCaseHandlingTest(StripeServiceTestCaseBase):
             # Test with various timezone scenarios
             subscription_data = StripeMockSubscriptionFactory(
                 current_period_start=int(timezone.now().timestamp()),
-                current_period_end=int(
-                    (timezone.now() + timedelta(days=30)).timestamp()
-                ),
+                current_period_end=int((timezone.now() + timedelta(days=30)).timestamp()),
             )
             mock_create.return_value = StripeObject(**subscription_data)
 
-            subscription = self.stripe_service.create_subscription(
-                customer_id="cus_test123", price_id="price_test123"
-            )
+            subscription = self.stripe_service.create_subscription(customer_id="cus_test123", price_id="price_test123")
 
             # Verify timestamps are handled correctly
             self.assertIsNotNone(subscription["current_period_start"])
@@ -576,18 +526,14 @@ class StripeServiceEdgeCaseHandlingTest(StripeServiceTestCaseBase):
             mock_create.return_value = StripeObject(id="cus_test123")
 
             # Should handle or truncate large metadata appropriately
-            customer = self.stripe_service.create_customer(
-                email="test@example.com", metadata=large_metadata
-            )
+            customer = self.stripe_service.create_customer(email="test@example.com", metadata=large_metadata)
 
             mock_create.assert_called_once()
 
     def test_provides_detailed_error_context_for_debugging(self):
         """Test that errors include sufficient context for debugging."""
         with patch("stripe.Customer.create") as mock_create:
-            error = stripe.error.InvalidRequestError(
-                "Invalid email address", None, code="email_invalid"
-            )
+            error = stripe.error.InvalidRequestError("Invalid email address", None, code="email_invalid")
             mock_create.side_effect = error
 
             with self.assertRaises(stripe.error.InvalidRequestError) as context:
@@ -613,13 +559,9 @@ class StripeServiceEdgeCaseHandlingTest(StripeServiceTestCaseBase):
             mock_create.return_value = StripeObject(id="cus_test123")
 
             # Test with idempotency key
-            customer1 = self.stripe_service.create_customer(
-                email="test@example.com", idempotency_key="test_key_123"
-            )
+            customer1 = self.stripe_service.create_customer(email="test@example.com", idempotency_key="test_key_123")
 
-            customer2 = self.stripe_service.create_customer(
-                email="test@example.com", idempotency_key="test_key_123"
-            )
+            customer2 = self.stripe_service.create_customer(email="test@example.com", idempotency_key="test_key_123")
 
             # Should handle idempotency appropriately
             mock_create.assert_called()

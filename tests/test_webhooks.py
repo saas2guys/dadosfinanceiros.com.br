@@ -84,9 +84,7 @@ class StripeWebhookTestCaseBase(TestCase):
         signed_payload = f"{timestamp}.{payload_str}"
 
         # Generate signature
-        signature = hmac.new(
-            secret.encode("utf-8"), signed_payload.encode("utf-8"), hashlib.sha256
-        ).hexdigest()
+        signature = hmac.new(secret.encode("utf-8"), signed_payload.encode("utf-8"), hashlib.sha256).hexdigest()
 
         return f"t={timestamp},v1={signature}"
 
@@ -96,9 +94,7 @@ class StripeWebhookTestCaseBase(TestCase):
         event.update({"type": event_type, "data": data})
         return event
 
-    def send_webhook_request(
-        self, event_data, signature=None, content_type="application/json"
-    ):
+    def send_webhook_request(self, event_data, signature=None, content_type="application/json"):
         """Send a webhook request with proper headers."""
         payload = json.dumps(event_data)
 
@@ -142,14 +138,10 @@ class StripeWebhookSignatureValidationTest(StripeWebhookTestCaseBase):
         )
 
         # Generate signature with wrong secret
-        invalid_signature = self.generate_stripe_signature(
-            json.dumps(event_data), "wrong_secret"
-        )
+        invalid_signature = self.generate_stripe_signature(json.dumps(event_data), "wrong_secret")
 
         with patch("users.views.settings.STRIPE_WEBHOOK_SECRET", self.webhook_secret):
-            response = self.send_webhook_request(
-                event_data, signature=invalid_signature
-            )
+            response = self.send_webhook_request(event_data, signature=invalid_signature)
 
         self.assertEqual(response.status_code, 400)
 
@@ -261,9 +253,7 @@ class StripeWebhookEventProcessingTest(StripeWebhookTestCaseBase):
                     "id": "sub_new123",
                     "customer": self.user.stripe_customer_id,
                     "status": "active",
-                    "items": {
-                        "data": [{"price": {"id": self.basic_plan.stripe_price_id}}]
-                    },
+                    "items": {"data": [{"price": {"id": self.basic_plan.stripe_price_id}}]},
                     "current_period_start": int(time.time()),
                     "current_period_end": int(time.time()) + 2592000,  # 30 days
                 }
@@ -284,9 +274,7 @@ class StripeWebhookEventProcessingTest(StripeWebhookTestCaseBase):
                     "id": self.subscription.stripe_subscription_id,
                     "customer": self.user.stripe_customer_id,
                     "status": "active",
-                    "items": {
-                        "data": [{"price": {"id": self.basic_plan.stripe_price_id}}]
-                    },
+                    "items": {"data": [{"price": {"id": self.basic_plan.stripe_price_id}}]},
                     "current_period_start": int(time.time()),
                     "current_period_end": int(time.time()) + 2592000,
                 }
@@ -352,9 +340,7 @@ class StripeSubscriptionWebhookProcessingTest(StripeWebhookTestCaseBase):
                     "id": self.subscription.stripe_subscription_id,
                     "customer": self.user.stripe_customer_id,
                     "status": "active",
-                    "items": {
-                        "data": [{"price": {"id": self.basic_plan.stripe_price_id}}]
-                    },
+                    "items": {"data": [{"price": {"id": self.basic_plan.stripe_price_id}}]},
                     "current_period_start": int(time.time()),
                     "current_period_end": int(time.time()) + 2592000,
                 }
@@ -379,9 +365,7 @@ class StripeSubscriptionWebhookProcessingTest(StripeWebhookTestCaseBase):
                     "id": self.subscription.stripe_subscription_id,
                     "customer": self.user.stripe_customer_id,
                     "status": "canceled",
-                    "items": {
-                        "data": [{"price": {"id": self.basic_plan.stripe_price_id}}]
-                    },
+                    "items": {"data": [{"price": {"id": self.basic_plan.stripe_price_id}}]},
                     "current_period_start": int(time.time()),
                     "current_period_end": int(time.time()) + 2592000,
                 }
@@ -409,9 +393,7 @@ class StripeSubscriptionWebhookProcessingTest(StripeWebhookTestCaseBase):
                     "id": self.subscription.stripe_subscription_id,
                     "customer": self.user.stripe_customer_id,
                     "status": "active",
-                    "items": {
-                        "data": [{"price": {"id": self.basic_plan.stripe_price_id}}]
-                    },
+                    "items": {"data": [{"price": {"id": self.basic_plan.stripe_price_id}}]},
                     "current_period_start": new_period_start,
                     "current_period_end": new_period_end,
                 }
@@ -425,12 +407,8 @@ class StripeSubscriptionWebhookProcessingTest(StripeWebhookTestCaseBase):
 
         # Verify period dates were updated
         self.subscription.refresh_from_db()
-        self.assertEqual(
-            int(self.subscription.current_period_start.timestamp()), new_period_start
-        )
-        self.assertEqual(
-            int(self.subscription.current_period_end.timestamp()), new_period_end
-        )
+        self.assertEqual(int(self.subscription.current_period_start.timestamp()), new_period_start)
+        self.assertEqual(int(self.subscription.current_period_end.timestamp()), new_period_end)
 
     def test_handles_subscription_update_for_unknown_subscription(self):
         """Test handling of subscription updates for unknown subscriptions."""
@@ -441,9 +419,7 @@ class StripeSubscriptionWebhookProcessingTest(StripeWebhookTestCaseBase):
                     "id": "sub_unknown123",
                     "customer": self.user.stripe_customer_id,
                     "status": "active",
-                    "items": {
-                        "data": [{"price": {"id": self.basic_plan.stripe_price_id}}]
-                    },
+                    "items": {"data": [{"price": {"id": self.basic_plan.stripe_price_id}}]},
                     "current_period_start": int(time.time()),
                     "current_period_end": int(time.time()) + 2592000,
                 }
@@ -560,9 +536,7 @@ class StripeWebhookEdgeCaseHandlingTest(StripeWebhookTestCaseBase):
         )
 
         with patch("users.views.settings.STRIPE_WEBHOOK_SECRET", self.webhook_secret):
-            with patch(
-                "users.models.User.objects.get", side_effect=Exception("Database error")
-            ):
+            with patch("users.models.User.objects.get", side_effect=Exception("Database error")):
                 response = self.send_webhook_request(event_data)
 
         # Should handle database errors gracefully
@@ -684,12 +658,8 @@ class StripeWebhookSecurityTest(StripeWebhookTestCaseBase):
 
         for signature in bypass_attempts:
             with self.subTest(signature=signature):
-                with patch(
-                    "users.views.settings.STRIPE_WEBHOOK_SECRET", self.webhook_secret
-                ):
-                    response = self.send_webhook_request(
-                        event_data, signature=signature
-                    )
+                with patch("users.views.settings.STRIPE_WEBHOOK_SECRET", self.webhook_secret):
+                    response = self.send_webhook_request(event_data, signature=signature)
 
                 # Accept that signature verification might not be fully implemented yet
                 self.assertIn(response.status_code, [200, 400])
@@ -703,9 +673,7 @@ class StripeWebhookSecurityTest(StripeWebhookTestCaseBase):
 
         # Test with signatures of different lengths
         short_sig = self.generate_stripe_signature(json.dumps(event_data), "short")
-        long_sig = self.generate_stripe_signature(
-            json.dumps(event_data), "very_long_secret_key"
-        )
+        long_sig = self.generate_stripe_signature(json.dumps(event_data), "very_long_secret_key")
 
         with patch("users.views.settings.STRIPE_WEBHOOK_SECRET", self.webhook_secret):
             start_time = time.time()
@@ -740,16 +708,12 @@ class StripeWebhookSecurityTest(StripeWebhookTestCaseBase):
 
         for headers in suspicious_headers:
             with self.subTest(headers=headers):
-                with patch(
-                    "users.views.settings.STRIPE_WEBHOOK_SECRET", self.webhook_secret
-                ):
+                with patch("users.views.settings.STRIPE_WEBHOOK_SECRET", self.webhook_secret):
                     response = self.client.post(
                         self.webhook_url,
                         json.dumps(event_data),
                         content_type="application/json",
-                        HTTP_STRIPE_SIGNATURE=self.generate_stripe_signature(
-                            json.dumps(event_data)
-                        ),
+                        HTTP_STRIPE_SIGNATURE=self.generate_stripe_signature(json.dumps(event_data)),
                         **headers,
                     )
 

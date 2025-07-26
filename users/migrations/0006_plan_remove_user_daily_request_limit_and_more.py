@@ -50,9 +50,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "features",
-                    models.JSONField(
-                        default=dict, help_text="Additional features for this plan"
-                    ),
+                    models.JSONField(default=dict, help_text="Additional features for this plan"),
                 ),
                 ("is_active", models.BooleanField(default=True)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),

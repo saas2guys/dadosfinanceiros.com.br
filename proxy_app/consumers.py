@@ -18,9 +18,7 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.microservice_ws = None
-        self.microservice_url = getattr(
-            settings, "MICROSERVICE_WS_URL", "ws://localhost:8001/ws/stocks/"
-        )
+        self.microservice_url = getattr(settings, "MICROSERVICE_WS_URL", "ws://localhost:8001/ws/stocks/")
         self.user = None
         self.is_authenticated = False
 
@@ -40,16 +38,12 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
         """Handle WebSocket disconnection"""
         if self.microservice_ws:
             await self.microservice_ws.close()
-            logger.info(
-                f"Disconnected from microservice for user {self.user.id if self.user else 'unknown'}"
-            )
+            logger.info(f"Disconnected from microservice for user {self.user.id if self.user else 'unknown'}")
 
     async def receive(self, text_data):
         """Receive message from client and forward to microservice"""
         if not self.microservice_ws:
-            await self.send(
-                text_data=json.dumps({"error": "Microservice connection not available"})
-            )
+            await self.send(text_data=json.dumps({"error": "Microservice connection not available"}))
             return
 
         try:
@@ -64,9 +58,7 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"error": "Invalid JSON format"}))
         except Exception as e:
             logger.error(f"Error forwarding message: {e}")
-            await self.send(
-                text_data=json.dumps({"error": "Failed to forward message"})
-            )
+            await self.send(text_data=json.dumps({"error": "Failed to forward message"}))
 
     async def authenticate_user(self):
         try:
@@ -132,11 +124,7 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
 
         except Exception as e:
             logger.error(f"Failed to connect to microservice WebSocket: {e}")
-            await self.send(
-                text_data=json.dumps(
-                    {"error": "Failed to connect to stock market service"}
-                )
-            )
+            await self.send(text_data=json.dumps({"error": "Failed to connect to stock market service"}))
             await self.close()
 
     async def listen_to_microservice(self):
@@ -147,17 +135,11 @@ class StockMarketProxyConsumer(AsyncWebsocketConsumer):
 
         except websockets.exceptions.ConnectionClosed:
             logger.info("Microservice WebSocket connection closed")
-            await self.send(
-                text_data=json.dumps({"error": "Stock market service disconnected"})
-            )
+            await self.send(text_data=json.dumps({"error": "Stock market service disconnected"}))
             await self.close()
         except Exception as e:
             logger.error(f"Error listening to microservice WebSocket: {e}")
-            await self.send(
-                text_data=json.dumps(
-                    {"error": "Connection error with stock market service"}
-                )
-            )
+            await self.send(text_data=json.dumps({"error": "Connection error with stock market service"}))
             await self.close()
 
 
@@ -175,9 +157,7 @@ class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.microservice_ws = None
-        self.microservice_url = getattr(
-            settings, "MICROSERVICE_WS_URL", "ws://localhost:8001/ws/stocks/"
-        )
+        self.microservice_url = getattr(settings, "MICROSERVICE_WS_URL", "ws://localhost:8001/ws/stocks/")
         self.user = None
         self.is_authenticated = False
 
@@ -195,16 +175,12 @@ class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         """Handle disconnection - don't close pooled connections immediately"""
-        logger.info(
-            f"Client disconnected for user {self.user.id if self.user else 'unknown'}"
-        )
+        logger.info(f"Client disconnected for user {self.user.id if self.user else 'unknown'}")
 
     async def receive(self, text_data):
         """Forward received messages to microservice"""
         if not self.microservice_ws:
-            await self.send(
-                text_data=json.dumps({"error": "Microservice connection not available"})
-            )
+            await self.send(text_data=json.dumps({"error": "Microservice connection not available"}))
             return
 
         try:
@@ -218,9 +194,7 @@ class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"error": "Invalid JSON format"}))
         except Exception as e:
             logger.error(f"Error forwarding message: {e}")
-            await self.send(
-                text_data=json.dumps({"error": "Failed to forward message"})
-            )
+            await self.send(text_data=json.dumps({"error": "Failed to forward message"}))
 
     async def authenticate_user(self):
         """Same authentication logic as StockMarketProxyConsumer"""
@@ -250,9 +224,7 @@ class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
             self.user = await self.get_user(user_id)
             if self.user:
                 self.is_authenticated = True
-                logger.info(
-                    f"User {self.user.id} authenticated successfully for WebSocket"
-                )
+                logger.info(f"User {self.user.id} authenticated successfully for WebSocket")
 
         except (InvalidToken, TokenError, KeyError) as e:
             logger.warning(f"JWT authentication failed for WebSocket: {e}")
@@ -308,15 +280,9 @@ class HighPerformanceStockProxyConsumer(AsyncWebsocketConsumer):
 
         except websockets.exceptions.ConnectionClosed:
             logger.info("Microservice connection closed")
-            await self.send(
-                text_data=json.dumps({"error": "Stock market service disconnected"})
-            )
+            await self.send(text_data=json.dumps({"error": "Stock market service disconnected"}))
             await self.close()
         except Exception as e:
             logger.error(f"Error listening to microservice: {e}")
-            await self.send(
-                text_data=json.dumps(
-                    {"error": "Connection error with stock market service"}
-                )
-            )
+            await self.send(text_data=json.dumps({"error": "Connection error with stock market service"}))
             await self.close()

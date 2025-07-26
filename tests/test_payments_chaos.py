@@ -128,9 +128,7 @@ class StripeApiChaosEngineeringTest(TestCase):
             side_effect=rate_limit_chaos,
         ):
             # Should implement retry logic or handle gracefully
-            response = self.client.post(
-                reverse("create-checkout-session"), {"plan_id": self.basic_plan.id}
-            )
+            response = self.client.post(reverse("create-checkout-session"), {"plan_id": self.basic_plan.id})
             self.assertIn(response.status_code, [200, 302, 429, 500])
 
     def test_stripe_authentication_chaos(self):
@@ -146,9 +144,7 @@ class StripeApiChaosEngineeringTest(TestCase):
             "users.stripe_service.StripeService.create_checkout_session",
             side_effect=auth_chaos,
         ):
-            response = self.client.post(
-                reverse("create-checkout-session"), {"plan_id": self.basic_plan.id}
-            )
+            response = self.client.post(reverse("create-checkout-session"), {"plan_id": self.basic_plan.id})
             # Should handle auth errors appropriately
             self.assertIn(response.status_code, [200, 302, 401, 500])
 
@@ -166,9 +162,7 @@ class StripeApiChaosEngineeringTest(TestCase):
             "users.stripe_service.StripeService.create_checkout_session",
             side_effect=malformed_response,
         ):
-            response = self.client.post(
-                reverse("create-checkout-session"), {"plan_id": self.basic_plan.id}
-            )
+            response = self.client.post(reverse("create-checkout-session"), {"plan_id": self.basic_plan.id})
             # Should handle malformed responses
             self.assertIn(response.status_code, [200, 302, 500])
 
@@ -248,10 +242,7 @@ class DatabaseTransactionChaosTest(TransactionTestCase):
 
         # Try to create multiple users with same email
         results = []
-        threads = [
-            Thread(target=lambda: results.append(create_user_with_duplicate_email()))
-            for _ in range(5)
-        ]
+        threads = [Thread(target=lambda: results.append(create_user_with_duplicate_email())) for _ in range(5)]
 
         for thread in threads:
             thread.start()
@@ -335,12 +326,8 @@ class ConcurrentOperationsChaosTest(TransactionTestCase):
 
                 # Random chance of creating checkout session
                 if random.random() < 0.5:
-                    with patch(
-                        "users.stripe_service.StripeService.create_checkout_session"
-                    ) as mock_create:
-                        mock_create.return_value = Mock(
-                            **StripeCheckoutSessionFactory()
-                        )
+                    with patch("users.stripe_service.StripeService.create_checkout_session") as mock_create:
+                        mock_create.return_value = Mock(**StripeCheckoutSessionFactory())
 
                         response = client.post(
                             reverse("create-checkout-session"),
@@ -355,9 +342,7 @@ class ConcurrentOperationsChaosTest(TransactionTestCase):
 
         # Create chaos with many concurrent operations
         with ThreadPoolExecutor(max_workers=10) as executor:
-            futures = [
-                executor.submit(create_user_with_random_delay) for _ in range(20)
-            ]
+            futures = [executor.submit(create_user_with_random_delay) for _ in range(20)]
 
             for future in as_completed(futures):
                 try:
@@ -387,26 +372,18 @@ class ConcurrentOperationsChaosTest(TransactionTestCase):
                 action = random.choice(["cancel", "reactivate", "upgrade", "view"])
 
                 if action == "cancel":
-                    with patch(
-                        "users.stripe_service.StripeService.cancel_subscription"
-                    ) as mock_cancel:
+                    with patch("users.stripe_service.StripeService.cancel_subscription") as mock_cancel:
                         mock_cancel.return_value = Mock(status="canceled")
                         response = client.post(reverse("cancel_subscription"))
 
                 elif action == "reactivate":
-                    with patch(
-                        "users.stripe_service.StripeService.reactivate_subscription"
-                    ) as mock_reactivate:
+                    with patch("users.stripe_service.StripeService.reactivate_subscription") as mock_reactivate:
                         mock_reactivate.return_value = Mock(status="active")
                         response = client.post(reverse("reactivate_subscription"))
 
                 elif action == "upgrade":
-                    with patch(
-                        "users.stripe_service.StripeService.create_checkout_session"
-                    ) as mock_create:
-                        mock_create.return_value = Mock(
-                            **StripeCheckoutSessionFactory()
-                        )
+                    with patch("users.stripe_service.StripeService.create_checkout_session") as mock_create:
+                        mock_create.return_value = Mock(**StripeCheckoutSessionFactory())
                         response = client.post(
                             reverse("create-checkout-session"),
                             {"plan_id": self.basic_plan.id},
@@ -466,20 +443,14 @@ class ConcurrentOperationsChaosTest(TransactionTestCase):
                         "object": {
                             "id": f"obj_{random.randint(1000, 9999)}",
                             "customer": user.stripe_customer_id,
-                            "status": random.choice(
-                                ["active", "canceled", "paid", "open"]
-                            ),
+                            "status": random.choice(["active", "canceled", "paid", "open"]),
                         }
                     },
                 }
 
-                with patch(
-                    "users.views.stripe.Webhook.construct_event"
-                ) as mock_construct:
+                with patch("users.views.stripe.Webhook.construct_event") as mock_construct:
                     if random.random() < 0.1:  # 10% chance of invalid signature
-                        mock_construct.side_effect = stripe.SignatureVerificationError(
-                            "Invalid signature", "signature"
-                        )
+                        mock_construct.side_effect = stripe.SignatureVerificationError("Invalid signature", "signature")
                     else:
                         mock_construct.return_value = webhook_payload
 
@@ -540,9 +511,7 @@ class SystemResourceStressChaosTest(TestCase):
                 user = UserFactory()
                 self.client.force_login(user)
 
-                with patch(
-                    "users.stripe_service.StripeService.create_checkout_session"
-                ) as mock_create:
+                with patch("users.stripe_service.StripeService.create_checkout_session") as mock_create:
                     mock_create.return_value = Mock(**StripeCheckoutSessionFactory())
 
                     response = self.client.post(
@@ -555,9 +524,7 @@ class SystemResourceStressChaosTest(TestCase):
 
                 # Occasionally clean up to avoid system crash
                 if i % 20 == 0:
-                    large_data_objects = large_data_objects[
-                        -50:
-                    ]  # Keep only recent objects
+                    large_data_objects = large_data_objects[-50:]  # Keep only recent objects
 
         except MemoryError:
             # System ran out of memory - this is expected under stress
@@ -588,14 +555,10 @@ class SystemResourceStressChaosTest(TestCase):
 
             start_time = time.time()
 
-            with patch(
-                "users.stripe_service.StripeService.create_checkout_session"
-            ) as mock_create:
+            with patch("users.stripe_service.StripeService.create_checkout_session") as mock_create:
                 mock_create.return_value = Mock(**StripeCheckoutSessionFactory())
 
-                response = self.client.post(
-                    reverse("create-checkout-session"), {"plan_id": self.basic_plan.id}
-                )
+                response = self.client.post(reverse("create-checkout-session"), {"plan_id": self.basic_plan.id})
 
             end_time = time.time()
             duration = end_time - start_time
@@ -660,9 +623,7 @@ class SystemResourceStressChaosTest(TestCase):
         # Most requests should succeed
         success_count = sum(1 for status in results if status < 500)
         success_rate = success_count / len(results)
-        self.assertGreater(
-            success_rate, 0.3
-        )  # At least 30% success (reduced due to SQLite limitations)
+        self.assertGreater(success_rate, 0.3)  # At least 30% success (reduced due to SQLite limitations)
 
         # Should complete in reasonable time
         self.assertLess(duration, 30.0)
@@ -697,9 +658,7 @@ class SystemResourceStressChaosTest(TestCase):
                     ),
                 }
 
-                response = self.client.post(
-                    reverse("create-checkout-session"), data=random_data
-                )
+                response = self.client.post(reverse("create-checkout-session"), data=random_data)
 
                 # Should handle random data gracefully
                 self.assertIn(response.status_code, [200, 302, 400, 404, 500])
@@ -716,9 +675,7 @@ class SystemResourceStressChaosTest(TestCase):
 
         # Most requests should be handled gracefully
         success_rate = sum(results) / len(results)
-        self.assertGreaterEqual(
-            success_rate, 0.70
-        )  # At least 70% handled gracefully (lowered due to high randomness)
+        self.assertGreaterEqual(success_rate, 0.70)  # At least 70% handled gracefully (lowered due to high randomness)
 
 
 class NetworkConnectivityChaosTest(TestCase):
@@ -830,9 +787,7 @@ class NetworkConnectivityChaosTest(TestCase):
         ):
             start_time = time.time()
 
-            response = self.client.post(
-                reverse("create-checkout-session"), {"plan_id": self.basic_plan.id}
-            )
+            response = self.client.post(reverse("create-checkout-session"), {"plan_id": self.basic_plan.id})
 
             end_time = time.time()
             duration = end_time - start_time

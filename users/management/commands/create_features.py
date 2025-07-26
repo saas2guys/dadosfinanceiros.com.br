@@ -1,7 +1,9 @@
-from django.core.management.base import BaseCommand
 from decimal import Decimal
 
-from users.models import Plan, Feature
+from django.core.management.base import BaseCommand
+
+from proxy_project import settings
+from users.models import Feature, Plan
 
 
 class Command(BaseCommand):
@@ -15,6 +17,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        if not settings.DEBUG and getattr(settings, 'ENV', 'development') not in ['dev', 'local', 'development']:
+            self.stdout.write(self.style.ERROR('❌ This command is restricted to development environments only.'))
+            return
 
         all_features = [
             'Unlimited API calls',
@@ -33,7 +38,6 @@ class Command(BaseCommand):
             'ETF and mutual fund holdings',
             'Bulk and batch delivery',
         ]
-
 
         plans_config = {
             'Basic': {
@@ -109,7 +113,7 @@ class Command(BaseCommand):
                 'burst_limit': 20,
                 'is_free': True,
                 'is_metered': False,
-            }
+            },
         }
 
         if options['delete_existing']:
@@ -120,11 +124,7 @@ class Command(BaseCommand):
         feature_objects = {}
         for feature_name in all_features:
             feature, created = Feature.objects.get_or_create(
-                name=feature_name,
-                defaults={
-                    'description': f'Access to {feature_name.lower()}',
-                    'is_active': True
-                }
+                name=feature_name, defaults={'description': f'Access to {feature_name.lower()}', 'is_active': True}
             )
             feature_objects[feature_name] = feature
 
@@ -142,7 +142,7 @@ class Command(BaseCommand):
                     'is_active': True,
                     'is_free': config['is_free'],
                     'is_metered': config['is_metered'],
-                }
+                },
             )
 
             if not created:
@@ -161,8 +161,4 @@ class Command(BaseCommand):
             plan_features = [feature_objects[name] for name in config['features']]
             plan.features.add(*plan_features)
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f'Successfully created {len(all_features)} features and {len(plans_config)} plans.'
-            )
-        )
+        self.stdout.write(self.style.SUCCESS(f'Successfully created {len(all_features)} features and {len(plans_config)} plans.'))

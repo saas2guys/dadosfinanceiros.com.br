@@ -1,11 +1,12 @@
+from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 from django.utils import timezone
-from django.conf import settings
 
 
 class StaticViewSitemap(Sitemap):
     """Sitemap for static pages"""
+
     priority = 0.8
     changefreq = 'weekly'
     protocol = 'https'
@@ -15,7 +16,7 @@ class StaticViewSitemap(Sitemap):
         return [
             'home',
             'faq',
-            'blog', 
+            'blog',
             'api_comparison',
             'waiting_list',
             'waiting_list_success',
@@ -42,6 +43,7 @@ class StaticViewSitemap(Sitemap):
 
 class ProductPagesSitemap(Sitemap):
     """Sitemap for product/service pages"""
+
     priority = 1.0
     changefreq = 'monthly'
     protocol = 'https'
@@ -82,6 +84,7 @@ class ProductPagesSitemap(Sitemap):
 
 class SEOLandingPagesSitemap(Sitemap):
     """Sitemap for SEO landing pages"""
+
     priority = 0.7
     changefreq = 'monthly'
     protocol = 'https'
@@ -131,6 +134,7 @@ class SEOLandingPagesSitemap(Sitemap):
 
 class InternationalizedViewSitemap(Sitemap):
     """Sitemap for internationalized views (English and Portuguese)"""
+
     priority = 0.8
     changefreq = 'weekly'
     protocol = 'https'
@@ -159,34 +163,35 @@ class InternationalizedViewSitemap(Sitemap):
             'indices_api',
             'commodities_api',
         ]
-        
+
         # Generate language-specific URLs
         language_pages = []
         for lang_code in ['en', 'pt-br']:
             for page in base_pages:
                 language_pages.append(f"{lang_code}:{page}")
-        
+
         return language_pages
 
     def location(self, item):
         lang_code, page_name = item.split(':', 1)
-        
+
         # Use the reverse function with language code
         from django.utils.translation import activate
+
         current_language = timezone.get_current_timezone()
-        
+
         activate(lang_code.replace('-', '_'))
         url = reverse(page_name)
-        
+
         # Prepend language code to URL
         if not url.startswith(f'/{lang_code}/'):
             url = f'/{lang_code}{url}'
-        
+
         return url
 
     def priority(self, item):
         lang_code, page_name = item.split(':', 1)
-        
+
         # Higher priority for English and main product pages
         if lang_code == 'en':
             if page_name in ['home', 'stock_market_api', 'options_api', 'fundamentals_api', 'crypto_api']:
@@ -217,4 +222,4 @@ sitemaps = {
     'products': ProductPagesSitemap,
     'seo': SEOLandingPagesSitemap,
     'i18n': InternationalizedViewSitemap,
-} 
+}

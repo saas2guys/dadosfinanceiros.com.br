@@ -1,21 +1,23 @@
 import json
 import logging
-from datetime import datetime as dt, timezone as tz
+from datetime import datetime as dt
+from datetime import timezone as tz
 
 import stripe
 from django.conf import settings
-from django.core.cache import caches, cache
-from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache, caches
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_http_methods, require_POST
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from users.models import SubscriptionStatus
 
 from .forms import WaitingListForm
@@ -111,15 +113,12 @@ class TokenHistoryView(APIView):
 def home(request):
     plans = Plan.objects.all()
     plan_id_map = {plan.name: plan.id for plan in plans}
-    return render(request, 'home.html', {
-        'plan_id_map': plan_id_map
-    })
+    return render(request, 'home.html', {'plan_id_map': plan_id_map})
+
 
 @login_required
 def profile(request):
-    _token_history = TokenHistory.objects.filter(user=request.user).order_by(
-        "-created_at"
-    )
+    _token_history = TokenHistory.objects.filter(user=request.user).order_by("-created_at")
 
     token_info = request.user.get_token_info()
     token_info["is_active"] = not request.user.is_token_expired()
@@ -185,9 +184,7 @@ def profile(request):
 def regenerate_token(request):
     try:
         never_expires = request.POST.get("never_expires") == "true"
-        request.user.generate_new_request_token(
-            save_old=True, never_expires=never_expires
-        )
+        request.user.generate_new_request_token(save_old=True, never_expires=never_expires)
         messages.success(request, "New token generated successfully.")
     except Exception as e:
         messages.error(request, f"Failed to generate new token: {str(e)}")
@@ -218,8 +215,7 @@ def waiting_list(request):
                 if "UNIQUE constraint failed" in str(e) or "duplicate key" in str(e):
                     messages.info(
                         request,
-                        "This email is already on our waiting list. "
-                        "We'll notify you when the API becomes available!",
+                        "This email is already on our waiting list. " "We'll notify you when the API becomes available!",
                     )
                 else:
                     messages.error(
@@ -261,13 +257,9 @@ def regenerate_request_token(request):
     try:
         save_old = request.data.get("save_old", True)
         auto_renew = request.data.get("auto_renew", request.user.auto_renew_token)
-        validity_days = request.data.get(
-            "validity_days", request.user.token_validity_days
-        )
+        validity_days = request.data.get("validity_days", request.user.token_validity_days)
 
-        request.user.regenerate_request_token(
-            save_old=save_old, auto_renew=auto_renew, validity_days=validity_days
-        )
+        request.user.regenerate_request_token(save_old=save_old, auto_renew=auto_renew, validity_days=validity_days)
 
         return Response(
             {
@@ -308,9 +300,7 @@ def plans_view(request):
     context = {
         "plans": plans,
         "user": request.user if request.user.is_authenticated else None,
-        "current_plan": request.user.current_plan
-        if request.user.is_authenticated
-        else None,
+        "current_plan": request.user.current_plan if request.user.is_authenticated else None,
         "stripe_publishable_key": settings.STRIPE_PUBLISHABLE_KEY,
     }
     return render(request, "subscription/plans.html", context)
@@ -346,18 +336,14 @@ def create_checkout_session(request):
 
         if not plan.stripe_price_id:
             if is_api_request:
-                return JsonResponse(
-                    {"error": "This plan is not available for purchase."}, status=400
-                )
+                return JsonResponse({"error": "This plan is not available for purchase."}, status=400)
             else:
                 messages.error(request, "This plan is not available for purchase.")
                 return redirect("pricing")
 
         success_url = request.build_absolute_uri(reverse("subscription-success"))
         cancel_url = request.build_absolute_uri(reverse("home")) + "#pricing"
-        session = StripeService.create_checkout_session(
-            user=request.user, plan=plan, success_url=success_url, cancel_url=cancel_url
-        )
+        session = StripeService.create_checkout_session(user=request.user, plan=plan, success_url=success_url, cancel_url=cancel_url)
 
         if is_api_request:
             return JsonResponse({"checkout_url": session.url, "session_id": session.id})
@@ -371,23 +357,17 @@ def create_checkout_session(request):
                 status=503,
             )
         else:
-            messages.error(
-                request, "Service temporarily unavailable. Please try again later."
-            )
+            messages.error(request, "Service temporarily unavailable. Please try again later.")
             return redirect("home") + "pricing"
     except stripe.error.AuthenticationError as e:
         if is_api_request:
-            return JsonResponse(
-                {"error": "Authentication error with payment service."}, status=500
-            )
+            return JsonResponse({"error": "Authentication error with payment service."}, status=500)
         else:
             messages.error(request, "Payment service error. Please try again later.")
             return redirect("home") + "pricing"
     except stripe.error.StripeError as e:
         if is_api_request:
-            return JsonResponse(
-                {"error": f"Payment service error: {str(e)}"}, status=400
-            )
+            return JsonResponse({"error": f"Payment service error: {str(e)}"}, status=400)
         else:
             messages.error(request, f"Payment error: {str(e)}")
             return redirect("home") + "#pricing"
@@ -413,9 +393,7 @@ def cancel_subscription(request):
         StripeService.cancel_subscription(request.user.stripe_subscription_id)
         request.user.cancel_subscription()
 
-        messages.success(
-            request, "Your subscription has been canceled and will not renew."
-        )
+        messages.success(request, "Your subscription has been canceled and will not renew.")
 
     except Exception as e:
         messages.error(request, f"Error canceling subscription: {str(e)}")
@@ -452,9 +430,7 @@ def stripe_webhook(request):
 
     if request.content_type != "application/json":
         logger.debug("Invalid content type for webhook, returning 400.")
-        return JsonResponse(
-            {"error": "Content-Type must be application/json"}, status=400
-        )
+        return JsonResponse({"error": "Content-Type must be application/json"}, status=400)
 
     webhook_secret = getattr(settings, "STRIPE_WEBHOOK_SECRET", None)
     logger.debug(f"Webhook secret configured: {bool(webhook_secret)}")
@@ -488,10 +464,10 @@ def stripe_webhook(request):
             'invoice.payment_failed': handle_payment_failed,
             'payment_intent.payment_failed': handle_payment_failed,
             'invoice.payment_succeeded': handle_payment_succeeded,
-            'customer.subscription.trial_will_end': handle_trial_ending, # not used by now
-            'invoice.payment_action_required': handle_payment_action_required # not used by now
+            'customer.subscription.trial_will_end': handle_trial_ending,  # not used by now
+            'invoice.payment_action_required': handle_payment_action_required,  # not used by now
         }
-        
+
         handler = handlers.get(event['type'])
         logger.debug(f"Processing webhook event type: {event['type']}")
         if handler:
@@ -522,7 +498,7 @@ def handle_subscription_created(subscription_data):
 
         if user.stripe_subscription_id and user.stripe_subscription_id != subscription_id:
             try:
-                old_sub_id=user.stripe_subscription_id
+                old_sub_id = user.stripe_subscription_id
                 stripe.Subscription.delete(old_sub_id)
                 logger.info(f"Old Subscription canceled: {user.stripe_subscription_id}")
             except Exception as e:
@@ -584,7 +560,7 @@ def handle_subscription_updated(subscription_data):
         customer_id = subscription_data['customer']
         user = User.objects.get(stripe_customer_id=customer_id)
         logger.debug(f"Found user {user.id} with subscription {subscription_id}")
-        
+
         # Update status and dates
         old_status = user.subscription_status
         new_status = subscription_data['status']
@@ -606,7 +582,7 @@ def handle_subscription_updated(subscription_data):
         if current_period_end:
             user.current_period_end = dt.fromtimestamp(current_period_end, tz=tz.utc)
             user.subscription_expires_at = user.current_period_end
-        
+
         # Handle plan changes
         if subscription_data['items']['data']:
             price_id = subscription_data['items']['data'][0]['price']['id']
@@ -619,7 +595,7 @@ def handle_subscription_updated(subscription_data):
                     user.limits_cache_updated = None
             except Plan.DoesNotExist:
                 logger.warning(f"Plan not found for Stripe price ID: {price_id}")
-        
+
         # Handle status-specific actions
         if subscription_data['status'] == 'active':
             user.handle_payment_success()
@@ -630,18 +606,18 @@ def handle_subscription_updated(subscription_data):
             logger.warning(f"Subscription payment issues: user_id={user.id}")
         elif subscription_data['status'] == 'canceled':
             logger.info(f"Subscription canceled: user_id={user.id}, subscription_id={subscription_id}")
-        
+
         user.save()
         logger.debug(f"User {user.id} saved with new subscription status: {user.subscription_status}")
-        
+
         # Clear rate limiting cache
         cache = caches['rate_limit']
         cache_key = f"user_limits:{user.id}"
         cache.delete(cache_key)
-        
+
         logger.debug(f"Subscription update completed for user {user.id}")
         return {"user_id": user.id, "status": subscription_data['status']}
-        
+
     except User.DoesNotExist:
         logger.error(f"User not found for subscription ID: {subscription_id}")
         return {"error": "User not found"}
@@ -661,10 +637,10 @@ def handle_subscription_canceled(subscription_data):
             return {"user_id": user.id, "ignored": True}
         user.cancel_subscription()
         user.clear_payment_failure_flags(user)  # Clear restrictions but subscription is still canceled
-        
+
         logger.info(f"Subscription canceled: user_id={user.id}, subscription_id={subscription_id}")
         return {"user_id": user.id, "canceled": True}
-        
+
     except User.DoesNotExist:
         logger.error(f"User not found for canceled subscription: {subscription_id}")
         return {"error": "User not found"}
@@ -700,7 +676,7 @@ def handle_payment_succeeded(subscription_data):
         if not subscription_id:
             logger.info(f"success:" "True", "message:" "No subscription to update")
             return {"success": True, "message": "No subscription to update"}
-        
+
         customer_id = subscription_data['customer']
         cache_key = f"payment_succeeded:{customer_id}"
         cache.set(cache_key, True, timeout=5)
@@ -709,7 +685,7 @@ def handle_payment_succeeded(subscription_data):
         user.handle_payment_success()
         logger.info(f"Payment succeeded: user_id={user.id}")
         return {"user_id": user.id, "payment_cleared": True}
-        
+
     except User.DoesNotExist:
         logger.error(f"User not found for successful payment, subscription: {subscription_id}")
         return {"error": "User not found"}
@@ -723,13 +699,13 @@ def handle_trial_ending(subscription_data):
     try:
         subscription_id = subscription_data['id']
         user = User.objects.get(stripe_subscription_id=subscription_id)
-        
+
         # Log trial ending for monitoring
         logger.info(f"Trial ending: user_id={user.id}, subscription_id={subscription_id}")
-        
+
         # Could send notification email here
         return {"user_id": user.id, "trial_ending": True}
-        
+
     except User.DoesNotExist:
         logger.error(f"User not found for trial ending, subscription: {subscription_id}")
         return {"error": "User not found"}
@@ -744,15 +720,15 @@ def handle_payment_action_required(invoice_data):
         subscription_id = invoice_data.get('subscription')
         if not subscription_id:
             return {"message": "No subscription to update"}
-        
+
         user = User.objects.get(stripe_subscription_id=subscription_id)
-        
+
         # Apply limited restrictions but not as severe as failed payment
         user.set_payment_failure_flags(user, 'warning')
-        
+
         logger.info(f"Payment action required: user_id={user.id}")
         return {"user_id": user.id, "action_required": True}
-        
+
     except User.DoesNotExist:
         logger.error(f"User not found for payment action required, subscription: {subscription_id}")
         return {"error": "User not found"}
@@ -766,18 +742,14 @@ def handle_payment_action_required(invoice_data):
 def user_subscription(request):
     user = request.user
     data = {
-        "current_plan": PlanSerializer(user.current_plan).data
-        if user.current_plan
-        else None,
+        "current_plan": PlanSerializer(user.current_plan).data if user.current_plan else None,
         "subscription_status": user.subscription_status,
         "subscription_expires_at": user.subscription_expires_at,
         "subscription_days_remaining": user.subscription_days_remaining,
         "is_subscription_active": user.is_subscription_active,
         "daily_request_limit": user.daily_request_limit,
         "daily_requests_made": user.daily_requests_made,
-        "requests_remaining": max(
-            0, user.daily_request_limit - user.daily_requests_made
-        ),
+        "requests_remaining": max(0, user.daily_request_limit - user.daily_requests_made),
     }
     return Response(data)
 
@@ -801,16 +773,20 @@ def create_checkout_session_api(request):
             user=request.user if request.user.is_authenticated else None,
             plan=plan,
             success_url=request.data.get("success_url", request.build_absolute_uri(reverse("subscription-success"))),
-            cancel_url=request.data.get("cancel_url", request.build_absolute_uri(reverse("home")))
+            cancel_url=request.data.get("cancel_url", request.build_absolute_uri(reverse("home"))),
         )
 
         return Response({"checkout_url": session.url, "session_id": session.id})
 
     except stripe.error.StripeError as e:
         status_code = 503 if "APIConnection" in str(type(e)) else 500 if "Authentication" in str(type(e)) else 400
-        error_msg = ("Service temporarily unavailable. Please try again later." if status_code == 503
-                     else "Authentication error with payment service." if status_code == 500
-        else f"Payment service error: {str(e)}")
+        error_msg = (
+            "Service temporarily unavailable. Please try again later."
+            if status_code == 503
+            else "Authentication error with payment service."
+            if status_code == 500
+            else f"Payment service error: {str(e)}"
+        )
         return Response({"error": error_msg}, status=status_code)
     except Exception as e:
         return Response({"error": str(e)}, status=400)

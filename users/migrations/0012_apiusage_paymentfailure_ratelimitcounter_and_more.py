@@ -2,9 +2,10 @@
 
 import django.db.models.deletion
 import django.utils.timezone
-import users.models
 from django.conf import settings
 from django.db import migrations, models
+
+import users.models
 
 
 class Migration(migrations.Migration):
@@ -33,15 +34,11 @@ class Migration(migrations.Migration):
                 ("user_agent", models.TextField(blank=True)),
                 (
                     "timestamp",
-                    models.DateTimeField(
-                        db_index=True, default=django.utils.timezone.now
-                    ),
+                    models.DateTimeField(db_index=True, default=django.utils.timezone.now),
                 ),
                 (
                     "date",
-                    models.DateField(
-                        db_index=True, default=users.models.get_current_date
-                    ),
+                    models.DateField(db_index=True, default=users.models.get_current_date),
                 ),
                 ("hour", models.IntegerField(db_index=True)),
             ],
@@ -172,9 +169,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="plan",
-            index=models.Index(
-                fields=["is_active", "is_free"], name="users_plan_is_acti_3ae34b_idx"
-            ),
+            index=models.Index(fields=["is_active", "is_free"], name="users_plan_is_acti_3ae34b_idx"),
         ),
         migrations.AddField(
             model_name="apiusage",
@@ -189,9 +184,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="paymentfailure",
             name="user",
-            field=models.OneToOneField(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
-            ),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddIndex(
             model_name="ratelimitcounter",
@@ -202,15 +195,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="ratelimitcounter",
-            index=models.Index(
-                fields=["window_start"], name="users_ratel_window__320c75_idx"
-            ),
+            index=models.Index(fields=["window_start"], name="users_ratel_window__320c75_idx"),
         ),
         migrations.AddIndex(
             model_name="ratelimitcounter",
-            index=models.Index(
-                fields=["updated_at"], name="users_ratel_updated_5975cf_idx"
-            ),
+            index=models.Index(fields=["updated_at"], name="users_ratel_updated_5975cf_idx"),
         ),
         migrations.AlterUniqueTogether(
             name="ratelimitcounter",
@@ -228,15 +217,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="apiusage",
-            index=models.Index(
-                fields=["user", "date", "hour"], name="users_apius_user_id_14e7ee_idx"
-            ),
+            index=models.Index(fields=["user", "date", "hour"], name="users_apius_user_id_14e7ee_idx"),
         ),
         migrations.AddIndex(
             model_name="apiusage",
-            index=models.Index(
-                fields=["user", "timestamp"], name="users_apius_user_id_2ab62d_idx"
-            ),
+            index=models.Index(fields=["user", "timestamp"], name="users_apius_user_id_2ab62d_idx"),
         ),
         migrations.AddIndex(
             model_name="apiusage",
@@ -258,33 +243,23 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="paymentfailure",
-            index=models.Index(
-                fields=["failed_at"], name="users_payme_failed__c7fb15_idx"
-            ),
+            index=models.Index(fields=["failed_at"], name="users_payme_failed__c7fb15_idx"),
         ),
         migrations.AddIndex(
             model_name="paymentfailure",
-            index=models.Index(
-                fields=["restrictions_applied"], name="users_payme_restric_c4cbe0_idx"
-            ),
+            index=models.Index(fields=["restrictions_applied"], name="users_payme_restric_c4cbe0_idx"),
         ),
         migrations.AddIndex(
             model_name="usagesummary",
-            index=models.Index(
-                fields=["user", "date"], name="users_usage_user_id_fb41b1_idx"
-            ),
+            index=models.Index(fields=["user", "date"], name="users_usage_user_id_fb41b1_idx"),
         ),
         migrations.AddIndex(
             model_name="usagesummary",
-            index=models.Index(
-                fields=["date", "hour"], name="users_usage_date_56c990_idx"
-            ),
+            index=models.Index(fields=["date", "hour"], name="users_usage_date_56c990_idx"),
         ),
         migrations.AddIndex(
             model_name="usagesummary",
-            index=models.Index(
-                fields=["ip_address", "date"], name="users_usage_ip_addr_276fd3_idx"
-            ),
+            index=models.Index(fields=["ip_address", "date"], name="users_usage_ip_addr_276fd3_idx"),
         ),
         migrations.AlterUniqueTogether(
             name="usagesummary",

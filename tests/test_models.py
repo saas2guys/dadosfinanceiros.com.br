@@ -101,7 +101,7 @@ class PlanModelBusinessLogicTest(TestCase):
         """Test that duplicate plan names are allowed since there's no unique constraint."""
         plan1 = PlanFactory(name="Test Plan")
         plan2 = PlanFactory(name="Test Plan")  # Should be allowed
-        
+
         # Both plans should exist with the same name
         self.assertEqual(plan1.name, plan2.name)
         self.assertNotEqual(plan1.id, plan2.id)  # But different IDs
@@ -117,9 +117,7 @@ class PlanModelBusinessLogicTest(TestCase):
 
         for price, expected in test_cases:
             with self.subTest(price=price):
-                plan = PlanFactory(
-                    name=f"Test Plan {price}", price_monthly=price
-                )
+                plan = PlanFactory(name=f"Test Plan {price}", price_monthly=price)
                 self.assertEqual(plan.is_free, expected)
 
     def test_stores_and_retrieves_complex_json_features(self):
@@ -135,9 +133,7 @@ class PlanModelBusinessLogicTest(TestCase):
         plan.refresh_from_db()
 
         self.assertEqual(plan.features, complex_features)
-        self.assertEqual(
-            plan.get_feature("api_endpoints"), ["stocks", "forex", "crypto"]
-        )
+        self.assertEqual(plan.get_feature("api_endpoints"), ["stocks", "forex", "crypto"])
         self.assertEqual(plan.get_feature("rate_limits")["day"], 10000)
 
     def test_allows_negative_price_for_discount_scenarios(self):
@@ -178,9 +174,7 @@ class UserModelBusinessLogicTest(TestCase):
 
     def test_creates_user_with_all_required_fields_successfully(self):
         """Test successful user creation."""
-        user = UserFactory(
-            email="test@example.com", first_name="Test", last_name="User"
-        )
+        user = UserFactory(email="test@example.com", first_name="Test", last_name="User")
 
         self.assertEqual(user.email, "test@example.com")
         self.assertEqual(user.first_name, "Test")
@@ -191,9 +185,7 @@ class UserModelBusinessLogicTest(TestCase):
     def test_assigns_free_plan_to_new_users_by_default(self):
         """Test that new users get assigned to free plan."""
         # Create free plan first
-        free_plan = FreePlanFactory(
-            name="Free", price_monthly=Decimal("0.00")
-        )
+        free_plan = FreePlanFactory(name="Free", price_monthly=Decimal("0.00"))
 
         with patch("users.models.Plan.objects.filter") as mock_filter:
             mock_filter.return_value.first.return_value = free_plan
@@ -243,17 +235,13 @@ class UserModelBusinessLogicTest(TestCase):
     @freeze_time("2024-01-15 12:00:00")
     def test_calculates_remaining_days_for_active_subscription(self):
         """Test subscription_days_remaining with time remaining."""
-        user = ActiveSubscriberUserFactory(
-            subscription_expires_at=timezone.now() + timedelta(days=10)
-        )
+        user = ActiveSubscriberUserFactory(subscription_expires_at=timezone.now() + timedelta(days=10))
         self.assertEqual(user.subscription_days_remaining, 10)
 
     @freeze_time("2024-01-15 12:00:00")
     def test_returns_zero_days_for_expired_subscription(self):
         """Test subscription_days_remaining with expired subscription."""
-        user = ActiveSubscriberUserFactory(
-            subscription_expires_at=timezone.now() - timedelta(days=5)
-        )
+        user = ActiveSubscriberUserFactory(subscription_expires_at=timezone.now() - timedelta(days=5))
 
         # Should return 0 for expired subscriptions (max(0, remaining.days))
         self.assertEqual(user.subscription_days_remaining, 0)
@@ -265,9 +253,7 @@ class UserModelBusinessLogicTest(TestCase):
 
     def test_allows_api_request_when_within_daily_limit(self):
         """Test can_make_request when within daily limit."""
-        user = ActiveSubscriberUserFactory(
-            daily_requests_made=500, last_request_date=timezone.now().date()
-        )
+        user = ActiveSubscriberUserFactory(daily_requests_made=500, last_request_date=timezone.now().date())
 
         can_make, message = user.can_make_request()
         self.assertTrue(can_make)

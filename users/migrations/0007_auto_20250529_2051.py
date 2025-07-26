@@ -77,9 +77,7 @@ def assign_free_plan_to_users(apps, schema_editor):
 
     try:
         free_plan = Plan.objects.get(slug="free")
-        User.objects.filter(current_plan__isnull=True).update(
-            current_plan=free_plan, subscription_status="active"
-        )
+        User.objects.filter(current_plan__isnull=True).update(current_plan=free_plan, subscription_status="active")
     except Plan.DoesNotExist:
         pass
 
