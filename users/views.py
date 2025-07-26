@@ -8,7 +8,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache, caches
-from django.db.models import BooleanField, Value, When
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -17,9 +16,8 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from sqlalchemy.sql.elements import Case
 
-from users.models import SubscriptionStatus, Feature
+from users.models import Feature, SubscriptionStatus
 
 from .forms import WaitingListForm
 from .models import Plan, TokenHistory, User
@@ -115,10 +113,7 @@ def home(request):
     plans = Plan.objects.filter(is_active=True).prefetch_related('features').order_by('price_monthly')
     all_features = Feature.objects.filter(is_active=True).order_by('name')
 
-    return render(request, 'home.html', {
-        'plans': plans,
-        'all_features': all_features
-    })
+    return render(request, 'home.html', {'plans': plans, 'all_features': all_features})
 
 
 @login_required
