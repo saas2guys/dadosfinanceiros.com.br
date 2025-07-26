@@ -215,18 +215,102 @@
                 </div>
 
                 <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        Which billing cycle are you most interested in?
+                    </label>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <style>
+                        .cycle-pill input[type="radio"]:checked + span {
+                            background: #6366f1;
+                            color: #fff;
+                            border-color: #6366f1;
+                        }
+                        .cycle-pill input[type="radio"]:focus + span {
+                            box-shadow: 0 0 0 2px #6366f1;
+                        }
+                        .cycle-pill span {
+                            background: #27272a;
+                            color: #e5e7eb;
+                            border-color: #27272a;
+                        }
+                        </style>
+                        <label class="cycle-pill cursor-pointer group">
+                            <input type="radio" name="desired_billing_cycle" value="monthly" class="hidden" checked>
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none text-center">
+                                Monthly
+                            </span>
+                        </label>
+                        <label class="cycle-pill cursor-pointer group">
+                            <input type="radio" name="desired_billing_cycle" value="yearly" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none text-center">
+                                Yearly
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        Which plan are you most interested in?
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                        <style>
+                        .plan-pill input[type="radio"]:checked + span {
+                            background: #6366f1; /* indigo-500 */
+                            color: #fff;
+                            border-color: #6366f1;
+                        }
+                        .plan-pill input[type="radio"]:focus + span {
+                            box-shadow: 0 0 0 2px #6366f1;
+                        }
+                        .plan-pill span {
+                            background: #27272a; /* bg-gray-800 */
+                            color: #e5e7eb; /* text-gray-200 */
+                            border-color: #27272a; /* bg-gray-800 */
+                        }
+                        </style>
+                        {% for plan in plans %}
+                        <label class="plan-pill cursor-pointer group">
+                            <input type="radio" name="desired_plan" value="{{ plan.name }}" class="hidden">
+                            <span class="block w-full rounded-full border px-5 py-3 text-sm font-medium transition-all duration-150 shadow-sm group-hover:border-indigo-400 group-hover:bg-gray-800 select-none text-center"
+                                  data-monthly-price="${{ plan.price_monthly|floatformat:0 }}"
+                                  data-yearly-price="{% if plan.price_yearly %}${{ plan.price_yearly|floatformat:0 }}{% else %}0{% endif %}">
+                                <div class="font-bold">{{ plan.name }}</div>
+                                <div class="text-xs opacity-75">
+                                    <span class="plan-price plan-price-monthly" style="display: inline;">
+                                        {% if plan.is_free %}
+                                            Free{% if plan.daily_request_limit %} ({{ plan.daily_request_limit }} calls/day){% endif %}
+                                        {% else %}
+                                            ${{ plan.price_monthly|floatformat:0 }}/month
+                                        {% endif %}
+                                    </span>
+                                    <span class="plan-price plan-price-yearly" style="display: none;">
+                                        {% if plan.is_free %}
+                                            Free{% if plan.daily_request_limit %} ({{ plan.daily_request_limit }} calls/day){% endif %}
+                                        {% else %}
+                                            {% if plan.price_yearly %}${{ plan.price_yearly|floatformat:0 }}/year{% else %}N/A{% endif %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div>
                     <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 font-medium text-lg transition duration-150 ease-in-out">
                         Join Waiting List
                     </button>
                 </div>
             </form>
 
-            <div class="mt-6 text-center">
-                <p class="text-sm text-gray-400">
-                    Already have an account?
-                    <a href="{% url 'login' %}" class="text-indigo-400 hover:text-indigo-300 font-medium">Sign in here</a>
-                </p>
-            </div>
+{#            <div class="mt-6 text-center">#}
+{#                <p class="text-sm text-gray-400">#}
+{#                    Already have an account?#}
+{#                    <a href="{% url 'login' %}" class="text-indigo-400 hover:text-indigo-300 font-medium">Sign in here</a>#}
+{#                </p>#}
+{#            </div>#}
         </div>
 
         <!-- Timeline -->
@@ -268,4 +352,49 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Waiting list script loaded');
+    
+    function updatePlanPrices() {
+        const selectedCycle = document.querySelector('input[name="desired_billing_cycle"]:checked');
+        if (!selectedCycle) {
+            console.log('No billing cycle selected');
+            return;
+        }
+        
+        console.log('Selected cycle:', selectedCycle.value);
+        
+        const monthlyPrices = document.querySelectorAll('.plan-price-monthly');
+        const yearlyPrices = document.querySelectorAll('.plan-price-yearly');
+        
+        console.log('Found monthly prices:', monthlyPrices.length);
+        console.log('Found yearly prices:', yearlyPrices.length);
+        
+        monthlyPrices.forEach(function(el) {
+            el.style.display = (selectedCycle.value === 'monthly') ? 'inline' : 'none';
+        });
+        
+        yearlyPrices.forEach(function(el) {
+            el.style.display = (selectedCycle.value === 'yearly') ? 'inline' : 'none';
+        });
+    }
+    
+    // Add event listeners to billing cycle radio buttons
+    const billingCycleRadios = document.querySelectorAll('input[name="desired_billing_cycle"]');
+    console.log('Found billing cycle radios:', billingCycleRadios.length);
+    
+    billingCycleRadios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            console.log('Billing cycle changed to:', this.value);
+            updatePlanPrices();
+        });
+    });
+    
+    // Set initial state
+    updatePlanPrices();
+});
+</script>
+
 {% endblock %} 
