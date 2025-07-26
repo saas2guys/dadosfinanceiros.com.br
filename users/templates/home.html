@@ -529,111 +529,53 @@
             </div>
             {% endif %}
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="plan-cards">
-                <!-- Basic Plan -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="plan-cards">
+                {% for plan in plans %}
                 <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
-                 data-plan="Basic"
-                 data-plan-id="{{ plan_id_map.Basic }}"
-                 onclick="selectPlan('Basic', '{{ plan_id_map.Basic }}', 29)">
+                     data-plan="{{ plan.name }}"
+                     data-plan-id="{{ plan.id }}"
+                     onclick="selectPlan('{{ plan.name }}', '{{ plan.id }}', {{ plan.price_monthly }})">
                     <div class="px-8 py-10 flex flex-col items-center">
                         <div class="text-center">
-                            <h3 class="text-2xl font-bold text-indigo-400 mb-2">Basic</h3>
+                            <h3 class="text-2xl font-bold text-indigo-400 mb-2">{{ plan.name }}</h3>
                             <div class="mt-2 flex items-baseline justify-center">
-                                <span class="text-5xl font-extrabold text-indigo-700">US$29</span>
+                                <span class="text-5xl font-extrabold text-indigo-700">US${{ plan.price_monthly|floatformat:0 }}</span>
                                 <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
                             </div>
+                            {% if plan.description %}
+                            <p class="text-gray-300 text-sm mt-4">{{ plan.description }}</p>
+                            {% endif %}
                         </div>
                         <div class="mt-8 w-full">
                             <ul class="space-y-2">
-                                <li class="flex items-center"><span class="text-white">✅ Unlimited API calls</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Real-time data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ US, Brazil, and +25 other stock exchanges</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Forex</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Crypto</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 5 years of historical data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Unlimited file downloads</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ WebSockets</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Snapshot</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ 30 years of historical data</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ 47 markets</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ Global coverage</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ 13F Institutional Holdings*</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ ETF and mutual fund holdings</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ Bulk and batch delivery</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                                <!-- Available features first -->
+                                {% for feature in all_features %}
+                                    {% if feature in plan.features.all %}
+                                    <li class="flex items-center">
+                                        <span class="text-white">✅ {{ feature.name }}</span>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
 
-                <!-- Pro Plan -->
-                <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
-                     data-plan="Pro"
-                     data-plan-id="{{ plan_id_map.Pro }}"
-                     onclick="selectPlan('Pro', '{{ plan_id_map.Pro }}', 57)">
-                    <div class="px-8 py-10 flex flex-col items-center">
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold text-indigo-400 mb-2">Pro</h3>
-                            <div class="mt-2 flex items-baseline justify-center">
-                                <span class="text-5xl font-extrabold text-indigo-700">US$57</span>
-                                <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
-                            </div>
-                        </div>
-                        <div class="mt-8 w-full">
-                            <ul class="space-y-2">
-                                <li class="flex items-center"><span class="text-white">✅ Unlimited API calls</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Real-time data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ US, Brazil, and +25 other stock exchanges</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Forex</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Crypto</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 5 years of historical data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Unlimited file downloads</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ WebSockets</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Snapshot</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 30 years of historical data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 47 markets</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ Global coverage</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ 13F Institutional Holdings*</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ ETF and mutual fund holdings</span></li>
-                                <li class="flex items-center"><span class="text-white">❌ Bulk and batch delivery</span></li>
+                                <!-- Unavailable features second -->
+                                {% for feature in all_features %}
+                                    {% if feature not in plan.features.all %}
+                                    <li class="flex items-center">
+                                        <span class="text-white">❌ {{ feature.name }}</span>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
+                {% empty %}
+                <div class="col-span-full text-center text-gray-400">
+                    <p>No plans available at the moment.</p>
+                </div>
+                {% endfor %}
+            </div>
 
-                <!-- Premium Plan -->
-                <div class="plan-card bg-gray-800 rounded-3xl shadow-xl overflow-hidden cursor-pointer transition border-2 border-transparent hover:border-blue-400 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 duration-200"
-                     data-plan="Premium"
-                     data-plan-id="{{ plan_id_map.Premium }}"
-                     onclick="selectPlan('Premium', '{{ plan_id_map.Premium }}', 148)">
-                    <div class="px-8 py-10 flex flex-col items-center">
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold text-indigo-400 mb-2">Premium</h3>
-                            <div class="mt-2 flex items-baseline justify-center">
-                                <span class="text-5xl font-extrabold text-indigo-700">US$148</span>
-                                <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
-                            </div>
-                        </div>
-                        <div class="mt-8 w-full">
-                            <ul class="space-y-2">
-                                <li class="flex items-center"><span class="text-white">✅ Unlimited API calls</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Real-time data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ US, Brazil, and +25 other stock exchanges</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Forex</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Crypto</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 5 years of historical data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Unlimited file downloads</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ WebSockets</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Snapshot</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 30 years of historical data</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 47 markets</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Global coverage</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ 13F Institutional Holdings*</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ ETF and mutual fund holdings</span></li>
-                                <li class="flex items-center"><span class="text-white">✅ Bulk and batch delivery</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div><div id="subscribe-btn-container" class="text-center mt-6"></div>
             <div id="plan-details" class="mt-10 text-center"></div>
 

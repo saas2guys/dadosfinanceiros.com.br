@@ -8,17 +8,18 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache, caches
+from django.db.models import BooleanField, Value, When
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
 from django.views.decorators.http import require_http_methods, require_POST
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from sqlalchemy.sql.elements import Case
 
-from users.models import SubscriptionStatus
+from users.models import SubscriptionStatus, Feature
 
 from .forms import WaitingListForm
 from .models import Plan, TokenHistory, User
@@ -111,9 +112,13 @@ class TokenHistoryView(APIView):
 
 
 def home(request):
-    plans = Plan.objects.all()
-    plan_id_map = {plan.name: plan.id for plan in plans}
-    return render(request, 'home.html', {'plan_id_map': plan_id_map})
+    plans = Plan.objects.filter(is_active=True).prefetch_related('features').order_by('price_monthly')
+    all_features = Feature.objects.filter(is_active=True).order_by('name')
+
+    return render(request, 'home.html', {
+        'plans': plans,
+        'all_features': all_features
+    })
 
 
 @login_required
@@ -759,12 +764,6 @@ def user_subscription(request):
 def create_checkout_session_api(request):
     try:
         plan = get_object_or_404(Plan, id=request.data.get("plan_id"), is_active=True)
-
-        if plan.is_free:
-            if request.user.is_authenticated:
-                request.user.upgrade_to_plan(plan)
-                return Response({"success": True, "message": f"Successfully upgraded to {plan.name} plan!"})
-            return Response({"error": "Registration required for free plan."}, status=400)
 
         if not plan.stripe_price_id:
             return Response({"error": "This plan is not available for purchase."}, status=400)

@@ -98,22 +98,6 @@ class Command(BaseCommand):
                 'is_free': False,
                 'is_metered': False,
             },
-            'Free': {
-                'price_monthly': Decimal('0.00'),
-                'price_yearly': Decimal('0.00'),
-                'description': 'Limited access for testing and evaluation',
-                'features': [
-                    'Real-time data',
-                    'US, Brazil, and +25 other stock exchanges',
-                    'Snapshot',
-                ],
-                'daily_request_limit': 100,
-                'hourly_request_limit': 10,
-                'monthly_request_limit': 3000,
-                'burst_limit': 20,
-                'is_free': True,
-                'is_metered': False,
-            },
         }
 
         if options['delete_existing']:

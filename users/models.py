@@ -66,12 +66,6 @@ class Plan(models.Model):
     def __str__(self):
         return f"{self.name} - ${self.price_monthly}/month"
 
-    class Meta:
-        ordering = ["price_monthly"]
-        indexes = [
-            models.Index(fields=['is_active', 'is_free']),
-        ]
-
 
 class RateLimitCounter(models.Model):
     identifier = models.CharField(max_length=255, db_index=True)
@@ -84,20 +78,11 @@ class RateLimitCounter(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        unique_together = ['identifier', 'endpoint', 'window_start', 'window_type']
-        indexes = [
-            models.Index(fields=['identifier', 'window_start', 'window_type']),
-            models.Index(fields=['window_start']),
-            models.Index(fields=['updated_at']),
-        ]
-
     def __str__(self):
         return f"{self.identifier} - {self.endpoint} - {self.count} ({self.window_type})"
 
 
 def get_current_date():
-    """Helper function to get current date for model default"""
     return timezone.now().date()
 
 
@@ -112,15 +97,6 @@ class APIUsage(models.Model):
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
     date = models.DateField(default=get_current_date, db_index=True)
     hour = models.IntegerField(db_index=True)
-
-    class Meta:
-        indexes = [
-            models.Index(fields=['user', 'date', 'hour']),
-            models.Index(fields=['user', 'timestamp']),
-            models.Index(fields=['date']),
-            models.Index(fields=['user', 'endpoint', 'date']),
-            models.Index(fields=['ip_address', 'date', 'hour']),
-        ]
 
     def save(self, *args, **kwargs):
         if not self.hour:
@@ -145,14 +121,6 @@ class UsageSummary(models.Model):
     avg_response_time = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        unique_together = ['user', 'ip_address', 'date', 'hour']
-        indexes = [
-            models.Index(fields=['user', 'date']),
-            models.Index(fields=['date', 'hour']),
-            models.Index(fields=['ip_address', 'date']),
-        ]
 
     def __str__(self):
         user_info = self.user.email if self.user else self.ip_address
@@ -246,8 +214,6 @@ class UserQuerySet(models.QuerySet):
 
 
 class UserManager(BaseUserManager):
-    """Custom user manager that uses email as the unique identifier."""
-
     def get_queryset(self):
         return UserQuerySet(self.model, using=self._db)
 

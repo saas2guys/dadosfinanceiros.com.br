@@ -56,7 +56,7 @@ class WaitingListAdmin(admin.ModelAdmin):
 
 @admin.register(Plan)
 class PlanAdmin(admin.ModelAdmin):
-    list_display = ["name", "price_monthly", "is_active", "is_free", "is_metered", "created_at"]
+    list_display = ["name", "price_monthly", "price_yearly", "is_active", "is_free", "is_metered", "created_at"]
     search_fields = ["name"]
     list_filter = ["is_active", "is_free", "is_metered"]
     ordering = ["price_monthly"]
