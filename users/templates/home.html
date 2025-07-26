@@ -292,7 +292,9 @@
                 <svg class="h-5 w-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                                        <span class="text-sm font-medium text-blue-300">🚀 Launching July 2025 - Join Waiting List for Priority Access & Early Testing</span>
+                                        <span class="text-sm font-medium text-blue-300">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Launching July 2025 - Join Waiting List for Priority Access & Early Testing
+                </span>
             </div>
         
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
@@ -345,7 +347,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Stock Market Data with enhanced SEO content -->
                 <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
-                    <div class="text-blue-400 text-4xl mb-4">📈</div>
+                    <div class="text-blue-400 text-4xl mb-4">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
                     <h3 class="text-2xl font-bold text-white mb-4">Global Stock Market Data API</h3>
                     <p class="text-gray-400 mb-6">
                         Real-time and historical stock data for global markets. OHLC (Open, High, Low, Close) data, 
@@ -371,7 +375,9 @@
 
                 <!-- Forex Data with enhanced SEO content -->
                 <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
-                    <div class="text-green-400 text-4xl mb-4">💱</div>
+                    <div class="text-green-400 text-4xl mb-4">
+                        <i class="bi bi-currency-exchange"></i>
+                    </div>
                     <h3 class="text-2xl font-bold text-white mb-4">Forex Currency Pairs API</h3>
                     <p class="text-gray-400 mb-6">
                         Real-time and historical Forex data for currency pairs including major pairs (EUR/USD, GBP/USD), 
@@ -397,7 +403,9 @@
 
                 <!-- Cryptocurrency Data with enhanced SEO content -->
                 <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
-                    <div class="text-yellow-400 text-4xl mb-4">₿</div>
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="bi bi-currency-bitcoin"></i>
+                    </div>
                     <h3 class="text-2xl font-bold text-white mb-4">Cryptocurrency Data API (3000+ Coins)</h3>
                     <p class="text-gray-400 mb-6">
                         Real-time and historical cryptocurrency data covering Bitcoin, Ethereum, and 3000+ cryptocurrencies 
@@ -563,7 +571,9 @@
                                     {% for feature in all_features %}
                                         {% if feature in plan.features.all %}
                                             <li class="flex items-center">
-                                                <span class="text-white">✅ {{ feature.name }}</span>
+                                                <span class="text-white">
+                                                    <i class="bi bi-check-circle-fill me-2"></i>{{ feature.name }}
+                                                </span>
                                             </li>
                                         {% endif %}
                                     {% endfor %}
@@ -572,7 +582,9 @@
                                     {% for feature in all_features %}
                                         {% if feature not in plan.features.all %}
                                             <li class="flex items-center">
-                                                <span class="text-white">❌ {{ feature.name }}</span>
+                                                <span class="text-white">
+                                                    <i class="bi bi-x-circle-fill me-2"></i>{{ feature.name }}
+                                                </span>
                                             </li>
                                         {% endif %}
                                     {% endfor %}
@@ -869,7 +881,9 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-gray-700 p-8 rounded-lg text-center">
-                    <div class="text-blue-400 text-4xl mb-4">📚</div>
+                    <div class="text-blue-400 text-4xl mb-4">
+                        <i class="bi bi-book"></i>
+                    </div>
                     <h3 class="text-2xl font-bold text-white mb-4">API Documentation</h3>
                     <p class="text-gray-400 mb-6">
                         Complete API reference with examples, authentication guides, 
@@ -881,7 +895,9 @@
                 </div>
                 
                 <div class="bg-gray-700 p-8 rounded-lg text-center">
-                    <div class="text-green-400 text-4xl mb-4">✍️</div>
+                    <div class="text-green-400 text-4xl mb-4">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
                     <h3 class="text-2xl font-bold text-white mb-4">Blog & Tutorials</h3>
                     <p class="text-gray-400 mb-6">
                         Expert insights, step-by-step tutorials, and trading strategies 
@@ -893,7 +909,9 @@
                 </div>
                 
                 <div class="bg-gray-700 p-8 rounded-lg text-center">
-                    <div class="text-purple-400 text-4xl mb-4">📊</div>
+                    <div class="text-purple-400 text-4xl mb-4">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
                     <h3 class="text-2xl font-bold text-white mb-4">API Comparison</h3>
                     <p class="text-gray-400 mb-6">
                         Compare financial data providers to find the right API 
