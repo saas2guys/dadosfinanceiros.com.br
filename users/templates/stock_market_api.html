@@ -3,7 +3,7 @@
 
 {% block title %}{% trans 'Global Stock Market API - Real-time & Historical Data' %}{% endblock %}
 
-{% block meta_description %}{% trans 'Professional stock market API providing real-time and historical market data from US exchanges including NYSE and NASDAQ. Free tier available for developers.' %}{% endblock %}
+{% block meta_description %}{% trans 'Professional stock market API providing real-time and historical market data from US exchanges including NYSE and NASDAQ. Premium plans for developers.' %}{% endblock %}
 
 {% block meta_keywords %}{% trans 'stock market API, financial market data, real-time stock prices, market data API, NYSE, NASDAQ' %}{% endblock %}
 
@@ -11,7 +11,7 @@
 {% block canonical_url %}https://api.financialdata.online/stock-market-api/{% endblock %}
 
 {% block og_title %}{% trans 'Stock Market API - Real-time Market Data' %}{% endblock %}
-{% block og_description %}{% trans 'Professional stock market API providing real-time stock prices from US exchanges including NYSE and NASDAQ. Free tier available for developers.' %}{% endblock %}
+{% block og_description %}{% trans 'Professional stock market API providing real-time stock prices from US exchanges including NYSE and NASDAQ. Premium plans for developers.' %}{% endblock %}
 
 {% block extra_meta %}
 <!-- Advanced SEO Meta Tags -->
@@ -42,7 +42,7 @@
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD",
-    "description": "Free tier with 1000 API calls per day for stock market data",
+    "description": "Premium plans with 10,000+ daily API calls for stock market data",
     "category": "Free Stock Market Data Plan",
     "hasMerchantReturnPolicy": {
       "@type": "MerchantReturnPolicy",
@@ -130,10 +130,10 @@
     },
     {
       "@type": "Question",
-      "name": "Which stock API will provide free tier for developers?",
+              "name": "Which stock API will provide premium plans for developers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Our upcoming Stock Market API will offer a generous free tier with 1000 daily API calls, including access to real-time stock prices, fundamentals, and historical data from major exchanges like NYSE and NASDAQ."
+        "text": "Our upcoming Stock Market API will offer premium plans with 10,000+ daily API calls, including access to real-time stock prices, fundamentals, and historical data from major exchanges like NYSE and NASDAQ."
       }
     },
     {
@@ -275,7 +275,7 @@
                         <li>• {% trans 'Current price, daily high/low' %}</li>
                         <li>• {% trans 'Volume and market cap data' %}</li>
                         <li>• {% trans 'Pre/after-market pricing' %}</li>
-                        <li>• {% trans '15-minute delayed for free tier' %}</li>
+                        <li>• {% trans '15-minute delayed for basic plan' %}</li>
                     </ul>
                 </div>
 
@@ -481,19 +481,19 @@
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Free Tier -->
+                <!-- Basic Plan -->
                 <div class="bg-gray-700 rounded-lg p-8 border border-gray-600">
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold text-white mb-2">{% trans 'Free Tier' %}</h3>
-                        <div class="text-4xl font-bold text-blue-400 mb-2">$0</div>
-                        <div class="text-gray-400 mb-6">{% trans 'Perfect for learning and prototyping' %}</div>
+                        <h3 class="text-2xl font-bold text-white mb-2">{% trans 'Basic Plan' %}</h3>
+                        <div class="text-4xl font-bold text-blue-400 mb-2">$29</div>
+                        <div class="text-gray-300 mb-6">{% trans 'per month' %}</div>
                         
                         <ul class="text-left space-y-3 mb-8">
                             <li class="flex items-center text-gray-300">
                                 <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                 </svg>
-                                1,000 API calls per day
+                                10,000 API calls per day
                             </li>
                             <li class="flex items-center text-gray-300">
                                 <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -533,15 +533,15 @@
                     </div>
                 </div>
 
-                <!-- Professional Plan -->
+                <!-- Pro Plan -->
                 <div class="bg-blue-900 rounded-lg p-8 border-2 border-blue-600 relative">
                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">{% trans 'Most Popular' %}</span>
                     </div>
                     
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold text-white mb-2">{% trans 'Professional' %}</h3>
-                        <div class="text-4xl font-bold text-blue-400 mb-2">$49</div>
+                        <h3 class="text-2xl font-bold text-white mb-2">{% trans 'Pro Plan' %}</h3>
+                        <div class="text-4xl font-bold text-blue-400 mb-2">$69</div>
                         <div class="text-gray-300 mb-6">{% trans 'per month' %}</div>
                         
                         <ul class="text-left space-y-3 mb-8">
@@ -549,7 +549,7 @@
                                 <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                 </svg>
-                                100,000 API calls per month
+                                10,000 daily API calls
                             </li>
                             <li class="flex items-center text-gray-300">
                                 <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -681,7 +681,7 @@
                 </a>
             </div>
             <p class="text-sm text-blue-300 mt-6">
-                ✓ {% trans 'No setup fees' %} ✓ {% trans 'Free tier planned' %} ✓ {% trans 'Developer documentation' %} ✓ {% trans 'Email support available' %}
+                ✓ {% trans 'No setup fees' %} ✓ {% trans 'Premium plans available' %} ✓ {% trans 'Developer documentation' %} ✓ {% trans 'Email support available' %}
             </p>
         </div>
     </div>
