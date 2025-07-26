@@ -288,7 +288,7 @@
                                         {% if plan.is_free %}
                                             Free{% if plan.daily_request_limit %} ({{ plan.daily_request_limit }} calls/day){% endif %}
                                         {% else %}
-                                            {% if plan.price_yearly %}${{ plan.price_yearly|floatformat:0 }}/year{% else %}N/A{% endif %}
+                                            ${{ plan.price_yearly|floatformat:0 }}/year
                                         {% endif %}
                                     </span>
                                 </div>
@@ -373,12 +373,38 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Found yearly prices:', yearlyPrices.length);
         
         monthlyPrices.forEach(function(el) {
-            el.style.display = (selectedCycle.value === 'monthly') ? 'inline' : 'none';
+            if (selectedCycle.value === 'monthly') {
+                el.style.display = 'inline';
+                el.style.opacity = '1';
+            } else {
+                el.style.display = 'none';
+                el.style.opacity = '0';
+            }
         });
         
         yearlyPrices.forEach(function(el) {
-            el.style.display = (selectedCycle.value === 'yearly') ? 'inline' : 'none';
+            if (selectedCycle.value === 'yearly') {
+                el.style.display = 'inline';
+                el.style.opacity = '1';
+            } else {
+                el.style.display = 'none';
+                el.style.opacity = '0';
+            }
         });
+        
+        // Add visual feedback to the billing cycle buttons
+        document.querySelectorAll('.cycle-pill span').forEach(function(span) {
+            span.style.background = '#27272a';
+            span.style.color = '#e5e7eb';
+            span.style.borderColor = '#27272a';
+        });
+        
+        const selectedSpan = selectedCycle.closest('.cycle-pill').querySelector('span');
+        if (selectedSpan) {
+            selectedSpan.style.background = '#6366f1';
+            selectedSpan.style.color = '#fff';
+            selectedSpan.style.borderColor = '#6366f1';
+        }
     }
     
     // Add event listeners to billing cycle radio buttons
