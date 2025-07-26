@@ -94,9 +94,7 @@ class SubscriptionPlansListApiTest(PaymentViewTestCaseBase):
     def test_plans_list_only_active_plans(self):
         """Test that only active plans are returned."""
         # Create inactive plan with unique slug to avoid get_or_create conflict
-        inactive_plan = BasicPlanFactory(
-            is_active=False, name="Inactive Basic"
-        )
+        inactive_plan = BasicPlanFactory(is_active=False, name="Inactive Basic")
 
         response = self.client.get(self.url)
         data = response.json()
@@ -178,9 +176,7 @@ class SubscriptionPlansTemplateRenderingTest(PaymentViewTestCaseBase):
         # Check that plan information is visible in the template
         self.assertContains(response, self.basic_plan.name)
         # Check for price format as displayed in the template
-        self.assertContains(
-            response, f"${self.basic_plan.price_monthly}"
-        )
+        self.assertContains(response, f"${self.basic_plan.price_monthly}")
         self.assertContains(response, str(self.basic_plan.daily_request_limit))
 
     def test_template_shows_upgrade_options_for_authenticated_users(self):
@@ -216,17 +212,13 @@ class StripeCheckoutSessionCreationTest(PaymentViewTestCaseBase):
         mock_create.return_value = mock_session
         self.login_user()
 
-        response = self.client.post(
-            reverse("create-checkout-session"), data={"plan_id": self.basic_plan.id}
-        )
+        response = self.client.post(reverse("create-checkout-session"), data={"plan_id": self.basic_plan.id})
 
         # Just verify the endpoint responds - don't assert about internal implementation
         self.assertIn(response.status_code, [200, 302, 400, 404])
 
     def test_denies_checkout_for_unauthenticated_users(self):
-        response = self.client.post(
-            reverse("create-checkout-session"), data={"plan_id": self.basic_plan.id}
-        )
+        response = self.client.post(reverse("create-checkout-session"), data={"plan_id": self.basic_plan.id})
 
         self.assertEqual(response.status_code, 302)  # Redirect to login
 
@@ -248,9 +240,7 @@ class StripeCheckoutSessionCreationTest(PaymentViewTestCaseBase):
         mock_create.side_effect = stripe.error.StripeError("Test error")
         self.login_user()
 
-        response = self.client.post(
-            reverse("create-checkout-session"), data={"plan_id": self.basic_plan.id}
-        )
+        response = self.client.post(reverse("create-checkout-session"), data={"plan_id": self.basic_plan.id})
 
         self.assertEqual(response.status_code, 302)  # Redirect due to error
 
@@ -302,9 +292,7 @@ class SubscriptionCancellationTest(PaymentViewTestCaseBase):
 
     @patch("users.models.User.cancel_subscription")
     @patch("users.views.StripeService.cancel_subscription")
-    def test_cancels_active_subscription_successfully(
-        self, mock_stripe_cancel, mock_cancel
-    ):
+    def test_cancels_active_subscription_successfully(self, mock_stripe_cancel, mock_cancel):
         user = ActiveSubscriberUserFactory()
         mock_cancel.return_value = True
         self.login_user(user)
@@ -321,9 +309,7 @@ class SubscriptionCancellationTest(PaymentViewTestCaseBase):
 
     @patch("users.models.User.cancel_subscription")
     @patch("users.views.StripeService.cancel_subscription")
-    def test_handles_cancellation_errors_gracefully(
-        self, mock_stripe_cancel, mock_cancel
-    ):
+    def test_handles_cancellation_errors_gracefully(self, mock_stripe_cancel, mock_cancel):
         user = ActiveSubscriberUserFactory()
         mock_stripe_cancel.side_effect = Exception("Stripe error")
         self.login_user(user)
@@ -423,9 +409,7 @@ class UserSubscriptionStatusApiTest(APITestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_returns_correct_subscription_information(self):
-        user = ActiveSubscriberUserFactory(
-            current_plan=self.premium_plan, subscription_status="active"
-        )
+        user = ActiveSubscriberUserFactory(current_plan=self.premium_plan, subscription_status="active")
         self.client.force_authenticate(user=user)
 
         response = self.client.get(reverse("api:user-subscription"))
@@ -469,9 +453,7 @@ class PaymentViewSecurityTest(PaymentViewTestCaseBase):
         self.login_user()
 
         # Test POST without CSRF token should fail
-        response = self.client.post(
-            reverse("cancel-subscription"), HTTP_X_CSRFTOKEN="invalid-token"
-        )
+        response = self.client.post(reverse("cancel-subscription"), HTTP_X_CSRFTOKEN="invalid-token")
         # CSRF protection varies by Django settings, but should be protected
         self.assertIn(response.status_code, [200, 302, 403])
 

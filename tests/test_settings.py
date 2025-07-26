@@ -3,8 +3,9 @@ Test-specific Django settings configuration.
 This file contains settings optimizations for running tests.
 """
 
-from proxy_project.settings import *
 import warnings
+
+from proxy_project.settings import *
 
 # Suppress cache warnings for clean test output
 warnings.filterwarnings("ignore", category=UserWarning, module="django.core.cache")
@@ -14,6 +15,7 @@ warnings.filterwarnings("ignore", message=".*longer than 250.*")
 # Import and suppress CacheKeyWarning specifically
 try:
     from django.core.cache.backends.base import CacheKeyWarning
+
     warnings.filterwarnings("ignore", category=CacheKeyWarning)
 except ImportError:
     pass
@@ -93,7 +95,7 @@ CACHES = {
     "rate_limit": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "test-rate-limit-cache",
-    }
+    },
 }
 
 # Use a simple password hasher for faster test execution

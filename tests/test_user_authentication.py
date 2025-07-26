@@ -131,9 +131,7 @@ class UserModelAuthenticationBusinessLogicTest(TestCase):
 
     def test_handles_token_regeneration_with_custom_expiry(self):
         """Test token regeneration with custom expiry settings."""
-        new_token = self.user.generate_new_request_token(
-            save_old=True, never_expires=True
-        )
+        new_token = self.user.generate_new_request_token(save_old=True, never_expires=True)
 
         self.assertEqual(self.user.request_token, new_token)
         self.assertTrue(self.user.token_never_expires)
@@ -284,9 +282,7 @@ class TokenHistoryModelAuditTrailTest(TestCase):
 
     def test_handles_never_expiring_tokens_in_history(self):
         """Test never-expiring token history."""
-        TokenHistory.objects.create(
-            user=self.user, token="never_expires_token", never_expires=True
-        )
+        TokenHistory.objects.create(user=self.user, token="never_expires_token", never_expires=True)
 
         record = TokenHistory.objects.get(token="never_expires_token")
         self.assertTrue(record.never_expires)
@@ -463,10 +459,12 @@ class JwtAuthenticationIntegrationTest(APITestCase):
         """Test successful JWT authentication."""
         # Mock the proxy response
         from rest_framework.response import Response
+
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
 
         # Generate a real JWT token for the user
         from rest_framework_simplejwt.tokens import AccessToken
+
         token = AccessToken.for_user(self.user)
 
         # Set JWT authorization header
@@ -731,9 +729,7 @@ class TokenRegenerationApiEndpointTest(APITestCase):
         """Test custom token settings in regeneration."""
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.post(
-            self.regenerate_url, {"auto_renew": True, "validity_days": 90}
-        )
+        response = self.client.post(self.regenerate_url, {"auto_renew": True, "validity_days": 90})
 
         if response.status_code == status.HTTP_200_OK:
             self.user.refresh_from_db()
@@ -791,11 +787,7 @@ class TokenHistoryApiEndpointTest(APITestCase):
 
         response = self.client.get(self.history_url)
 
-        if (
-            response.status_code == status.HTTP_200_OK
-            and "results" in response.data
-            and len(response.data["results"]) > 1
-        ):
+        if response.status_code == status.HTTP_200_OK and "results" in response.data and len(response.data["results"]) > 1:
             # Check ordering
             dates = [item["created_at"] for item in response.data["results"]]
             self.assertEqual(dates, sorted(dates, reverse=True))
@@ -861,9 +853,7 @@ class DailyApiLimitPermissionEnforcementTest(APITestCase):
     def test_resets_daily_count_on_new_day(self):
         """Test daily count reset functionality."""
         self.user.daily_requests_made = 5  # At limit
-        self.user.last_request_date = timezone.now().date() - timedelta(
-            days=1
-        )  # Yesterday
+        self.user.last_request_date = timezone.now().date() - timedelta(days=1)  # Yesterday
         self.user.save()
 
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
@@ -913,8 +903,9 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         """Test complete registration to authentication flow."""
         # Mock the proxy response
         from rest_framework.response import Response
+
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
-        
+
         # Step 1: Register user
         registration_data = {
             "email": "testflow@example.com",
@@ -958,8 +949,9 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         """Test authentication state consistency."""
         # Mock the proxy response
         from rest_framework.response import Response
+
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
-        
+
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 
         # Make multiple requests
@@ -976,8 +968,9 @@ class AuthenticationSystemIntegrationTest(APITestCase):
         """Test handling of multiple authentication methods."""
         # Mock the proxy response
         from rest_framework.response import Response
+
         mock_handle.return_value = Response({}, status=status.HTTP_200_OK)
-        
+
         # Set request token authentication
         self.client.credentials(HTTP_X_REQUEST_TOKEN=str(self.user.request_token))
 

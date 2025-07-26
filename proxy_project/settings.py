@@ -9,9 +9,7 @@ from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config(
-    "SECRET_KEY", default="django-proxy-secret-key-change-in-production"
-)
+SECRET_KEY = config("SECRET_KEY", default="django-proxy-secret-key-change-in-production")
 
 DEBUG = config("DEBUG", default=False, cast=bool)
 
@@ -55,7 +53,7 @@ ALLOWED_HOSTS = (
         "api.financialdata.online",
         "localhost",
         "127.0.0.1",
-        "dev-financialdata-com-t8ayq.ondigitalocean.app"
+        "dev-financialdata-com-t8ayq.ondigitalocean.app",
     ]
 )
 
@@ -84,7 +82,7 @@ if not DEBUG:
     CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_HTTPONLY = True
 
-    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_SECONDS = 31_536_000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
@@ -97,7 +95,7 @@ if not DEBUG:
     SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 CSRF_COOKIE_NAME = "csrftoken"
-CSRF_COOKIE_AGE = 31449600
+CSRF_COOKIE_AGE = 31_449_600
 CSRF_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
 CSRF_COOKIE_PATH = "/"
 CSRF_USE_SESSIONS = False
@@ -107,7 +105,7 @@ CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_FAILURE_VIEW = "users.views.csrf_failure_view"
 
 SESSION_COOKIE_NAME = "sessionid"
-SESSION_COOKIE_AGE = 1209600
+SESSION_COOKIE_AGE = 1_209_600
 SESSION_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
 SESSION_COOKIE_PATH = "/"
 SESSION_SAVE_EVERY_REQUEST = False
@@ -150,9 +148,9 @@ INSTALLED_APPS = [
 if DEBUG:
     try:
         import django_extensions
+        import livereload
 
-        INSTALLED_APPS += ["django_extensions"]
-
+        INSTALLED_APPS += ["django_extensions", "livereload"]
         SHELL_PLUS_PRE_IMPORTS = [
             ("pprint", ["pprint", "pformat"]),
             ("datetime", ["datetime", "date", "time", "timedelta"]),
@@ -200,30 +198,44 @@ if DEBUG:
             ]
         except ImportError:
             pass
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "users.middleware.DatabaseRateLimitMiddleware",
-    "users.middleware.UserRequestCountMiddleware",
-    "users.middleware.RateLimitHeaderMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
-]
-
-
+if DEBUG:
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        "whitenoise.middleware.WhiteNoiseMiddleware",
+        "corsheaders.middleware.CorsMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "django.middleware.locale.LocaleMiddleware",
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+else:
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        "whitenoise.middleware.WhiteNoiseMiddleware",
+        "corsheaders.middleware.CorsMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "users.middleware.DatabaseRateLimitMiddleware",
+        "users.middleware.UserRequestCountMiddleware",
+        "users.middleware.RateLimitHeaderMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "django.middleware.locale.LocaleMiddleware",
+    ]
 if DEBUG and 'test' not in sys.argv:
     try:
         import debug_toolbar
+        import livereload
 
         MIDDLEWARE += [
             "debug_toolbar.middleware.DebugToolbarMiddleware",
+            "livereload.middleware.LiveReloadScript",
         ]
     except ImportError:
         pass
@@ -284,15 +296,11 @@ ASGI_APPLICATION = "proxy_project.asgi.application"
 DATABASE_URL = config("DATABASE_URL", default=None)
 
 if DATABASE_URL:
-    DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL, conn_max_age=600, conn_health_checks=True
-        )
-    }
-
+    DATABASES = {"default": dj_database_url.parse(DATABASE_URL, conn_max_age=600, conn_health_checks=True)}
     DATABASES["default"]["OPTIONS"] = {
         "sslmode": "require",
     }
+    print(f"Using database URL: {DATABASE_URL}")
 else:
     DATABASES = {
         "default": {
@@ -300,6 +308,7 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+    print("Using SQLite database")
 
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 
@@ -310,7 +319,7 @@ if 'test' in sys.argv:
         },
         'rate_limit': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        }
+        },
     }
 else:
     CACHES = {
@@ -327,7 +336,7 @@ else:
             "LOCATION": "rate_limit_cache",
             "OPTIONS": {
                 "MAX_ENTRIES": 100000,  # Prevent unlimited growth
-                "CULL_FREQUENCY": 10,   # Clean old entries regularly
+                "CULL_FREQUENCY": 10,  # Clean old entries regularly
             },
         },
     }
@@ -390,16 +399,13 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "users.authentication.RequestTokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        (
-            "rest_framework.permissions.AllowAny"
-            if ENV == "local"
-            else "rest_framework.permissions.IsAuthenticated"
-        ),
+        ("rest_framework.permissions.AllowAny" if ENV == "local" else "rest_framework.permissions.IsAuthenticated"),
     ],
     "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
 }
@@ -473,14 +479,10 @@ if not DEBUG:
     ]
 
 MICROSERVICE_BASE_URL = config("MICROSERVICE_BASE_URL", default="http://localhost:8001")
-MICROSERVICE_WS_URL = config(
-    "MICROSERVICE_WS_URL", default="ws://localhost:8001/ws/stocks/"
-)
+MICROSERVICE_WS_URL = config("MICROSERVICE_WS_URL", default="ws://localhost:8001/ws/stocks/")
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},

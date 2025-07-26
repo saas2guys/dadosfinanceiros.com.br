@@ -31,9 +31,7 @@ class RequestTokenAuthenticationFlowTest(APITestCase):
             price_monthly=Decimal("10.00"),
         )
 
-        self.user = User.objects.create_user(
-            email="test@example.com", password="testpass123"
-        )
+        self.user = User.objects.create_user(email="test@example.com", password="testpass123")
         self.user.current_plan = self.plan
         self.user.subscription_status = "active"
         self.user.save()
@@ -89,9 +87,7 @@ class DailyApiLimitEnforcementTest(APITestCase):
             price_monthly=Decimal("10.00"),
         )
 
-        self.user = User.objects.create_user(
-            email="test@example.com", password="testpass123"
-        )
+        self.user = User.objects.create_user(email="test@example.com", password="testpass123")
         self.user.current_plan = self.plan
         self.user.subscription_status = "active"
         self.user.save()
@@ -107,7 +103,7 @@ class DailyApiLimitEnforcementTest(APITestCase):
             'data': [{'symbol': 'AAPL', 'price': 150.00}],
             'provider': 'fmp',
             'endpoint': '/v3/quote/AAPL',
-            'status_code': 200
+            'status_code': 200,
         }
 
         initial_count = self.user.daily_requests_made

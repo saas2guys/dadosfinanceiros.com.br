@@ -53,9 +53,7 @@ class StripeObject(dict):
         try:
             return self[key]
         except KeyError:
-            raise AttributeError(
-                f"'{self.__class__.__name__}' object has no attribute '{key}'"
-            )
+            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{key}'")
 
     def __setattr__(self, key, value):
         self[key] = value
@@ -160,12 +158,8 @@ class ActiveSubscriberUserFactory(UserFactory):
     current_plan = factory.SubFactory(BasicPlanFactory)
     subscription_status = "active"
     stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
-    stripe_subscription_id = factory.LazyFunction(
-        lambda: f"sub_{uuid.uuid4().hex[:16]}"
-    )
-    subscription_expires_at = factory.LazyFunction(
-        lambda: timezone.now() + timedelta(days=30)
-    )
+    stripe_subscription_id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() + timedelta(days=30))
 
 
 class TrialingUserFactory(UserFactory):
@@ -174,12 +168,8 @@ class TrialingUserFactory(UserFactory):
     current_plan = factory.SubFactory(BasicPlanFactory)
     subscription_status = "trialing"
     stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
-    stripe_subscription_id = factory.LazyFunction(
-        lambda: f"sub_{uuid.uuid4().hex[:16]}"
-    )
-    subscription_expires_at = factory.LazyFunction(
-        lambda: timezone.now() + timedelta(days=7)
-    )
+    stripe_subscription_id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() + timedelta(days=7))
 
 
 class ExpiredSubscriberUserFactory(UserFactory):
@@ -189,9 +179,7 @@ class ExpiredSubscriberUserFactory(UserFactory):
     subscription_status = "canceled"
     stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
     stripe_subscription_id = None
-    subscription_expires_at = factory.LazyFunction(
-        lambda: timezone.now() - timedelta(days=30)
-    )
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() - timedelta(days=30))
 
 
 class PastDueUserFactory(UserFactory):
@@ -200,12 +188,8 @@ class PastDueUserFactory(UserFactory):
     current_plan = factory.SubFactory(BasicPlanFactory)
     subscription_status = "past_due"
     stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
-    stripe_subscription_id = factory.LazyFunction(
-        lambda: f"sub_{uuid.uuid4().hex[:16]}"
-    )
-    subscription_expires_at = factory.LazyFunction(
-        lambda: timezone.now() - timedelta(days=5)
-    )
+    stripe_subscription_id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() - timedelta(days=5))
 
 
 class TokenHistoryFactory(factory.django.DjangoModelFactory):
@@ -239,12 +223,8 @@ class UserWithSubscriptionFactory(UserFactory):
     current_plan = factory.SubFactory(BasicPlanFactory)
     subscription_status = "active"
     stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
-    stripe_subscription_id = factory.LazyFunction(
-        lambda: f"sub_{uuid.uuid4().hex[:16]}"
-    )
-    subscription_expires_at = factory.LazyFunction(
-        lambda: timezone.now() + timedelta(days=30)
-    )
+    stripe_subscription_id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() + timedelta(days=30))
 
 
 class StripeSubscriptionFactory(factory.django.DjangoModelFactory):
@@ -262,12 +242,8 @@ class StripeSubscriptionFactory(factory.django.DjangoModelFactory):
     current_plan = factory.SubFactory(BasicPlanFactory)
     subscription_status = "active"
     stripe_customer_id = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
-    stripe_subscription_id = factory.LazyFunction(
-        lambda: f"sub_{uuid.uuid4().hex[:16]}"
-    )
-    subscription_expires_at = factory.LazyFunction(
-        lambda: timezone.now() + timedelta(days=30)
-    )
+    stripe_subscription_id = factory.LazyFunction(lambda: f"sub_{uuid.uuid4().hex[:16]}")
+    subscription_expires_at = factory.LazyFunction(lambda: timezone.now() + timedelta(days=30))
 
     # API usage
     daily_requests_made = 0
@@ -288,9 +264,7 @@ class StripeMockSubscriptionFactory(factory.DictFactory):
     customer = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
     status = "active"
     current_period_start = factory.LazyFunction(lambda: int(timezone.now().timestamp()))
-    current_period_end = factory.LazyFunction(
-        lambda: int((timezone.now() + timedelta(days=30)).timestamp())
-    )
+    current_period_end = factory.LazyFunction(lambda: int((timezone.now() + timedelta(days=30)).timestamp()))
     created = factory.LazyFunction(lambda: int(timezone.now().timestamp()))
     trial_start = None
     trial_end = None
@@ -316,9 +290,7 @@ class StripeCheckoutSessionFactory(factory.Factory):
 
     id = factory.LazyFunction(lambda: f"cs_{uuid.uuid4().hex[:16]}")
     object = "checkout.session"
-    url = factory.LazyFunction(
-        lambda: f"https://checkout.stripe.com/pay/cs_{uuid.uuid4().hex[:16]}"
-    )
+    url = factory.LazyFunction(lambda: f"https://checkout.stripe.com/pay/cs_{uuid.uuid4().hex[:16]}")
     customer = factory.LazyFunction(lambda: f"cus_{uuid.uuid4().hex[:16]}")
     mode = "subscription"
     status = "open"
@@ -378,4 +350,4 @@ class StripeInvalidRequestErrorFactory(factory.DictFactory):
         "type": "invalid_request_error",
         "message": "You cannot use this field name",
         "param": "invalid_field",
-    } 
+    }

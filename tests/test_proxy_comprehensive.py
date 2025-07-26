@@ -36,9 +36,7 @@ class PolygonProxyTestCaseBase(APITestCase):
         )
 
         # Create user without daily_request_limit parameter
-        self.user = User.objects.create_user(
-            email="test@example.com", password="testpass123"
-        )
+        self.user = User.objects.create_user(email="test@example.com", password="testpass123")
 
         # Assign the plan to the user
         self.user.current_plan = self.plan
@@ -55,31 +53,26 @@ class PolygonProxyTestCaseBase(APITestCase):
         """Ensure proper cleanup of mocks and state between tests"""
         # Stop all active patches to prevent mock leakage
         patch.stopall()
-        
+
         # Clear any cached data that might interfere between tests
         if hasattr(self, 'view') and hasattr(self.view, 'session'):
             # Reset the session if it exists
             self.view.session = requests.Session()
-        
+
         # Reset any module-level caches
         from django.core.cache import cache
+
         cache.clear()
-        
+
         super().tearDown()
 
-    def _create_authenticated_request(
-        self, method="GET", path="/", data=None, use_jwt=True
-    ):
+    def _create_authenticated_request(self, method="GET", path="/", data=None, use_jwt=True):
         if method.upper() == "GET":
             request = self.factory.get(f"/v1/{path}", data or {})
         elif method.upper() == "POST":
-            request = self.factory.post(
-                f"/v1/{path}", data or {}, content_type="application/json"
-            )
+            request = self.factory.post(f"/v1/{path}", data or {}, content_type="application/json")
         elif method.upper() == "PUT":
-            request = self.factory.put(
-                f"/v1/{path}", json.dumps(data or {}), content_type="application/json"
-            )
+            request = self.factory.put(f"/v1/{path}", json.dumps(data or {}), content_type="application/json")
         elif method.upper() == "DELETE":
             request = self.factory.delete(f"/v1/{path}")
         else:
@@ -142,9 +135,7 @@ class PolygonStocksApiComprehensiveTest(PolygonProxyTestCaseBase):
 
         mock_request.return_value = self._mock_polygon_response(mock_response_data)
 
-        request = self._create_authenticated_request(
-            "GET", "reference/tickers", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "reference/tickers", use_jwt=False)
         response = self.view.get(request, path="reference/tickers")
 
         self.assertEqual(response.status_code, 200)
@@ -153,9 +144,7 @@ class PolygonStocksApiComprehensiveTest(PolygonProxyTestCaseBase):
         self.assertEqual(len(response.data["results"]), 1)
 
         # Check URL replacement
-        expected_next_url = (
-            "https://api.financialdata.online/v1/reference/tickers?cursor=next123"
-        )
+        expected_next_url = "https://api.financialdata.online/v1/reference/tickers?cursor=next123"
         self.assertEqual(response.data["next_url"], expected_next_url)
 
     @patch("proxy_app.views.requests.Session.request")
@@ -181,12 +170,8 @@ class PolygonStocksApiComprehensiveTest(PolygonProxyTestCaseBase):
 
         mock_request.return_value = self._mock_polygon_response(mock_response_data)
 
-        request = self._create_authenticated_request(
-            "GET", "aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-31", use_jwt=False
-        )
-        response = self.view.get(
-            request, path="aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-31"
-        )
+        request = self._create_authenticated_request("GET", "aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-31", use_jwt=False)
+        response = self.view.get(request, path="aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-31")
 
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("status", response.data)
@@ -210,9 +195,7 @@ class PolygonStocksApiComprehensiveTest(PolygonProxyTestCaseBase):
 
         mock_request.return_value = self._mock_polygon_response(mock_response_data)
 
-        request = self._create_authenticated_request(
-            "GET", "marketstatus/upcoming", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "marketstatus/upcoming", use_jwt=False)
         response = self.view.get(request, path="marketstatus/upcoming")
 
         self.assertEqual(response.status_code, 200)
@@ -246,9 +229,7 @@ class PolygonOptionsApiComprehensiveTest(PolygonProxyTestCaseBase):
 
         mock_request.return_value = self._mock_polygon_response(mock_response_data)
 
-        request = self._create_authenticated_request(
-            "GET", "reference/options/contracts", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "reference/options/contracts", use_jwt=False)
         response = self.view.get(request, path="reference/options/contracts")
 
         self.assertEqual(response.status_code, 200)
@@ -292,9 +273,7 @@ class PolygonCryptoApiComprehensiveTest(PolygonProxyTestCaseBase):
             "aggs/ticker/X:BTCUSD/range/1/day/2023-01-01/2023-01-31",
             use_jwt=False,
         )
-        response = self.view.get(
-            request, path="aggs/ticker/X:BTCUSD/range/1/day/2023-01-01/2023-01-31"
-        )
+        response = self.view.get(request, path="aggs/ticker/X:BTCUSD/range/1/day/2023-01-01/2023-01-31")
 
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("status", response.data)
@@ -337,9 +316,7 @@ class PolygonForexApiComprehensiveTest(PolygonProxyTestCaseBase):
             "aggs/ticker/C:EURUSD/range/1/day/2023-01-01/2023-01-31",
             use_jwt=False,
         )
-        response = self.view.get(
-            request, path="aggs/ticker/C:EURUSD/range/1/day/2023-01-01/2023-01-31"
-        )
+        response = self.view.get(request, path="aggs/ticker/C:EURUSD/range/1/day/2023-01-01/2023-01-31")
 
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("status", response.data)
@@ -377,12 +354,8 @@ class PolygonIndicesApiComprehensiveTest(PolygonProxyTestCaseBase):
 
         mock_request.return_value = self._mock_polygon_response(mock_response_data)
 
-        request = self._create_authenticated_request(
-            "GET", "aggs/ticker/I:SPX/range/1/day/2023-01-01/2023-01-31", use_jwt=False
-        )
-        response = self.view.get(
-            request, path="aggs/ticker/I:SPX/range/1/day/2023-01-01/2023-01-31"
-        )
+        request = self._create_authenticated_request("GET", "aggs/ticker/I:SPX/range/1/day/2023-01-01/2023-01-31", use_jwt=False)
+        response = self.view.get(request, path="aggs/ticker/I:SPX/range/1/day/2023-01-01/2023-01-31")
 
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("status", response.data)
@@ -406,13 +379,9 @@ class PolygonProxyEdgeCaseHandlingTest(PolygonProxyTestCaseBase):
             "request_id": "test123",
         }
 
-        mock_request.return_value = self._mock_polygon_response(
-            error_response_data, 401
-        )
+        mock_request.return_value = self._mock_polygon_response(error_response_data, 401)
 
-        request = self._create_authenticated_request(
-            "GET", "reference/tickers", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "reference/tickers", use_jwt=False)
         response = self.view.get(request, path="reference/tickers")
 
         self.assertEqual(response.status_code, 401)
@@ -425,9 +394,7 @@ class PolygonProxyEdgeCaseHandlingTest(PolygonProxyTestCaseBase):
         """Test handling of connection errors"""
         mock_request.side_effect = requests.ConnectionError("Connection failed")
 
-        request = self._create_authenticated_request(
-            "GET", "reference/tickers", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "reference/tickers", use_jwt=False)
         response = self.view.get(request, path="reference/tickers")
 
         # Should return an error response
@@ -438,9 +405,7 @@ class PolygonProxyEdgeCaseHandlingTest(PolygonProxyTestCaseBase):
         """Test handling of timeout errors"""
         mock_request.side_effect = requests.Timeout("Request timed out")
 
-        request = self._create_authenticated_request(
-            "GET", "reference/tickers", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "reference/tickers", use_jwt=False)
         response = self.view.get(request, path="reference/tickers")
 
         # Should return a timeout error response
@@ -451,8 +416,9 @@ class PolygonProxyEdgeCaseHandlingTest(PolygonProxyTestCaseBase):
         # Use the test client instead of calling view methods directly
         # This ensures authentication and permission classes are properly enforced
         from rest_framework.test import APIClient
+
         client = APIClient()
-        
+
         response = client.get("/v1/reference/tickers")
 
         # Should return unauthorized
@@ -460,9 +426,7 @@ class PolygonProxyEdgeCaseHandlingTest(PolygonProxyTestCaseBase):
 
     def test_invalid_path_handling(self):
         """Test handling of invalid API paths"""
-        request = self._create_authenticated_request(
-            "GET", "invalid/endpoint", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "invalid/endpoint", use_jwt=False)
 
         # This should either return a proper error or handle gracefully
         response = self.view.get(request, path="invalid/endpoint")
@@ -507,23 +471,17 @@ class PolygonUrlTransformationComprehensiveTest(PolygonProxyTestCaseBase):
             "status": "OK",
             "results": [
                 {
-                    "metadata": {
-                        "info_url": "https://api.polygon.io/v1/meta/symbols/AAPL/company?apikey=test"
-                    },
+                    "metadata": {"info_url": "https://api.polygon.io/v1/meta/symbols/AAPL/company?apikey=test"},
                     "ticker": "AAPL",
                 }
             ],
-            "pagination": {
-                "next_url": "https://api.polygon.io/v3/reference/tickers?cursor=next&apikey=test"
-            },
+            "pagination": {"next_url": "https://api.polygon.io/v3/reference/tickers?cursor=next&apikey=test"},
         }
 
         result = self.view._replace_polygon_urls(test_data, request)
 
         # Only pagination URLs should be replaced, not nested URLs in data
-        expected_next_url = (
-            "https://api.financialdata.online/v1/reference/tickers?cursor=next"
-        )
+        expected_next_url = "https://api.financialdata.online/v1/reference/tickers?cursor=next"
 
         # Nested URLs should NOT be replaced by this method
         self.assertEqual(
@@ -545,18 +503,13 @@ class PolygonProxyPerformanceAndLoadTest(PolygonProxyTestCaseBase):
     def test_large_response_handling(self, mock_request):
         """Test handling of large response data"""
         # Simulate a large response with many results
-        large_results = [
-            {"ticker": f"STOCK{i}", "name": f"Stock Company {i}", "market": "stocks"}
-            for i in range(1000)  # 1000 results
-        ]
+        large_results = [{"ticker": f"STOCK{i}", "name": f"Stock Company {i}", "market": "stocks"} for i in range(1000)]  # 1000 results
 
         mock_response_data = {"results": large_results, "count": 1000, "status": "OK"}
 
         mock_request.return_value = self._mock_polygon_response(mock_response_data)
 
-        request = self._create_authenticated_request(
-            "GET", "reference/tickers", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "reference/tickers", use_jwt=False)
         response = self.view.get(request, path="reference/tickers")
 
         self.assertEqual(response.status_code, 200)
@@ -570,9 +523,7 @@ class PolygonProxyPerformanceAndLoadTest(PolygonProxyTestCaseBase):
 
         mock_request.return_value = self._mock_polygon_response(mock_response_data)
 
-        request = self._create_authenticated_request(
-            "GET", "reference/tickers", use_jwt=False
-        )
+        request = self._create_authenticated_request("GET", "reference/tickers", use_jwt=False)
         response = self.view.get(request, path="reference/tickers")
 
         self.assertEqual(response.status_code, 200)

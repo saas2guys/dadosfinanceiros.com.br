@@ -180,9 +180,7 @@ class StripeService:
     def cancel_subscription_at_period_end(subscription_id):
         """Cancel a Stripe subscription at period end"""
         try:
-            return stripe.Subscription.modify(
-                subscription_id, cancel_at_period_end=True
-            )
+            return stripe.Subscription.modify(subscription_id, cancel_at_period_end=True)
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error canceling subscription at period end: {e}")
             raise
@@ -191,9 +189,7 @@ class StripeService:
     def reactivate_subscription(subscription_id):
         """Reactivate a canceled subscription"""
         try:
-            return stripe.Subscription.modify(
-                subscription_id, cancel_at_period_end=False
-            )
+            return stripe.Subscription.modify(subscription_id, cancel_at_period_end=False)
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error reactivating subscription: {e}")
             raise
@@ -233,43 +229,22 @@ class StripeService:
 
     @staticmethod
     def handle_successful_payment(session):
-        """Handle successful payment from webhook"""
-        from .models import Plan, User
-
         try:
             user_id = session.get("metadata", {}).get("user_id")
-            plan_id = session.get("metadata", {}).get("plan_id")
-
-            if not user_id or not plan_id:
-                logger.error("Missing user_id or plan_id in session metadata")
-                return False
-
-            user = User.objects.get(id=user_id)
-            plan = Plan.objects.get(id=plan_id)
-
-            # Get the subscription from Stripe
             subscription_id = session.get("subscription")
-            if subscription_id:
-                subscription = stripe.Subscription.retrieve(subscription_id)
-
-                # Update user subscription
-                user.current_plan = plan
-                user.subscription_status = "active"
-                user.stripe_subscription_id = subscription.id
-                user.subscription_started_at = timezone.now()
-                user.subscription_expires_at = timezone.make_aware(
-                    datetime.fromtimestamp(subscription.current_period_end)
-                )
-                user.save()
-
-            logger.info(f"User {user.email} successfully subscribed to {plan.name}")
+            if not user_id or not subscription_id:
+                logger.error("Missing user_id or subscription_id in session metadata")
+                return False
+            user = User.objects.get(id=user_id)
+            user.stripe_subscription_id = subscription_id
+            user.save()
+            logger.info(f"Linked subscription_id {subscription_id} to user {user.email}")
             return True
-
-        except (User.DoesNotExist, Plan.DoesNotExist) as e:
-            logger.error(f"Error handling successful payment: {e}")
+        except User.DoesNotExist:
+            logger.error(f"User not found for user_id {user_id}")
             return False
         except Exception as e:
-            logger.error(f"Unexpected error handling successful payment: {e}")
+            logger.error(f"Error linking subscription_id to user: {e}")
             return False
 
     @staticmethod
@@ -278,11 +253,7 @@ class StripeService:
         from .models import User
 
         try:
-            subscription_id = (
-                subscription.get("id")
-                if isinstance(subscription, dict)
-                else subscription.id
-            )
+            subscription_id = subscription.get("id") if isinstance(subscription, dict) else subscription.id
             user = User.objects.get(stripe_subscription_id=subscription_id)
 
             # Update subscription status
@@ -296,41 +267,23 @@ class StripeService:
                 "unpaid": "inactive",
             }
 
-            subscription_status = (
-                subscription.get("status")
-                if isinstance(subscription, dict)
-                else subscription.status
-            )
+            subscription_status = subscription.get("status") if isinstance(subscription, dict) else subscription.status
             current_period_end = (
-                subscription.get("current_period_end")
-                if isinstance(subscription, dict)
-                else subscription.current_period_end
+                subscription.get("current_period_end") if isinstance(subscription, dict) else subscription.current_period_end
             )
             current_period_start = (
-                subscription.get("current_period_start")
-                if isinstance(subscription, dict)
-                else subscription.current_period_start
+                subscription.get("current_period_start") if isinstance(subscription, dict) else subscription.current_period_start
             )
 
-            user.subscription_status = status_mapping.get(
-                subscription_status, "inactive"
-            )
+            user.subscription_status = status_mapping.get(subscription_status, "inactive")
             if current_period_end:
-                user.subscription_expires_at = timezone.make_aware(
-                    datetime.fromtimestamp(current_period_end)
-                )
-                user.current_period_end = timezone.make_aware(
-                    datetime.fromtimestamp(current_period_end)
-                )
+                user.subscription_expires_at = timezone.make_aware(datetime.fromtimestamp(current_period_end))
+                user.current_period_end = timezone.make_aware(datetime.fromtimestamp(current_period_end))
             if current_period_start:
-                user.current_period_start = timezone.make_aware(
-                    datetime.fromtimestamp(current_period_start)
-                )
+                user.current_period_start = timezone.make_aware(datetime.fromtimestamp(current_period_start))
             user.save()
 
-            logger.info(
-                f"Updated subscription for user {user.email}: {subscription_status}"
-            )
+            logger.info(f"Updated subscription for user {user.email}: {subscription_status}")
             return True
 
         except User.DoesNotExist:
@@ -346,11 +299,7 @@ class StripeService:
         from .models import User
 
         try:
-            subscription_id = (
-                subscription.get("id")
-                if isinstance(subscription, dict)
-                else subscription.id
-            )
+            subscription_id = subscription.get("id") if isinstance(subscription, dict) else subscription.id
             user = User.objects.get(stripe_subscription_id=subscription_id)
             user.subscription_status = "canceled"
             user.save()

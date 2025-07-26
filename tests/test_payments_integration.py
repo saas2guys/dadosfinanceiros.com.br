@@ -54,15 +54,11 @@ class PaymentProcessingEndToEndIntegrationTest(TestCase):
 
     @patch("users.stripe_service.stripe.Customer.create")
     @patch("users.stripe_service.stripe.checkout.Session.create")
-    def test_completes_full_subscription_purchase_flow_successfully(
-        self, mock_session, mock_customer
-    ):
+    def test_completes_full_subscription_purchase_flow_successfully(self, mock_session, mock_customer):
         """Test complete subscription purchase from start to finish."""
         # Mock Stripe responses
         mock_customer.return_value = Mock(id="cus_test123")
-        mock_session.return_value = Mock(
-            id="cs_test123", url="https://checkout.stripe.com/pay/cs_test123"
-        )
+        mock_session.return_value = Mock(id="cs_test123", url="https://checkout.stripe.com/pay/cs_test123")
 
         # Step 1: Create checkout session using user (not customer_id) to trigger customer creation
         session = self.stripe_service.create_checkout_session(
@@ -77,9 +73,7 @@ class PaymentProcessingEndToEndIntegrationTest(TestCase):
         mock_session.assert_called_once()
 
     @patch("users.stripe_service.stripe.Subscription.retrieve")
-    def test_processes_webhook_events_and_updates_user_subscription(
-        self, mock_retrieve
-    ):
+    def test_processes_webhook_events_and_updates_user_subscription(self, mock_retrieve):
         """Test webhook processing updates user subscription correctly."""
         # Mock subscription data
         mock_retrieve.return_value = Mock(
@@ -98,9 +92,7 @@ class PaymentProcessingEndToEndIntegrationTest(TestCase):
         subscription_data = {
             "id": "sub_test123",
             "status": "active",
-            "current_period_end": int(
-                (timezone.now() + timedelta(days=30)).timestamp()
-            ),
+            "current_period_end": int((timezone.now() + timedelta(days=30)).timestamp()),
         }
         self.stripe_service.handle_subscription_updated(subscription_data)
 
@@ -121,9 +113,7 @@ class PaymentProcessingEndToEndIntegrationTest(TestCase):
         self.assertEqual(self.user.current_plan, self.premium_plan)
 
         # Verify daily limit updated
-        self.assertEqual(
-            self.user.daily_request_limit, self.premium_plan.daily_request_limit
-        )
+        self.assertEqual(self.user.daily_request_limit, self.premium_plan.daily_request_limit)
 
     def test_maintains_data_consistency_during_payment_processing(self):
         """Test data consistency during payment operations."""
@@ -240,9 +230,7 @@ class PaymentConcurrencyAndRaceConditionTest(TransactionTestCase):
         statuses = ["active", "past_due", "canceled", "trialing"]
 
         with ThreadPoolExecutor(max_workers=4) as executor:
-            futures = [
-                executor.submit(update_subscription, status) for status in statuses
-            ]
+            futures = [executor.submit(update_subscription, status) for status in statuses]
 
             results = [future.result() for future in as_completed(futures)]
 
@@ -341,10 +329,7 @@ class PaymentConcurrencyAndRaceConditionTest(TransactionTestCase):
                 return None
 
         with ThreadPoolExecutor(max_workers=len(valid_statuses)) as executor:
-            futures = [
-                executor.submit(update_status_safely, status)
-                for status in valid_statuses
-            ]
+            futures = [executor.submit(update_status_safely, status) for status in valid_statuses]
 
             results = [future.result() for future in as_completed(futures)]
 
@@ -362,9 +347,7 @@ class PaymentConcurrencyAndRaceConditionTest(TransactionTestCase):
         def competing_update(field_value):
             try:
                 with transaction.atomic():
-                    user = User.objects.select_for_update(nowait=True).get(
-                        id=self.user.id
-                    )
+                    user = User.objects.select_for_update(nowait=True).get(id=self.user.id)
                     user.daily_requests_made = field_value
                     user.save()
                     return True
@@ -437,9 +420,7 @@ class PaymentSystemComprehensiveIntegrationTest(TestCase):
         self.basic_plan = BasicPlanFactory()
         self.premium_plan = PremiumPlanFactory()
 
-        self.user = UserFactory(
-            current_plan=self.free_plan, subscription_status="inactive"
-        )
+        self.user = UserFactory(current_plan=self.free_plan, subscription_status="inactive")
 
     def test_complete_user_lifecycle_from_registration_to_premium(self):
         """Test complete user journey from registration to premium subscription."""
