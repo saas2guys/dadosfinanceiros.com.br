@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
-    Plan, TokenHistory, User, WaitingList, RateLimitCounter, 
-    APIUsage, UsageSummary
+    Plan, TokenHistory, User, WaitingList, RateLimitCounter,
+    APIUsage, UsageSummary, Feature
 )
 
 @admin.register(WaitingList)
@@ -82,6 +82,16 @@ class PlanAdmin(admin.ModelAdmin):
     ordering = [
         "price_monthly"
     ]
+
+    filter_horizontal = ('features',)
+
+
+@admin.register(Feature)
+class FeatureAdmin(admin.ModelAdmin):
+    list_display = ['name', 'is_active']
+    list_filter = ['is_active']
+    search_fields = ['name', 'description']
+    ordering = ['name']
 
 
 @admin.register(RateLimitCounter)

@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_permission_classes():
-    if settings.DEBUG and not getattr(settings, 'TESTING', False):
+    if settings.DEBUG:
         logger.debug("DEBUG mode is on. Allowing all requests.")
         return [permissions.AllowAny]
     return [permissions.IsAuthenticated]
@@ -316,7 +316,6 @@ def plans_view(request):
     return render(request, "subscription/plans.html", context)
 
 
-@login_required
 @require_POST
 def create_checkout_session(request):
     try:
@@ -784,57 +783,37 @@ def user_subscription(request):
 
 
 @api_view(["POST"])
-@permission_classes(permissions_)
+@permission_classes([permissions.AllowAny])
 def create_checkout_session_api(request):
     try:
-        plan_id = request.data.get("plan_id")
-        plan = get_object_or_404(Plan, id=plan_id, is_active=True)
+        plan = get_object_or_404(Plan, id=request.data.get("plan_id"), is_active=True)
 
         if plan.is_free:
-            request.user.upgrade_to_plan(plan)
-            return Response(
-                {
-                    "success": True,
-                    "message": f"Successfully upgraded to {plan.name} plan!",
-                }
-            )
+            if request.user.is_authenticated:
+                request.user.upgrade_to_plan(plan)
+                return Response({"success": True, "message": f"Successfully upgraded to {plan.name} plan!"})
+            return Response({"error": "Registration required for free plan."}, status=400)
 
         if not plan.stripe_price_id:
-            return Response(
-                {"error": "This plan is not available for purchase."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        success_url = request.data.get(
-            "success_url", request.build_absolute_uri(reverse("subscription-success"))
-        )
-        cancel_url = request.data.get(
-            "cancel_url", request.build_absolute_uri(reverse("home"))
-        )
+            return Response({"error": "This plan is not available for purchase."}, status=400)
 
         session = StripeService.create_checkout_session(
-            user=request.user, plan=plan, success_url=success_url, cancel_url=cancel_url
+            user=request.user if request.user.is_authenticated else None,
+            plan=plan,
+            success_url=request.data.get("success_url", request.build_absolute_uri(reverse("subscription-success"))),
+            cancel_url=request.data.get("cancel_url", request.build_absolute_uri(reverse("home")))
         )
 
         return Response({"checkout_url": session.url, "session_id": session.id})
 
-    except stripe.error.APIConnectionError as e:
-        return Response(
-            {"error": "Service temporarily unavailable. Please try again later."},
-            status=status.HTTP_503_SERVICE_UNAVAILABLE,
-        )
-    except stripe.error.AuthenticationError as e:
-        return Response(
-            {"error": "Authentication error with payment service."},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
     except stripe.error.StripeError as e:
-        return Response(
-            {"error": f"Payment service error: {str(e)}"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+        status_code = 503 if "APIConnection" in str(type(e)) else 500 if "Authentication" in str(type(e)) else 400
+        error_msg = ("Service temporarily unavailable. Please try again later." if status_code == 503
+                     else "Authentication error with payment service." if status_code == 500
+        else f"Payment service error: {str(e)}")
+        return Response({"error": error_msg}, status=status_code)
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=400)
 
 
 def csrf_failure_view(request, reason=""):

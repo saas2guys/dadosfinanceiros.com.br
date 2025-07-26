@@ -1,7 +1,6 @@
 import uuid
 from datetime import datetime, timedelta
 from datetime import timezone as tz
-from enum import Enum
 
 from django.core.cache import caches
 
@@ -21,6 +20,18 @@ class SubscriptionStatus(models.TextChoices):
     UNPAID = "unpaid", "Unpaid"
 
 
+class Feature(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 class Plan(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -34,7 +45,7 @@ class Plan(models.Model):
     hourly_request_limit = models.PositiveIntegerField(default=100)
     monthly_request_limit = models.PositiveIntegerField(default=30000)
     burst_limit = models.PositiveIntegerField(default=50)
-    features = models.JSONField(default=list)
+    features = models.ManyToManyField(Feature, blank=True)
     is_active = models.BooleanField(default=True)
     is_free = models.BooleanField(default=False)
     is_metered = models.BooleanField(default=False)
@@ -44,7 +55,7 @@ class Plan(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        # Automatically set is_free for plans with zero price
+
         if self.price_monthly == 0:
             self.is_free = True
         super().save(*args, **kwargs)
@@ -54,7 +65,7 @@ class Plan(models.Model):
         if isinstance(self.features, dict):
             return self.features.get(feature_name, default)
         elif isinstance(self.features, list):
-            # If features is a list, check if the feature_name exists in it
+
             return feature_name in self.features if default is None else (feature_name in self.features or default)
         return default
 
@@ -69,7 +80,7 @@ class Plan(models.Model):
 
 
 class RateLimitCounter(models.Model):
-    identifier = models.CharField(max_length=255, db_index=True)  # user_id, ip, etc.
+    identifier = models.CharField(max_length=255, db_index=True)
     endpoint = models.CharField(max_length=200, db_index=True)
     window_start = models.DateTimeField(db_index=True)
     window_type = models.CharField(max_length=20, choices=[
@@ -86,8 +97,8 @@ class RateLimitCounter(models.Model):
         unique_together = ['identifier', 'endpoint', 'window_start', 'window_type']
         indexes = [
             models.Index(fields=['identifier', 'window_start', 'window_type']),
-            models.Index(fields=['window_start']),  # For cleanup tasks
-            models.Index(fields=['updated_at']),    # For cache eviction
+            models.Index(fields=['window_start']),
+            models.Index(fields=['updated_at']),
         ]
 
     def __str__(self):
@@ -109,13 +120,13 @@ class APIUsage(models.Model):
     user_agent = models.TextField(blank=True)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
     date = models.DateField(default=get_current_date, db_index=True)
-    hour = models.IntegerField(db_index=True)  # 0-23 for hourly aggregation
+    hour = models.IntegerField(db_index=True)
     
     class Meta:
         indexes = [
             models.Index(fields=['user', 'date', 'hour']),
             models.Index(fields=['user', 'timestamp']),
-            models.Index(fields=['date']),  # For cleanup
+            models.Index(fields=['date']),
             models.Index(fields=['user', 'endpoint', 'date']),
             models.Index(fields=['ip_address', 'date', 'hour']),
         ]
@@ -136,7 +147,7 @@ class UsageSummary(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     date = models.DateField(db_index=True)
-    hour = models.IntegerField(null=True, blank=True)  # Null for daily summaries
+    hour = models.IntegerField(null=True, blank=True)
     total_requests = models.IntegerField(default=0)
     successful_requests = models.IntegerField(default=0)
     failed_requests = models.IntegerField(default=0)
@@ -166,7 +177,7 @@ class RateLimitService:
         
         now = timezone.now()
         
-        # Calculate window start based on type
+
         if window_type == 'minute':
             window_start = now.replace(second=0, microsecond=0)
             cache_key = f"usage_{window_type}:{identifier}:{endpoint}:{window_start.strftime('%Y%m%d%H%M')}"
@@ -197,7 +208,7 @@ class RateLimitService:
                 counter.save(update_fields=['count', 'updated_at'])
                 counter.refresh_from_db()
         
-        # Update cache with new count
+
         cache = caches['rate_limit']
         cache_timeout = 300 if window_type in ['minute', 'hour'] else 3600
         cache.set(cache_key, counter.count, timeout=cache_timeout)
@@ -211,7 +222,7 @@ class RateLimitService:
         cache = caches['rate_limit']
         now = timezone.now()
         
-        # Calculate window start based on type
+
         if window_type == 'minute':
             window_start = now.replace(second=0, microsecond=0)
             cache_key = f"usage_{window_type}:{identifier}:{endpoint}:{window_start.strftime('%Y%m%d%H%M')}"
@@ -225,12 +236,12 @@ class RateLimitService:
             window_start = now.replace(minute=0, second=0, microsecond=0)
             cache_key = f"usage_{window_type}:{identifier}:{endpoint}:{window_start.strftime('%Y%m%d%H')}"
         
-        # Try cache first
+
         count = cache.get(cache_key)
         if count is not None:
             return count
         
-        # Fallback to database
+
         try:
             counter = RateLimitCounter.objects.get(
                 identifier=identifier,
@@ -242,7 +253,7 @@ class RateLimitService:
         except RateLimitCounter.DoesNotExist:
             count = 0
         
-        # Cache result
+
         cache_timeout = 300 if window_type in ['minute', 'hour'] else 3600
         cache.set(cache_key, count, timeout=cache_timeout)
         return count
@@ -323,7 +334,7 @@ class User(AbstractUser):
     current_period_start = models.DateTimeField(null=True, blank=True)
     current_period_end = models.DateTimeField(null=True, blank=True)
 
-    # Rate limiting cache fields
+
     cached_hourly_limit = models.IntegerField(null=True, blank=True)
     cached_daily_limit = models.IntegerField(null=True, blank=True)
     cached_monthly_limit = models.IntegerField(null=True, blank=True)
@@ -397,17 +408,17 @@ class User(AbstractUser):
         limits = self.get_cached_limits()
         identifier = f"user_{self.id}"
         
-        # Check hourly limit
+
         hourly_usage = RateLimitService.get_usage_count(identifier, endpoint, 'hour')
         if hourly_usage >= limits['hourly']:
             return False, f"hourly limit reached ({hourly_usage}/{limits['hourly']})"
         
-        # Check daily limit
+
         daily_usage = RateLimitService.get_usage_count(identifier, endpoint, 'day')
         if daily_usage >= limits['daily']:
             return False, f"daily limit reached ({daily_usage}/{limits['daily']})"
         
-        # Check monthly limit
+
         monthly_usage = RateLimitService.get_usage_count(identifier, endpoint, 'month')
         if monthly_usage >= limits['monthly']:
             return False, f"monthly limit reached ({monthly_usage}/{limits['monthly']})"
@@ -418,12 +429,12 @@ class User(AbstractUser):
         """Increment usage counters for all time windows"""
         identifier = f"user_{self.id}"
         
-        # Increment all time windows
+
         RateLimitService.check_and_increment(identifier, endpoint, 'hour')
         RateLimitService.check_and_increment(identifier, endpoint, 'day')
         RateLimitService.check_and_increment(identifier, endpoint, 'month')
         
-        # Also update the legacy daily counter for backward compatibility
+
         self.reset_daily_requests_if_needed()
         self.daily_requests_made += 1
         self.save(update_fields=['daily_requests_made'])
@@ -438,12 +449,12 @@ class User(AbstractUser):
     def reset_daily_requests_if_needed(self):
         today = timezone.now().date()
         if self.last_request_date is None or self.last_request_date != today:
-            # Reset if last request date is None, in the past, or in the future (anomalous)
+
             self.daily_requests_made = 0
             self.last_request_date = today
             self.save(update_fields=["daily_requests_made", "last_request_date"])
         elif self.daily_requests_made < 0:
-            # Normalize negative values to 0
+
             self.daily_requests_made = 0
             self.save(update_fields=["daily_requests_made"])
 
@@ -456,12 +467,12 @@ class User(AbstractUser):
         """Check if user can make another API request today."""
         self.reset_daily_requests_if_needed()
         
-        # Check if user has a valid plan
+
         if not self.current_plan:
             return False, "no active plan"
         
-        # Check if subscription is active
-        # Past due, unpaid, or other problematic statuses should deny access even for free plans
+
+
         if self.subscription_status in [SubscriptionStatus.PAST_DUE, SubscriptionStatus.UNPAID]:
             return False, "payment required"
         
@@ -487,7 +498,7 @@ class User(AbstractUser):
     def get_token_info(self):
         return {
             "request_token": str(self.request_token),
-            "token": str(self.request_token),  # Keep both for backward compatibility
+            "token": str(self.request_token),
             "created": self.request_token_created,
             "expires": self.request_token_expires,
             "never_expires": self.token_never_expires,
@@ -499,16 +510,16 @@ class User(AbstractUser):
 
     def generate_new_request_token(self, save_old=True, never_expires=False):
         if save_old and self.keep_token_history and self.request_token:
-            # Save the old token to history
+
             TokenHistory.objects.create(
                 user=self,
                 token=str(self.request_token),
                 expires_at=self.request_token_expires,
-                is_active=False,  # Old tokens are no longer active
+                is_active=False,
                 never_expires=self.token_never_expires,
             )
 
-            # Also save to the previous_tokens JSON field for backwards compatibility
+
             old_token_string = str(self.request_token)
             old_token_data = {
                 "token": old_token_string,
@@ -522,24 +533,24 @@ class User(AbstractUser):
                 "never_expires": self.token_never_expires,
             }
 
-            # For backward compatibility with tests, also store just the token strings
+
             if isinstance(self.previous_tokens, list):
-                # Check if the list contains strings (old format) or dicts (new format)
+
                 if len(self.previous_tokens) == 0 or isinstance(self.previous_tokens[0], str):
-                    # Old format - just append the token string
+
                     self.previous_tokens.append(old_token_string)
                 else:
-                    # New format - append the token data dict
+
                     self.previous_tokens.append(old_token_data)
             else:
-                # Initialize with token string for compatibility
+
                 self.previous_tokens = [old_token_string]
 
-            # Keep only the last 10 tokens
+
             if len(self.previous_tokens) > 10:
                 self.previous_tokens = self.previous_tokens[-10:]
 
-        # Generate new token
+
         self.request_token = uuid.uuid4()
         self.request_token_created = timezone.now()
         self.token_never_expires = never_expires
@@ -567,10 +578,10 @@ class User(AbstractUser):
     @property
     def is_subscription_active(self):
         if self.subscription_status in [SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING]:
-            # For free plans with no expiration date, they're always active
+
             if not self.subscription_expires_at:
                 return True
-            # For paid plans, check if not expired
+
             return self.subscription_expires_at > timezone.now()
         return False
 
@@ -586,7 +597,7 @@ class User(AbstractUser):
         if plan.is_free:
             self.subscription_status = SubscriptionStatus.ACTIVE
             self.subscription_expires_at = None
-        # Clear cached limits to force refresh
+
         self.limits_cache_updated = None
         self.save()
 
@@ -612,7 +623,7 @@ class User(AbstractUser):
         self.activate_subscription()
 
     def set_payment_failure_flags(self):
-        # TODO when a payment fails, send an email to the user
+
         """Set payment failure restrictions for a user"""
         self.payment_failed_at = timezone.now()
         self.payment_restrictions_applied = True
@@ -621,7 +632,7 @@ class User(AbstractUser):
             'payment_restrictions_applied',
         ]
         )
-        # Clear cached limits to force recalculation
+
         cache = caches['rate_limit']
         cache_key = f"user_limits:{self.id}"
         cache.delete(cache_key)
@@ -633,7 +644,7 @@ class User(AbstractUser):
             'payment_restrictions_applied',
         ]
         )
-        # Clear cached limits
+
         cache = caches['rate_limit']
         cache_key = f"user_limits:{self.id}"
         cache.delete(cache_key)
@@ -690,7 +701,7 @@ class User(AbstractUser):
                 stripe_data["current_period_end"], tz=tz.utc
             )
 
-        # Clear cached limits to force refresh
+
         self.limits_cache_updated = None
         self.save()
 

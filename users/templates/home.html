@@ -542,8 +542,6 @@
                                 <span class="text-5xl font-extrabold text-indigo-700">US$29</span>
                                 <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
                             </div>
-                            <p class="text-sm text-gray-500 line-through">US$35.00</p>
-                            <p class="text-sm text-green-400">17% discount</p>
                         </div>
                         <div class="mt-8 w-full">
                             <ul class="space-y-2">
@@ -579,7 +577,6 @@
                                 <span class="text-5xl font-extrabold text-indigo-700">US$57</span>
                                 <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
                             </div>
-                             <p class="text-sm text-gray-500 line-through">US$69.00</p>
                         </div>
                         <div class="mt-8 w-full">
                             <ul class="space-y-2">
@@ -615,7 +612,6 @@
                                 <span class="text-5xl font-extrabold text-indigo-700">US$148</span>
                                 <span class="text-xl font-medium text-gray-400 ml-2">/month</span>
                             </div>
-                            <p class="text-sm text-gray-500 line-through">US$179.00</p>
                         </div>
                         <div class="mt-8 w-full">
                             <ul class="space-y-2">
@@ -1013,25 +1009,46 @@ function selectPlan(planName, planId, planPrice) {
         if (btn) {
             btn.onclick = async function(e) {
                 e.preventDefault();
-                const userId = '{{ user.id|default:"" }}';
-                if (!userId) {
-                    alert('You need to be logged to subscribe to a plan');
-                    window.location.href = '{% url "login" %}';
-                    return;
-                }
                 btn.disabled = true;
                 btn.textContent = 'Redirecting...';
+
                 try {
-                    const response = await fetch('{% url "create-checkout-session" %}', {
+                    // Get CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    // Use the API endpoint that doesn't require login
+                    const checkoutUrl = '/api/create-checkout-session/';
+
+                    console.log('Making request to:', checkoutUrl); // Debug log
+
+                    const response = await fetch(checkoutUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
                         },
                         body: JSON.stringify({
                             plan_id: planId,
                         })
                     });
+
+                    console.log('Response status:', response.status); // Debug log
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Server response:', errorText);
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const responseText = await response.text();
+                        console.error('Non-JSON response:', responseText);
+                        throw new Error('Server returned non-JSON response');
+                    }
+
                     const data = await response.json();
+
                     if (data.checkout_url) {
                         window.location.href = data.checkout_url;
                     } else if (data.link) {
@@ -1042,7 +1059,8 @@ function selectPlan(planName, planId, planPrice) {
                         btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
                     }
                 } catch (err) {
-                    alert('Error creating checkout: ' + err);
+                    console.error('Full error:', err);
+                    alert('Error creating checkout: ' + err.message);
                     btn.disabled = false;
                     btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
                 }
