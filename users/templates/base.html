@@ -7,6 +7,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Google tag (gtag.js) - Place as high as possible in head -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X0WB7ZL7B5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-X0WB7ZL7B5', {
+        'send_page_view': true
+        });
+    </script>
+    
     <title>{% block title %}{% endblock %} - {% trans 'Financial Data API' %}</title>
     
     <!-- SEO Meta Tags -->
@@ -16,7 +28,9 @@
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
     <meta name="bingbot" content="index, follow">
-    <link rel="canonical" href="{% block canonical_url %}https://api.financialdata.online{% endblock %}">
+    
+    <!-- Canonical URL - Updated to match your actual domain -->
+    <link rel="canonical" href="{% block canonical_url %}https://financialdata.online{% endblock %}">
     
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="US">
@@ -33,8 +47,8 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="{% block og_title %}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Upcoming professional financial data API for stocks, forex, crypto, and more. Premium plans for developers when we launch.{% endblock %}">
-    <meta property="og:url" content="{% block og_url %}https://api.financialdata.online{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}https://api.financialdata.online/static/images/financial-api-og.jpg{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}https://financialdata.online{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://financialdata.online/static/images/financial-api-og.jpg{% endblock %}">
     <meta property="og:site_name" content="Financial Data API">
     <meta property="og:locale" content="en_US">
     
@@ -42,23 +56,14 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{% block twitter_title %}{% endblock %}">
     <meta name="twitter:description" content="{% block twitter_description %}Real-time financial market data API for stocks, forex, crypto, and more. Trusted by developers worldwide.{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}https://api.financialdata.online/static/images/financial-api-og.jpg{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}https://financialdata.online/static/images/financial-api-og.jpg{% endblock %}">
     <meta name="twitter:site" content="@FinancialDataAPI">
     <meta name="twitter:creator" content="@FinancialDataAPI">
     
     <!-- Additional Meta Tags -->
     {% block extra_meta %}{% endblock %}
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X0WB7ZL7B5"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-X0WB7ZL7B5');
-    </script>
-    
+    <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.js"></script>
@@ -67,24 +72,24 @@
     <!-- Structured Data for Organization -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Financial Data API",
-      "url": "https://api.financialdata.online",
-      "logo": "https://api.financialdata.online/static/images/logo.png",
-      "description": "Professional financial data API providing real-time market data for stocks, forex, cryptocurrencies, indices, options, and economic indicators",
-      "foundingDate": "2024",
-      "sameAs": [
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Financial Data API",
+        "url": "https://financialdata.online",
+        "logo": "https://financialdata.online/static/images/logo.png",
+        "description": "Professional financial data API providing real-time market data for stocks, forex, cryptocurrencies, indices, options, and economic indicators",
+        "foundingDate": "2024",
+        "sameAs": [
         "https://twitter.com/FinancialDataAPI",
         "https://linkedin.com/company/financial-data-api"
-      ],
-      "contactPoint": {
+        ],
+        "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+1-555-0123",
         "contactType": "Customer Service",
         "email": "talk@financialdata.online",
         "availableLanguage": "English"
-      }
+        }
     }
     </script>
 </head>
