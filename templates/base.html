@@ -171,7 +171,7 @@
                                 <p class="text-gray-400 text-xs px-3 py-1 border-b border-gray-600 mb-1">{% trans 'Choose Language' %}</p>
                                 <form action="{% url 'set_language' %}" method="post">
                                     {% csrf_token %}
-                                    <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+                                    <input name="next" type="hidden" value="{{ request.get_full_path }}" />
                                     <button type="submit" name="language" value="en" class="flex items-center w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-600 rounded text-sm {% if LANGUAGE_CODE == 'en' %}bg-gray-600 text-white{% endif %}">
                                         <span class="flag-icon flag-en"></span>English
                                         {% if LANGUAGE_CODE == 'en' %}<i class="fas fa-check ml-auto text-green-400"></i>{% endif %}
@@ -219,7 +219,7 @@
                     </p>
                     <form action="{% url 'set_language' %}" method="post" class="space-y-2">
                         {% csrf_token %}
-                        <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}" />
                         <button type="submit" name="language" value="en" class="flex items-center w-full text-left text-gray-300 hover:text-white text-sm py-2 px-3 rounded hover:bg-gray-600 transition-colors {% if LANGUAGE_CODE == 'en' %}bg-gray-600 text-white{% endif %}">
                             <span class="flag-icon flag-en"></span>English
                             {% if LANGUAGE_CODE == 'en' %}<i class="fas fa-check ml-auto text-green-400"></i>{% endif %}

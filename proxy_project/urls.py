@@ -17,13 +17,7 @@ from sitemaps import sitemaps
 from users.views import stripe_webhook
 
 
-def redirect_to_default_language(request):
-    """Redirect root path to default language"""
-    return redirect('/en/')
-
-
 urlpatterns = [
-    path("", redirect_to_default_language, name="root_redirect"),
     path("i18n/", include("django.conf.urls.i18n")),
     path("set_language/", set_language, name="set_language"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
@@ -49,11 +43,13 @@ urlpatterns = [
     path("api/plans/", users.views.PlansListView.as_view(), name="api_plans"),
     path("api/subscription/", users.views.user_subscription, name="api_user_subscription"),
     path("api/create-checkout-session/", users.views.create_checkout_session_api, name="api_create_checkout_session"),
+    # Main content URLs - accessible without language prefix
+    path("", include("users.urls")),
 ]
 
+# Admin URLs with language prefix for security
 urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
-    path("", include("users.urls")),
     prefix_default_language=True,
 )
 
