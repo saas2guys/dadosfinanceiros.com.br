@@ -32,7 +32,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="{% block og_title %}{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Upcoming professional financial data API for stocks, forex, crypto, and more. Free tier available for developers when we launch.{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Upcoming professional financial data API for stocks, forex, crypto, and more. Premium plans for developers when we launch.{% endblock %}">
     <meta property="og:url" content="{% block og_url %}https://api.financialdata.online{% endblock %}">
     <meta property="og:image" content="{% block og_image %}https://api.financialdata.online/static/images/financial-api-og.jpg{% endblock %}">
     <meta property="og:site_name" content="Financial Data API">
@@ -140,7 +140,7 @@
                                             <a href="{% url 'options_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Options" %}</a>
                                             <a href="{% url 'indices_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Indices" %}</a>
                                             <a href="{% url 'futures_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Futures" %}</a>
-                                            <a href="{% url 'commodities_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Commodities<br> (Coming Soon)" %}</a>
+                                            <a href="{% url 'commodities_api' %}" class="block text-gray-500 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Commodities" %} <span class="text-gray-500">{% trans "(Coming Soon)" %}</span></a>
                                         </div>
                                     </div>
                                     
@@ -148,11 +148,11 @@
                                     <div>
                                         <h4 class="text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-2">{% trans "Analysis & Data" %}</h4>
                                         <div class="space-y-1">
-                                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Fundamentals<br> (Coming Soon)" %}</a>
-                                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Technical Analysis<br> (Coming Soon)" %}</a>
-                                            <a href="{% url 'earnings_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Earnings<br> (Coming Soon)" %}</a>
-                                            <a href="{% url 'news_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "News & Sentiment<br> (Coming Soon)" %}</a>
-                                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-300 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Economic Data<br> (Coming Soon)" %}</a>
+                                            <a href="{% url 'fundamentals_api' %}" class="block text-gray-500 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Fundamentals" %} <span class="text-gray-500">{% trans "(Coming Soon)" %}</span></a>
+                                            <a href="{% url 'technical_analysis_api' %}" class="block text-gray-500 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Technical Analysis" %} <span class="text-gray-500">{% trans "(Coming Soon)" %}</span></a>
+                                            <a href="{% url 'earnings_api' %}" class="block text-gray-500 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Earnings" %} <span class="text-gray-500">{% trans "(Coming Soon)" %}</span></a>
+                                            <a href="{% url 'news_api' %}" class="block text-gray-500 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "News & Sentiment" %} <span class="text-gray-500">{% trans "(Coming Soon)" %}</span></a>
+                                            <a href="{% url 'economic_indicators_api' %}" class="block text-gray-500 hover:text-white text-sm py-1 hover:bg-gray-700 px-2 rounded">{% trans "Economic Data" %} <span class="text-gray-500">{% trans "(Coming Soon)" %}</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +208,7 @@
                         <a href="{% url 'profile' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Profile" %}</a>
                         <a href="{% url 'logout' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Logout" %}</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Login" %}</a>
+{#                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">{% trans "Login" %}</a>#}
                         <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">{% trans "Join Waiting List" %}</a>
                     {% endif %}
                 </div>
@@ -264,7 +264,7 @@
                     <a href="{% url 'profile' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Profile" %}</a>
                     <a href="{% url 'logout' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Logout" %}</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Login" %}</a>
+{#                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{% trans "Login" %}</a>#}
                     <a href="{% url 'waiting_list' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 block px-3 py-2 rounded-md text-base font-medium">{% trans "Join Waiting List" %}</a>
                 {% endif %}
             </div>

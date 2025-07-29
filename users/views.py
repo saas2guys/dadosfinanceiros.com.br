@@ -204,7 +204,22 @@ def waiting_list(request):
         form = WaitingListForm(request.POST)
         if form.is_valid():
             try:
-                form.save()
+                # Save the form data
+                waiting_list_entry = form.save(commit=False)
+                
+                # Handle the custom desired_endpoints checkboxes
+                desired_endpoints = request.POST.getlist('desired_endpoints')
+                waiting_list_entry.desired_endpoints = desired_endpoints
+                
+                # Handle the custom desired_plan radio button
+                desired_plan = request.POST.get('desired_plan')
+                waiting_list_entry.desired_plan = desired_plan
+                # Handle the custom desired_billing_cycle radio button
+                desired_billing_cycle = request.POST.get('desired_billing_cycle')
+                waiting_list_entry.desired_billing_cycle = desired_billing_cycle
+                
+                waiting_list_entry.save()
+                
                 messages.success(
                     request,
                     "Thank you for your interest! You've been added to our waiting list. "
@@ -229,7 +244,8 @@ def waiting_list(request):
     else:
         form = WaitingListForm()
 
-    return render(request, "waiting_list.html", {"form": form})
+    plans = Plan.objects.filter(is_active=True).order_by("price_monthly")
+    return render(request, "waiting_list.html", {"form": form, "plans": plans})
 
 
 def waiting_list_success(request):
@@ -784,6 +800,294 @@ def create_checkout_session_api(request):
         return Response({"error": error_msg}, status=status_code)
     except Exception as e:
         return Response({"error": str(e)}, status=400)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def home_page_data(request):
+    """API endpoint to get home page data including plans and features"""
+    plans = Plan.objects.filter(is_active=True).prefetch_related('features').order_by('price_monthly')
+    all_features = Feature.objects.filter(is_active=True).order_by('name')
+    
+    # Serialize plans with features
+    plans_data = []
+    for plan in plans:
+        plan_data = {
+            'id': plan.id,
+            'name': plan.name,
+            'description': plan.description,
+            'price_monthly': float(plan.price_monthly),
+            'price_yearly': float(plan.price_yearly) if plan.price_yearly else None,
+            'daily_request_limit': plan.daily_request_limit,
+            'hourly_request_limit': plan.hourly_request_limit,
+            'monthly_request_limit': plan.monthly_request_limit,
+            'burst_limit': plan.burst_limit,
+            'features': [{'id': f.id, 'name': f.name, 'description': f.description, 'is_active': f.is_active} for f in plan.features.all()],
+            'is_active': plan.is_active,
+            'is_free': plan.is_free,
+            'is_metered': plan.is_metered,
+            'stripe_price_id': plan.stripe_price_id,
+            'stripe_yearly_price_id': plan.stripe_yearly_price_id,
+            'created_at': plan.created_at.isoformat(),
+            'updated_at': plan.updated_at.isoformat(),
+        }
+        plans_data.append(plan_data)
+    
+    # Serialize features
+    features_data = [{'id': f.id, 'name': f.name, 'description': f.description, 'is_active': f.is_active} for f in all_features]
+    
+    # Get current plan and user data if authenticated
+    current_plan = None
+    user_data = None
+    if request.user.is_authenticated:
+        if request.user.current_plan:
+            current_plan = {
+                'id': request.user.current_plan.id,
+                'name': request.user.current_plan.name,
+                'description': request.user.current_plan.description,
+                'price_monthly': float(request.user.current_plan.price_monthly),
+                'price_yearly': float(request.user.current_plan.price_yearly) if request.user.current_plan.price_yearly else None,
+                'daily_request_limit': request.user.current_plan.daily_request_limit,
+                'hourly_request_limit': request.user.current_plan.hourly_request_limit,
+                'monthly_request_limit': request.user.current_plan.monthly_request_limit,
+                'burst_limit': request.user.current_plan.burst_limit,
+                'features': [{'id': f.id, 'name': f.name, 'description': f.description, 'is_active': f.is_active} for f in request.user.current_plan.features.all()],
+                'is_active': request.user.current_plan.is_active,
+                'is_free': request.user.current_plan.is_free,
+                'is_metered': request.user.current_plan.is_metered,
+                'stripe_price_id': request.user.current_plan.stripe_price_id,
+                'stripe_yearly_price_id': request.user.current_plan.stripe_yearly_price_id,
+                'created_at': request.user.current_plan.created_at.isoformat(),
+                'updated_at': request.user.current_plan.updated_at.isoformat(),
+            }
+        
+        user_data = {
+            'id': request.user.id,
+            'email': request.user.email,
+            'username': request.user.username,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'is_active': request.user.is_active,
+            'date_joined': request.user.date_joined.isoformat(),
+            'request_token': str(request.user.request_token),
+            'token_auto_renew': request.user.token_auto_renew,
+            'token_validity_days': request.user.token_validity_days,
+            'current_period_start': request.user.current_period_start.isoformat() if request.user.current_period_start else None,
+            'current_period_end': request.user.current_period_end.isoformat() if request.user.current_period_end else None,
+            'subscription_started_at': request.user.subscription_started_at.isoformat() if request.user.subscription_started_at else None,
+            'payment_failed_at': request.user.payment_failed_at.isoformat() if request.user.payment_failed_at else None,
+            'current_plan': current_plan,
+            'subscription_status': request.user.subscription_status,
+            'subscription_expires_at': request.user.subscription_expires_at.isoformat() if request.user.subscription_expires_at else None,
+            'subscription_days_remaining': request.user.subscription_days_remaining,
+            'is_subscription_active': request.user.is_subscription_active,
+            'daily_request_limit': request.user.daily_request_limit,
+            'daily_requests_made': request.user.daily_requests_made,
+            'requests_remaining': max(0, request.user.daily_request_limit - request.user.daily_requests_made),
+            'request_token': str(request.user.request_token),
+            'request_token_created': request.user.request_token_created.isoformat(),
+            'request_token_expires': request.user.request_token_expires.isoformat() if request.user.request_token_expires else None,
+            'token_never_expires': request.user.token_never_expires,
+            'token_auto_renew': request.user.token_auto_renew,
+            'token_validity_days': request.user.token_validity_days,
+            'previous_tokens': request.user.previous_tokens,
+        }
+    
+    return Response({
+        'plans': plans_data,
+        'all_features': features_data,
+        'current_plan': current_plan,
+        'user': user_data,
+    })
+
+
+@api_view(["GET"])
+@permission_classes(permissions_)
+def profile_page_data(request):
+    """API endpoint to get profile page data including user info, tokens, and usage"""
+    user = request.user
+    _token_history = TokenHistory.objects.filter(user=user).order_by("-created_at")
+
+    token_info = user.get_token_info()
+    token_info["is_active"] = not user.is_token_expired()
+
+    # Calculate usage percentage for progress bar
+    daily_requests_made = user.daily_requests_made
+    daily_request_limit = user.daily_request_limit
+    usage_percentage = 0
+    if daily_request_limit > 0:
+        usage_percentage = (daily_requests_made / daily_request_limit) * 100
+        # Cap at 100% to avoid overflow in UI
+        usage_percentage = min(usage_percentage, 100)
+
+    # Create a complete token history including the current token
+    all_tokens = []
+
+    # Add current token as the first item
+    current_token = {
+        "token": str(user.request_token),
+        "created_at": user.request_token_created,
+        "expires_at": user.request_token_expires,
+        "never_expires": user.token_never_expires,
+        "is_active": not user.is_token_expired(),
+        "is_current": True,
+        "status_display": "Current Token",
+    }
+    all_tokens.append(current_token)
+
+    # Add historical tokens
+    for token in _token_history:
+        token_data = {
+            "token": token.token,
+            "created_at": token.created_at,
+            "expires_at": token.expires_at,
+            "never_expires": token.never_expires,
+            "is_active": token.is_active,
+            "is_current": False,
+            "status_display": token.status_display,
+        }
+        all_tokens.append(token_data)
+
+    # Get plans for plan switching
+    plans = Plan.objects.filter(is_active=True).order_by("price_monthly")
+    plans_data = []
+    for plan in plans:
+        plan_data = {
+            'id': plan.id,
+            'name': plan.name,
+            'description': plan.description,
+            'price_monthly': float(plan.price_monthly),
+            'price_yearly': float(plan.price_yearly) if plan.price_yearly else None,
+            'daily_request_limit': plan.daily_request_limit,
+            'hourly_request_limit': plan.hourly_request_limit,
+            'monthly_request_limit': plan.monthly_request_limit,
+            'burst_limit': plan.burst_limit,
+            'features': [{'id': f.id, 'name': f.name, 'description': f.description, 'is_active': f.is_active} for f in plan.features.all()],
+            'is_active': plan.is_active,
+            'is_free': plan.is_free,
+            'is_metered': plan.is_metered,
+            'stripe_price_id': plan.stripe_price_id,
+            'stripe_yearly_price_id': plan.stripe_yearly_price_id,
+            'created_at': plan.created_at.isoformat(),
+            'updated_at': plan.updated_at.isoformat(),
+        }
+        plans_data.append(plan_data)
+
+    # Get current plan
+    current_plan = None
+    if user.current_plan:
+        current_plan = {
+            'id': user.current_plan.id,
+            'name': user.current_plan.name,
+            'description': user.current_plan.description,
+            'price_monthly': float(user.current_plan.price_monthly),
+            'price_yearly': float(user.current_plan.price_yearly) if user.current_plan.price_yearly else None,
+            'daily_request_limit': user.current_plan.daily_request_limit,
+            'hourly_request_limit': user.current_plan.hourly_request_limit,
+            'monthly_request_limit': user.current_plan.monthly_request_limit,
+            'burst_limit': user.current_plan.burst_limit,
+            'features': [{'id': f.id, 'name': f.name, 'description': f.description, 'is_active': f.is_active} for f in user.current_plan.features.all()],
+            'is_active': user.current_plan.is_active,
+            'is_free': user.current_plan.is_free,
+            'is_metered': user.current_plan.is_metered,
+            'stripe_price_id': user.current_plan.stripe_price_id,
+            'stripe_yearly_price_id': user.current_plan.stripe_yearly_price_id,
+            'created_at': user.current_plan.created_at.isoformat(),
+            'updated_at': user.current_plan.updated_at.isoformat(),
+        }
+
+    # Create plan ID map
+    plan_id_map = {plan.name: plan.id for plan in plans}
+
+    # User data
+    user_data = {
+        'id': user.id,
+        'email': user.email,
+        'username': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'is_active': user.is_active,
+        'date_joined': user.date_joined.isoformat(),
+        'request_token': str(user.request_token),
+        'token_auto_renew': user.token_auto_renew,
+        'token_validity_days': user.token_validity_days,
+        'current_period_start': user.current_period_start.isoformat() if user.current_period_start else None,
+        'current_period_end': user.current_period_end.isoformat() if user.current_period_end else None,
+        'subscription_started_at': user.subscription_started_at.isoformat() if user.subscription_started_at else None,
+        'payment_failed_at': user.payment_failed_at.isoformat() if user.payment_failed_at else None,
+        'current_plan': current_plan,
+        'subscription_status': user.subscription_status,
+        'subscription_expires_at': user.subscription_expires_at.isoformat() if user.subscription_expires_at else None,
+        'subscription_days_remaining': user.subscription_days_remaining,
+        'is_subscription_active': user.is_subscription_active,
+        'daily_request_limit': user.daily_request_limit,
+        'daily_requests_made': user.daily_requests_made,
+        'requests_remaining': max(0, user.daily_request_limit - user.daily_requests_made),
+        'request_token': str(user.request_token),
+        'request_token_created': user.request_token_created.isoformat(),
+        'request_token_expires': user.request_token_expires.isoformat() if user.request_token_expires else None,
+        'token_never_expires': user.token_never_expires,
+        'token_auto_renew': user.token_auto_renew,
+        'token_validity_days': user.token_validity_days,
+        'previous_tokens': user.previous_tokens,
+    }
+
+    return Response({
+        'user': user_data,
+        'token_info': token_info,
+        'all_tokens': all_tokens,
+        'daily_usage': {
+            'made': daily_requests_made,
+            'limit': daily_request_limit,
+            'remaining': max(0, daily_request_limit - daily_requests_made),
+            'percentage': round(usage_percentage, 1),
+        },
+        'plans': plans_data,
+        'current_plan': current_plan,
+        'plan_id_map': plan_id_map,
+    })
+
+
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def waiting_list_data(request):
+    """API endpoint to get waiting list page data including plans"""
+    plans = Plan.objects.filter(is_active=True).order_by("price_monthly")
+    plans_data = []
+    for plan in plans:
+        plan_data = {
+            'id': plan.id,
+            'name': plan.name,
+            'description': plan.description,
+            'price_monthly': float(plan.price_monthly),
+            'price_yearly': float(plan.price_yearly) if plan.price_yearly else None,
+            'daily_request_limit': plan.daily_request_limit,
+            'hourly_request_limit': plan.hourly_request_limit,
+            'monthly_request_limit': plan.monthly_request_limit,
+            'burst_limit': plan.burst_limit,
+            'features': [{'id': f.id, 'name': f.name, 'description': f.description, 'is_active': f.is_active} for f in plan.features.all()],
+            'is_active': plan.is_active,
+            'is_free': plan.is_free,
+            'is_metered': plan.is_metered,
+            'stripe_price_id': plan.stripe_price_id,
+            'stripe_yearly_price_id': plan.stripe_yearly_price_id,
+            'created_at': plan.created_at.isoformat(),
+            'updated_at': plan.updated_at.isoformat(),
+        }
+        plans_data.append(plan_data)
+    
+    return Response({
+        'plans': plans_data,
+    })
+
+
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def features_list(request):
+    """API endpoint to get all features"""
+    features = Feature.objects.filter(is_active=True).order_by('name')
+    features_data = [{'id': f.id, 'name': f.name, 'description': f.description, 'is_active': f.is_active} for f in features]
+    return Response(features_data)
 
 
 def csrf_failure_view(request, reason=""):

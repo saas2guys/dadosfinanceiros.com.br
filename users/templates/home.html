@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block meta_description %}
-    {% trans "Professional Financial Data API for real-time stocks, forex, crypto, options, futures, and economic data. Free tier available. Trusted by developers worldwide." %}
+    {% trans "Professional Financial Data API for real-time stocks, forex, crypto, options, futures, and economic data. Premium plans for serious applications. Trusted by developers worldwide." %}
 {% endblock %}
 
 {% block meta_keywords %}
@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block og_description %}
-    {% trans "Access real-time and historical financial data through our comprehensive API. Stocks, forex, crypto, options, futures, and economic indicators with free tier available." %}
+    {% trans "Access real-time and historical financial data through our comprehensive API. Stocks, forex, crypto, options, futures, and economic indicators with premium plans for serious applications." %}
 {% endblock %}
 
 {% block og_url %}
@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block twitter_description %}
-    Upcoming professional financial API for developers worldwide. Real-time stocks, forex, crypto data with free tier. Perfect for trading apps and fintech platforms.
+    Upcoming professional financial API for developers worldwide. Real-time stocks, forex, crypto data with premium plans. Perfect for trading apps and fintech platforms.
 {% endblock %}
 
 {% block extra_meta %}
@@ -58,7 +58,7 @@
         "@type": "SoftwareApplication",
         "name": "Global Markets Financial Data API",
         "alternateName": ["Stock Market API", "Financial Data Provider", "Trading API"],
-        "description": "Professional financial data API for global markets. Real-time and historical data for stocks, options, indices, futures, forex (24/7), and 3000+ cryptocurrencies. JSON and CSV formats via API access only. Designed for developers, analysts, and financial institutions building applications, custom queries, trading bot training, and strategy backtesting. 25-60% cheaper than competitors.",
+        "description": "Professional financial data API for global markets. Real-time and historical data for stocks, options, indices, futures, forex (24/7), and 3000+ cryptocurrencies. JSON and CSV formats via API access only. Designed for developers, analysts, and financial institutions building applications, custom queries, trading bot training, and strategy backtesting. Premium plans for serious applications.",
         "url": "https://api.financialdata.online",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
@@ -170,10 +170,10 @@
         "offers": [
             {
                 "@type": "Offer",
-                "name": "Free Tier",
-                "price": "0",
+                "name": "Basic Plan",
+                "price": "29",
                 "priceCurrency": "USD",
-                "description": "1000 API calls per day with access to real-time and historical market data"
+                "description": "10,000 daily API calls with access to real-time and historical market data"
             }
         ]
     }
@@ -221,7 +221,7 @@
         "@type": "Product",
         "name": "Global Markets Financial Data API",
         "image": "https://api.financialdata.online/static/images/api-product.png",
-        "description": "Financial Data API is an upcoming professional financial data service offering real-time and historical market data for stocks, forex, and cryptocurrencies with a generous free tier and developer-friendly features.",
+        "description": "Financial Data API is an upcoming professional financial data service offering real-time and historical market data for stocks, forex, and cryptocurrencies with premium plans and developer-friendly features.",
         "brand": {
             "@type": "Brand",
             "name": "Global Markets API"
@@ -276,10 +276,10 @@
             },
             {
                 "@type": "Question", 
-                "name": "Is there a free tier available?",
+                "name": "What pricing plans are available?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes, we offer a generous free tier with 1000 API calls per day, including access to real-time and historical market data, perfect for development, testing, and small-scale applications."
+                    "text": "We offer premium plans starting at $29/month with 10,000 daily API calls, including access to real-time and historical market data, perfect for development, testing, and production applications."
                 }
             }
         ]
@@ -326,9 +326,9 @@
                             {% trans "Access Your Dashboard" %}
                         </a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">
-                            {% trans "Existing Customer? Sign In" %}
-                        </a>
+{#                        <a href="{% url 'login' %}" class="border border-gray-500 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-200">#}
+{#                            {% trans "Existing Customer? Sign In" %}#}
+{#                        </a>#}
                     {% endif %}
                 </div>
                 
@@ -338,7 +338,7 @@
                         <span class="text-sm">✓ REST API Available</span>
                         <span class="text-sm">✓ WebSocket Streams Coming</span>
                         <span class="text-sm">✓ Global Markets Focus</span>
-                        <span class="text-sm">✓ Free 1000 calls/day</span>
+                        <span class="text-sm">✓ Premium plans from $29/month</span>
                         <span class="text-sm">✓ 60% Lower Cost</span>
                     </div>
                 </div>
@@ -395,7 +395,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-white mb-2">Transparent Pricing</h3>
-                        <p class="text-gray-400">Starting at $49/month with 100,000 calls. Free tier: 1000 calls/day. No hidden fees or setup costs.</p>
+                        <p class="text-gray-400">Starting at $29/month with 10,000 daily calls. Premium plans for serious applications. No hidden fees or setup costs.</p>
                     </div>
                     
                     <div class="bg-gray-700 p-6 rounded-lg border border-gray-600">
@@ -541,7 +541,7 @@
                             <span class="text-2xl font-bold text-indigo-400">2</span>
                         </div>
                         <h3 class="text-xl font-semibold text-white mb-2">Get Early Access</h3>
-                        <p class="text-gray-400">Receive exclusive early access with special launch pricing, extended free tiers, and priority technical support.</p>
+                        <p class="text-gray-400">Receive exclusive early access with special launch pricing, premium plans, and priority technical support.</p>
                     </div>
                     
                     <div class="text-center">
@@ -593,10 +593,10 @@
                     </div>
                     
                     <div class="bg-gray-800 p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold text-white mb-3">Will there be a free tier available?</h3>
+                        <h3 class="text-lg font-semibold text-white mb-3">What pricing plans will be available?</h3>
                         <p class="text-gray-400 text-sm">
-                            Yes! Our free tier will include 1000 API calls per day, perfect for development, 
-                            testing, and small applications.
+                            We will offer premium plans starting at $29/month with 10,000 daily API calls, perfect for development, 
+                            testing, and production applications.
                         </p>
                     </div>
                     
@@ -634,7 +634,7 @@
         function toggleBillingCycle(cycle) {
             currentBillingCycle = cycle;
             
-            // Update toggle buttons
+
             document.getElementById('monthly-toggle').className = cycle === 'monthly' 
                 ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
                 : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
@@ -643,7 +643,7 @@
                 ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
                 : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
             
-            // Update plan cards
+
             document.querySelectorAll('.plan-card').forEach(card => {
                 const monthlyPrice = card.querySelector('.monthly-price');
                 const yearlyPrice = card.querySelector('.yearly-price');
@@ -666,7 +666,7 @@
                 }
             });
             
-            // Update selected plan if any
+
             const selectedCard = document.querySelector('.plan-card.border-blue-500');
             if (selectedCard) {
                 const planName = selectedCard.getAttribute('data-plan');
@@ -687,6 +687,8 @@
             });
             
             const period = billingCycle === 'monthly' ? 'month' : 'year';
+            // Commented out subscribe functionality - replaced with waiting list
+            /*
             let html = `
                 <div class="flex flex-col items-center mt-4">
                     <button id="subscribe-btn" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition">Subscribe to ${planName} - USD ${planPrice}/${period}</button>
@@ -703,13 +705,11 @@
                         btn.textContent = 'Redirecting...';
 
                         try {
-                            // Get CSRF token
                             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                            // Use the API endpoint that doesn't require login
                             const checkoutUrl = '/api/create-checkout-session/';
 
-                            console.log('Making request to:', checkoutUrl); // Debug log
+                            console.log('Making request to:', checkoutUrl);
 
                             const response = await fetch(checkoutUrl, {
                                 method: 'POST',
@@ -723,7 +723,7 @@
                                 })
                             });
 
-                            console.log('Response status:', response.status); // Debug log
+                            console.log('Response status:', response.status);
 
                             if (!response.ok) {
                                 const errorText = await response.text();
@@ -758,14 +758,21 @@
                     };
                 }
             }, 100);
+            */
+            
+            // Replace with join waiting list button
+            let html = `
+                <div class="flex flex-col items-center mt-4">
+                    <a href="{% url 'waiting_list' %}" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition inline-block">Join Waiting List for ${planName}</a>
+                </div>
+            `;
+            document.getElementById('subscribe-btn-container').innerHTML = html;
         }
 
         window.addEventListener('DOMContentLoaded', function() {
-            // Add event listeners for billing cycle toggles
             document.getElementById('monthly-toggle').addEventListener('click', () => toggleBillingCycle('monthly'));
             document.getElementById('yearly-toggle').addEventListener('click', () => toggleBillingCycle('yearly'));
-            
-            // Update plan card click handlers
+
             document.querySelectorAll('.plan-card').forEach(card => {
                 card.addEventListener('click', function() {
                     const planName = card.getAttribute('data-plan');

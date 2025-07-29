@@ -24,68 +24,89 @@ api_urlpatterns = [
         views.create_checkout_session_api,
         name="api_create_checkout_session",
     ),
+    # New API endpoints for React frontend
+    path("home/", views.home_page_data, name="api_home"),
+    path("profile/", views.profile_page_data, name="api_profile_page"),
+    path("waiting-list/", views.waiting_list_data, name="api_waiting_list"),
+    path("features/", views.features_list, name="api_features"),
 ]
 
-urlpatterns = [
-    path("", views.home, name="home"),
-    # SEO-optimized landing pages for different financial data types
+# SEO-optimized landing pages for different financial data types
+seo_landing_pages = [
+    # Stock Market API
     path("stock-market-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="stock_market_api"),
-    path("stocks-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="stocks_api"),  # Alternative URL
-    path("equity-data-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="equity_data_api"),  # Alternative URL
+    path("stocks-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="stocks_api"),
+    path("equity-data-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="equity_data_api"),
+    
+    # Forex API
     path("forex-api/", TemplateView.as_view(template_name="forex_api.html"), name="forex_api"),
-    path("currency-api/", TemplateView.as_view(template_name="forex_api.html"), name="currency_api"),  # Alternative URL
-    path("fx-api/", TemplateView.as_view(template_name="forex_api.html"), name="fx_api"),  # Alternative URL
+    path("currency-api/", TemplateView.as_view(template_name="forex_api.html"), name="currency_api"),
+    path("fx-api/", TemplateView.as_view(template_name="forex_api.html"), name="fx_api"),
+    
+    # Crypto API
     path("crypto-api/", TemplateView.as_view(template_name="crypto_api.html"), name="crypto_api"),
-    path("cryptocurrency-api/", TemplateView.as_view(template_name="crypto_api.html"), name="cryptocurrency_api"),  # Alternative URL
-    path("bitcoin-api/", TemplateView.as_view(template_name="crypto_api.html"), name="bitcoin_api"),  # Alternative URL
-    path("digital-assets-api/", TemplateView.as_view(template_name="crypto_api.html"), name="digital_assets_api"),  # Alternative URL
+    path("cryptocurrency-api/", TemplateView.as_view(template_name="crypto_api.html"), name="cryptocurrency_api"),
+    path("bitcoin-api/", TemplateView.as_view(template_name="crypto_api.html"), name="bitcoin_api"),
+    path("digital-assets-api/", TemplateView.as_view(template_name="crypto_api.html"), name="digital_assets_api"),
+    
+    # Options API
     path("options-api/", TemplateView.as_view(template_name="options_api.html"), name="options_api"),
-    path("derivatives-api/", TemplateView.as_view(template_name="options_api.html"), name="derivatives_api"),  # Alternative URL
+    path("derivatives-api/", TemplateView.as_view(template_name="options_api.html"), name="derivatives_api"),
+    
+    # Indices API
     path("indices-api/", TemplateView.as_view(template_name="indices_api.html"), name="indices_api"),
-    path("index-api/", TemplateView.as_view(template_name="indices_api.html"), name="index_api"),  # Alternative URL
-    path("market-indices-api/", TemplateView.as_view(template_name="indices_api.html"), name="market_indices_api"),  # Alternative URL
+    path("index-api/", TemplateView.as_view(template_name="indices_api.html"), name="index_api"),
+    path("market-indices-api/", TemplateView.as_view(template_name="indices_api.html"), name="market_indices_api"),
+    
+    # Futures API
     path("futures-api/", TemplateView.as_view(template_name="futures_api.html"), name="futures_api"),
-    path("commodities-api/", TemplateView.as_view(template_name="commodities_api.html"), name="commodities_api"),  # Alternative URL
-    path("commodity-data-api/", TemplateView.as_view(template_name="commodities_api.html"), name="commodity_data_api"),  # Alternative URL
+    
+    # Commodities API
+    path("commodities-api/", TemplateView.as_view(template_name="commodities_api.html"), name="commodities_api"),
+    path("commodity-data-api/", TemplateView.as_view(template_name="commodities_api.html"), name="commodity_data_api"),
+    
+    # Economic Indicators API
     path("economic-indicators-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="economic_indicators_api"),
-    path(
-        "economic-data-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="economic_data_api"
-    ),  # Alternative URL
-    path("macro-data-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="macro_data_api"),  # Alternative URL
+    path("economic-data-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="economic_data_api"),
+    path("macro-data-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="macro_data_api"),
+    
+    # Fundamentals API
     path("fundamentals-api/", TemplateView.as_view(template_name="fundamentals_api.html"), name="fundamentals_api"),
-    path(
-        "financial-statements-api/", TemplateView.as_view(template_name="fundamentals_api.html"), name="financial_statements_api"
-    ),  # Alternative URL
-    path("products/", TemplateView.as_view(template_name="products.html"), name="products"),
-    # Additional API landing pages for comprehensive platform coverage
+    path("financial-statements-api/", TemplateView.as_view(template_name="fundamentals_api.html"), name="financial_statements_api"),
+    
+    # News API
     path("news-api/", TemplateView.as_view(template_name="news_api.html"), name="news_api"),
-    path("news-sentiment-api/", TemplateView.as_view(template_name="news_api.html"), name="news_sentiment_api"),  # Alternative URL
-    path("financial-news-api/", TemplateView.as_view(template_name="news_api.html"), name="financial_news_api"),  # Alternative URL
+    path("news-sentiment-api/", TemplateView.as_view(template_name="news_api.html"), name="news_sentiment_api"),
+    path("financial-news-api/", TemplateView.as_view(template_name="news_api.html"), name="financial_news_api"),
+    
+    # Technical Analysis API
     path("technical-analysis-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="technical_analysis_api"),
-    path(
-        "technical-indicators-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="technical_indicators_api"
-    ),  # Alternative URL
-    path("ta-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="ta_api"),  # Alternative URL
+    path("technical-indicators-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="technical_indicators_api"),
+    path("ta-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="ta_api"),
+    
+    # Earnings API
     path("earnings-api/", TemplateView.as_view(template_name="earnings_api.html"), name="earnings_api"),
-    path(
-        "earnings-calendar-api/", TemplateView.as_view(template_name="earnings_api.html"), name="earnings_calendar_api"
-    ),  # Alternative URL
-    path("earnings-data-api/", TemplateView.as_view(template_name="earnings_api.html"), name="earnings_data_api"),  # Alternative URL
-    # SEO content pages
-    path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),
-    path("blog/", TemplateView.as_view(template_name="blog.html"), name="blog"),
-    # User management pages
+    path("earnings-calendar-api/", TemplateView.as_view(template_name="earnings_api.html"), name="earnings_calendar_api"),
+    path("earnings-data-api/", TemplateView.as_view(template_name="earnings_api.html"), name="earnings_data_api"),
+]
+
+# User management and authentication URLs
+user_management_urls = [
     path("profile/", views.profile, name="profile"),
+    path("register/", views.register_user, name="register"),
+    path("waiting-list/", views.waiting_list, name="waiting_list"),
+    path("waiting-list/success/", views.waiting_list_success, name="waiting_list_success"),
+    path("regenerate-token/", views.regenerate_token, name="regenerate_token"),
+]
+
+# Authentication URLs
+auth_urls = [
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="login.html", redirect_authenticated_user=True),
         name="login",
     ),
     path("logout/", auth_views.LogoutView.as_view(next_page="home"), name="logout"),
-    path("register/", views.register_user, name="register"),  # Now redirects to waiting list
-    path("waiting-list/", views.waiting_list, name="waiting_list"),
-    path("waiting-list/success/", views.waiting_list_success, name="waiting_list_success"),
-    path("regenerate-token/", views.regenerate_token, name="regenerate_token"),
     # Password reset URLs
     path(
         "password_reset/",
@@ -107,9 +128,10 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name="registration/password_reset_complete.html"),
         name="password_reset_complete",
     ),
-    # API endpoints (standalone for backward compatibility)
-    path("api/plans/", views.PlansListView.as_view(), name="api_plans"),
-    # Subscription URLs - Fixed to match test expectations
+]
+
+# Subscription URLs
+subscription_urls = [
     path(
         "create-checkout-session/",
         views.create_checkout_session,
@@ -122,6 +144,27 @@ urlpatterns = [
         views.reactivate_subscription,
         name="reactivate-subscription",
     ),
-    # Include API URLs with namespace
-    path("api/", include((api_urlpatterns, "api"), namespace="api")),
 ]
+
+# Other content pages
+content_urls = [
+    path("", views.home, name="home"),
+    path("products/", TemplateView.as_view(template_name="products.html"), name="products"),
+    path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),
+    path("blog/", TemplateView.as_view(template_name="blog.html"), name="blog"),
+]
+
+# API endpoints (standalone for backward compatibility)
+legacy_api_urls = [
+    path("api/plans/", views.PlansListView.as_view(), name="api_plans"),
+]
+
+urlpatterns = (
+    content_urls +
+    seo_landing_pages +
+    user_management_urls +
+    auth_urls +
+    subscription_urls +
+    legacy_api_urls +
+    [path("api/", include((api_urlpatterns, "api"), namespace="api"))]
+)
