@@ -1,3 +1,4 @@
+from aiohttp.web_response import json_response
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns, set_language
 from django.contrib import admin
@@ -10,14 +11,19 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from starlette.responses import JSONResponse
 
 import users.views
 from proxy_app.views import api_documentation
 from sitemaps import sitemaps
 from users.views import stripe_webhook
 
+def root(request):
+    return JSONResponse({"status": "ok"})
+
 
 urlpatterns = [
+    path("", root),
     path("i18n/", include("django.conf.urls.i18n")),
     path("set_language/", set_language, name="set_language"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
