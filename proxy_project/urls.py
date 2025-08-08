@@ -11,7 +11,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-from starlette.responses import JSONResponse
+from django.http import JsonResponse
 
 import users.views
 from proxy_app.views import api_documentation
@@ -19,7 +19,7 @@ from sitemaps import sitemaps
 from users.views import stripe_webhook
 
 def root(request):
-    return JSONResponse({"status": "ok"})
+    return JsonResponse({"status": "ok"})
 
 
 urlpatterns = [
