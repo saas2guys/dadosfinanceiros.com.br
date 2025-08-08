@@ -18,12 +18,9 @@ from proxy_app.views import api_documentation
 from sitemaps import sitemaps
 from users.views import stripe_webhook
 
-def root(request):
-    return JsonResponse({"status": "ok"})
 
 
 urlpatterns = [
-    path("", root),
     path("i18n/", include("django.conf.urls.i18n")),
     path("set_language/", set_language, name="set_language"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
