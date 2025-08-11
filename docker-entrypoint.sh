@@ -1,5 +1,4 @@
 #!/bin/sh
-
 set -e
 
 # Apply database migrations
@@ -16,4 +15,4 @@ python manage.py collectstatic --noinput
 
 # Start Daphne
 echo "Starting Daphne server..."
-exec daphne -b 0.0.0.0 -p 80 proxy_project.asgi:application 
+exec daphne -b 0.0.0.0 -p 8000 proxy_project.asgi:application

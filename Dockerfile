@@ -36,6 +36,6 @@ RUN mkdir -p /app/staticfiles /app/media \
 
 USER appuser
 
-EXPOSE 80
+EXPOSE 8000
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
