@@ -22,10 +22,6 @@ Add the following to your `.env` file:
 # Stripe API
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-
-# App URLs
-STRIPE_SUCCESS_URL=http://localhost:8080/payment/success/
-STRIPE_CANCEL_URL=http://localhost:8080/payment/cancel/
 ```
 
 ## Running Locally
@@ -41,3 +37,28 @@ This will:
 Listen for events from Stripe
 Forward them to your local webhook endpoint (/stripe/webhook/)
 Print event logs in your terminal
+
+## Linking Stripe Plans to Django Model
+Our Plan model in Django contains fields to store Stripe IDs for both products and prices:
+```python
+class Plan(models.Model):
+    ...
+    stripe_plan_id = models.CharField(max_length=255, blank=True, null=True)  # Product ID from Stripe
+    stripe_price_id = models.CharField(max_length=255, blank=True, null=True)  # Monthly price ID
+    stripe_yearly_price_id = models.CharField(max_length=255, blank=True, null=True)  # Yearly price ID
+    ...
+```
+1. **Create Products in Stripe** -Go to Stripe Dashboard → Products and create one product per plan you offer.
+Example product IDs from Stripe:
+```
+prod_abcdeFgHiJKlmN
+```
+2. **Create Prices for Each Product**
+- Monthly billing price
+- Yearly billing price
+3. **Copy the IDs from Stripe**
+```
+stripe_plan_id → The product ID from Stripe (e.g., prod_abcdeFgHiJKlmN)
+stripe_price_id → The monthly price ID (e.g., price_123...)
+stripe_yearly_price_id → The yearly price ID (e.g., price_456...)
+```
