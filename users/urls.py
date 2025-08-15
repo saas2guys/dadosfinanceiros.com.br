@@ -24,6 +24,7 @@ api_urlpatterns = [
         views.create_checkout_session_api,
         name="api_create_checkout_session",
     ),
+    path("tickers/", views.tickers_view, name="api_tickers"),
 ]
 
 # SEO-optimized landing pages for different financial data types

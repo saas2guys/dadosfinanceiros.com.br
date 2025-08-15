@@ -209,7 +209,6 @@ if DEBUG:
         "django.contrib.messages.middleware.MessageMiddleware",
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
         "django.middleware.locale.LocaleMiddleware",
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
 else:
     MIDDLEWARE = [
@@ -311,34 +310,20 @@ else:
 
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 
-if 'test' in sys.argv:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        },
-        'rate_limit': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        },
-    }
-else:
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": f"{REDIS_URL}/1",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "CONNECTION_POOL_KWARGS": {"max_connections": 100},
-            },
-        },
-        "rate_limit": {
-            "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-            "LOCATION": "rate_limit_cache",
-            "OPTIONS": {
-                "MAX_ENTRIES": 100000,  # Prevent unlimited growth
-                "CULL_FREQUENCY": 10,  # Clean old entries regularly
-            },
+# Use a cache backend that supports atomic increment required by django-ratelimit
+# Use Redis via django-redis in all environments to satisfy checks
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
+}
+
+# Explicitly point django-ratelimit to use the default cache
+RATELIMIT_USE_CACHE = "default"
 
 CHANNEL_LAYERS = {
     "default": {

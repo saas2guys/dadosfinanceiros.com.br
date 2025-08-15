@@ -1,13 +1,12 @@
 """
 Main proxy logic for routing requests, caching, and response transformation
 """
-import json
 import logging
 import re
+from functools import lru_cache
 from typing import Any, Dict, Optional, Tuple
 
 from django.conf import settings
-from django.core.cache import cache
 
 from .config import (
     CACHE_TTL,
@@ -27,9 +26,12 @@ logger = logging.getLogger(__name__)
 class FinancialDataProxy:
     """Main proxy class that handles all request routing and processing"""
 
-    def __init__(self):
-        # Initialize providers
-        self.providers = {'polygon': get_provider('polygon', POLYGON_API_KEY), 'fmp': get_provider('fmp', FMP_API_KEY)}
+    def __init__(self, providers: Optional[dict] = None):
+        if providers:
+            self.providers = providers
+        else:
+            self.providers = {'polygon': get_provider('polygon', POLYGON_API_KEY), 'fmp': get_provider('fmp', FMP_API_KEY)}
+
 
     def process_request(self, path: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
         """
@@ -43,35 +45,15 @@ class FinancialDataProxy:
             JSON response data
         """
         try:
-            # 1. Find matching route
-            route_config = self._find_route(path)
-            if not route_config:
-                raise EndpointNotFoundError(f"Endpoint not found: {path}")
-
-            # 2. Check cache first
-            cache_key = self._generate_cache_key(path, params)
-            cached_data = cache.get(cache_key)
-            if cached_data:
-                logger.info(f"Cache hit for {path}")
-                return self._add_metadata(cached_data, "cache", route_config["provider"])
-
-            # 3. Transform path and params for provider
-            provider_endpoint, provider_params = self._transform_request(path, params, route_config)
-
-            # 4. Make request to provider
-            provider = self.providers[route_config["provider"]]
-            response_data = provider.make_request(provider_endpoint, provider_params)
-
-            # 5. Transform response if needed
-            transformed_data = self._transform_response(response_data, route_config)
-
-            # 6. Cache the result
-            cache_ttl = CACHE_TTL.get(route_config["cache"], 3600)
-            cache.set(cache_key, transformed_data, cache_ttl)
-
-            # 7. Add metadata and return
-            return self._add_metadata(transformed_data, "live", route_config["provider"])
-
+            # Use LRU-cached computation of provider call and transformation
+            before_hits = self._fetch_and_transform_cached.cache_info().hits
+            data, provider_name = self._fetch_and_transform_cached(
+                path,
+                self._params_to_key(params),
+            )
+            after_hits = self._fetch_and_transform_cached.cache_info().hits
+            source = "cache" if after_hits > before_hits else "live"
+            return self._add_metadata(data, source, provider_name)
         except FinancialAPIError:
             raise
         except Exception as e:
@@ -90,17 +72,41 @@ class FinancialDataProxy:
 
         return None
 
-    def _generate_cache_key(self, path: str, params: Dict[str, Any] = None) -> str:
-        """Generate cache key for the request"""
-        key_parts = [path]
+    def _params_to_key(self, params: Optional[Dict[str, Any]]) -> Tuple[Tuple[str, str], ...]:
+        """Convert params dict to a hashable, deterministic tuple for caching."""
+        if not params:
+            return tuple()
+        return tuple(sorted((str(k), str(v)) for k, v in params.items()))
 
-        if params:
-            # Sort params for consistent cache keys
-            sorted_params = sorted(params.items())
-            params_str = "&".join([f"{k}={v}" for k, v in sorted_params])
-            key_parts.append(params_str)
+    # Use module import time setting for cache size
+    _LRU_MAXSIZE = getattr(settings, "PROXY_LRU_CACHE_SIZE", 1024)
 
-        return f"financial_api:{'|'.join(key_parts)}"
+    @lru_cache(maxsize=_LRU_MAXSIZE)
+    def _fetch_and_transform_cached(
+        self, path: str, params_key: Tuple[Tuple[str, str], ...]
+    ) -> Tuple[Dict[str, Any], str]:
+        """
+        LRU-cached core pipeline: route lookup, transform request, provider call, transform response.
+        Returns a tuple of (transformed_data, provider_name).
+        The params are supplied as a hashable tuple to make the cache key stable.
+        """
+        # 1. Find matching route
+        route_config = self._find_route(path)
+        if not route_config:
+            raise EndpointNotFoundError(f"Endpoint not found: {path}")
+
+        # 2. Transform path and params for provider
+        params_dict = dict(params_key)
+        provider_endpoint, provider_params = self._transform_request(path, params_dict, route_config)
+
+        # 3. Make request to provider
+        provider = self.providers[route_config["provider"]]
+        response_data = provider.make_request(provider_endpoint, provider_params)
+
+        # 4. Transform response if needed
+        transformed_data = self._transform_response(response_data, route_config)
+
+        return transformed_data, route_config["provider"]
 
     def _transform_request(self, path: str, params: Dict[str, Any], route_config: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         """Transform the request path and parameters for the target provider"""
@@ -154,10 +160,74 @@ class FinancialDataProxy:
         return provider_endpoint, provider_params
 
     def _transform_response(self, response_data: Dict[str, Any], route_config: Dict[str, Any]) -> Dict[str, Any]:
-        """Transform provider response to unified format"""
-        # For now, return response as-is
-        # In the future, you could add response normalization here
-        return response_data
+        """Transform provider response to unified format and replace URLs with financialdata.online"""
+        transformed_data = response_data.copy()
+
+        transformed_data = self._replace_urls_in_response(transformed_data)
+
+        return transformed_data
+
+    def _replace_urls_in_response(self, data: Any) -> Any:
+        """Recursively replace any URLs in the response data with financialdata.online URLs"""
+        if isinstance(data, dict):
+            result = {}
+            for key, value in data.items():
+                if key.lower() in ['url', 'link', 'href', 'endpoint', 'next_url', 'previous_url']:
+                    result[key] = self._convert_to_financialdata_url(value)
+                else:
+                    result[key] = self._replace_urls_in_response(value)
+            return result
+        elif isinstance(data, list):
+            return [self._replace_urls_in_response(item) for item in data]
+        elif isinstance(data, str):
+            if self._is_provider_url(data):
+                return self._convert_to_financialdata_url(data)
+            return data
+        else:
+            return data
+
+    def _is_provider_url(self, text: str) -> bool:
+        """Check if a string looks like a provider URL that should be replaced"""
+        provider_domains = [
+            'polygon.io',
+            'financialmodelingprep.com',
+            'api.polygon.io',
+            'fmp-cloud-io',
+        ]
+
+        return any(domain in text.lower() for domain in provider_domains)
+
+    def _convert_to_financialdata_url(self, original_url: str) -> str:
+        """Convert a provider URL to a financialdata.online URL"""
+        if not isinstance(original_url, str) or not original_url.strip():
+            return original_url
+
+        if 'financialdata.online' in original_url.lower():
+            return original_url
+
+        if not self._is_provider_url(original_url):
+            return original_url
+
+        import urllib.parse
+
+        try:
+            parsed = urllib.parse.urlparse(original_url)
+            path = parsed.path
+            query = parsed.query
+
+            if path.startswith('/v1/') or path.startswith('/v2/') or path.startswith('/v3/'):
+                path = path[4:]
+
+            new_url = f"{settings.FINANCIALDATA_BASE_URL}/api/v1{path}"
+
+            if query:
+                new_url += f"?{query}"
+
+            return new_url
+
+        except Exception as e:
+            logger.warning(f"Failed to convert URL {original_url}: {e}")
+            return original_url
 
     def _add_metadata(self, data: Dict[str, Any], source: str, provider: str) -> Dict[str, Any]:
         """Add metadata to response"""
@@ -205,7 +275,7 @@ class FinancialDataProxy:
                 {
                     "endpoint": f"/api/v1/{route_pattern}",
                     "provider": config["provider"],
-                    "cache_ttl": CACHE_TTL.get(config["cache"], 3600),
+                    "cache_ttl": CACHE_TTL.get(config.get("cache"), 3600),
                     "description": self._get_endpoint_description(route_pattern),
                 }
             )
