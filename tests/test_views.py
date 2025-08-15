@@ -9,7 +9,7 @@ from unittest.mock import Mock, patch
 
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from django.test import Client, TestCase
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from freezegun import freeze_time
@@ -569,3 +569,23 @@ class PaymentViewErrorHandlingTest(PaymentViewTestCaseBase):
             # Should log error but not expose internal details to user
             self.assertEqual(response.status_code, 404)
             # Logger call depends on implementation, just verify it doesn't crash
+
+
+class TickersViewTest(APITestCase):
+    def test_tickers_view_replaces_domain(self):
+        url_param = "https://app.polygon.com/api/v1/asdasdasd"
+        endpoint = "/api/v1/tickers/"
+        response = self.client.get(endpoint, {"url": url_param})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.data["new_url"],
+            "https://api.financialdata.online/api/v1/asdasdasd"
+        )
+
+    def test_tickers_view_no_url(self):
+        endpoint = "/api/v1/tickers/"
+        response = self.client.get(endpoint)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("error", response.data)
