@@ -5,17 +5,20 @@ Tests authentication, permissions, API endpoints, error handling, and edge cases
 import json
 from datetime import datetime, timedelta
 from decimal import Decimal
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, MagicMock
 
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from django.test import Client, TestCase, override_settings
+from django.test import Client, TestCase, override_settings, RequestFactory
 from django.urls import reverse
 from django.utils import timezone
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
+from proxy_app.providers import PolygonProvider, FMPProvider
+from proxy_app.proxy import FinancialDataProxy
+from proxy_app.views_new import FinancialAPIView
 from users.models import Plan
 
 from .factories import (
@@ -572,20 +575,45 @@ class PaymentViewErrorHandlingTest(PaymentViewTestCaseBase):
 
 
 class TickersViewTest(APITestCase):
-    def test_tickers_view_replaces_domain(self):
-        url_param = "https://app.polygon.com/api/v1/asdasdasd"
-        endpoint = "/api/v1/tickers/"
-        response = self.client.get(endpoint, {"url": url_param})
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.mock_polygon_provider = MagicMock(spec=PolygonProvider)
+        self.mock_fmp_provider = MagicMock(spec=FMPProvider)
+        # Real proxy instance with mocked providers
+        self.fd_proxy = FinancialDataProxy({'polygon': self.mock_polygon_provider, 'fmp': self.mock_fmp_provider})
+        # Patch the global proxy used by FinancialAPIView
+        self._proxy_patcher = patch("proxy_app.views_new.proxy", self.fd_proxy)
+        self._proxy_patcher.start()
+        self.addCleanup(self._proxy_patcher.stop)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.data["new_url"],
-            "https://api.financialdata.online/api/v1/asdasdasd"
-        )
+    def test_happy_path_calls_both_providers(self):
+        # Arrange: stub provider responses
+        self.mock_fmp_provider.make_request.return_value = {
+            "symbol": "AAPL",
+            "price": 123.45,
+            "change": -0.01,
+            "changePercent": -1.23,
+        }
+        self.mock_polygon_provider.make_request.return_value = {"market": "open"}
 
-    def test_tickers_view_no_url(self):
-        endpoint = "/api/v1/tickers/"
-        response = self.client.get(endpoint)
+        # Act: call FMP-backed endpoint via FinancialAPIView
+        request_quotes = self.factory.get("/api/v1/quotes/AAPL")
+        response_fmp = FinancialAPIView.as_view()(request_quotes)
+        self.assertEqual(response_fmp.status_code, 200)
+        data_fmp = json.loads(response_fmp.content.decode("utf-8"))
+        # Assert FMP call and response
+        self.mock_fmp_provider.make_request.assert_called_once_with("/v3/quote/AAPL", {})
+        self.assertEqual(data_fmp.get("symbol"), "AAPL")
+        self.assertIn("_metadata", data_fmp)
+        self.assertEqual(data_fmp["_metadata"].get("provider"), "fmp")
 
-        self.assertEqual(response.status_code, 400)
-        self.assertIn("error", response.data)
+        # Act: call Polygon-backed endpoint via FinancialAPIView
+        request_market = self.factory.get("/api/v1/reference/market-status")
+        response_polygon = FinancialAPIView.as_view()(request_market)
+        self.assertEqual(response_polygon.status_code, 200)
+        data_polygon = json.loads(response_polygon.content.decode("utf-8"))
+        # Assert Polygon call and response
+        self.mock_polygon_provider.make_request.assert_called_once_with("/v1/marketstatus/now", {})
+        self.assertEqual(data_polygon.get("market"), "open")
+        self.assertIn("_metadata", data_polygon)
+        self.assertEqual(data_polygon["_metadata"].get("provider"), "polygon")
