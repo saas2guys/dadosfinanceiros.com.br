@@ -160,10 +160,74 @@ class FinancialDataProxy:
         return provider_endpoint, provider_params
 
     def _transform_response(self, response_data: Dict[str, Any], route_config: Dict[str, Any]) -> Dict[str, Any]:
-        """Transform provider response to unified format"""
-        # For now, return response as-is
-        # In the future, you could add response normalization here
-        return response_data
+        """Transform provider response to unified format and replace URLs with financialdata.online"""
+        transformed_data = response_data.copy()
+
+        transformed_data = self._replace_urls_in_response(transformed_data)
+
+        return transformed_data
+
+    def _replace_urls_in_response(self, data: Any) -> Any:
+        """Recursively replace any URLs in the response data with financialdata.online URLs"""
+        if isinstance(data, dict):
+            result = {}
+            for key, value in data.items():
+                if key.lower() in ['url', 'link', 'href', 'endpoint', 'next_url', 'previous_url']:
+                    result[key] = self._convert_to_financialdata_url(value)
+                else:
+                    result[key] = self._replace_urls_in_response(value)
+            return result
+        elif isinstance(data, list):
+            return [self._replace_urls_in_response(item) for item in data]
+        elif isinstance(data, str):
+            if self._is_provider_url(data):
+                return self._convert_to_financialdata_url(data)
+            return data
+        else:
+            return data
+
+    def _is_provider_url(self, text: str) -> bool:
+        """Check if a string looks like a provider URL that should be replaced"""
+        provider_domains = [
+            'polygon.io',
+            'financialmodelingprep.com',
+            'api.polygon.io',
+            'fmp-cloud-io',
+        ]
+
+        return any(domain in text.lower() for domain in provider_domains)
+
+    def _convert_to_financialdata_url(self, original_url: str) -> str:
+        """Convert a provider URL to a financialdata.online URL"""
+        if not isinstance(original_url, str) or not original_url.strip():
+            return original_url
+
+        if 'financialdata.online' in original_url.lower():
+            return original_url
+
+        if not self._is_provider_url(original_url):
+            return original_url
+
+        import urllib.parse
+
+        try:
+            parsed = urllib.parse.urlparse(original_url)
+            path = parsed.path
+            query = parsed.query
+
+            if path.startswith('/v1/') or path.startswith('/v2/') or path.startswith('/v3/'):
+                path = path[4:]
+
+            new_url = f"{settings.FINANCIALDATA_BASE_URL}/api/v1{path}"
+
+            if query:
+                new_url += f"?{query}"
+
+            return new_url
+
+        except Exception as e:
+            logger.warning(f"Failed to convert URL {original_url}: {e}")
+            return original_url
 
     def _add_metadata(self, data: Dict[str, Any], source: str, provider: str) -> Dict[str, Any]:
         """Add metadata to response"""
@@ -211,7 +275,7 @@ class FinancialDataProxy:
                 {
                     "endpoint": f"/api/v1/{route_pattern}",
                     "provider": config["provider"],
-                    "cache_ttl": CACHE_TTL.get(config["cache"], 3600),
+                    "cache_ttl": CACHE_TTL.get(config.get("cache"), 3600),
                     "description": self._get_endpoint_description(route_pattern),
                 }
             )
