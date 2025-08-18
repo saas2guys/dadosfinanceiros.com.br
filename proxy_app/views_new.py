@@ -44,71 +44,58 @@ class FinancialAPIView(View):
             return JsonResponse(response_data, safe=False)
 
         except EndpointNotFoundError as e:
-            logger.warning(f"Endpoint not found: {e}")
-            return JsonResponse({"error": "Endpoint not found", "message": str(e), "available_endpoints": "/api/v1/endpoints"}, status=404)
-
+            return self._error_response("Endpoint not found", str(e), 404)
         except RateLimitError as e:
-            logger.warning(f"Rate limit exceeded: {e}")
-            return JsonResponse({"error": "Rate limit exceeded", "message": str(e), "retry_after": 60}, status=429)
-
+            return self._error_response("Rate limit exceeded", str(e), 429, {"retry_after": 60})
         except ProviderError as e:
-            logger.error(f"Provider error: {e}")
-            return JsonResponse({"error": "Provider error", "message": str(e), "provider": e.provider}, status=e.status_code or 500)
-
+            return self._error_response("Provider error", str(e), e.status_code or 500, {"provider": e.provider})
         except FinancialAPIError as e:
-            logger.error(f"API error: {e}")
-            return JsonResponse({"error": "API error", "message": str(e)}, status=500)
-
+            return self._error_response("API error", str(e), 500)
         except Exception as e:
             logger.error(f"Unexpected error: {e}")
-            return JsonResponse({"error": "Internal server error", "message": "An unexpected error occurred"}, status=500)
+            return self._error_response("Internal server error", "An unexpected error occurred", 500)
 
     def post(self, request, *args, **kwargs):
         """Handle POST requests (for batch operations)"""
         try:
+            path = self._extract_path(request.path)
+
             # Parse JSON body
             try:
-                body = json.loads(request.body.decode('utf-8'))
+                body = json.loads(request.body.decode('utf-8')) if request.body else {}
             except json.JSONDecodeError:
-                return JsonResponse({"error": "Invalid JSON", "message": "Request body must be valid JSON"}, status=400)
-
-            # Extract path from request
-            path = self._extract_path(request.path)
+                return self._error_response("Invalid JSON", "Request body must be valid JSON", 400)
 
             # Handle batch requests
             if path == "batch":
-                return self._handle_batch_request(body)
+                return self._handle_batch(body)
 
-            # For other POST endpoints, treat body as params
+            # Regular POST request
+            logger.info(f"POST {path} - body: {body}")
             response_data = proxy.process_request(path, body)
 
             return JsonResponse(response_data, safe=False)
 
         except Exception as e:
-            logger.error(f"POST request error: {e}")
-            return JsonResponse({"error": "Internal server error", "message": str(e)}, status=500)
+            logger.error(f"POST error: {e}")
+            return self._error_response("Internal server error", str(e), 500)
 
     def _extract_path(self, request_path: str) -> str:
-        """Extract the API path from Django request path"""
-        # Remove /api/v1/ prefix
-        if request_path.startswith('/api/v1/'):
-            return request_path[8:]  # Remove '/api/v1/'
-        elif request_path.startswith('/v1/'):
-            return request_path[4:]  # Remove '/v1/' for legacy compatibility
-
+        """Extract API path from request"""
+        # Remove API prefix
+        for prefix in ['/api/v1/', '/v1/']:
+            if request_path.startswith(prefix):
+                return request_path[len(prefix):]
         return request_path.lstrip('/')
 
     def _handle_batch_request(self, body: dict) -> JsonResponse:
         """Handle batch requests for multiple endpoints"""
-        if "requests" not in body:
-            return JsonResponse({"error": "Invalid batch request", "message": "Body must contain 'requests' array"}, status=400)
+        if "requests" not in body or not isinstance(body["requests"], list):
+            return self._error_response("Invalid batch request", "'requests' must be an array", 400)
 
         requests_list = body["requests"]
-        if not isinstance(requests_list, list):
-            return JsonResponse({"error": "Invalid batch request", "message": "'requests' must be an array"}, status=400)
-
-        if len(requests_list) > 100:  # Limit batch size
-            return JsonResponse({"error": "Batch too large", "message": "Maximum 100 requests per batch"}, status=400)
+        if len(requests_list) > 100:
+            return self._error_response("Batch too large", "Maximum 100 requests per batch", 400)
 
         results = []
         for i, req in enumerate(requests_list):
@@ -128,6 +115,13 @@ class FinancialAPIView(View):
 
         return JsonResponse({"results": results, "total": len(results)})
 
+    def _error_response(self, error_type: str, message: str, status_code: int, extra_data: dict = None) -> JsonResponse:
+        """Create standardized error response"""
+        response_data = {"error": error_type, "message": message}
+        if extra_data:
+            response_data.update(extra_data)
+        return JsonResponse(response_data, status=status_code)
+
 
 class HealthView(View):
     """Health check endpoint"""
@@ -138,17 +132,23 @@ class HealthView(View):
             health_status = proxy.get_health_status()
 
             # Determine HTTP status code based on health
-            status_code = 200
             if health_status["status"] == "degraded":
-                status_code = 206  # Partial Content
+                status_code = 206
             elif health_status["status"] == "unhealthy":
-                status_code = 503  # Service Unavailable
+                status_code = 503
+            else:
+                status_code = 200
 
             return JsonResponse(health_status, status=status_code)
 
         except Exception as e:
             logger.error(f"Health check error: {e}")
-            return JsonResponse({"status": "unhealthy", "error": str(e), "timestamp": proxy._get_current_timestamp()}, status=503)
+            return JsonResponse({
+                "status": "unhealthy",
+                "error": str(e),
+                "timestamp": proxy._get_current_timestamp()},
+                status=503
+            )
 
 
 class EndpointsView(View):

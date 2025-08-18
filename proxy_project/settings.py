@@ -50,6 +50,8 @@ ALLOWED_HOSTS = (
     else [
         "financialdata.online",
         "www.financialdata.online",
+        "localhost",
+        "127.0.0.1",
         "api.financialdata.online",
         "dev-financialdata-com-t8ayq.ondigitalocean.app",
         "app-financialdata-online-75yr7.ondigitalocean.app",
@@ -126,6 +128,8 @@ STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_LIVE_MODE = config("STRIPE_LIVE_MODE", default=False, cast=bool)
+
+FINANCIALDATA_BASE_URL = "https://financialdata.online"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -311,13 +315,31 @@ else:
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 
 # Use a cache backend that supports atomic increment required by django-ratelimit
-# Use Redis via django-redis in all environments to satisfy checks
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+if 'test' in sys.argv:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+        'rate_limit': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{REDIS_URL}/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+            },
+        },
+        "rate_limit": {
+            "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+            "LOCATION": "rate_limit_cache",
+            "OPTIONS": {
+                "MAX_ENTRIES": 100000,  # Prevent unlimited growth
+                "CULL_FREQUENCY": 10,  # Clean old entries regularly
         },
     }
 }
