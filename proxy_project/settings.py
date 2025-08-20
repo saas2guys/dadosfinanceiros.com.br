@@ -13,6 +13,8 @@ SECRET_KEY = config("SECRET_KEY", default="django-proxy-secret-key-change-in-pro
 
 DEBUG = config("DEBUG", default=False, cast=bool)
 
+ENV = config("ENV", default="local")
+
 
 if DEBUG:
     INTERNAL_IPS = [
@@ -46,7 +48,7 @@ if DEBUG:
 
 ALLOWED_HOSTS = (
     ["*"]
-    if DEBUG
+    if DEBUG or ENV in ('local', 'development', 'dev')
     else [
         "financialdata.online",
         "www.financialdata.online",
@@ -59,7 +61,10 @@ ALLOWED_HOSTS = (
 )
 
 CSRF_TRUSTED_ORIGINS = (
-    [
+    ['*']
+    if DEBUG or ENV in ('local', 'development', 'dev')
+    else [
+        # Production domains
         "https://financialdata.online",
         "https://www.financialdata.online",
         "https://api.financialdata.online",
@@ -67,21 +72,11 @@ CSRF_TRUSTED_ORIGINS = (
         "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
         "https://app-financialdata-online-75yr7.ondigitalocean.app",
     ]
-    if not DEBUG
-    else [
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "https://financialdata.online",
-        "https://www.financialdata.online",
-        "https://api.financialdata.online",
-        "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
-        "https://app-financialdata-online-75yr7.ondigitalocean.app",
-    ]
 )
 
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_AGE = 31_449_600
-CSRF_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
+CSRF_COOKIE_DOMAIN = None  # Avoid hardcoded domain so cookie is set on DO preview hosts and primary domain
 CSRF_COOKIE_PATH = "/"
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SECURE = not DEBUG
@@ -91,7 +86,7 @@ CSRF_FAILURE_VIEW = "users.views.csrf_failure_view"
 
 SESSION_COOKIE_NAME = "sessionid"
 SESSION_COOKIE_AGE = 1_209_600
-SESSION_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
+SESSION_COOKIE_DOMAIN = None  # Match current host to ensure cookies are set on all deployment hosts
 SESSION_COOKIE_PATH = "/"
 SESSION_SAVE_EVERY_REQUEST = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -256,6 +251,8 @@ if not DEBUG:
     CSP_FORM_ACTION = ("'self'",)
 
     USE_TLS = True
+    # Ensure CSRF works correctly behind proxies (e.g., DigitalOcean App Platform)
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 ROOT_URLCONF = "proxy_project.urls"
 
@@ -385,8 +382,6 @@ LOGGING = {
     },
 }
 
-ENV = config("ENV", default="local")
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -430,6 +425,7 @@ SIMPLE_JWT = {
     "TOKEN_TYPE_CLAIM": "token_type",
 }
 
+# Allow all origins during development for convenience
 CORS_ALLOWED_ORIGINS = (
     [
         "https://financialdata.online",
@@ -437,11 +433,7 @@ CORS_ALLOWED_ORIGINS = (
         "https://api.financialdata.online",
     ]
     if not DEBUG
-    else [
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "http://localhost:3000",
-    ]
+    else []
 )
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
