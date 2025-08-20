@@ -63,6 +63,9 @@ CSRF_TRUSTED_ORIGINS = (
         "https://financialdata.online",
         "https://www.financialdata.online",
         "https://api.financialdata.online",
+        # DigitalOcean App Platform hosts used for admin access and previews
+        "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
+        "https://app-financialdata-online-75yr7.ondigitalocean.app",
     ]
     if not DEBUG
     else [
@@ -71,6 +74,8 @@ CSRF_TRUSTED_ORIGINS = (
         "https://financialdata.online",
         "https://www.financialdata.online",
         "https://api.financialdata.online",
+        "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
+        "https://app-financialdata-online-75yr7.ondigitalocean.app",
     ]
 )
 
