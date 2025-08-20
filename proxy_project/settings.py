@@ -108,6 +108,8 @@ STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_LIVE_MODE = config("STRIPE_LIVE_MODE", default=False, cast=bool)
 
+APPEND_SLASH = True
+
 FINANCIALDATA_BASE_URL = "https://financialdata.online"
 
 INSTALLED_APPS = [
