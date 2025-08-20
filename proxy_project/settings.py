@@ -60,10 +60,25 @@ ALLOWED_HOSTS = (
     ]
 )
 
-CSRF_TRUSTED_ORIGINS = (
-    ['*']
-    if DEBUG or ENV in ('local', 'development', 'dev')
-    else [
+if DEBUG or ENV in ('local', 'development', 'dev'):
+    CSRF_TRUSTED_ORIGINS = [
+        # Local development (both root and common ports)
+        "http://localhost",
+        "http://127.0.0.1",
+        "http://0.0.0.0",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://0.0.0.0:8000",
+        # DO preview hosts commonly used during dev/admin access
+        "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
+        "https://app-financialdata-online-75yr7.ondigitalocean.app",
+        # Primary domains
+        "https://financialdata.online",
+        "https://www.financialdata.online",
+        "https://api.financialdata.online",
+    ]
+else:
+    CSRF_TRUSTED_ORIGINS = [
         # Production domains
         "https://financialdata.online",
         "https://www.financialdata.online",
@@ -72,7 +87,6 @@ CSRF_TRUSTED_ORIGINS = (
         "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
         "https://app-financialdata-online-75yr7.ondigitalocean.app",
     ]
-)
 
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_AGE = 31_449_600
