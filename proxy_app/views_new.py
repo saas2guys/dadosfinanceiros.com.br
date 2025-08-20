@@ -127,29 +127,7 @@ class HealthView(View):
     """Health check endpoint"""
 
     def get(self, request, *args, **kwargs):
-        """Return health status of the API and all providers"""
-        try:
-            health_status = proxy.get_health_status()
-
-            # Determine HTTP status code based on health
-            if health_status["status"] == "degraded":
-                status_code = 206
-            elif health_status["status"] == "unhealthy":
-                status_code = 503
-            else:
-                status_code = 200
-
-            return JsonResponse(health_status, status=status_code)
-
-        except Exception as e:
-            logger.error(f"Health check error: {e}")
-            return JsonResponse({
-                "status": "unhealthy",
-                "error": str(e),
-                "timestamp": proxy._get_current_timestamp()},
-                status=503
-            )
-
+        return JsonResponse({"status": "ok"}, status=200)
 
 class EndpointsView(View):
     """Endpoint documentation"""

@@ -216,26 +216,39 @@ class FinancialDataProxy:
             }
         return data
 
+    def _get_current_timestamp(self) -> str:
+        """Get current timestamp in ISO format"""
+        from datetime import datetime
+
+        return datetime.utcnow().isoformat() + "Z"
+
     def _dict_to_tuple(self, params: Dict[str, Any]) -> Tuple[Tuple[str, str], ...]:
         """Convert dict to sorted tuple for caching"""
         return tuple(sorted((str(k), str(v)) for k, v in params.items()))
 
-    # Health and documentation methods
     def get_health_status(self) -> Dict[str, Any]:
-        """Get provider health status"""
-        status = {"status": "healthy", "providers": {}, "timestamp": datetime.utcnow().isoformat() + "Z"}
+        """Get health status of all providers"""
+        health_status = {"status": "healthy", "providers": {}, "timestamp": self._get_current_timestamp()}
 
-        for name, provider in self.providers.items():
+        for provider_name, provider in self.providers.items():
             try:
-                # Simple health check
-                test_endpoint = "/v1/marketstatus/now" if name == "polygon" else "/v3/quote/AAPL"
-                provider.make_request(test_endpoint, {"limit": 1})
-                status["providers"][name] = {"status": "healthy"}
-            except Exception as e:
-                status["providers"][name] = {"status": "unhealthy", "error": str(e)}
-                status["status"] = "degraded"
+                # Test with a simple endpoint
+                if provider_name == "polygon":
+                    test_endpoint = "/v1/marketstatus/now"
+                else:  # fmp
+                    test_endpoint = "/v3/quote/AAPL"
 
-        return status
+                provider.make_request(test_endpoint, {"limit": 1})
+                health_status["providers"][provider_name] = {"status": "healthy", "last_check": self._get_current_timestamp()}
+            except Exception as e:
+                health_status["providers"][provider_name] = {
+                    "status": "unhealthy",
+                    "error": str(e),
+                    "last_check": self._get_current_timestamp(),
+                }
+                health_status["status"] = "degraded"
+
+        return health_status
 
     def get_endpoint_list(self) -> Dict[str, Any]:
         """Get available endpoints"""
