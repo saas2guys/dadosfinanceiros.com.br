@@ -1,8 +1,11 @@
 import json
 import logging
+import re
 from datetime import datetime as dt
 from datetime import timezone as tz
+from urllib.parse import urlparse
 
+import requests
 import stripe
 from django.conf import settings
 from django.contrib import messages
@@ -11,6 +14,7 @@ from django.core.cache import cache, caches
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
@@ -822,3 +826,20 @@ def csrf_failure_view(request, reason=""):
             },
             status=403,
         )
+
+
+@csrf_exempt
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def tickers_view(request):
+    url = request.query_params.get("url")
+    pattern = r'https://[^/]+'
+    match = re.search(pattern, url or "")
+    try:
+        if not match:
+            return Response({"error": "No URL received."}, status=400)
+        new_url = url.replace(match.group(0), settings.FINANCIAL_DATA_URL)
+        return Response({"new_url": new_url})
+    except Exception as e:
+        logger.error(f"Error replacing domain: {e}")
+        return Response({"error": str(e)}, status=500)

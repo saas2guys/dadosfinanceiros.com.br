@@ -29,13 +29,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_permission_classes():
-    if getattr(settings, 'ENV', 'local') == "local" and not getattr(settings, 'TESTING', False):
+    if getattr(settings, 'ENV', 'local') == "local" or getattr(settings, 'TESTING', False):
         return [AllowAny]
     return [IsAuthenticated, DailyLimitPermission]
 
 
 def get_authentication_classes():
-    if getattr(settings, 'ENV', 'local') == "local" and not getattr(settings, 'TESTING', False):
+    if getattr(settings, 'ENV', 'local') == "local" or getattr(settings, 'TESTING', False):
         return []
     return [JWTAuthentication, RequestTokenAuthentication]
 
@@ -784,7 +784,7 @@ class UnifiedFinancialAPIView(APIView):
 
         # Add API key and query parameters
         api_params = dict(request.GET)
-        api_params['apikey'] = self.polygon_api_key
+        api_params['apiKey'] = self.polygon_api_key
 
         # Apply parameter mapping if specified
         if 'params_map' in endpoint_config:
@@ -837,7 +837,7 @@ class UnifiedFinancialAPIView(APIView):
 
         # Add API key and query parameters
         api_params = dict(request.GET)
-        api_params['apikey'] = self.fmp_api_key
+        api_params['apiKey'] = self.fmp_api_key
 
         # Apply parameter mapping if specified
         if 'params_map' in endpoint_config:
@@ -963,7 +963,7 @@ class UnifiedFinancialAPIView(APIView):
         for field in ["next_url", "previous_url", "next", "previous"]:
             if field in data and isinstance(data[field], str) and "polygon.io" in data[field]:
                 url = data[field].replace("api.polygon.io", self.proxy_domain)
-                url = re.sub(r"[?&]apikey=[^&]*&?", "", url, flags=re.IGNORECASE)
+                url = re.sub(r"[?&]apiKey=[^&]*&?", "", url, flags=re.IGNORECASE)
                 url = re.sub(r"/v[1-3]/", "/v1/", url)
                 url = re.sub(r"[&?]+$", "", url)
                 if not url.startswith("https://"):
@@ -987,7 +987,7 @@ class UnifiedFinancialAPIView(APIView):
         for field in ["next_url", "previous_url", "next", "previous"]:
             if field in data and isinstance(data[field], str) and "polygon.io" in data[field]:
                 url = data[field].replace("api.polygon.io", self.proxy_domain)
-                url = re.sub(r"[?&]apikey=[^&]*&?", "", url, flags=re.IGNORECASE)
+                url = re.sub(r"[?&]apiKey=[^&]*&?", "", url, flags=re.IGNORECASE)
                 url = re.sub(r"/v[1-3]/", "/v1/", url)
                 url = re.sub(r"[&?]+$", "", url)
                 if not url.startswith("https://"):

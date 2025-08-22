@@ -39,7 +39,7 @@ class DatabaseRateLimitMiddleware:
             markcoroutinefunction(self)
 
         # Paths to exclude from rate limiting
-        self.excluded_paths = {'/admin/', '/static/', '/media/', '/health/', '/ping/', '/api/v1/health/', '/api/v1/endpoints/'}
+        self.excluded_paths = {'/admin/', '/static/', '/media/'}
 
         # Anonymous user limits (per IP)
         self.anonymous_limits = {'minute': 5, 'hour': 50, 'day': 500}
