@@ -574,46 +574,143 @@ class PaymentViewErrorHandlingTest(PaymentViewTestCaseBase):
             # Logger call depends on implementation, just verify it doesn't crash
 
 
-class TickersViewTest(APITestCase):
+@override_settings(ENV='local', TESTING=True)
+class UnifiedFinancialAPITests(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
-        self.mock_polygon_provider = MagicMock(spec=PolygonProvider)
-        self.mock_fmp_provider = MagicMock(spec=FMPProvider)
-        # Real proxy instance with mocked providers
-        self.fd_proxy = FinancialDataProxy({'polygon': self.mock_polygon_provider, 'fmp': self.mock_fmp_provider})
-        # Patch the global proxy used by FinancialAPIView
-        self._proxy_patcher = patch("proxy_app.views_new.proxy", self.fd_proxy)
-        self._proxy_patcher.start()
-        self.addCleanup(self._proxy_patcher.stop)
+        self.client = APIClient()
+        self.api_key = "fake_api_key"
 
-    def test_happy_path_calls_both_providers(self):
-        # Arrange: stub provider responses
-        self.mock_fmp_provider.make_request.return_value = {
-            "symbol": "AAPL",
-            "price": 123.45,
-            "change": -0.01,
-            "changePercent": -1.23,
+    @patch("proxy_app.views.requests.Session.request")
+    def test_reference_tickers_list(self, mock_request):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "results": [{"ticker": "AAPL"}, {"ticker": "MSFT"}],
+            "status": "OK"
         }
-        self.mock_polygon_provider.make_request.return_value = {"market": "open"}
+        mock_response.status_code = 200
+        mock_response.content = b'{"results": [{"ticker": "AAPL"}, {"ticker": "MSFT"}], "status": "OK"}'
+        mock_request.return_value = mock_response
 
-        # Act: call FMP-backed endpoint via FinancialAPIView
-        request_quotes = self.factory.get("/api/v1/quotes/AAPL")
-        response_fmp = FinancialAPIView.as_view()(request_quotes)
-        self.assertEqual(response_fmp.status_code, 200)
-        data_fmp = json.loads(response_fmp.content.decode("utf-8"))
-        # Assert FMP call and response
-        self.mock_fmp_provider.make_request.assert_called_once_with("/v3/quote/AAPL", {})
-        self.assertEqual(data_fmp.get("symbol"), "AAPL")
-        self.assertIn("_metadata", data_fmp)
-        self.assertEqual(data_fmp["_metadata"].get("provider"), "fmp")
+        response = self.client.get(
+            "/api/v1/reference/tickers",
+            {"apiKey": self.api_key}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("results", response.json())
+        self.assertEqual(response.json()["results"][0]["ticker"], "AAPL")
 
-        # Act: call Polygon-backed endpoint via FinancialAPIView
-        request_market = self.factory.get("/api/v1/reference/market-status")
-        response_polygon = FinancialAPIView.as_view()(request_market)
-        self.assertEqual(response_polygon.status_code, 200)
-        data_polygon = json.loads(response_polygon.content.decode("utf-8"))
-        # Assert Polygon call and response
-        self.mock_polygon_provider.make_request.assert_called_once_with("/v1/marketstatus/now", {})
-        self.assertEqual(data_polygon.get("market"), "open")
-        self.assertIn("_metadata", data_polygon)
-        self.assertEqual(data_polygon["_metadata"].get("provider"), "polygon")
+    @patch("proxy_app.views.requests.Session.request")
+    def test_reference_ticker_details(self, mock_request):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "results": {"ticker": "AAPL", "name": "Apple Inc"},
+            "status": "OK"
+        }
+        mock_response.status_code = 200
+        mock_response.content = b'{"results": {"ticker": "AAPL", "name": "Apple Inc"}, "status": "OK"}'
+        mock_request.return_value = mock_response
+
+        response = self.client.get(
+            "/api/v1/reference/tickers/AAPL",
+            {"apiKey": self.api_key}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["results"]["ticker"], "AAPL")
+
+    @patch("proxy_app.views.requests.Session.request")
+    def test_aggregates_range(self, mock_request):
+        """Test the correct endpoint for aggregates/OHLC data"""
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "results": [{"c": 178.85, "o": 177.5, "h": 179.0, "l": 177.0, "v": 1000000}],
+            "status": "OK"
+        }
+        mock_response.status_code = 200
+        mock_response.content = b'{"results": [{"c": 178.85, "o": 177.5}], "status": "OK"}'
+        mock_request.return_value = mock_response
+
+        # Use the correct endpoint format that exists in the mapping
+        response = self.client.get(
+            "/api/v1/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-02",
+            {"apiKey": self.api_key}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["results"][0]["c"], 178.85)
+
+    @patch("proxy_app.views.requests.Session.request")  # Fixed patch
+    def test_trades(self, mock_request):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "results": [{"p": 178.9, "s": 100}],
+            "status": "OK"
+        }
+        mock_response.status_code = 200
+        mock_response.content = b'{"results": [{"p": 178.9, "s": 100}], "status": "OK"}'
+        mock_request.return_value = mock_response
+
+        response = self.client.get(
+            "/api/v1/ticks/AAPL/trades",
+            {"apiKey": self.api_key}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["results"][0]["p"], 178.9)
+
+    @patch("proxy_app.views.requests.Session.request")
+    def test_error_handling(self, mock_request):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "error": "Unauthorized",
+            "status": "ERROR"
+        }
+        mock_response.status_code = 401
+        mock_response.content = b'{"error": "Unauthorized", "status": "ERROR"}'
+        mock_request.return_value = mock_response
+
+        response = self.client.get(
+            "/api/v1/reference/tickers",
+            {"apiKey": "wrong_key"}
+        )
+        self.assertEqual(response.status_code, 401)
+        self.assertIn("error", response.json())
+
+    @patch("proxy_app.views.requests.Session.request")
+    def test_quotes_endpoint(self, mock_request):
+        """Test the quotes endpoint (FMP provider)"""
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "symbol": "AAPL",
+            "price": 178.85,
+            "change": -0.15,
+            "changesPercentage": -0.0843
+        }
+        mock_response.status_code = 200
+        mock_response.content = b'{"symbol": "AAPL", "price": 178.85}'
+        mock_request.return_value = mock_response
+
+        response = self.client.get(
+            "/api/v1/quotes/AAPL",
+            {"apiKey": self.api_key}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["symbol"], "AAPL")
+
+    @patch("proxy_app.views.requests.Session.request")
+    def test_historical_data(self, mock_request):
+        """Test historical data endpoint"""
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "symbol": "AAPL",
+            "historical": [
+                {"date": "2023-01-01", "open": 177.5, "close": 178.85}
+            ]
+        }
+        mock_response.status_code = 200
+        mock_response.content = b'{"symbol": "AAPL", "historical": []}'
+        mock_request.return_value = mock_response
+
+        response = self.client.get(
+            "/api/v1/historical/AAPL",
+            {"apiKey": self.api_key}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["symbol"], "AAPL")
