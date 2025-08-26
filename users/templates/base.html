@@ -5,14 +5,15 @@
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WX2WQMHD');</script>
-    <!-- End Google Tag Manager -->
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17413598035"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
+      gtag('config', 'AW-17413598035');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -22,9 +23,6 @@
     <meta name="description" content="{% block meta_description %}{% trans 'Professional financial data API providing real-time market data for stocks, forex, crypto, indices, options, and economic indicators' %}{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}{% trans 'financial data API, stock market API, forex API, cryptocurrency API, real-time market data, trading API' %}{% endblock %}">
     <meta name="author" content="{% trans 'Financial Data API' %}">
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <meta name="bingbot" content="index, follow">
     
     <!-- Canonical URL - Updated to match your actual domain -->
     <link rel="canonical" href="{% block canonical_url %}https://financialdata.online{% endblock %}">

@@ -1,0 +1,20 @@
+//set your Polygon API KEY here
+@POLYGON_API_KEY = variable value
+//set your FMP API KEY here
+@FMP_API_KEY = variable value
+### Request 1 - Polygon Tickers
+GET http://127.0.0.1:8000/api/v1/reference/tickers?apiKey={{POLYGON_API_KEY}}
+Accept: application/json
+
+### Request 2 - Polygon AAPL Ticker
+GET http://127.0.0.1:8000/api/v1/reference/ticker/AAPL?apiKey={{POLYGON_API_KEY}}
+Accept: application/json
+
+### Request 3 - FMP Quote AAPL
+GET http://127.0.0.1:8000/api/v1/quotes/AAPL?apikey={{FMP_API_KEY}}
+Accept: application/json
+
+### Request 4 - FMP Quote Batch
+GET http://127.0.0.1:8000/api/v1/quotes/batch?apikey={{FMP_API_KEY}}
+Accept: application/json
+

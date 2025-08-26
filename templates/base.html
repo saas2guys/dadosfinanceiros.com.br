@@ -5,6 +5,15 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17413598035"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'AW-17413598035');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% trans 'Global Financial Data API for Developers & Analysts - Real-time and historical data for stocks, options, indices, futures, forex, and crypto. Professional-grade API access with JSON/CSV formats.' %}">
@@ -74,14 +83,6 @@
         }
     </style>
     
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-N3FQJR4V');</script>
-    <!-- End Google Tag Manager -->
-    
     <!-- JSON-LD structured data -->
     <script type="application/ld+json">
     {
@@ -135,10 +136,6 @@
     </script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N3FQJR4V"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     
     <!-- Navigation -->
     <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">

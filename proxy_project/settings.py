@@ -13,6 +13,8 @@ SECRET_KEY = config("SECRET_KEY", default="django-proxy-secret-key-change-in-pro
 
 DEBUG = config("DEBUG", default=False, cast=bool)
 
+ENV = config("ENV", default="local")
+
 
 if DEBUG:
     INTERNAL_IPS = [
@@ -46,56 +48,49 @@ if DEBUG:
 
 ALLOWED_HOSTS = (
     ["*"]
-    if DEBUG
+    if DEBUG or ENV in ('local', 'development', 'dev')
     else [
         "financialdata.online",
         "www.financialdata.online",
+        "localhost",
+        "127.0.0.1",
         "api.financialdata.online",
         "dev-financialdata-com-t8ayq.ondigitalocean.app",
         "app-financialdata-online-75yr7.ondigitalocean.app",
     ]
 )
 
-CSRF_TRUSTED_ORIGINS = (
-    [
-        "https://financialdata.online",
-        "https://www.financialdata.online",
-        "https://api.financialdata.online",
-    ]
-    if not DEBUG
-    else [
+if DEBUG or ENV in ('local', 'development', 'dev'):
+    CSRF_TRUSTED_ORIGINS = [
+        # Local development (both root and common ports)
+        "http://localhost",
+        "http://127.0.0.1",
+        "http://0.0.0.0",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
+        "http://0.0.0.0:8000",
+        # DO preview hosts commonly used during dev/admin access
+        "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
+        "https://app-financialdata-online-75yr7.ondigitalocean.app",
+        # Primary domains
         "https://financialdata.online",
         "https://www.financialdata.online",
         "https://api.financialdata.online",
     ]
-)
-
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    CSRF_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_HTTPONLY = True
-
-    SECURE_HSTS_SECONDS = 31_536_000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-
-    SECURE_BROWSER_XSS_FILTER = True
-
-    X_FRAME_OPTIONS = "DENY"
-
-    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        # Production domains
+        "https://financialdata.online",
+        "https://www.financialdata.online",
+        "https://api.financialdata.online",
+        # DigitalOcean App Platform hosts used for admin access and previews
+        "https://dev-financialdata-com-t8ayq.ondigitalocean.app",
+        "https://app-financialdata-online-75yr7.ondigitalocean.app",
+    ]
 
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_AGE = 31_449_600
-CSRF_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
+CSRF_COOKIE_DOMAIN = None  # Avoid hardcoded domain so cookie is set on DO preview hosts and primary domain
 CSRF_COOKIE_PATH = "/"
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SECURE = not DEBUG
@@ -105,7 +100,7 @@ CSRF_FAILURE_VIEW = "users.views.csrf_failure_view"
 
 SESSION_COOKIE_NAME = "sessionid"
 SESSION_COOKIE_AGE = 1_209_600
-SESSION_COOKIE_DOMAIN = ".financialdata.online" if not DEBUG else None
+SESSION_COOKIE_DOMAIN = None  # Match current host to ensure cookies are set on all deployment hosts
 SESSION_COOKIE_PATH = "/"
 SESSION_SAVE_EVERY_REQUEST = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -126,6 +121,10 @@ STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_LIVE_MODE = config("STRIPE_LIVE_MODE", default=False, cast=bool)
+
+APPEND_SLASH = True
+
+FINANCIALDATA_BASE_URL = "https://financialdata.online"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -209,7 +208,6 @@ if DEBUG:
         "django.contrib.messages.middleware.MessageMiddleware",
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
         "django.middleware.locale.LocaleMiddleware",
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
 else:
     MIDDLEWARE = [
@@ -267,6 +265,8 @@ if not DEBUG:
     CSP_FORM_ACTION = ("'self'",)
 
     USE_TLS = True
+    # Ensure CSRF works correctly behind proxies (e.g., DigitalOcean App Platform)
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 ROOT_URLCONF = "proxy_project.urls"
 
@@ -311,6 +311,7 @@ else:
 
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379")
 
+# Use a cache backend that supports atomic increment required by django-ratelimit
 if 'test' in sys.argv:
     CACHES = {
         'default': {
@@ -336,9 +337,12 @@ else:
             "OPTIONS": {
                 "MAX_ENTRIES": 100000,  # Prevent unlimited growth
                 "CULL_FREQUENCY": 10,  # Clean old entries regularly
-            },
         },
     }
+}
+
+# Explicitly point django-ratelimit to use the default cache
+RATELIMIT_USE_CACHE = "default"
 
 CHANNEL_LAYERS = {
     "default": {
@@ -392,8 +396,6 @@ LOGGING = {
     },
 }
 
-ENV = config("ENV", default="local")
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -437,6 +439,7 @@ SIMPLE_JWT = {
     "TOKEN_TYPE_CLAIM": "token_type",
 }
 
+# Allow all origins during development for convenience
 CORS_ALLOWED_ORIGINS = (
     [
         "https://financialdata.online",
@@ -444,11 +447,7 @@ CORS_ALLOWED_ORIGINS = (
         "https://api.financialdata.online",
     ]
     if not DEBUG
-    else [
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "http://localhost:3000",
-    ]
+    else []
 )
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
