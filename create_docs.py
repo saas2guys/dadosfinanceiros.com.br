@@ -34,22 +34,22 @@ This comprehensive financial data API unifies **150+ endpoints** from both Polyg
 ```bash
 # Real-time quote data
 GET /api/v1/quotes/{symbol}
-GET /api/v1/quotes/batch?symbols=AAPL,MSFT,GOOGL
+GET /api/v1/quotes/batch?symbols=AAPL,MSFT,GOOGL # returned null
 
 # Market snapshots
-GET /api/v1/quotes/gainers
-GET /api/v1/quotes/losers
-GET /api/v1/quotes/active
+GET /api/v1/quotes/gainers # discontinued FMP endpoint (legacy)
+GET /api/v1/quotes/losers # discontinued FMP endpoint (legacy)
+GET /api/v1/quotes/active # discontinued FMP endpoint (legacy)
 ```
 
 #### Historical Price Data
 ```bash
 # Historical pricing
 GET /api/v1/historical/{symbol}
-GET /api/v1/historical/{symbol}/intraday
+GET /api/v1/historical/{symbol}/intraday # discontinued FMP endpoint (legacy)
 
 # Corporate actions
-GET /api/v1/historical/{symbol}/splits
+GET /api/v1/historical/{symbol}/splits # discontinued FMP endpoint (legacy)
 GET /api/v1/historical/{symbol}/dividends
 ```
 
@@ -57,7 +57,7 @@ GET /api/v1/historical/{symbol}/dividends
 
 ```bash
 # Options contracts and chains
-GET /api/v1/options/contracts
+GET /api/v1/options/contracts # endpoint not implemented
 GET /api/v1/options/chain/{symbol}
 GET /api/v1/options/{symbol}/snapshot
 
@@ -70,9 +70,9 @@ GET /api/v1/options/{contract}/historical
 
 ```bash
 # Futures contracts
-GET /api/v1/futures/contracts
-GET /api/v1/futures/{symbol}/snapshot
-GET /api/v1/futures/{symbol}/historical
+GET /api/v1/futures/contracts # endpoint not implemented
+GET /api/v1/futures/{symbol}/snapshot # endpoint not implemented
+GET /api/v1/futures/{symbol}/historical # endpoint not implemented
 ```
 
 ### 4. 🏢 Fundamental Data (FMP Exclusive)
@@ -86,8 +86,8 @@ GET /api/v1/fundamentals/{symbol}/cash-flow
 
 # Financial metrics
 GET /api/v1/fundamentals/{symbol}/ratios
-GET /api/v1/fundamentals/{symbol}/metrics
-GET /api/v1/fundamentals/{symbol}/growth
+GET /api/v1/fundamentals/{symbol}/metrics # discontinued FMP endpoint (legacy)
+GET /api/v1/fundamentals/{symbol}/growth # discontinued FMP endpoint (legacy)
 ```
 
 #### Valuation & Analysis
@@ -105,12 +105,12 @@ GET /api/v1/valuation/screener?marketCapMoreThan=1000000000
 
 ```bash
 # Financial news
-GET /api/v1/news
-GET /api/v1/news/{symbol}
-GET /api/v1/news/press-releases/{symbol}
+GET /api/v1/news # discontinued FMP endpoint (legacy)
+GET /api/v1/news/{symbol} # discontinued FMP endpoint (legacy)
+GET /api/v1/news/press-releases/{symbol} # discontinued FMP endpoint (legacy)
 
 # Sentiment analysis
-GET /api/v1/news/sentiment/{symbol}
+GET /api/v1/news/sentiment/{symbol} # discontinued FMP endpoint (legacy)
 ```
 
 ### 6. 👨‍💼 Analyst Data (FMP Exclusive)
@@ -138,16 +138,17 @@ GET /api/v1/earnings/calendar
 
 ```bash
 # Institutional holdings
-GET /api/v1/institutional/{symbol}/holdings
-GET /api/v1/institutional/{symbol}/13f
-GET /api/v1/institutional/funds/{cik}
+GET /api/v1/institutional/{symbol}/holdings # discontinued FMP endpoints (legacy)
+GET /api/v1/institutional/{symbol}/13f # discontinued FMP endpoints (legacy)
+GET /api/v1/institutional/funds/{cik} # discontinued FMP endpoints (legacy)
 
 # Insider trading
-GET /api/v1/insider/{symbol}/transactions
-GET /api/v1/insider/{symbol}/ownership
+GET /api/v1/insider/{symbol}/transactions # discontinued FMP endpoints (legacy)
+GET /api/v1/insider/{symbol}/ownership # discontinued FMP endpoints (legacy)
 ```
 
 ### 9. 💰 Economic Data (FMP Exclusive)
+# discontinued FMP endpoints (legacy)
 
 ```bash
 # Economic indicators
@@ -159,6 +160,7 @@ GET /api/v1/economy/treasury-rates
 ```
 
 ### 10. 📊 Technical Analysis
+# discontinued FMP endpoints (legacy)
 
 ```bash
 # Technical indicators
@@ -177,10 +179,10 @@ GET /api/v1/technical/{symbol}/williams-r
 ```bash
 # SEC documents
 GET /api/v1/sec/{symbol}/filings
-GET /api/v1/sec/{symbol}/10k
-GET /api/v1/sec/{symbol}/10q
-GET /api/v1/sec/{symbol}/8k
-GET /api/v1/sec/rss-feed
+GET /api/v1/sec/{symbol}/10k # discontinued FMP endpoint (legacy)
+GET /api/v1/sec/{symbol}/10q # discontinued FMP endpoint (legacy)
+GET /api/v1/sec/{symbol}/8k # discontinued FMP endpoint (legacy)
+GET /api/v1/sec/rss-feed # discontinued FMP endpoint (legacy)
 ```
 
 ### 12. 🏦 ETF & Mutual Fund Data (FMP Exclusive)
@@ -202,17 +204,17 @@ GET /api/v1/funds/{symbol}/holdings
 ```bash
 # Currency exchange rates
 GET /api/v1/forex/rates
-GET /api/v1/forex/{pair}/historical
-GET /api/v1/forex/{pair}/intraday
+GET /api/v1/forex/{pair}/historical # endpoint not implemented
+GET /api/v1/forex/{pair}/intraday # endpoint not implemented
 ```
 
 #### Cryptocurrency
 ```bash
 # Crypto market data
-GET /api/v1/crypto/prices
+GET /api/v1/crypto/prices # discontinued FMP endpoint (legacy)
 GET /api/v1/crypto/{symbol}/historical
-GET /api/v1/crypto/{symbol}/intraday
-GET /api/v1/crypto/market-cap
+GET /api/v1/crypto/{symbol}/intraday # discontinued FMP endpoint (legacy)
+GET /api/v1/crypto/market-cap # endpoint not implemented
 ```
 
 #### Commodities
@@ -229,7 +231,7 @@ GET /api/v1/commodities/{symbol}/historical
 # Global indices
 GET /api/v1/indices/list
 GET /api/v1/indices/{symbol}/historical
-GET /api/v1/indices/{symbol}/components
+GET /api/v1/indices/{symbol}/components # discontinued FMP endpoint (legacy)
 ```
 
 ### 14. 📋 Reference Data
@@ -237,19 +239,19 @@ GET /api/v1/indices/{symbol}/components
 ```bash
 # Company information
 GET /api/v1/reference/tickers
-GET /api/v1/reference/ticker/{symbol}
-GET /api/v1/reference/ticker/{symbol}/profile
-GET /api/v1/reference/ticker/{symbol}/executives
-GET /api/v1/reference/ticker/{symbol}/peers
+GET /api/v1/reference/ticker/{symbol} # discontinued FMP endpoint (legacy)
+GET /api/v1/reference/ticker/{symbol}/profile # discontinued FMP endpoint (legacy)
+GET /api/v1/reference/ticker/{symbol}/executives # discontinued FMP endpoint (legacy)
+GET /api/v1/reference/ticker/{symbol}/peers # discontinued FMP endpoint (legacy)
 
 # Market metadata
 GET /api/v1/reference/exchanges
-GET /api/v1/reference/sectors
-GET /api/v1/reference/industries
-GET /api/v1/reference/countries
-GET /api/v1/reference/market-status
-GET /api/v1/reference/market-holidays
-GET /api/v1/reference/trading-hours
+GET /api/v1/reference/sectors # endpoint not implemented
+GET /api/v1/reference/industries # endpoint not implemented
+GET /api/v1/reference/countries # endpoint not implemented
+GET /api/v1/reference/market-status # discontinued FMP endpoint (legacy)
+GET /api/v1/reference/market-holidays # endpoint not implemented
+GET /api/v1/reference/trading-hours # endpoint not implemented
 ```
 
 ### 15. ⚡ Tick-level Data (Polygon.io Exclusive)
