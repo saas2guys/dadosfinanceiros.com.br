@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from .base import PolygonBaseView
 from .enums import EndpointFrom, EndpointToPolygon
+from rest_framework import serializers
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
-from rest_framework import serializers
 
 
 class MarketStatusView(PolygonBaseView):
@@ -101,12 +101,12 @@ class ExamplePolygonTradesView(PolygonBaseView):
     authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
     permission_classes = [IsAuthenticated, DailyLimitPermission]
     pagination_class = LimitOffsetPagination
-    paginate_locally = True
+    
     class QuerySerializer(serializers.Serializer):
-        limit = serializers.IntegerField(required=False, min_value=1, max_value=5000, default=100)
-        offset = serializers.IntegerField(required=False, min_value=0, default=0)
+        limit = serializers.IntegerField(min_value=1, max_value=5000, required=False, default=100)
+        offset = serializers.IntegerField(min_value=0, required=False, default=0)
         timestamp = serializers.CharField(required=False)
 
-    query_serializer_class = QuerySerializer
+    serializer_class = QuerySerializer
 
 

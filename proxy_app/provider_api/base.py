@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 import re
-from typing import Any, Dict, Optional
-from typing import Iterable, List, Sequence, Tuple
+from typing import Any, Optional
 
 import httpx
 from django.conf import settings
@@ -13,11 +12,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 
 class ProviderAPIView(APIView):
@@ -28,12 +27,29 @@ class ProviderAPIView(APIView):
     allowed_params: Enum | None = None
     timeout: float = 20.0
     active: bool = True
-    param_aliases: dict[str, str] = {}
-    extra_query_params: dict[str, str] = {}
-    query_serializer_class = None
+    serializer_class = None
     pagination_class = None
-    paginate_locally: bool = False
     results_key: Optional[str] = "results"
+
+    class AnyParamsSerializer(serializers.Serializer):
+        def to_internal_value(self, data):  # type: ignore[override]
+            # Accept any incoming query params; preserve multi-values as lists
+            items: dict[str, Any] = {}
+            getlist = getattr(data, "getlist", None)
+            keys = data.keys() if hasattr(data, "keys") else []
+            for key in keys:
+                if callable(getlist):
+                    values = getlist(key)
+                else:
+                    raw = data.get(key)
+                    values = raw if isinstance(raw, list) else [raw]
+                if not values:
+                    continue
+                if len(values) == 1:
+                    items[key] = values[0]
+                else:
+                    items[key] = values
+            return items
 
     @classmethod
     def as_path(cls):
@@ -47,33 +63,68 @@ class ProviderAPIView(APIView):
         name = cls.name or cls.__name__.removesuffix("View").lower()
         return path(route, cls.as_view(), name=name)
 
-    def build_params(self, request) -> Sequence[Tuple[str, str]] | dict:
+    # ---- Request param handling ----
+    def build_params(self, request) -> list[tuple[str, str]] | dict:
         qp = request.query_params
-        if self.query_serializer_class:
-            serializer = self.query_serializer_class(data=qp)
+        if self.serializer_class:
+            serializer = self.serializer_class(data=qp)
             try:
                 serializer.is_valid(raise_exception=True)
             except ValidationError as e:
                 return {"__error__": {"detail": "invalid query params", "errors": e.detail}}
             validated = serializer.validated_data
-            pairs: List[Tuple[str, str]] = []
+            pairs: list[tuple[str, str]] = []
             for k, v in validated.items():
-                key = self.param_aliases.get(k, k)
                 if isinstance(v, list):
                     for item in v:
-                        pairs.append((key, str(item)))
+                        pairs.append((k, str(item)))
                     continue
-                pairs.append((key, str(v)))
+                pairs.append((k, str(v)))
             return pairs
 
-        pairs: List[Tuple[str, str]] = []
+        pairs: list[tuple[str, str]] = []
         for k in qp.keys():
-            key = self.param_aliases.get(k, k)
             for v in qp.getlist(k):
-                pairs.append((key, v))
+                pairs.append((k, v))
         return pairs
 
-    def request(self, method: str, url: str, *, params: Iterable[Tuple[str, str]] | None = None) -> httpx.Response:
+    # ---- URL formatting ----
+    def _format_endpoint_to(self, request, kwargs: dict) -> tuple[str, Optional[Response]]:
+        to_raw = self.endpoint_to
+        if isinstance(to_raw, Enum):
+            to_raw = to_raw.value
+        to_path = str(to_raw)
+        placeholders = set(re.findall(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", to_path))
+        if not placeholders:
+            return to_path, None
+        values: dict[str, str] = {}
+        for ph in placeholders:
+            if ph in kwargs:
+                values[ph] = str(kwargs[ph])
+                continue
+            if ph in request.query_params:
+                values[ph] = request.query_params.get(ph)  # type: ignore[assignment]
+                continue
+            return "", Response({"detail": "missing required parameter for provider path", "param": ph}, status=status.HTTP_400_BAD_REQUEST)
+        return to_path.format(**values), None
+
+    # ---- Upstream call ----
+    def _perform_upstream(self, url: str, params: list[tuple[str, str]]):
+        resp = self.request("GET", url, params=params)
+        resp.raise_for_status()
+        return resp
+
+    # ---- Response parsing ----
+    def _parse_response(self, resp: httpx.Response):
+        content_type = resp.headers.get("content-type", "").lower()
+        if "application/json" in content_type:
+            try:
+                return resp.json(), resp.status_code
+            except ValueError:
+                return resp.text, resp.status_code
+        return resp.text, resp.status_code
+
+    def request(self, method: str, url: str, *, params: list[tuple[str, str]] | None = None) -> httpx.Response:
         raise NotImplementedError
 
     def get(self, request, *args, **kwargs):
@@ -86,52 +137,27 @@ class ProviderAPIView(APIView):
         if isinstance(params, dict) and "__error__" in params:
             return Response(params["__error__"], status=status.HTTP_400_BAD_REQUEST)
 
-        to_raw = self.endpoint_to
-        if isinstance(to_raw, Enum):
-            to_raw = to_raw.value
-        to_path = str(to_raw)
-        placeholders = set(re.findall(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", to_path))
-        format_values: dict[str, str] = {}
-        for ph in placeholders:
-            if ph in kwargs:
-                format_values[ph] = str(kwargs[ph])
-                continue
-            if ph in request.query_params:
-                format_values[ph] = request.query_params.get(ph)  # type: ignore[assignment]
-                continue
-            return Response({"detail": "missing required parameter for provider path", "param": ph}, status=status.HTTP_400_BAD_REQUEST)
-
-        formatted_to = to_path.format(**format_values) if placeholders else to_path
+        formatted_to, error = self._format_endpoint_to(request, kwargs)
+        if error is not None:
+            return error
 
         pairs = list(params or [])  # type: ignore[arg-type]
+        # include any non-path kwargs as query params
+        used = set(re.findall(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", formatted_to))
         for key, value in kwargs.items():
-            if key not in placeholders:
+            if key not in used:
                 pairs.append((key, str(value)))
 
-        if self.param_aliases:
-            pairs = [(self.param_aliases.get(k, k), v) for k, v in pairs]
-
-        for k, v in self.extra_query_params.items():
-            pairs.append((k, v))
-
         try:
-            resp = self.request("GET", formatted_to, params=pairs)
-            resp.raise_for_status()
+            resp = self._perform_upstream(formatted_to, pairs)
         except httpx.HTTPError as e:
             return Response({"detail": "upstream error", "error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
 
-        content_type = resp.headers.get("content-type", "").lower()
-        if "application/json" in content_type:
-            try:
-                data = resp.json()
-            except ValueError:
-                data = resp.text
-            return self._maybe_paginate(data, request, resp.status_code)
-
-        return Response(resp.text, status=resp.status_code)
+        data, status_code = self._parse_response(resp)
+        return self._maybe_paginate(data, request, status_code)
 
     def _maybe_paginate(self, data: Any, request, status_code: int) -> Response:
-        if not self.paginate_locally or self.pagination_class is None:
+        if self.pagination_class is None:
             return Response(data, status=status_code)
 
         items = None
@@ -160,10 +186,11 @@ class FMPBaseView(ProviderAPIView):
     base_url = getattr(settings, "FMP_BASE_URL", "https://financialmodelingprep.com")
     api_key_param = getattr(settings, "FMP_API_KEY_PARAM", "apikey")
     api_key_value = getattr(settings, "FMP_API_KEY", "")
+    serializer_class = ProviderAPIView.AnyParamsSerializer
 
-    def request(self, method: str, url: str, *, params: Iterable[Tuple[str, str]] | None = None) -> httpx.Response:
+    def request(self, method: str, url: str, *, params: list[tuple[str, str]] | None = None) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
-        pairs: List[Tuple[str, str]] = list(params or [])
+        pairs: list[tuple[str, str]] = list(params or [])
         if self.api_key_value:
             pairs.append((self.api_key_param, self.api_key_value))
         return httpx.request(method, full_url, params=pairs, timeout=self.timeout)
@@ -173,6 +200,7 @@ class PolygonBaseView(ProviderAPIView):
     base_url = getattr(settings, "POLYGON_BASE_URL", "https://api.polygon.io")
     api_key_header = getattr(settings, "POLYGON_API_KEY_HEADER", "Authorization")
     api_key_value = getattr(settings, "POLYGON_API_KEY", "")
+    serializer_class = ProviderAPIView.AnyParamsSerializer
 
     def _headers(self) -> dict:
         if not self.api_key_value:
@@ -181,7 +209,7 @@ class PolygonBaseView(ProviderAPIView):
             return {"Authorization": f"Bearer {self.api_key_value}"}
         return {self.api_key_header: self.api_key_value}
 
-    def request(self, method: str, url: str, *, params: Iterable[Tuple[str, str]] | None = None) -> httpx.Response:
+    def request(self, method: str, url: str, *, params: list[tuple[str, str]] | None = None) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
         return httpx.request(method, full_url, params=list(params or []), headers=self._headers(), timeout=self.timeout)
 

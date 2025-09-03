@@ -2,7 +2,7 @@
 Simple provider classes for Polygon.io and FMP Ultimate
 """
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 import requests
 
@@ -32,7 +32,7 @@ class BaseProvider:
 
         self.request_count += 1
 
-    def make_request(self, endpoint: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+    def make_request(self, endpoint: str, params: Optional[dict[str, Any]] = None) -> dict[str, Any]:
         """Make HTTP request to provider API"""
         self._check_rate_limit()
 
@@ -68,7 +68,7 @@ class PolygonProvider(BaseProvider):
     def __init__(self, api_key: str):
         super().__init__(api_key, 'https://api.polygon.io', rate_limit=1000)
 
-    def make_request(self, endpoint: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+    def make_request(self, endpoint: str, params: Optional[dict[str, Any]] = None) -> dict[str, Any]:
         """Override to handle Polygon.io specific API key format"""
         self._check_rate_limit()
 
@@ -104,7 +104,7 @@ class FMPProvider(BaseProvider):
     def __init__(self, api_key: str):
         super().__init__(api_key, 'https://financialmodelingprep.com/api', rate_limit=3000)
 
-    def make_request(self, endpoint: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+    def make_request(self, endpoint: str, params: Optional[dict[str, Any]] = None) -> dict[str, Any]:
         """Override to handle FMP specific API key format"""
         self._check_rate_limit()
 

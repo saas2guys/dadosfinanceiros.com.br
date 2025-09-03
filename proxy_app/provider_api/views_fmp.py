@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from .base import FMPBaseView
 from .enums import CommonParams, EconomicParams, EndpointFrom, EndpointToFMP, NewsParams
+from rest_framework import serializers
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
-from rest_framework import serializers
 
 
 class ReferenceTickersView(FMPBaseView):
@@ -168,16 +168,19 @@ class AnalystRecommendationsView(FMPBaseView):
 class AnalystPriceTargetsView(FMPBaseView):
     endpoint_from = EndpointFrom.ANALYST_PRICE_TARGETS
     endpoint_to = EndpointToFMP.ANALYST_PRICE_TARGETS
+    allowed_params = CommonParams
 
 
 class AnalystUpgradesDowngradesView(FMPBaseView):
     endpoint_from = EndpointFrom.ANALYST_UPGRADES
     endpoint_to = EndpointToFMP.ANALYST_UPGRADES
+    allowed_params = CommonParams
 
 
 class EarningsCalendarView(FMPBaseView):
     endpoint_from = EndpointFrom.EARNINGS_CAL
     endpoint_to = EndpointToFMP.EARNINGS_CAL
+    allowed_params = CommonParams
 
 
 class EarningsTranscriptsView(FMPBaseView):
@@ -234,19 +237,16 @@ class SECFilingsView(FMPBaseView):
 class SEC10KView(FMPBaseView):
     endpoint_from = EndpointFrom.SEC_10K
     endpoint_to = EndpointToFMP.SEC_10K
-    extra_query_params = {"type": "10-K"}
 
 
 class SEC10QView(FMPBaseView):
     endpoint_from = EndpointFrom.SEC_10Q
     endpoint_to = EndpointToFMP.SEC_10Q
-    extra_query_params = {"type": "10-Q"}
 
 
 class SEC8KView(FMPBaseView):
     endpoint_from = EndpointFrom.SEC_8K
     endpoint_to = EndpointToFMP.SEC_8K
-    extra_query_params = {"type": "8-K"}
 
 
 class SECRSSFeedView(FMPBaseView):
@@ -360,11 +360,11 @@ class ExampleFMPGainersView(FMPBaseView):
     authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
     permission_classes = [IsAuthenticated, DailyLimitPermission]
     pagination_class = PageNumberPagination
-    paginate_locally = True
+    
     class QuerySerializer(serializers.Serializer):
-        limit = serializers.IntegerField(required=False, min_value=1, max_value=1000, default=50)
-        page = serializers.IntegerField(required=False, min_value=1, default=1)
-        market = serializers.ChoiceField(required=False, choices=["stocks", "etf"])
+        limit = serializers.IntegerField(min_value=1, max_value=1000, required=False, default=50)
+        page = serializers.IntegerField(min_value=1, required=False, default=1)
+        market = serializers.ChoiceField(choices=["stocks", "etf"], required=False)
 
-    query_serializer_class = QuerySerializer
+    serializer_class = QuerySerializer
 
