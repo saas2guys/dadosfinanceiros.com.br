@@ -16,6 +16,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 
 class ProviderAPIView(APIView):
@@ -24,17 +26,11 @@ class ProviderAPIView(APIView):
     endpoint_to: str = ""
     name: str = ""
     allowed_params: Enum | None = None
-    strict_unknown: bool = False
     timeout: float = 20.0
     active: bool = True
     param_aliases: dict[str, str] = {}
     extra_query_params: dict[str, str] = {}
-    shared_param_specs: Dict[str, Dict[str, Any]] = {}
-    param_specs: Dict[str, Dict[str, Any]] = {}
-    strict_types: bool = False
-    drop_blank_values: bool = True
-    # authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
-    # permission_classes = [IsAuthenticated, DailyLimitPermission]
+    query_serializer_class = None
     pagination_class = None
     paginate_locally: bool = False
     results_key: Optional[str] = "results"
@@ -53,106 +49,28 @@ class ProviderAPIView(APIView):
 
     def build_params(self, request) -> Sequence[Tuple[str, str]] | dict:
         qp = request.query_params
-        incoming_keys = list(qp.keys())
-        # Merge shared (provider-level) and view-level specs (view overrides shared)
-        merged_specs: Dict[str, Dict[str, Any]] = {}
-        if self.shared_param_specs:
-            merged_specs.update(self.shared_param_specs)
-        if self.param_specs:
-            merged_specs.update(self.param_specs)
+        if self.query_serializer_class:
+            serializer = self.query_serializer_class(data=qp)
+            try:
+                serializer.is_valid(raise_exception=True)
+            except ValidationError as e:
+                return {"__error__": {"detail": "invalid query params", "errors": e.detail}}
+            validated = serializer.validated_data
+            pairs: List[Tuple[str, str]] = []
+            for k, v in validated.items():
+                key = self.param_aliases.get(k, k)
+                if isinstance(v, list):
+                    for item in v:
+                        pairs.append((key, str(item)))
+                    continue
+                pairs.append((key, str(v)))
+            return pairs
 
-        spec_keys = set(merged_specs.keys()) if merged_specs else set()
-        enum_keys = {p.value for p in self.allowed_params} if self.allowed_params else set()
-        allowed_names = enum_keys | spec_keys or set(incoming_keys)
-
-        if self.strict_unknown:
-            unknown = sorted({k for k in incoming_keys if k not in allowed_names})
-            if unknown:
-                return {"__error__": {"detail": "unknown query params", "unknown": unknown}}
-
-        errors: List[Dict[str, Any]] = []
         pairs: List[Tuple[str, str]] = []
-
-        def is_blank(value: Any) -> bool:
-            return value is None or (isinstance(value, str) and not value.strip())
-
-        def coerce_bool(value: str) -> Optional[bool]:
-            lower = value.strip().lower()
-            if lower in {"1", "true", "t", "yes", "y"}:
-                return True
-            if lower in {"0", "false", "f", "no", "n"}:
-                return False
-            return None
-
-        def coerce_value(value: str, type_name: str) -> Optional[Any]:
-            if type_name == "int":
-                try:
-                    return int(value)
-                except Exception:
-                    return None
-            if type_name == "float":
-                try:
-                    return float(value)
-                except Exception:
-                    return None
-            if type_name == "bool":
-                return coerce_bool(value)
-            return str(value)
-
-        processed_keys = set()
-        for key in incoming_keys:
-            if key not in allowed_names:
-                continue
-            processed_keys.add(key)
-            spec = merged_specs.get(key, {}) if merged_specs else {}
-            dest = spec.get("dest", key)
-            type_name = spec.get("type", "str")
-            separator = spec.get("separator", ",") if type_name == "csv" else None
-            choices = set(spec.get("choices", [])) if spec.get("choices") else None
-            min_v = spec.get("min")
-            max_v = spec.get("max")
-
-            raw_values: List[str] = []
-            for rv in qp.getlist(key):
-                if separator and rv:
-                    raw_values.extend(rv.split(separator))
-                    continue
-                raw_values.append(rv)
-
-            for raw in raw_values:
-                if self.drop_blank_values and is_blank(raw):
-                    continue
-                coerced = coerce_value(raw, type_name)
-                if coerced is None:
-                    if self.strict_types:
-                        errors.append({"param": key, "value": raw, "error": f"invalid {type_name}"})
-                    continue
-
-                if choices and str(coerced) not in {str(c) for c in choices}:
-                    if self.strict_types:
-                        errors.append({"param": key, "value": raw, "error": "not in allowed choices"})
-                    continue
-
-                if isinstance(coerced, (int, float)) and min_v is not None and coerced < min_v:
-                    if self.strict_types:
-                        errors.append({"param": key, "value": raw, "error": f"min {min_v}"})
-                    continue
-
-                if isinstance(coerced, (int, float)) and max_v is not None and coerced > max_v:
-                    if self.strict_types:
-                        errors.append({"param": key, "value": raw, "error": f"max {max_v}"})
-                    continue
-
-                pairs.append((dest, str(coerced)))
-
-        for key, spec in (merged_specs or {}).items():
-            if key in processed_keys or key not in allowed_names or "default" not in spec:
-                continue
-            dest = spec.get("dest", key)
-            pairs.append((dest, str(spec["default"])))
-
-        if errors:
-            return {"__error__": {"detail": "invalid query params", "errors": errors}}
+        for k in qp.keys():
+            key = self.param_aliases.get(k, k)
+            for v in qp.getlist(k):
+                pairs.append((key, v))
         return pairs
 
     def request(self, method: str, url: str, *, params: Iterable[Tuple[str, str]] | None = None) -> httpx.Response:
@@ -242,16 +160,6 @@ class FMPBaseView(ProviderAPIView):
     base_url = getattr(settings, "FMP_BASE_URL", "https://financialmodelingprep.com")
     api_key_param = getattr(settings, "FMP_API_KEY_PARAM", "apikey")
     api_key_value = getattr(settings, "FMP_API_KEY", "")
-    shared_param_specs = {
-        "limit": {"type": "int", "min": 1, "max": 1000, "dest": "limit"},
-        "page": {"type": "int", "min": 1, "dest": "page"},
-        "from": {"type": "str", "dest": "from"},
-        "to": {"type": "str", "dest": "to"},
-        "symbols": {"type": "csv", "separator": ",", "dest": "symbols"},
-        "market": {"type": "str"},
-        "sector": {"type": "str"},
-        "exchange": {"type": "str"},
-    }
 
     def request(self, method: str, url: str, *, params: Iterable[Tuple[str, str]] | None = None) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
@@ -265,15 +173,6 @@ class PolygonBaseView(ProviderAPIView):
     base_url = getattr(settings, "POLYGON_BASE_URL", "https://api.polygon.io")
     api_key_header = getattr(settings, "POLYGON_API_KEY_HEADER", "Authorization")
     api_key_value = getattr(settings, "POLYGON_API_KEY", "")
-    shared_param_specs = {
-        "limit": {"type": "int", "min": 1, "max": 50000, "dest": "limit"},
-        "offset": {"type": "int", "min": 0, "dest": "offset"},
-        "multiplier": {"type": "int", "min": 1, "dest": "multiplier"},
-        "timespan": {"type": "str", "dest": "timespan"},
-        "from": {"type": "str", "dest": "from"},
-        "to": {"type": "str", "dest": "to"},
-        "symbols": {"type": "csv", "separator": ",", "dest": "tickers"},
-    }
 
     def _headers(self) -> dict:
         if not self.api_key_value:
