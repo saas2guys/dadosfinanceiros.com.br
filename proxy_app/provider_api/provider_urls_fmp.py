@@ -71,6 +71,7 @@ from .views_fmp import (
     QuoteBatchView,
     QuoteView,
     ThirteenFView,
+    ExampleFMPGainersView,
 )
 
 
@@ -143,6 +144,7 @@ urlpatterns = [
     InternationalStocksView.as_path(),
     ForexRatesView.as_path(),
     ForexPairView.as_path(),
+    ExampleFMPGainersView.as_path(),
 ]
 
 

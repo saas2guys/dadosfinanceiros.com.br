@@ -125,6 +125,10 @@ class EndpointFrom(Enum):
     SEC_8K = "/api/v1/sec/{symbol}/8k/"
     SEC_RSS = "/api/v1/sec/rss-feed/"
 
+    # Examples
+    EXAMPLE_FMP_GAINERS = "/api/v1/examples/fmp/gainers/"
+    EXAMPLE_POLYGON_TRADES = "/api/v1/examples/polygon/{symbol}/trades/"
+
 
 class EndpointToFMP(Enum):
     # Reference

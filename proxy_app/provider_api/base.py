@@ -42,7 +42,10 @@ class ProviderAPIView(APIView):
     def as_path(cls):
         if not cls.endpoint_from:
             raise RuntimeError(f"{cls.__name__} missing endpoint_from")
-        route = cls.endpoint_from.lstrip("/")
+        raw = cls.endpoint_from
+        if isinstance(raw, Enum):
+            raw = raw.value
+        route = str(raw).lstrip("/")
         route = re.sub(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", r"<str:\1>", route)
         name = cls.name or cls.__name__.removesuffix("View").lower()
         return path(route, cls.as_view(), name=name)
@@ -157,7 +160,11 @@ class ProviderAPIView(APIView):
         if isinstance(params, dict) and "__error__" in params:
             return Response(params["__error__"], status=status.HTTP_400_BAD_REQUEST)
 
-        placeholders = set(re.findall(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", self.endpoint_to))
+        to_raw = self.endpoint_to
+        if isinstance(to_raw, Enum):
+            to_raw = to_raw.value
+        to_path = str(to_raw)
+        placeholders = set(re.findall(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", to_path))
         format_values: dict[str, str] = {}
         for ph in placeholders:
             if ph in kwargs:
@@ -168,7 +175,7 @@ class ProviderAPIView(APIView):
                 continue
             return Response({"detail": "missing required parameter for provider path", "param": ph}, status=status.HTTP_400_BAD_REQUEST)
 
-        formatted_to = self.endpoint_to.format(**format_values) if placeholders else self.endpoint_to
+        formatted_to = to_path.format(**format_values) if placeholders else to_path
 
         pairs = list(params or [])  # type: ignore[arg-type]
         for key, value in kwargs.items():

@@ -20,6 +20,7 @@ from .views_polygon import (
     TickAggregatesView,
     TickQuotesView,
     TickTradesView,
+    ExamplePolygonTradesView,
 )
 
 
@@ -41,6 +42,7 @@ urlpatterns = [
     TickTradesView.as_path(),
     TickQuotesView.as_path(),
     TickAggregatesView.as_path(),
+    ExamplePolygonTradesView.as_path(),
 ]
 
 
