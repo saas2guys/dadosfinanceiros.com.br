@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
+from rest_framework import serializers
 
 
 class ReferenceTickersView(FMPBaseView):
@@ -57,19 +58,16 @@ class QuoteBatchView(FMPBaseView):
 class GainersView(FMPBaseView):
     endpoint_from = EndpointFrom.QUOTES_GAINERS
     endpoint_to = EndpointToFMP.QUOTES_GAINERS
-    allowed_params = CommonParams
 
 
 class LosersView(FMPBaseView):
     endpoint_from = EndpointFrom.QUOTES_LOSERS
     endpoint_to = EndpointToFMP.QUOTES_LOSERS
-    allowed_params = CommonParams
 
 
 class MostActiveView(FMPBaseView):
     endpoint_from = EndpointFrom.QUOTES_MOST_ACTIVE
     endpoint_to = EndpointToFMP.QUOTES_MOST_ACTIVE
-    allowed_params = CommonParams
 
 
 class HistoricalView(FMPBaseView):
@@ -80,7 +78,6 @@ class HistoricalView(FMPBaseView):
 class HistoricalIntradayView(FMPBaseView):
     endpoint_from = EndpointFrom.HISTORICAL_INTRADAY
     endpoint_to = EndpointToFMP.HISTORICAL_INTRADAY
-    allowed_params = CommonParams
 
 
 class HistoricalDividendsView(FMPBaseView):
@@ -131,19 +128,16 @@ class EnterpriseValueView(FMPBaseView):
 class ScreenerView(FMPBaseView):
     endpoint_from = EndpointFrom.FUND_SCREENER
     endpoint_to = EndpointToFMP.FUND_SCREENER
-    allowed_params = CommonParams
 
 
 class NewsView(FMPBaseView):
     endpoint_from = EndpointFrom.NEWS
     endpoint_to = EndpointToFMP.NEWS
-    allowed_params = CommonParams
 
 
 class NewsSymbolView(FMPBaseView):
     endpoint_from = EndpointFrom.NEWS_SYMBOL
     endpoint_to = EndpointToFMP.NEWS_SYMBOL
-    allowed_params = NewsParams
 
 
 class PressReleasesView(FMPBaseView):
@@ -174,19 +168,16 @@ class AnalystRecommendationsView(FMPBaseView):
 class AnalystPriceTargetsView(FMPBaseView):
     endpoint_from = EndpointFrom.ANALYST_PRICE_TARGETS
     endpoint_to = EndpointToFMP.ANALYST_PRICE_TARGETS
-    allowed_params = CommonParams
 
 
 class AnalystUpgradesDowngradesView(FMPBaseView):
     endpoint_from = EndpointFrom.ANALYST_UPGRADES
     endpoint_to = EndpointToFMP.ANALYST_UPGRADES
-    allowed_params = CommonParams
 
 
 class EarningsCalendarView(FMPBaseView):
     endpoint_from = EndpointFrom.EARNINGS_CAL
     endpoint_to = EndpointToFMP.EARNINGS_CAL
-    allowed_params = CommonParams
 
 
 class EarningsTranscriptsView(FMPBaseView):
@@ -266,25 +257,21 @@ class SECRSSFeedView(FMPBaseView):
 class GDPView(FMPBaseView):
     endpoint_from = EndpointFrom.ECO_GDP
     endpoint_to = EndpointToFMP.ECO_GDP
-    allowed_params = EconomicParams
 
 
 class InflationView(FMPBaseView):
     endpoint_from = EndpointFrom.ECO_CPI
     endpoint_to = EndpointToFMP.ECO_CPI
-    allowed_params = EconomicParams
 
 
 class UnemploymentView(FMPBaseView):
     endpoint_from = EndpointFrom.ECO_UNEMP
     endpoint_to = EndpointToFMP.ECO_UNEMP
-    allowed_params = EconomicParams
 
 
 class InterestRatesView(FMPBaseView):
     endpoint_from = EndpointFrom.ECO_RATES
     endpoint_to = EndpointToFMP.ECO_RATES
-    allowed_params = EconomicParams
 
 
 class TreasuryRatesView(FMPBaseView):
@@ -374,11 +361,10 @@ class ExampleFMPGainersView(FMPBaseView):
     permission_classes = [IsAuthenticated, DailyLimitPermission]
     pagination_class = PageNumberPagination
     paginate_locally = True
-    param_specs = {
-        "limit": {"type": "int", "min": 1, "max": 1000, "default": 50, "dest": "limit"},
-        "page": {"type": "int", "min": 1, "default": 1, "dest": "page"},
-        "market": {"type": "str", "choices": ["stocks", "etf"]},
-    }
-    strict_unknown = True
-    strict_types = True
+    class QuerySerializer(serializers.Serializer):
+        limit = serializers.IntegerField(required=False, min_value=1, max_value=1000, default=50)
+        page = serializers.IntegerField(required=False, min_value=1, default=1)
+        market = serializers.ChoiceField(required=False, choices=["stocks", "etf"])
+
+    query_serializer_class = QuerySerializer
 

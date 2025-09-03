@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
+from rest_framework import serializers
 
 
 class MarketStatusView(PolygonBaseView):
@@ -101,12 +102,11 @@ class ExamplePolygonTradesView(PolygonBaseView):
     permission_classes = [IsAuthenticated, DailyLimitPermission]
     pagination_class = LimitOffsetPagination
     paginate_locally = True
-    param_specs = {
-        "limit": {"type": "int", "min": 1, "max": 5000, "default": 100, "dest": "limit"},
-        "offset": {"type": "int", "min": 0, "default": 0},
-        "timestamp": {"type": "str"},
-    }
-    strict_unknown = True
-    strict_types = True
+    class QuerySerializer(serializers.Serializer):
+        limit = serializers.IntegerField(required=False, min_value=1, max_value=5000, default=100)
+        offset = serializers.IntegerField(required=False, min_value=0, default=0)
+        timestamp = serializers.CharField(required=False)
+
+    query_serializer_class = QuerySerializer
 
 
