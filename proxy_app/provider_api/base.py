@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 import re
-from typing import Any, Optional
+from typing import Optional
 
 import httpx
 from django.conf import settings
@@ -23,31 +23,34 @@ class ProviderAPIView(GenericAPIView):
     allowed_params: Enum | None = None
     endpoint_from: str = ""
     endpoint_to: str = ""
-    name: str = ""
     pagination_class = None
     results_key: Optional[str] = "results"
-    serializer_class = None
+
     timeout: float = 20.0
 
-    class AnyParamsSerializer(serializers.Serializer):
-        def to_internal_value(self, data):  # type: ignore[override]
-            # Accept any incoming query params; preserve multi-values as lists
-            items: dict[str, Any] = {}
-            getlist = getattr(data, "getlist", None)
-            keys = data.keys() if hasattr(data, "keys") else []
-            for key in keys:
-                if callable(getlist):
-                    values = getlist(key)
-                else:
-                    raw = data.get(key)
-                    values = raw if isinstance(raw, list) else [raw]
-                if not values:
-                    continue
-                if len(values) == 1:
-                    items[key] = values[0]
-                else:
-                    items[key] = values
-            return items
+    # class AnyParamsSerializer(serializers.Serializer):
+    #     def to_internal_value(self, data):  # type: ignore[override]
+    #         # Accept any incoming query params; preserve multi-values as lists
+    #         items: dict[str, Any] = {}
+    #         getlist = getattr(data, "getlist", None)
+    #         keys = data.keys() if hasattr(data, "keys") else []
+    #         for key in keys:
+    #             if callable(getlist):
+    #                 values = getlist(key)
+    #             else:
+    #                 raw = data.get(key)
+    #                 values = raw if isinstance(raw, list) else [raw]
+    #             if not values:
+    #                 continue
+    #             if len(values) == 1:
+    #                 items[key] = values[0]
+    #             else:
+    #                 items[key] = values
+    #         return items
+
+    serializer_class = None
+    authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
+    permission_classes = [IsAuthenticated, DailyLimitPermission, AllowAny]
 
     @classmethod
     def as_path(cls):
@@ -69,7 +72,9 @@ class ProviderAPIView(GenericAPIView):
             try:
                 serializer.is_valid(raise_exception=True)
             except ValidationError as e:
-                return {"__error__": {"detail": "invalid query params", "errors": e.detail}}
+                return {
+                    "__error__": {"detail": "invalid query params", "errors": e.detail}
+                }
             validated = serializer.validated_data
             pairs: list[tuple[str, str]] = []
             for k, v in validated.items():
@@ -97,7 +102,9 @@ class ProviderAPIView(GenericAPIView):
         return pairs
 
     # ---- URL formatting ----
-    def _format_endpoint_to(self, request, kwargs: dict) -> tuple[str, Optional[Response]]:
+    def _format_endpoint_to(
+        self, request, kwargs: dict
+    ) -> tuple[str, Optional[Response]]:
         to_raw = self.endpoint_to
         if isinstance(to_raw, Enum):
             to_raw = to_raw.value
@@ -113,7 +120,10 @@ class ProviderAPIView(GenericAPIView):
             if ph in request.query_params:
                 values[ph] = request.query_params.get(ph)  # type: ignore[assignment]
                 continue
-            return "", Response({"detail": "missing required parameter for provider path", "param": ph}, status=status.HTTP_400_BAD_REQUEST)
+            return "", Response(
+                {"detail": "missing required parameter for provider path", "param": ph},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         return to_path.format(**values), None
 
     # ---- Upstream call ----
@@ -132,14 +142,21 @@ class ProviderAPIView(GenericAPIView):
                 return resp.text, resp.status_code
         return resp.text, resp.status_code
 
-    def request(self, method: str, url: str, *, params: list[tuple[str, str]] | None = None) -> httpx.Response:
+    def request(
+        self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
+    ) -> httpx.Response:
         raise NotImplementedError
 
     def get(self, request, *args, **kwargs):
         if not self.active:
-            return Response({"detail": "endpoint disabled"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"detail": "endpoint disabled"}, status=status.HTTP_404_NOT_FOUND
+            )
         if not self.endpoint_to:
-            return Response({"detail": "endpoint_to not set"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"detail": "endpoint_to not set"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
         params = self.build_params(request)
         if isinstance(params, dict) and "__error__" in params:
@@ -159,7 +176,10 @@ class ProviderAPIView(GenericAPIView):
         try:
             resp = self._perform_upstream(formatted_to, pairs)
         except httpx.HTTPError as e:
-            return Response({"detail": "upstream error", "error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+            return Response(
+                {"detail": "upstream error", "error": str(e)},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
 
         data, status_code = self._parse_response(resp)
         if self.pagination_class is None:
@@ -174,7 +194,12 @@ class ProviderAPIView(GenericAPIView):
                 return paginated
             return Response(data, status=status_code)
 
-        if isinstance(data, dict) and self.results_key and self.results_key in data and isinstance(data[self.results_key], list):
+        if (
+            isinstance(data, dict)
+            and self.results_key
+            and self.results_key in data
+            and isinstance(data[self.results_key], list)
+        ):
             items = data[self.results_key]
             page = self.paginate_queryset(items)
             if page is not None:
@@ -191,9 +216,14 @@ class FMPBaseView(ProviderAPIView):
     base_url = getattr(settings, "FMP_BASE_URL", "https://financialmodelingprep.com")
     api_key_param = getattr(settings, "FMP_API_KEY_PARAM", "apikey")
     api_key_value = getattr(settings, "FMP_API_KEY", "")
-    serializer_class = ProviderAPIView.AnyParamsSerializer
 
-    def request(self, method: str, url: str, *, params: list[tuple[str, str]] | None = None) -> httpx.Response:
+    class FMPSerializer(serializers.Serializer): ...
+
+    serializer_class = FMPSerializer
+
+    def request(
+        self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
+    ) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
         pairs: list[tuple[str, str]] = list(params or [])
         if self.api_key_value:
@@ -214,8 +244,14 @@ class PolygonBaseView(ProviderAPIView):
             return {"Authorization": f"Bearer {self.api_key_value}"}
         return {self.api_key_header: self.api_key_value}
 
-    def request(self, method: str, url: str, *, params: list[tuple[str, str]] | None = None) -> httpx.Response:
+    def request(
+        self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
+    ) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
-        return httpx.request(method, full_url, params=list(params or []), headers=self._headers(), timeout=self.timeout)
-
-
+        return httpx.request(
+            method,
+            full_url,
+            params=list(params or []),
+            headers=self._headers(),
+            timeout=self.timeout,
+        )
