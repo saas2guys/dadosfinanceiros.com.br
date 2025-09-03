@@ -17,8 +17,6 @@ from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
 from proxy_app.providers import PolygonProvider, FMPProvider
-from proxy_app.proxy import FinancialDataProxy
-from proxy_app.views_new import FinancialAPIView
 from users.models import Plan
 
 from .factories import (
