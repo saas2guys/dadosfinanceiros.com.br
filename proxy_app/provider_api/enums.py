@@ -284,3 +284,7 @@ class EconomicParams(Enum):
     NAME = "name"
 
 
+class EndpointTo:
+    FMP = EndpointToFMP
+    Polygon = EndpointToPolygon
+

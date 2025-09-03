@@ -7,29 +7,27 @@ from typing import Any, Optional
 import httpx
 from django.conf import settings
 from django.urls import path
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
 
 
-class ProviderAPIView(APIView):
+class ProviderAPIView(GenericAPIView):
 
+    active: bool = True
+    allowed_params: Enum | None = None
     endpoint_from: str = ""
     endpoint_to: str = ""
     name: str = ""
-    allowed_params: Enum | None = None
-    timeout: float = 20.0
-    active: bool = True
-    serializer_class = None
     pagination_class = None
     results_key: Optional[str] = "results"
+    serializer_class = None
+    timeout: float = 20.0
 
     class AnyParamsSerializer(serializers.Serializer):
         def to_internal_value(self, data):  # type: ignore[override]
@@ -83,7 +81,17 @@ class ProviderAPIView(APIView):
             return pairs
 
         pairs: list[tuple[str, str]] = []
+        allowed_keys: set[str] | None = None
+        if self.allowed_params is not None:
+            # allowed_params is expected to be an Enum class containing allowed param names as values
+            try:
+                allowed_keys = {member.value for member in self.allowed_params}  # type: ignore[attr-defined]
+            except Exception:
+                allowed_keys = None
+
         for k in qp.keys():
+            if allowed_keys is not None and k not in allowed_keys:
+                continue
             for v in qp.getlist(k):
                 pairs.append((k, v))
         return pairs
@@ -154,32 +162,29 @@ class ProviderAPIView(APIView):
             return Response({"detail": "upstream error", "error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
 
         data, status_code = self._parse_response(resp)
-        return self._maybe_paginate(data, request, status_code)
-
-    def _maybe_paginate(self, data: Any, request, status_code: int) -> Response:
         if self.pagination_class is None:
             return Response(data, status=status_code)
 
-        items = None
-        container: Optional[dict] = None
-        if isinstance(data, dict) and self.results_key and self.results_key in data and isinstance(data[self.results_key], list):
-            container = data
-            items = data.get(self.results_key, [])
-        elif isinstance(data, list):
-            items = data
-        if not isinstance(items, list):
+        # Use DRF GenericAPIView helpers for pagination
+        if isinstance(data, list):
+            page = self.paginate_queryset(data)
+            if page is not None:
+                paginated = self.get_paginated_response(page)
+                paginated.status_code = status_code
+                return paginated
             return Response(data, status=status_code)
 
-        paginator = self.pagination_class()
-        page = paginator.paginate_queryset(items, request, view=self)
-        paginated_response = paginator.get_paginated_response(page)
-        if container is None or not self.results_key:
-            return paginated_response
-
-        payload = paginated_response.data
-        preserved = {k: v for k, v in container.items() if k != self.results_key}
-        payload.update(preserved)
-        return Response(payload, status=status_code)
+        if isinstance(data, dict) and self.results_key and self.results_key in data and isinstance(data[self.results_key], list):
+            items = data[self.results_key]
+            page = self.paginate_queryset(items)
+            if page is not None:
+                paginated = self.get_paginated_response(page)
+                payload = dict(paginated.data)
+                preserved = {k: v for k, v in data.items() if k != self.results_key}
+                payload.update(preserved)
+                response = Response(payload, status=status_code)
+                return response
+        return Response(data, status=status_code)
 
 
 class FMPBaseView(ProviderAPIView):
