@@ -1,344 +1,190 @@
 from __future__ import annotations
 
 from .base import PolygonBaseView
-from .enums import EndpointFrom, EndpointTo
-from rest_framework import serializers
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from users.authentication import RequestTokenAuthentication
-from users.permissions import DailyLimitPermission
+from .enums import EndpointTo, EndpointFrom, PolygonParams
 
 
-class FuturesContractsView(PolygonBaseView):
-    """
-    List available futures contracts and related metadata.
-
-    App path:
-        /api/v1/futures/contracts/
-
-    Provider path:
-        /v3/reference/futures/contracts
-
-    Parameters:
-        Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.FUTURES_CONTRACTS
-    endpoint_to = EndpointTo.Polygon.FUTURES_CONTRACTS
+class AggCustomRangeView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_AGG_CUSTOM_RANGE
+    endpoint_to = EndpointTo.Polygon.AGG_CUSTOM_RANGE
+    allowed_params = [PolygonParams.Common, PolygonParams.AggCustomRange]
 
 
-class FuturesHistoricalView(PolygonBaseView):
-    """
-    Fetch historical aggregate bars for a futures ticker.
-
-    App path:
-        /api/v1/futures/{symbol}/historical/
-
-    Provider path:
-        /v2/aggs/ticker/{symbol}/range/{multiplier}/{timespan}/{from}/{to}
-
-    Parameters:
-        symbol (str): Futures ticker symbol.
-        multiplier (int): Size of each aggregate window.
-        timespan (str): Unit of time, e.g., "day".
-        from (str): Start timestamp or date.
-        to (str): End timestamp or date.
-    """
-    endpoint_from = EndpointFrom.FUTURES_HISTORICAL
-    endpoint_to = EndpointTo.Polygon.FUTURES_HISTORICAL
+class AggGroupedDailyView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_AGG_GROUPED_DAILY
+    endpoint_to = EndpointTo.Polygon.AGG_GROUPED_DAILY
+    allowed_params = [PolygonParams.Common, PolygonParams.AggGroupedDaily]
 
 
-class FuturesSnapshotView(PolygonBaseView):
-    """
-    Retrieve a real-time snapshot for a futures ticker.
-
-    App path:
-        /api/v1/futures/{symbol}/snapshot/
-
-    Provider path:
-        /v2/snapshot/locale/global/markets/futures/tickers/{symbol}
-
-    Parameters:
-        symbol (str): Futures ticker symbol.
-    """
-    endpoint_from = EndpointFrom.FUTURES_SNAPSHOT
-    endpoint_to = EndpointTo.Polygon.FUTURES_SNAPSHOT
+class AggPreviousDayView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_AGG_PREVIOUS_DAY
+    endpoint_to = EndpointTo.Polygon.AGG_PREVIOUS_DAY
+    allowed_params = [PolygonParams.Common, PolygonParams.OpenClose]
 
 
-class GroupedDailyView(PolygonBaseView):
-    """
-    Return grouped daily aggregate bars for all U.S. stocks on a date.
-
-    App path:
-        /api/v1/historical/grouped/{date}/
-
-    Provider path:
-        /v2/aggs/grouped/locale/us/market/stocks/{date}
-
-    Parameters:
-        date (str): ISO date in the form YYYY-MM-DD.
-    """
-    endpoint_from = EndpointFrom.HISTORICAL_GROUPED
-    endpoint_to = EndpointTo.Polygon.HISTORICAL_GROUPED
+class IndicatorEMAView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_INDICATOR_EMA
+    endpoint_to = EndpointTo.Polygon.INDICATOR_EMA
+    allowed_params = [PolygonParams.Common, PolygonParams.IndicatorCommon]
 
 
-class LastQuoteView(PolygonBaseView):
-    """
-    Retrieve the last NBBO quote for a given equity symbol.
+class IndicatorMACDView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_INDICATOR_MACD
+    endpoint_to = EndpointTo.Polygon.INDICATOR_MACD
+    allowed_params = [PolygonParams.Common, PolygonParams.IndicatorMACD]
 
-    App path:
-        /api/v1/quotes/{symbol}/last-quote/
 
-    Provider path:
-        /v2/last/nbbo/{symbol}
+class IndicatorRSIView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_INDICATOR_RSI
+    endpoint_to = EndpointTo.Polygon.INDICATOR_RSI
+    allowed_params = [PolygonParams.Common, PolygonParams.IndicatorCommon]
 
-    Parameters:
-        symbol (str): Ticker symbol, e.g., "AAPL".
-    """
-    endpoint_from = EndpointFrom.QUOTES_LAST_QUOTE
-    endpoint_to = EndpointTo.Polygon.QUOTES_LAST_QUOTE
+
+class IndicatorSMAView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_INDICATOR_SMA
+    endpoint_to = EndpointTo.Polygon.INDICATOR_SMA
+    allowed_params = [PolygonParams.Common, PolygonParams.IndicatorCommon]
+
+
+class LastNBBOView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_LAST_NBBO
+    endpoint_to = EndpointTo.Polygon.LAST_NBBO
 
 
 class LastTradeView(PolygonBaseView):
-    """
-    Retrieve the most recent trade for a given equity symbol.
-
-    App path:
-        /api/v1/quotes/{symbol}/last-trade/
-
-    Provider path:
-        /v2/last/trade/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol, e.g., "AAPL".
-    """
-    endpoint_from = EndpointFrom.QUOTES_LAST_TRADE
-    endpoint_to = EndpointTo.Polygon.QUOTES_LAST_TRADE
+    endpoint_from = EndpointFrom.STOCKS_LAST_TRADE
+    endpoint_to = EndpointTo.Polygon.LAST_TRADE
 
 
 class MarketHolidaysView(PolygonBaseView):
-    """
-    List upcoming U.S. market holidays.
-
-    App path:
-        /api/v1/reference/market-holidays/
-
-    Provider path:
-        /v1/marketstatus/upcoming
-
-    Parameters:
-        None. Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.REFERENCE_MARKET_HOLIDAYS
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_MARKET_HOLIDAYS
     endpoint_to = EndpointTo.Polygon.REFERENCE_MARKET_HOLIDAYS
 
 
 class MarketStatusView(PolygonBaseView):
-    """
-    Return current U.S. market status (open/closed and session details).
-
-    App path:
-        /api/v1/reference/market-status/
-
-    Provider path:
-        /v1/marketstatus/now
-
-    Parameters:
-        None. Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.REFERENCE_MARKET_STATUS
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_MARKET_STATUS
     endpoint_to = EndpointTo.Polygon.REFERENCE_MARKET_STATUS
 
 
-class OptionsChainView(PolygonBaseView):
-    """
-    Get a snapshot of the options chain for an underlying symbol.
-
-    App path:
-        /api/v1/options/chain/{symbol}/
-
-    Provider path:
-        /v3/snapshot/options/{symbol}
-
-    Parameters:
-        symbol (str): Underlying ticker, e.g., "AAPL".
-    """
-    endpoint_from = EndpointFrom.OPTIONS_CHAIN
-    endpoint_to = EndpointTo.Polygon.OPTIONS_CHAIN
+class OpenCloseView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_OPEN_CLOSE
+    endpoint_to = EndpointTo.Polygon.OPEN_CLOSE
+    allowed_params = [PolygonParams.Common, PolygonParams.OpenClose]
 
 
-class OptionsContractsView(PolygonBaseView):
-    """
-    List available options contracts and related metadata.
-
-    App path:
-        /api/v1/options/contracts/
-
-    Provider path:
-        /v3/reference/options/contracts
-
-    Parameters:
-        Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.OPTIONS_CONTRACTS
-    endpoint_to = EndpointTo.Polygon.OPTIONS_CONTRACTS
+class QuotesView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_QUOTES
+    endpoint_to = EndpointTo.Polygon.QUOTES
+    allowed_params = [PolygonParams.Common, PolygonParams.Quotes]
 
 
-class OptionsContractHistoricalView(PolygonBaseView):
-    """
-    Fetch historical aggregate bars for an option contract.
-
-    App path:
-        /api/v1/options/{contract}/historical/
-
-    Provider path:
-        /v2/aggs/ticker/{contract}/range/{multiplier}/{timespan}/{from}/{to}
-
-    Parameters:
-        contract (str): Option contract identifier.
-        multiplier (int): Size of each aggregate window.
-        timespan (str): Unit of time, e.g., "day".
-        from (str): Start timestamp or date.
-        to (str): End timestamp or date.
-    """
-    endpoint_from = EndpointFrom.OPTIONS_CONTRACT_HIST
-    endpoint_to = EndpointTo.Polygon.OPTIONS_CONTRACT_HIST
+class ReferenceConditionsView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_CONDITIONS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_CONDITIONS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceConditions]
 
 
-class OptionsGreeksView(PolygonBaseView):
-    """
-    Get a snapshot of options greeks for a symbol.
-
-    App path:
-        /api/v1/options/{symbol}/greeks/
-
-    Provider path:
-        /v3/snapshot/options/{symbol}
-
-    Parameters:
-        symbol (str): Option or underlying symbol.
-    """
-    endpoint_from = EndpointFrom.OPTIONS_GREEKS
-    endpoint_to = EndpointTo.Polygon.OPTIONS_GREEKS
+class ReferenceDividendsView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_DIVIDENDS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_DIVIDENDS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceDividends]
 
 
-class OptionsOpenInterestView(PolygonBaseView):
-    """
-    Get a snapshot of options open interest for a symbol.
-
-    App path:
-        /api/v1/options/{symbol}/open-interest/
-
-    Provider path:
-        /v3/snapshot/options/{symbol}
-
-    Parameters:
-        symbol (str): Option or underlying symbol.
-    """
-    endpoint_from = EndpointFrom.OPTIONS_OPEN_INTEREST
-    endpoint_to = EndpointTo.Polygon.OPTIONS_OPEN_INTEREST
+class ReferenceExchangesView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_EXCHANGES
+    endpoint_to = EndpointTo.Polygon.REFERENCE_EXCHANGES
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceExchanges]
 
 
-class PreviousCloseView(PolygonBaseView):
-    """
-    Get the previous trading session's aggregate bar for a symbol.
-
-    App path:
-        /api/v1/quotes/{symbol}/previous-close/
-
-    Provider path:
-        /v2/aggs/ticker/{symbol}/prev
-
-    Parameters:
-        symbol (str): Ticker symbol, e.g., "AAPL".
-    """
-    endpoint_from = EndpointFrom.QUOTES_PREVIOUS_CLOSE
-    endpoint_to = EndpointTo.Polygon.QUOTES_PREVIOUS_CLOSE
+class ReferenceFinancialsView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_FINANCIALS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_FINANCIALS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceFinancials]
 
 
-class TickAggregatesView(PolygonBaseView):
-    """
-    Retrieve time-aggregated bars for a ticker.
-
-    App path:
-        /api/v1/ticks/{symbol}/aggregates/
-
-    Provider path:
-        /v2/aggs/ticker/{symbol}/range/{multiplier}/{timespan}/{from}/{to}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-        multiplier (int): Size of each aggregate window.
-        timespan (str): Unit of time, e.g., "minute", "day".
-        from (str): Start timestamp or date.
-        to (str): End timestamp or date.
-    """
-    endpoint_from = EndpointFrom.TICKS_AGGREGATES
-    endpoint_to = EndpointTo.Polygon.TICKS_AGGREGATES
+class ReferenceIPOsView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_IPOS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_IPOS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceIPOs]
 
 
-class TickQuotesView(PolygonBaseView):
-    """
-    Stream or fetch tick-level quotes for a ticker.
-
-    App path:
-        /api/v1/ticks/{symbol}/quotes/
-
-    Provider path:
-        /v3/quotes/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.TICKS_QUOTES
-    endpoint_to = EndpointTo.Polygon.TICKS_QUOTES
+class ReferenceNewsView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_NEWS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_NEWS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceNews]
 
 
-class TickTradesView(PolygonBaseView):
-    """
-    Stream or fetch tick-level trades for a ticker.
-
-    App path:
-        /api/v1/ticks/{symbol}/trades/
-
-    Provider path:
-        /v3/trades/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.TICKS_TRADES
-    endpoint_to = EndpointTo.Polygon.TICKS_TRADES
+class ReferenceSplitsView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_SPLITS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_SPLITS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceSplits]
 
 
-class ExamplePolygonTradesView(PolygonBaseView):
-    """
-    Demonstration endpoint showcasing auth, pagination, and query validation.
+class ReferenceTickerEventsView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKER_EVENTS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_TICKER_EVENTS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTickerEvents]
 
-    App path:
-        /api/v1/examples/polygon/{symbol}/trades/
 
-    Provider path:
-        /v3/trades/{symbol}
+class ReferenceTickerTypesView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKER_TYPES
+    endpoint_to = EndpointTo.Polygon.REFERENCE_TICKER_TYPES
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTickerTypes]
 
-    Parameters:
-        symbol (str): Ticker symbol.
-        limit (int): Max number of items to return per page.
-        offset (int): Offset for pagination.
-        timestamp (str): Optional timestamp filter.
-    """
-    active = True
-    authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
-    endpoint_from = EndpointFrom.EXAMPLE_POLYGON_TRADES
-    endpoint_to = EndpointTo.Polygon.TICKS_TRADES
-    name = "example_polygon_trades"
-    pagination_class = LimitOffsetPagination
-    permission_classes = [IsAuthenticated, DailyLimitPermission]
-    timeout = 15.0
-    
-    class QuerySerializer(serializers.Serializer):
-        limit = serializers.IntegerField(min_value=1, max_value=5000, required=False, default=100)
-        offset = serializers.IntegerField(min_value=0, required=False, default=0)
-        timestamp = serializers.CharField(required=False)
 
-    serializer_class = QuerySerializer
+class ReferenceTickerView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKER
+    endpoint_to = EndpointTo.Polygon.REFERENCE_TICKER
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTicker]
+
+
+class ReferenceTickersView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKERS
+    endpoint_to = EndpointTo.Polygon.REFERENCE_TICKERS
+    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTickers]
+
+
+class RelatedCompaniesView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_RELATED_COMPANIES
+    endpoint_to = EndpointTo.Polygon.RELATED_COMPANIES
+
+
+class SnapshotMarketView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_MARKET
+    endpoint_to = EndpointTo.Polygon.SNAPSHOT_MARKET
+    allowed_params = [PolygonParams.Common, PolygonParams.SnapshotMarket]
+
+
+class SnapshotMoversView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_MOVERS
+    endpoint_to = EndpointTo.Polygon.SNAPSHOT_MOVERS
+    allowed_params = [PolygonParams.Common, PolygonParams.SnapshotMovers]
+
+
+class SnapshotTickerView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_TICKER
+    endpoint_to = EndpointTo.Polygon.SNAPSHOT_TICKER
+
+
+class SnapshotUnifiedView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_UNIFIED
+    endpoint_to = EndpointTo.Polygon.SNAPSHOT_UNIFIED
+    allowed_params = [PolygonParams.Common, PolygonParams.SnapshotUnified]
+
+
+class StocksShortInterestView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_SHORT_INTEREST
+    endpoint_to = EndpointTo.Polygon.STOCKS_SHORT_INTEREST
+    allowed_params = [PolygonParams.Common, PolygonParams.StocksShortInterest]
+
+
+class StocksShortVolumeView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_SHORT_VOLUME
+    endpoint_to = EndpointTo.Polygon.STOCKS_SHORT_VOLUME
+    allowed_params = [PolygonParams.Common, PolygonParams.StocksShortVolume]
+
+
+class TradesView(PolygonBaseView):
+    endpoint_from = EndpointFrom.STOCKS_TRADES
+    endpoint_to = EndpointTo.Polygon.TRADES
+    allowed_params = [PolygonParams.Common, PolygonParams.Trades]

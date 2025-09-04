@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .base import FMPBaseView
-from .enums import CommonParams, EconomicParams, EndpointFrom, EndpointTo, NewsParams
+from .enums import CommonParams, EconomicParams, EndpointFromFMP as EndpointFrom, EndpointTo, NewsParams
 from rest_framework import serializers
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated

@@ -4,259 +4,89 @@ from enum import Enum
 
 
 class EndpointFrom(Enum):
-    # Reference
-    REFERENCE_TICKERS = "/api/v1/reference/tickers/"
-    REFERENCE_TICKER = "/api/v1/reference/ticker/{symbol}/"
-    REFERENCE_TICKER_PROFILE = "/api/v1/reference/ticker/{symbol}/profile/"
-    REFERENCE_TICKER_EXECUTIVES = "/api/v1/reference/ticker/{symbol}/executives/"
-    REFERENCE_TICKER_OUTLOOK = "/api/v1/reference/ticker/{symbol}/outlook/"
-    REFERENCE_EXCHANGES = "/api/v1/reference/exchanges/"
-    REFERENCE_MARKET_CAP = "/api/v1/reference/market-cap/{symbol}/"
-    REFERENCE_MARKET_STATUS = "/api/v1/reference/market-status/"
-    REFERENCE_MARKET_HOLIDAYS = "/api/v1/reference/market-holidays/"
-
-    # Market Data
-    QUOTES_SINGLE = "/api/v1/quotes/{symbol}/"
-    QUOTES_BATCH = "/api/v1/quotes/batch/"
-    QUOTES_GAINERS = "/api/v1/quotes/gainers/"
-    QUOTES_LOSERS = "/api/v1/quotes/losers/"
-    QUOTES_MOST_ACTIVE = "/api/v1/quotes/most-active/"
-    QUOTES_LAST_TRADE = "/api/v1/quotes/{symbol}/last-trade/"
-    QUOTES_LAST_QUOTE = "/api/v1/quotes/{symbol}/last-quote/"
-    QUOTES_PREVIOUS_CLOSE = "/api/v1/quotes/{symbol}/previous-close/"
-
-    # Historical
-    HISTORICAL = "/api/v1/historical/{symbol}/"
-    HISTORICAL_INTRADAY = "/api/v1/historical/{symbol}/intraday/"
-    HISTORICAL_DIVIDENDS = "/api/v1/historical/{symbol}/dividends/"
-    HISTORICAL_SPLITS = "/api/v1/historical/{symbol}/splits/"
-    HISTORICAL_GROUPED = "/api/v1/historical/grouped/{date}/"
-
-    # Options (Polygon)
-    OPTIONS_CONTRACTS = "/api/v1/options/contracts/"
-    OPTIONS_CHAIN = "/api/v1/options/chain/{symbol}/"
-    OPTIONS_GREEKS = "/api/v1/options/{symbol}/greeks/"
-    OPTIONS_OPEN_INTEREST = "/api/v1/options/{symbol}/open-interest/"
-    OPTIONS_CONTRACT_HIST = "/api/v1/options/{contract}/historical/"
-
-    # Futures (Polygon)
-    FUTURES_CONTRACTS = "/api/v1/futures/contracts/"
-    FUTURES_SNAPSHOT = "/api/v1/futures/{symbol}/snapshot/"
-    FUTURES_HISTORICAL = "/api/v1/futures/{symbol}/historical/"
-
-    # Ticks (Polygon)
-    TICKS_TRADES = "/api/v1/ticks/{symbol}/trades/"
-    TICKS_QUOTES = "/api/v1/ticks/{symbol}/quotes/"
-    TICKS_AGGREGATES = "/api/v1/ticks/{symbol}/aggregates/"
-
-    # Fundamentals (FMP)
-    FUND_IS = "/api/v1/fundamentals/{symbol}/income-statement/"
-    FUND_BS = "/api/v1/fundamentals/{symbol}/balance-sheet/"
-    FUND_CF = "/api/v1/fundamentals/{symbol}/cash-flow/"
-    FUND_RATIOS = "/api/v1/fundamentals/{symbol}/ratios/"
-    FUND_DCF = "/api/v1/fundamentals/{symbol}/dcf/"
-    FUND_METRICS = "/api/v1/fundamentals/{symbol}/metrics/"
-    FUND_EV = "/api/v1/fundamentals/{symbol}/enterprise-value/"
-    FUND_SCREENER = "/api/v1/fundamentals/screener/"
-
-    # News (FMP)
-    NEWS = "/api/v1/news/"
-    NEWS_SYMBOL = "/api/v1/news/{symbol}/"
-    NEWS_PR = "/api/v1/news/press-releases/"
-    NEWS_SYMBOL_PR = "/api/v1/news/{symbol}/press-releases/"
-    NEWS_SENTIMENT = "/api/v1/news/sentiment/"
-
-    # Analysts (FMP)
-    ANALYST_EST = "/api/v1/analysts/{symbol}/estimates/"
-    ANALYST_RECO = "/api/v1/analysts/{symbol}/recommendations/"
-    ANALYST_PRICE_TARGETS = "/api/v1/analysts/{symbol}/price-targets/"
-    ANALYST_UPGRADES = "/api/v1/analysts/{symbol}/upgrades-downgrades/"
-
-    # Earnings (FMP)
-    EARNINGS_CAL = "/api/v1/earnings/{symbol}/calendar/"
-    EARNINGS_TRANSCRIPTS = "/api/v1/earnings/{symbol}/transcripts/"
-    EARNINGS_HISTORY = "/api/v1/earnings/{symbol}/history/"
-    EARNINGS_SURPRISES = "/api/v1/earnings/{symbol}/surprises/"
-
-    # Corporate events (FMP)
-    EVENTS_IPO = "/api/v1/events/ipo-calendar/"
-    EVENTS_SPLIT = "/api/v1/events/stock-split-calendar/"
-    EVENTS_DIVIDEND = "/api/v1/events/dividend-calendar/"
-
-    # Institutional (FMP)
-    INST_13F = "/api/v1/institutional/{symbol}/13f/"
-    INST_HOLDERS = "/api/v1/institutional/{symbol}/holders/"
-    INST_INSIDER = "/api/v1/institutional/{symbol}/insider-trading/"
-
-    # Economic (FMP)
-    ECO_GDP = "/api/v1/economy/gdp/"
-    ECO_CPI = "/api/v1/economy/inflation/"
-    ECO_UNEMP = "/api/v1/economy/unemployment/"
-    ECO_RATES = "/api/v1/economy/interest-rates/"
-    ECO_TREASURY = "/api/v1/economy/treasury-rates/"
-
-    # ETF & Mutual funds (FMP)
-    ETF_LIST = "/api/v1/etf/list/"
-    ETF_HOLDINGS = "/api/v1/etf/{symbol}/holdings/"
-    ETF_PERF = "/api/v1/etf/{symbol}/performance/"
-    MF_LIST = "/api/v1/mutual-funds/list/"
-
-    # Commodities (FMP)
-    COM_METALS = "/api/v1/commodities/metals/"
-    COM_ENERGY = "/api/v1/commodities/energy/"
-    COM_AGRI = "/api/v1/commodities/agricultural/"
-    COM_HIST = "/api/v1/commodities/{symbol}/historical/"
-
-    # Crypto (FMP)
-    CRYPTO_LIST = "/api/v1/crypto/list/"
-    CRYPTO_QUOTE = "/api/v1/crypto/{symbol}/"
-    CRYPTO_HIST = "/api/v1/crypto/{symbol}/historical/"
-
-    # International (FMP)
-    INT_EXCHANGES = "/api/v1/international/exchanges/"
-    INT_STOCKS = "/api/v1/international/{exchange}/stocks/"
-    FOREX_RATES = "/api/v1/forex/rates/"
-    FOREX_PAIR = "/api/v1/forex/{pair}/"
-
-    # SEC (FMP)
-    SEC_FILINGS = "/api/v1/sec/{symbol}/filings/"
-    SEC_10K = "/api/v1/sec/{symbol}/10k/"
-    SEC_10Q = "/api/v1/sec/{symbol}/10q/"
-    SEC_8K = "/api/v1/sec/{symbol}/8k/"
-    SEC_RSS = "/api/v1/sec/rss-feed/"
-
-    # Examples
-    EXAMPLE_FMP_GAINERS = "/api/v1/examples/fmp/gainers/"
+    # Examples (keep)
     EXAMPLE_POLYGON_TRADES = "/api/v1/examples/polygon/{symbol}/trades/"
+
+    # Polygon stock API endpoints (app routes)
+    STOCKS_AGG_CUSTOM_RANGE = "/api/v1/stocks/aggs/{stocksTicker}/range/{multiplier}/{timespan}/{from}/{to}/"
+    STOCKS_AGG_GROUPED_DAILY = "/api/v1/stocks/aggs/grouped/{date}/"
+    STOCKS_AGG_PREVIOUS_DAY = "/api/v1/stocks/aggs/{stocksTicker}/prev/"
+    STOCKS_INDICATOR_EMA = "/api/v1/stocks/indicators/ema/{stockTicker}/"
+    STOCKS_INDICATOR_MACD = "/api/v1/stocks/indicators/macd/{stockTicker}/"
+    STOCKS_INDICATOR_RSI = "/api/v1/stocks/indicators/rsi/{stockTicker}/"
+    STOCKS_INDICATOR_SMA = "/api/v1/stocks/indicators/sma/{stockTicker}/"
+    STOCKS_LAST_NBBO = "/api/v1/stocks/last-quote/{stocksTicker}/"
+    STOCKS_LAST_TRADE = "/api/v1/stocks/last-trade/{stocksTicker}/"
+    STOCKS_OPEN_CLOSE = "/api/v1/stocks/open-close/{stocksTicker}/{date}/"
+    STOCKS_QUOTES = "/api/v1/stocks/quotes/{stockTicker}/"
+    STOCKS_REFERENCE_CONDITIONS = "/api/v1/stocks/reference/conditions/"
+    STOCKS_REFERENCE_DIVIDENDS = "/api/v1/stocks/reference/dividends/"
+    STOCKS_REFERENCE_EXCHANGES = "/api/v1/stocks/reference/exchanges/"
+    STOCKS_REFERENCE_FINANCIALS = "/api/v1/stocks/reference/financials/"
+    STOCKS_REFERENCE_IPOS = "/api/v1/stocks/reference/ipos/"
+    STOCKS_REFERENCE_MARKET_HOLIDAYS = "/api/v1/stocks/reference/market-holidays/"
+    STOCKS_REFERENCE_MARKET_STATUS = "/api/v1/stocks/reference/market-status/"
+    STOCKS_REFERENCE_NEWS = "/api/v1/stocks/reference/news/"
+    STOCKS_REFERENCE_SPLITS = "/api/v1/stocks/reference/splits/"
+    STOCKS_REFERENCE_TICKER = "/api/v1/stocks/reference/tickers/{ticker}/"
+    STOCKS_REFERENCE_TICKER_EVENTS = "/api/v1/stocks/reference/tickers/{id}/events/"
+    STOCKS_REFERENCE_TICKER_TYPES = "/api/v1/stocks/reference/tickers/types/"
+    STOCKS_REFERENCE_TICKERS = "/api/v1/stocks/reference/tickers/"
+    STOCKS_RELATED_COMPANIES = "/api/v1/stocks/related-companies/{ticker}/"
+    STOCKS_SNAPSHOT_MARKET = "/api/v1/stocks/snapshot/tickers/"
+    STOCKS_SNAPSHOT_MOVERS = "/api/v1/stocks/snapshot/movers/{direction}/"
+    STOCKS_SNAPSHOT_TICKER = "/api/v1/stocks/snapshot/tickers/{stocksTicker}/"
+    STOCKS_SNAPSHOT_UNIFIED = "/api/v1/snapshot/"
+    STOCKS_SHORT_INTEREST = "/api/v1/stocks/short-interest/"
+    STOCKS_SHORT_VOLUME = "/api/v1/stocks/short-volume/"
+    STOCKS_TRADES = "/api/v1/stocks/trades/{stockTicker}/"
+
+
+class EndpointFromFMP(Enum):
+    pass
 
 
 class EndpointToFMP(Enum):
-    # Reference
-    REFERENCE_TICKERS = "/v3/stock/list"
-    REFERENCE_TICKER = "/v3/profile/{symbol}"
-    REFERENCE_TICKER_PROFILE = "/v3/profile/{symbol}"
-    REFERENCE_TICKER_EXECUTIVES = "/v3/key-executives/{symbol}"
-    REFERENCE_TICKER_OUTLOOK = "/v4/company-outlook"
-    REFERENCE_EXCHANGES = "/v3/exchanges-list"
-    REFERENCE_MARKET_CAP = "/v3/market-capitalization/{symbol}"
-
-    # Market Data
-    QUOTES_SINGLE = "/v3/quote/{symbol}"
-    QUOTES_BATCH = "/v3/quote/{symbols}"
-    QUOTES_GAINERS = "/v3/gainers"
-    QUOTES_LOSERS = "/v3/losers"
-    QUOTES_MOST_ACTIVE = "/v3/actives"
-
-    # Historical
-    HISTORICAL = "/v3/historical-price-full/{symbol}"
-    HISTORICAL_INTRADAY = "/v3/historical-chart/{interval}/{symbol}"
-    HISTORICAL_DIVIDENDS = "/v3/historical-price-full/stock_dividend/{symbol}"
-    HISTORICAL_SPLITS = "/v3/historical-price-full/stock_split/{symbol}"
-
-    # Fundamentals
-    FUND_IS = "/v3/income-statement/{symbol}"
-    FUND_BS = "/v3/balance-sheet-statement/{symbol}"
-    FUND_CF = "/v3/cash-flow-statement/{symbol}"
-    FUND_RATIOS = "/v3/ratios/{symbol}"
-    FUND_DCF = "/v3/discounted-cash-flow/{symbol}"
-    FUND_METRICS = "/v3/key-metrics/{symbol}"
-    FUND_EV = "/v3/enterprise-values/{symbol}"
-    FUND_SCREENER = "/v3/stock-screener"
-
-    # News
-    NEWS = "/v3/stock_news"
-    NEWS_SYMBOL = "/v3/stock_news"
-    NEWS_PR = "/v3/press-releases"
-    NEWS_SYMBOL_PR = "/v3/press-releases/{symbol}"
-    NEWS_SENTIMENT = "/v4/historical/social-sentiment"
-
-    # Analysts
-    ANALYST_EST = "/v3/analyst-estimates/{symbol}"
-    ANALYST_RECO = "/v3/analyst-stock-recommendations/{symbol}"
-    ANALYST_PRICE_TARGETS = "/v4/price-target"
-    ANALYST_UPGRADES = "/v4/upgrades-downgrades"
-
-    # Earnings
-    EARNINGS_CAL = "/v3/earning_calendar"
-    EARNINGS_TRANSCRIPTS = "/v4/batch_earning_call_transcript/{symbol}"
-    EARNINGS_HISTORY = "/v3/historical/earning_calendar/{symbol}"
-    EARNINGS_SURPRISES = "/v3/earnings-surprises/{symbol}"
-
-    # Corporate events
-    EVENTS_IPO = "/v3/ipo_calendar"
-    EVENTS_SPLIT = "/v3/stock_split_calendar"
-    EVENTS_DIVIDEND = "/v3/stock_dividend_calendar"
-
-    # Institutional
-    INST_13F = "/v3/form-thirteen/{symbol}"
-    INST_HOLDERS = "/v3/institutional-holder/{symbol}"
-    INST_INSIDER = "/v4/insider-trading"
-
-    # Economic
-    ECO_GDP = "/v4/economic"
-    ECO_CPI = "/v4/economic"
-    ECO_UNEMP = "/v4/economic"
-    ECO_RATES = "/v4/economic"
-    ECO_TREASURY = "/v4/treasury"
-
-    # ETF & Mutual funds
-    ETF_LIST = "/v3/etf/list"
-    ETF_HOLDINGS = "/v3/etf-holder/{symbol}"
-    ETF_PERF = "/v4/etf-info"
-    MF_LIST = "/v3/mutual-fund/list"
-
-    # Commodities
-    COM_QUOTES = "/v3/quotes/commodity"
-    COM_HIST = "/v3/historical-price-full/{symbol}"
-
-    # Crypto
-    CRYPTO_LIST = "/v3/quotes/crypto"
-    CRYPTO_QUOTE = "/v3/quote/{symbol}"
-    CRYPTO_HIST = "/v3/historical-price-full/{symbol}"
-
-    # International
-    INT_EXCHANGES = "/v3/exchanges-list"
-    INT_STOCKS = "/v3/available-traded/list"
-    FOREX_RATES = "/v3/fx"
-    FOREX_PAIR = "/v3/historical-price-full/{pair}"
-
-    # SEC
-    SEC_FILINGS = "/v3/sec_filings/{symbol}"
-    SEC_10K = "/v3/sec_filings/{symbol}"
-    SEC_10Q = "/v3/sec_filings/{symbol}"
-    SEC_8K = "/v3/sec_filings/{symbol}"
-    SEC_RSS = "/v4/rss_feed"
+    pass
 
 
 class EndpointToPolygon(Enum):
-    # Reference
-    REFERENCE_MARKET_STATUS = "/v1/marketstatus/now"
+    AGG_CUSTOM_RANGE = "/v2/aggs/ticker/{stocksTicker}/range/{multiplier}/{timespan}/{from}/{to}"
+    AGG_GROUPED_DAILY = "/v2/aggs/grouped/locale/us/market/stocks/{date}"
+    AGG_PREVIOUS_DAY = "/v2/aggs/ticker/{stocksTicker}/prev"
+    INDICATOR_EMA = "/v1/indicators/ema/{stockTicker}"
+    INDICATOR_MACD = "/v1/indicators/macd/{stockTicker}"
+    INDICATOR_RSI = "/v1/indicators/rsi/{stockTicker}"
+    INDICATOR_SMA = "/v1/indicators/sma/{stockTicker}"
+    LAST_NBBO = "/v2/last/nbbo/stocks/{stocksTicker}"
+    LAST_TRADE = "/v2/last/trade/stocks/{stocksTicker}"
+    OPEN_CLOSE = "/v1/open-close/{stocksTicker}/{date}"
+    QUOTES = "/v3/quotes/{stockTicker}"
+    REFERENCE_CONDITIONS = "/v3/reference/conditions"
+    REFERENCE_DIVIDENDS = "/v3/reference/dividends"
+    REFERENCE_EXCHANGES = "/v3/reference/exchanges"
+    REFERENCE_FINANCIALS = "/vX/reference/financials"
+    REFERENCE_IPOS = "/v3/reference/ipos"
+    REFERENCE_NEWS = "/v2/reference/news"
+    REFERENCE_SPLITS = "/v3/reference/splits"
+    REFERENCE_TICKER = "/v3/reference/tickers/{ticker}"
+    REFERENCE_TICKER_EVENTS = "/vX/reference/tickers/{id}/events"
+    REFERENCE_TICKER_TYPES = "/v3/reference/tickers/types"
+    REFERENCE_TICKERS = "/v3/reference/tickers"
     REFERENCE_MARKET_HOLIDAYS = "/v1/marketstatus/upcoming"
+    REFERENCE_MARKET_STATUS = "/v1/marketstatus/now"
+    RELATED_COMPANIES = "/v1/related-companies/{ticker}"
+    SNAPSHOT_MARKET = "/v2/snapshot/locale/us/markets/stocks/tickers"
+    SNAPSHOT_MOVERS = "/v2/snapshot/locale/us/markets/stocks/{direction}"
+    SNAPSHOT_TICKER = "/v2/snapshot/locale/us/markets/stocks/tickers/{stocksTicker}"
+    SNAPSHOT_UNIFIED = "/v3/snapshot"
+    STOCKS_SHORT_INTEREST = "/stocks/v1/short-interest"
+    STOCKS_SHORT_VOLUME = "/stocks/v1/short-volume"
+    TRADES = "/v3/trades/{stockTicker}"
 
-    # Market Data
-    QUOTES_LAST_TRADE = "/v2/last/trade/{symbol}"
-    QUOTES_LAST_QUOTE = "/v2/last/nbbo/{symbol}"
-    QUOTES_PREVIOUS_CLOSE = "/v2/aggs/ticker/{symbol}/prev"
 
-    # Historical aggregated/grouped
-    HISTORICAL_GROUPED = "/v2/aggs/grouped/locale/us/market/stocks/{date}"
-
-    # Options
-    OPTIONS_CONTRACTS = "/v3/reference/options/contracts"
-    OPTIONS_CHAIN = "/v3/snapshot/options/{symbol}"
-    OPTIONS_GREEKS = "/v3/snapshot/options/{symbol}"
-    OPTIONS_OPEN_INTEREST = "/v3/snapshot/options/{symbol}"
-    OPTIONS_CONTRACT_HIST = "/v2/aggs/ticker/{contract}/range/{multiplier}/{timespan}/{from}/{to}"
-
-    # Futures
-    FUTURES_CONTRACTS = "/v3/reference/futures/contracts"
-    FUTURES_SNAPSHOT = "/v2/snapshot/locale/global/markets/futures/tickers/{symbol}"
-    FUTURES_HISTORICAL = "/v2/aggs/ticker/{symbol}/range/{multiplier}/{timespan}/{from}/{to}"
-
-    # Ticks
-    TICKS_TRADES = "/v3/trades/{symbol}"
-    TICKS_QUOTES = "/v3/quotes/{symbol}"
-    TICKS_AGGREGATES = "/v2/aggs/ticker/{symbol}/range/{multiplier}/{timespan}/{from}/{to}"
+class EndpointFromPolygon(Enum):
+    pass
 
 
 class CommonParams(Enum):
@@ -284,7 +114,133 @@ class EconomicParams(Enum):
     NAME = "name"
 
 
+# Polygon endpoint-specific allowed query parameter groups
+class PolygonParams:
+    # Shared/common params across many Polygon endpoints
+    class Common(Enum):
+        limit = "limit"
+        order = "order"
+        sort = "sort"
+    class ReferenceTickers(Enum):
+        active = "active"
+        cik = "cik"
+        cusip = "cusip"
+        date = "date"
+        exchange = "exchange"
+        market = "market"
+        search = "search"
+        ticker = "ticker"
+        type = "type"
+
+    class ReferenceTicker(Enum):
+        date = "date"
+
+    class ReferenceTickerTypes(Enum):
+        asset_class = "asset_class"
+        locale = "locale"
+
+    class AggCustomRange(Enum):
+        adjusted = "adjusted"
+
+    class AggGroupedDaily(Enum):
+        adjusted = "adjusted"
+        include_otc = "include_otc"
+
+    class OpenClose(Enum):
+        adjusted = "adjusted"
+
+    class SnapshotMarket(Enum):
+        include_otc = "include_otc"
+        tickers = "tickers"
+
+    class SnapshotUnified(Enum):
+        ticker = "ticker"
+        type = "type"
+
+    class SnapshotMovers(Enum):
+        include_otc = "include_otc"
+
+    class Trades(Enum):
+        timestamp = "timestamp"
+
+    class Quotes(Enum):
+        timestamp = "timestamp"
+
+    class IndicatorCommon(Enum):
+        expand_underlying = "expand_underlying"
+        series_type = "series_type"
+        timestamp = "timestamp"
+        window = "window"
+
+    class IndicatorMACD(Enum):
+        expand_underlying = "expand_underlying"
+        long_window = "long_window"
+        series_type = "series_type"
+        short_window = "short_window"
+        signal_window = "signal_window"
+        timestamp = "timestamp"
+
+    class ReferenceExchanges(Enum):
+        asset_class = "asset_class"
+        locale = "locale"
+
+    class ReferenceConditions(Enum):
+        asset_class = "asset_class"
+        data_type = "data_type"
+        id = "id"
+        sip = "sip"
+
+    class ReferenceIPOs(Enum):
+        isin = "isin"
+        ticker = "ticker"
+        us_code = "us_code"
+        listing_date = "listing_date"
+
+    class ReferenceSplits(Enum):
+        execution_date = "execution_date"
+        reverse_split = "reverse_split"
+        ticker = "ticker"
+
+    class ReferenceDividends(Enum):
+        cash_amount = "cash_amount"
+        declaration_date = "declaration_date"
+        dividend_type = "dividend_type"
+        ex_dividend_date = "ex_dividend_date"
+        frequency = "frequency"
+        pay_date = "pay_date"
+        record_date = "record_date"
+        ticker = "ticker"
+
+    class ReferenceTickerEvents(Enum):
+        types = "types"
+
+    class ReferenceFinancials(Enum):
+        cik = "cik"
+        company_name = "company_name"
+        filing_date = "filing_date"
+        include_sources = "include_sources"
+        period_of_report_date = "period_of_report_date"
+        sic = "sic"
+        ticker = "ticker"
+        timeframe = "timeframe"
+
+    class StocksShortInterest(Enum):
+        avg_daily_volume = "avg_daily_volume"
+        days_to_cover = "days_to_cover"
+        settlement_date = "settlement_date"
+        ticker = "ticker"
+
+    class StocksShortVolume(Enum):
+        date = "date"
+        short_volume_ratio = "short_volume_ratio"
+        ticker = "ticker"
+        total_volume = "total_volume"
+
+    class ReferenceNews(Enum):
+        published_utc = "published_utc"
+        ticker = "ticker"
+
+
 class EndpointTo:
-    FMP = EndpointToFMP
     Polygon = EndpointToPolygon
 

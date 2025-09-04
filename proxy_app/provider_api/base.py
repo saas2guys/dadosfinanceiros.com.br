@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 import re
-from typing import Optional
+from typing import Optional, Any
 
 import httpx
 from django.conf import settings
@@ -28,25 +28,25 @@ class ProviderAPIView(GenericAPIView):
 
     timeout: float = 20.0
 
-    # class AnyParamsSerializer(serializers.Serializer):
-    #     def to_internal_value(self, data):  # type: ignore[override]
-    #         # Accept any incoming query params; preserve multi-values as lists
-    #         items: dict[str, Any] = {}
-    #         getlist = getattr(data, "getlist", None)
-    #         keys = data.keys() if hasattr(data, "keys") else []
-    #         for key in keys:
-    #             if callable(getlist):
-    #                 values = getlist(key)
-    #             else:
-    #                 raw = data.get(key)
-    #                 values = raw if isinstance(raw, list) else [raw]
-    #             if not values:
-    #                 continue
-    #             if len(values) == 1:
-    #                 items[key] = values[0]
-    #             else:
-    #                 items[key] = values
-    #         return items
+    class AnyParamsSerializer(serializers.Serializer):
+        def to_internal_value(self, data):  # type: ignore[override]
+            # Accept any incoming query params; preserve multi-values as lists
+            items: dict[str, Any] = {}
+            getlist = getattr(data, "getlist", None)
+            keys = data.keys() if hasattr(data, "keys") else []
+            for key in keys:
+                if callable(getlist):
+                    values = getlist(key)
+                else:
+                    raw = data.get(key)
+                    values = raw if isinstance(raw, list) else [raw]
+                if not values:
+                    continue
+                if len(values) == 1:
+                    items[key] = values[0]
+                else:
+                    items[key] = values
+            return items
 
     serializer_class = None
     authentication_classes = [JWTAuthentication, RequestTokenAuthentication]
@@ -67,6 +67,25 @@ class ProviderAPIView(GenericAPIView):
     # ---- Request param handling ----
     def build_params(self, request) -> list[tuple[str, str]] | dict:
         qp = request.query_params
+        def _collect_allowed_keys(spec) -> set[str] | None:
+            if spec is None:
+                return None
+            try:
+                # Single Enum class
+                return {member.value for member in spec}  # type: ignore[arg-type]
+            except Exception:
+                pass
+            try:
+                # Iterable of Enum classes
+                keys: set[str] = set()
+                for enum_cls in (spec if isinstance(spec, (list, tuple, set)) else []):
+                    try:
+                        keys.update({member.value for member in enum_cls})  # type: ignore[arg-type]
+                    except Exception:
+                        continue
+                return keys or None
+            except Exception:
+                return None
         if self.serializer_class:
             serializer = self.serializer_class(data=qp)
             try:
@@ -76,8 +95,12 @@ class ProviderAPIView(GenericAPIView):
                     "__error__": {"detail": "invalid query params", "errors": e.detail}
                 }
             validated = serializer.validated_data
+            # If allowed_params is set, filter the validated params accordingly
+            allowed_keys = _collect_allowed_keys(self.allowed_params)
             pairs: list[tuple[str, str]] = []
             for k, v in validated.items():
+                if allowed_keys is not None and k not in allowed_keys:
+                    continue
                 if isinstance(v, list):
                     for item in v:
                         pairs.append((k, str(item)))
@@ -86,13 +109,7 @@ class ProviderAPIView(GenericAPIView):
             return pairs
 
         pairs: list[tuple[str, str]] = []
-        allowed_keys: set[str] | None = None
-        if self.allowed_params is not None:
-            # allowed_params is expected to be an Enum class containing allowed param names as values
-            try:
-                allowed_keys = {member.value for member in self.allowed_params}  # type: ignore[attr-defined]
-            except Exception:
-                allowed_keys = None
+        allowed_keys = _collect_allowed_keys(self.allowed_params)
 
         for k in qp.keys():
             if allowed_keys is not None and k not in allowed_keys:
