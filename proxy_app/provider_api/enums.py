@@ -6,11 +6,12 @@ from enum import Enum
 class EndpointFrom(Enum):
     # Examples (keep)
     EXAMPLE_POLYGON_TRADES = "/api/v1/examples/polygon/{symbol}/trades/"
+    EXAMPLE_FMP_GAINERS = "/api/v1/examples/fmp/gainers/"
 
     # Polygon stock API endpoints (app routes)
-    STOCKS_AGG_CUSTOM_RANGE = "/api/v1/stocks/aggs/{stocksTicker}/range/{multiplier}/{timespan}/{from}/{to}/"
-    STOCKS_AGG_GROUPED_DAILY = "/api/v1/stocks/aggs/grouped/{date}/"
-    STOCKS_AGG_PREVIOUS_DAY = "/api/v1/stocks/aggs/{stocksTicker}/prev/"
+    STOCKS_AGGREGATE_CUSTOM_RANGE = "/api/v1/stocks/aggs/{stocksTicker}/range/{multiplier}/{timespan}/{from}/{to}/"
+    STOCKS_AGGREGATE_GROUPED_DAILY = "/api/v1/stocks/aggs/grouped/{date}/"
+    STOCKS_AGGREGATE_PREVIOUS_DAY = "/api/v1/stocks/aggs/{stocksTicker}/prev/"
     STOCKS_INDICATOR_EMA = "/api/v1/stocks/indicators/ema/{stockTicker}/"
     STOCKS_INDICATOR_MACD = "/api/v1/stocks/indicators/macd/{stockTicker}/"
     STOCKS_INDICATOR_RSI = "/api/v1/stocks/indicators/rsi/{stockTicker}/"
@@ -42,12 +43,104 @@ class EndpointFrom(Enum):
     STOCKS_TRADES = "/api/v1/stocks/trades/{stockTicker}/"
 
 
-class EndpointFromFMP(Enum):
-    pass
+    # FMP app endpoints
+    ANALYST_ESTIMATES = "/api/v1/analysts/{symbol}/estimates/"
+    ANALYST_PRICE_TARGETS = "/api/v1/analysts/{symbol}/price-targets/"
+    ANALYST_RECOMMENDATIONS = "/api/v1/analysts/{symbol}/recommendations/"
+    ANALYST_UPGRADES_DOWNGRADES = "/api/v1/analysts/{symbol}/upgrades-downgrades/"
+    COMMODITIES_AGRICULTURAL = "/api/v1/commodities/agricultural/"
+    COMMODITIES_ENERGY = "/api/v1/commodities/energy/"
+    COMMODITIES_HISTORICAL = "/api/v1/commodities/{symbol}/historical/"
+    COMMODITIES_METALS = "/api/v1/commodities/metals/"
+    COMPANY_EXECUTIVES = "/api/v1/reference/ticker/{symbol}/company-executives/"
+    COMPANY_SCREENER_STABLE = "/api/v1/fundamentals/screener/stable/"
+    CRYPTO_HISTORICAL = "/api/v1/crypto/{symbol}/historical/"
+    CRYPTO_LIST = "/api/v1/crypto/list/"
+    CRYPTO_QUOTE = "/api/v1/crypto/{symbol}/"
+    ECONOMY_INFLATION = "/api/v1/economy/inflation/"
+    ECONOMY_GDP = "/api/v1/economy/gdp/"
+    ECONOMY_TREASURY_RATES = "/api/v1/economy/treasury-rates/"
+    ECONOMY_UNEMPLOYMENT = "/api/v1/economy/unemployment/"
+    EARNINGS_CALENDAR = "/api/v1/earnings/{symbol}/calendar/"
+    EARNINGS_HISTORY = "/api/v1/earnings/{symbol}/history/"
+    EARNINGS_SURPRISES = "/api/v1/earnings/{symbol}/surprises/"
+    EARNINGS_TRANSCRIPTS = "/api/v1/earnings/{symbol}/transcripts/"
+    EMPLOYEE_COUNT = "/api/v1/reference/ticker/{symbol}/employee-count/"
+    EMPLOYEE_COUNT_HISTORICAL = "/api/v1/reference/ticker/{symbol}/employee-count/historical/"
+    # ENTERPRISE_VALUES = "/api/v1/fundamentals/{symbol}/enterprise-value/"  # INTERNAL DUPLICATE: Use FUNDAMENTALS_ENTERPRISE_VALUE
+    EVENTS_DIVIDEND = "/api/v1/events/dividend-calendar/"
+    # EVENTS_IPO = "/api/v1/events/ipo-calendar/"  # DUPLICATE: Use STOCKS_REFERENCE_IPOS from Polygon
+    ETF_HOLDINGS = "/api/v1/etf/{symbol}/holdings/"
+    ETF_LIST = "/api/v1/etf/list/"
+    ETF_PERFORMANCE = "/api/v1/etf/{symbol}/performance/"
+    EXEC_COMP = "/api/v1/corporate/executive-compensation/"
+    EXEC_COMP_BENCHMARK = "/api/v1/corporate/executive-compensation/benchmark/"
+    EXCHANGE_VARIANTS = "/api/v1/reference/exchange-variants/"
+    FOREX_PAIR = "/api/v1/forex/{pair}/"
+    FOREX_RATES = "/api/v1/forex/rates/"
+    FUNDAMENTALS_BALANCE_SHEET = "/api/v1/fundamentals/{symbol}/balance-sheet/"
+    FUNDAMENTALS_CASH_FLOW = "/api/v1/fundamentals/{symbol}/cash-flow/"
+    FUNDAMENTALS_DCF = "/api/v1/fundamentals/{symbol}/dcf/"
+    FUNDAMENTALS_ENTERPRISE_VALUE = "/api/v1/fundamentals/{symbol}/enterprise-value/"
+    FUNDAMENTALS_INCOME_STATEMENT = "/api/v1/fundamentals/{symbol}/income-statement/"
+    FUNDAMENTALS_METRICS = "/api/v1/fundamentals/{symbol}/metrics/"
+    FUNDAMENTALS_SCREENER = "/api/v1/fundamentals/screener/"
+    # HISTORICAL = "/api/v1/historical/{symbol}/"  # SIMILAR: Use STOCKS_AGGREGATE_CUSTOM_RANGE from Polygon
+    # HISTORICAL_DIVIDENDS = "/api/v1/historical/{symbol}/dividends/"  # DUPLICATE: Use STOCKS_REFERENCE_DIVIDENDS from Polygon
+    HISTORICAL_INTRADAY = "/api/v1/historical/{symbol}/intraday/"
+    # HISTORICAL_SPLITS = "/api/v1/historical/{symbol}/splits/"  # DUPLICATE: Use STOCKS_REFERENCE_SPLITS from Polygon
+    INSTITUTIONAL_13F = "/api/v1/institutional/{symbol}/13f/"
+    INSTITUTIONAL_HOLDERS = "/api/v1/institutional/{symbol}/holders/"
+    INSTITUTIONAL_INSIDER_TRADING = "/api/v1/institutional/{symbol}/insider-trading/"
+    INTERNATIONAL_EXCHANGES = "/api/v1/international/exchanges/"
+    INTERNATIONAL_STOCKS = "/api/v1/international/{exchange}/stocks/"
+    MERGERS_ACQUISITIONS = "/api/v1/corporate/mergers-acquisitions/"
+    MERGERS_ACQUISITIONS_SEARCH = "/api/v1/corporate/mergers-acquisitions/search/"
+    # NEWS = "/api/v1/news/"  # DUPLICATE: Use STOCKS_REFERENCE_NEWS from Polygon
+    NEWS_PRESS_RELEASES = "/api/v1/news/press-releases/"
+    NEWS_SENTIMENT = "/api/v1/news/sentiment/"
+    NEWS_SYMBOL = "/api/v1/news/{symbol}/"
+    NEWS_SYMBOL_PRESS_RELEASES = "/api/v1/news/{symbol}/press-releases/"
+    QUOTES_BATCH = "/api/v1/quotes/batch/"
+    # QUOTES_LOSERS = "/api/v1/quotes/losers/"  # SIMILAR: Use STOCKS_SNAPSHOT_MOVERS from Polygon
+    # QUOTES_MOST_ACTIVE = "/api/v1/quotes/most-active/"  # SIMILAR: Use STOCKS_SNAPSHOT_MOVERS from Polygon
+    # QUOTES_SINGLE = "/api/v1/quotes/{symbol}/"  # SIMILAR: Use STOCKS_QUOTES from Polygon
+    # REFERENCE_EXCHANGES = "/api/v1/reference/exchanges/"  # DUPLICATE: Use STOCKS_REFERENCE_EXCHANGES from Polygon
+    REFERENCE_MARKET_CAP = "/api/v1/reference/market-cap/{symbol}/"
+    # REFERENCE_TICKER = "/api/v1/reference/ticker/{symbol}/"  # SIMILAR: Use STOCKS_REFERENCE_TICKER from Polygon
+    # REFERENCE_TICKER_EXECUTIVES = "/api/v1/reference/ticker/{symbol}/executives/"  # INTERNAL DUPLICATE: Use COMPANY_EXECUTIVES
+    REFERENCE_TICKER_OUTLOOK = "/api/v1/reference/ticker/{symbol}/outlook/"
+    # REFERENCE_TICKER_PROFILE = "/api/v1/reference/ticker/{symbol}/profile/"  # INTERNAL DUPLICATE: Use REFERENCE_TICKER
+    REFERENCE_TICKERS = "/api/v1/reference/tickers/"
+    SEARCH_CIK = "/api/v1/reference/search/cik/"
+    SEARCH_CUSIP = "/api/v1/reference/search/cusip/"
+    SEARCH_ISIN = "/api/v1/reference/search/isin/"
+    SEC_10K = "/api/v1/sec/{symbol}/10k/"
+    SEC_10Q = "/api/v1/sec/{symbol}/10q/"
+    SEC_8K = "/api/v1/sec/{symbol}/8k/"
+    SEC_FILINGS = "/api/v1/sec/{symbol}/filings/"
+    SEC_RSS = "/api/v1/sec/rss-feed/"
+    SHARES_FLOAT = "/api/v1/reference/ticker/{symbol}/shares-float/"
+    SHARES_FLOAT_ALL = "/api/v1/reference/shares-float/all/"
+    SYMBOL_CHANGE = "/api/v1/reference/symbol-change/"
 
 
 class EndpointToFMP(Enum):
-    pass
+    COMPANY_EXECUTIVES = "/v3/company-executive/{symbol}"
+    COMPANY_SCREENER_STABLE = "/stable/company-screener"
+    EMPLOYEE_COUNT = "/v4/employee_count"
+    EMPLOYEE_COUNT_HISTORICAL = "/v4/employee_count_historical"
+    EXEC_COMP = "/v4/executive-compensation"
+    EXEC_COMP_BENCHMARK = "/v4/executive-compensation-benchmark"
+    EXCHANGE_VARIANTS = "/stable/search-exchange-variants"
+    MERGERS_ACQUISITIONS = "/v4/mergers-acquisitions"
+    MERGERS_ACQUISITIONS_SEARCH = "/v4/mergers-acquisitions-search"
+    SEARCH_CIK = "/stable/search-cik"
+    SEARCH_CUSIP = "/stable/search-cusip"
+    SEARCH_ISIN = "/stable/search-isin"
+    SHARES_FLOAT = "/v4/shares_float"
+    SHARES_FLOAT_ALL = "/v4/shares_float_all"
+    SYMBOL_CHANGE = "/stable/symbol-change"
 
 
 class EndpointToPolygon(Enum):
@@ -116,6 +209,32 @@ class EconomicParams(Enum):
 
 # Polygon endpoint-specific allowed query parameter groups
 class PolygonParams:
+    """
+    Polygon endpoint parameter groups.
+
+    Common: Pagination and sorting controls.
+    AggregateCustomRange: Toggle adjusted values.
+    AggregateGroupedDaily: Adjusted toggle and include OTC market.
+    OpenClose: Adjusted values toggle for open/close endpoint.
+    SnapshotMarket: Market snapshot filters such as OTC and tickers list.
+    SnapshotUnified: Multi-asset snapshot filters.
+    SnapshotMovers: Movers list modifiers.
+    Trades: Trade stream filters.
+    Quotes: Quote stream filters.
+    IndicatorCommon: Shared indicator options like window and series type.
+    IndicatorMACD: MACD-specific window sizes and options.
+    ReferenceExchanges: Filter stock exchanges by asset class and locale.
+    ReferenceConditions: Filter condition metadata by type and SIP.
+    ReferenceIPOs: IPO filters like ISIN and listing date.
+    ReferenceSplits: Split filters by execution date and ticker.
+    ReferenceDividends: Dividend filters (dates, amount, frequency, ticker).
+    ReferenceTickerEvents: Corporate event types filter.
+    ReferenceFinancials: Filters for standardized financials.
+    StocksShortInterest: Filters for short interest metrics.
+    StocksShortVolume: Filters for FINRA short volume.
+    ReferenceNews: Filters for news publishing time and ticker.
+    ReferenceTickers/ReferenceTicker/ReferenceTickerTypes: Ticker catalog filters.
+    """
     # Shared/common params across many Polygon endpoints
     class Common(Enum):
         limit = "limit"
@@ -139,10 +258,10 @@ class PolygonParams:
         asset_class = "asset_class"
         locale = "locale"
 
-    class AggCustomRange(Enum):
+    class AggregateCustomRange(Enum):
         adjusted = "adjusted"
 
-    class AggGroupedDaily(Enum):
+    class AggregateGroupedDaily(Enum):
         adjusted = "adjusted"
         include_otc = "include_otc"
 
@@ -241,6 +360,92 @@ class PolygonParams:
         ticker = "ticker"
 
 
+class FMPParams:
+    """
+    Financial Modeling Prep endpoint parameter groups.
+
+    AnalystPriceTargets: Paging for analyst price target feed.
+    AnalystUpgrades: Date range and paging for upgrades/downgrades feed.
+    CompanyScreenerStable: Filters to discover companies by fundamentals and trading flags.
+    EarningsCalendar: Date range to filter earnings calendar items.
+    HistoricalIntraday: Date range for intraday bars.
+    HistoricalRange: Controls for historical EOD series window and format.
+    ExecutiveCompensation/Benchmark: Company symbol and year selectors.
+    ExchangeVariants: Base symbol to find variants across exchanges.
+    MergersAcquisitions/Search: Paging and query for M&A datasets.
+    SearchCIK/CUSIP/ISIN: Identifier-based searches for companies/securities.
+    """
+    class AnalystPriceTargets(Enum):
+        page = "page"
+
+    class AnalystUpgrades(Enum):
+        from_ = "from"
+        page = "page"
+        to = "to"
+
+    class CompanyScreenerStable(Enum):
+        betaLowerThan = "betaLowerThan"
+        betaMoreThan = "betaMoreThan"
+        country = "country"
+        dividendLowerThan = "dividendLowerThan"
+        dividendMoreThan = "dividendMoreThan"
+        exchange = "exchange"
+        includeAllShareClasses = "includeAllShareClasses"
+        industry = "industry"
+        isActivelyTrading = "isActivelyTrading"
+        isEtf = "isEtf"
+        isFund = "isFund"
+        limit = "limit"
+        marketCapLowerThan = "marketCapLowerThan"
+        marketCapMoreThan = "marketCapMoreThan"
+        priceLowerThan = "priceLowerThan"
+        priceMoreThan = "priceMoreThan"
+        sector = "sector"
+        volumeLowerThan = "volumeLowerThan"
+        volumeMoreThan = "volumeMoreThan"
+
+    class EarningsCalendar(Enum):
+        from_ = "from"
+        to = "to"
+
+    class HistoricalIntraday(Enum):
+        from_ = "from"
+        to = "to"
+
+    class HistoricalRange(Enum):
+        from_ = "from"
+        serietype = "serietype"
+        timeseries = "timeseries"
+        to = "to"
+
+    class ExecutiveCompensation(Enum):
+        symbol = "symbol"
+        year = "year"
+
+    class ExecutiveCompensationBenchmark(Enum):
+        symbol = "symbol"
+        year = "year"
+
+    class ExchangeVariants(Enum):
+        symbol = "symbol"
+
+    class MergersAcquisitions(Enum):
+        page = "page"
+
+    class MergersAcquisitionsSearch(Enum):
+        page = "page"
+        query = "query"
+
+    class SearchCIK(Enum):
+        cik = "cik"
+
+    class SearchCUSIP(Enum):
+        cusip = "cusip"
+
+    class SearchISIN(Enum):
+        isin = "isin"
+
 class EndpointTo:
+    FMP = EndpointToFMP
     Polygon = EndpointToPolygon
 

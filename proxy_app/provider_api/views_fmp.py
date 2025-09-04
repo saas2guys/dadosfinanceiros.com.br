@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .base import FMPBaseView
-from .enums import CommonParams, EconomicParams, EndpointFromFMP as EndpointFrom, EndpointTo, NewsParams
+from .enums import CommonParams, EconomicParams, EndpointFrom, EndpointTo, FMPParams, NewsParams
 from rest_framework import serializers
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -22,8 +22,14 @@ class AnalystEstimatesView(FMPBaseView):
 
     Parameters:
         symbol (str): Ticker symbol.
+    
+    Examples:
+        /api/v1/historical/AAPL/?from=2023-01-01
+        /api/v1/historical/AAPL/?to=2023-12-31
+        /api/v1/historical/AAPL/?timeseries=365
+        /api/v1/historical/AAPL/?serietype=line
     """
-    endpoint_from = EndpointFrom.ANALYST_EST
+    endpoint_from = EndpointFrom.ANALYST_ESTIMATES
     endpoint_to = EndpointTo.FMP.ANALYST_EST
 
 
@@ -39,10 +45,17 @@ class AnalystPriceTargetsView(FMPBaseView):
 
     Parameters:
         symbol (str): Ticker symbol. Forwards other query params.
+    
+    Examples:
+        /api/v1/earnings/AAPL/calendar/?from=2024-01-01
+        /api/v1/earnings/AAPL/calendar/?to=2024-03-31
+
+    Examples:
+        /api/v1/analysts/AAPL/price-targets/?page=1
     """
     endpoint_from = EndpointFrom.ANALYST_PRICE_TARGETS
     endpoint_to = EndpointTo.FMP.ANALYST_PRICE_TARGETS
-    allowed_params = CommonParams
+    allowed_params = FMPParams.AnalystPriceTargets
 
 
 class AnalystRecommendationsView(FMPBaseView):
@@ -58,7 +71,7 @@ class AnalystRecommendationsView(FMPBaseView):
     Parameters:
         symbol (str): Ticker symbol.
     """
-    endpoint_from = EndpointFrom.ANALYST_RECO
+    endpoint_from = EndpointFrom.ANALYST_RECOMMENDATIONS
     endpoint_to = EndpointTo.FMP.ANALYST_RECO
 
 
@@ -74,10 +87,15 @@ class AnalystUpgradesDowngradesView(FMPBaseView):
 
     Parameters:
         symbol (str): Ticker symbol. Forwards other query params.
+
+    Examples:
+        /api/v1/analysts/AAPL/upgrades-downgrades/?from=2024-01-01
+        /api/v1/analysts/AAPL/upgrades-downgrades/?to=2024-01-31
+        /api/v1/analysts/AAPL/upgrades-downgrades/?page=2
     """
-    endpoint_from = EndpointFrom.ANALYST_UPGRADES
+    endpoint_from = EndpointFrom.ANALYST_UPGRADES_DOWNGRADES
     endpoint_to = EndpointTo.FMP.ANALYST_UPGRADES
-    allowed_params = CommonParams
+    allowed_params = FMPParams.AnalystUpgrades
 
 
 class BalanceSheetView(FMPBaseView):
@@ -282,7 +300,7 @@ class EarningsCalendarView(FMPBaseView):
     """
     endpoint_from = EndpointFrom.EARNINGS_CAL
     endpoint_to = EndpointTo.FMP.EARNINGS_CAL
-    allowed_params = CommonParams
+    allowed_params = FMPParams.EarningsCalendar
 
 
 class EarningsHistoryView(FMPBaseView):
@@ -336,21 +354,22 @@ class EarningsTranscriptsView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.EARNINGS_TRANSCRIPTS
 
 
-class EnterpriseValueView(FMPBaseView):
-    """
-    Return enterprise value history for a company.
-
-    App path:
-        /api/v1/fundamentals/{symbol}/enterprise-value/
-
-    Provider path:
-        /v3/enterprise-values/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.FUND_EV
-    endpoint_to = EndpointTo.FMP.FUND_EV
+# class EnterpriseValueView(FMPBaseView):
+#     """
+#     Return enterprise value history for a company.
+# 
+#     App path:
+#         /api/v1/fundamentals/{symbol}/enterprise-value/
+# 
+#     Provider path:
+#         /v3/enterprise-values/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol.
+#     """
+#     # COMMENTED: INTERNAL DUPLICATE - Use FUNDAMENTALS_ENTERPRISE_VALUE
+#     # endpoint_from = EndpointFrom.FUND_EV
+#     # endpoint_to = EndpointTo.FMP.FUND_EV
 
 
 class ETFHoldingsView(FMPBaseView):
@@ -455,21 +474,22 @@ class GDPView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.ECO_GDP
 
 
-class HistoricalDividendsView(FMPBaseView):
-    """
-    Return historical dividend events for a ticker.
-
-    App path:
-        /api/v1/historical/{symbol}/dividends/
-
-    Provider path:
-        /v3/historical-price-full/stock_dividend/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.HISTORICAL_DIVIDENDS
-    endpoint_to = EndpointTo.FMP.HISTORICAL_DIVIDENDS
+# class HistoricalDividendsView(FMPBaseView):
+#     """
+#     Return historical dividend events for a ticker.
+# 
+#     App path:
+#         /api/v1/historical/{symbol}/dividends/
+# 
+#     Provider path:
+#         /v3/historical-price-full/stock_dividend/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol.
+#     """
+#     # COMMENTED: DUPLICATE - Use STOCKS_REFERENCE_DIVIDENDS from Polygon
+#     # endpoint_from = EndpointFrom.HISTORICAL_DIVIDENDS
+#     # endpoint_to = EndpointTo.FMP.HISTORICAL_DIVIDENDS
 
 
 class HistoricalIntradayView(FMPBaseView):
@@ -485,43 +505,51 @@ class HistoricalIntradayView(FMPBaseView):
     Parameters:
         symbol (str): Ticker symbol.
         interval (str): Bar interval, e.g., "1min", "5min".
+    
+    Examples:
+        /api/v1/historical/AAPL/intraday/?from=2024-01-01
+        /api/v1/historical/AAPL/intraday/?to=2024-01-02
     """
     endpoint_from = EndpointFrom.HISTORICAL_INTRADAY
     endpoint_to = EndpointTo.FMP.HISTORICAL_INTRADAY
+    allowed_params = FMPParams.HistoricalIntraday
 
 
-class HistoricalSplitsView(FMPBaseView):
-    """
-    Return historical split events for a ticker.
+# class HistoricalSplitsView(FMPBaseView):
+#     """
+#     Return historical split events for a ticker.
+# 
+#     App path:
+#         /api/v1/historical/{symbol}/splits/
+# 
+#     Provider path:
+#         /v3/historical-price-full/stock_split/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol.
+#     """
+#     # COMMENTED: DUPLICATE - Use STOCKS_REFERENCE_SPLITS from Polygon
+#     # endpoint_from = EndpointFrom.HISTORICAL_SPLITS
+#     # endpoint_to = EndpointTo.FMP.HISTORICAL_SPLITS
 
-    App path:
-        /api/v1/historical/{symbol}/splits/
 
-    Provider path:
-        /v3/historical-price-full/stock_split/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.HISTORICAL_SPLITS
-    endpoint_to = EndpointTo.FMP.HISTORICAL_SPLITS
-
-
-class HistoricalView(FMPBaseView):
-    """
-    Fetch end-of-day historical price series for a ticker.
-
-    App path:
-        /api/v1/historical/{symbol}/
-
-    Provider path:
-        /v3/historical-price-full/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.HISTORICAL
-    endpoint_to = EndpointTo.FMP.HISTORICAL
+# class HistoricalView(FMPBaseView):
+#     """
+#     Fetch end-of-day historical price series for a ticker.
+# 
+#     App path:
+#         /api/v1/historical/{symbol}/
+# 
+#     Provider path:
+#         /v3/historical-price-full/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol.
+#     """
+#     # COMMENTED: SIMILAR - Use STOCKS_AGGREGATE_CUSTOM_RANGE from Polygon
+#     # endpoint_from = EndpointFrom.HISTORICAL
+#     # endpoint_to = EndpointTo.FMP.HISTORICAL
+#     # allowed_params = FMPParams.HistoricalRange
 
 
 class IncomeStatementView(FMPBaseView):
@@ -627,38 +655,40 @@ class InternationalStocksView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.INT_STOCKS
 
 
-class IPOCalendarView(FMPBaseView):
-    """
-    List upcoming initial public offerings.
+# class IPOCalendarView(FMPBaseView):
+#     """
+#     List upcoming initial public offerings.
+# 
+#     App path:
+#         /api/v1/events/ipo-calendar/
+# 
+#     Provider path:
+#         /v3/ipo_calendar
+# 
+#     Parameters:
+#         Forwards any query parameters to the provider unmodified.
+#     """
+#     # COMMENTED: DUPLICATE - Use STOCKS_REFERENCE_IPOS from Polygon
+#     # endpoint_from = EndpointFrom.EVENTS_IPO
+#     # endpoint_to = EndpointTo.FMP.EVENTS_IPO
 
-    App path:
-        /api/v1/events/ipo-calendar/
 
-    Provider path:
-        /v3/ipo_calendar
-
-    Parameters:
-        Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.EVENTS_IPO
-    endpoint_to = EndpointTo.FMP.EVENTS_IPO
-
-
-class LosersView(FMPBaseView):
-    """
-    List top market losers for the current session.
-
-    App path:
-        /api/v1/quotes/losers/
-
-    Provider path:
-        /v3/losers
-
-    Parameters:
-        Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.QUOTES_LOSERS
-    endpoint_to = EndpointTo.FMP.QUOTES_LOSERS
+# class LosersView(FMPBaseView):
+#     """
+#     List top market losers for the current session.
+# 
+#     App path:
+#         /api/v1/quotes/losers/
+# 
+#     Provider path:
+#         /v3/losers
+# 
+#     Parameters:
+#         Forwards any query parameters to the provider unmodified.
+#     """
+#     # COMMENTED: SIMILAR - Use STOCKS_SNAPSHOT_MOVERS from Polygon
+#     # endpoint_from = EndpointFrom.QUOTES_LOSERS
+#     # endpoint_to = EndpointTo.FMP.QUOTES_LOSERS
 
 
 class MetricsView(FMPBaseView):
@@ -678,21 +708,22 @@ class MetricsView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.FUND_METRICS
 
 
-class MostActiveView(FMPBaseView):
-    """
-    List most actively traded tickers by volume.
-
-    App path:
-        /api/v1/quotes/most-active/
-
-    Provider path:
-        /v3/actives
-
-    Parameters:
-        Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.QUOTES_MOST_ACTIVE
-    endpoint_to = EndpointTo.FMP.QUOTES_MOST_ACTIVE
+# class MostActiveView(FMPBaseView):
+#     """
+#     List most actively traded tickers by volume.
+# 
+#     App path:
+#         /api/v1/quotes/most-active/
+# 
+#     Provider path:
+#         /v3/actives
+# 
+#     Parameters:
+#         Forwards any query parameters to the provider unmodified.
+#     """
+#     # COMMENTED: SIMILAR - Use STOCKS_SNAPSHOT_MOVERS from Polygon
+#     # endpoint_from = EndpointFrom.QUOTES_MOST_ACTIVE
+#     # endpoint_to = EndpointTo.FMP.QUOTES_MOST_ACTIVE
 
 
 class NewsSentimentView(FMPBaseView):
@@ -729,21 +760,22 @@ class NewsSymbolView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.NEWS_SYMBOL
 
 
-class NewsView(FMPBaseView):
-    """
-    Return latest stock market news items.
-
-    App path:
-        /api/v1/news/
-
-    Provider path:
-        /v3/stock_news
-
-    Parameters:
-        Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.NEWS
-    endpoint_to = EndpointTo.FMP.NEWS
+# class NewsView(FMPBaseView):
+#     """
+#     Return latest stock market news items.
+# 
+#     App path:
+#         /api/v1/news/
+# 
+#     Provider path:
+#         /v3/stock_news
+# 
+#     Parameters:
+#         Forwards any query parameters to the provider unmodified.
+#     """
+#     # COMMENTED: DUPLICATE - Use STOCKS_REFERENCE_NEWS from Polygon
+#     # endpoint_from = EndpointFrom.NEWS
+#     # endpoint_to = EndpointTo.FMP.NEWS
 
 
 class PressReleasesSymbolView(FMPBaseView):
@@ -797,38 +829,40 @@ class QuoteBatchView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.QUOTES_BATCH
 
 
-class QuoteView(FMPBaseView):
-    """
-    Return the latest real-time quote for a ticker.
+# class QuoteView(FMPBaseView):
+#     """
+#     Return the latest real-time quote for a ticker.
+# 
+#     App path:
+#         /api/v1/quotes/{symbol}/
+# 
+#     Provider path:
+#         /v3/quote/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol.
+#     """
+#     # COMMENTED: SIMILAR - Use STOCKS_QUOTES from Polygon
+#     # endpoint_from = EndpointFrom.QUOTES_SINGLE
+#     # endpoint_to = EndpointTo.FMP.QUOTES_SINGLE
 
-    App path:
-        /api/v1/quotes/{symbol}/
 
-    Provider path:
-        /v3/quote/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.QUOTES_SINGLE
-    endpoint_to = EndpointTo.FMP.QUOTES_SINGLE
-
-
-class ReferenceExchangesView(FMPBaseView):
-    """
-    List supported stock exchanges.
-
-    App path:
-        /api/v1/reference/exchanges/
-
-    Provider path:
-        /v3/exchanges-list
-
-    Parameters:
-        Forwards any query parameters to the provider unmodified.
-    """
-    endpoint_from = EndpointFrom.REFERENCE_EXCHANGES
-    endpoint_to = EndpointTo.FMP.REFERENCE_EXCHANGES
+# class ReferenceExchangesView(FMPBaseView):
+#     """
+#     List supported stock exchanges.
+# 
+#     App path:
+#         /api/v1/reference/exchanges/
+# 
+#     Provider path:
+#         /v3/exchanges-list
+# 
+#     Parameters:
+#         Forwards any query parameters to the provider unmodified.
+#     """
+#     # COMMENTED: DUPLICATE - Use STOCKS_REFERENCE_EXCHANGES from Polygon
+#     # endpoint_from = EndpointFrom.REFERENCE_EXCHANGES
+#     # endpoint_to = EndpointTo.FMP.REFERENCE_EXCHANGES
 
 
 class ReferenceMarketCapView(FMPBaseView):
@@ -848,21 +882,22 @@ class ReferenceMarketCapView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.REFERENCE_MARKET_CAP
 
 
-class ReferenceTickerExecutivesView(FMPBaseView):
-    """
-    List key executives for a company by symbol.
-
-    App path:
-        /api/v1/reference/ticker/{symbol}/executives/
-
-    Provider path:
-        /v3/key-executives/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.REFERENCE_TICKER_EXECUTIVES
-    endpoint_to = EndpointTo.FMP.REFERENCE_TICKER_EXECUTIVES
+# class ReferenceTickerExecutivesView(FMPBaseView):
+#     """
+#     List key executives for a company by symbol.
+# 
+#     App path:
+#         /api/v1/reference/ticker/{symbol}/executives/
+# 
+#     Provider path:
+#         /v3/key-executives/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol.
+#     """
+#     # COMMENTED: INTERNAL DUPLICATE - Use COMPANY_EXECUTIVES
+#     # endpoint_from = EndpointFrom.REFERENCE_TICKER_EXECUTIVES
+#     # endpoint_to = EndpointTo.FMP.REFERENCE_TICKER_EXECUTIVES
 
 
 class ReferenceTickerOutlookView(FMPBaseView):
@@ -882,38 +917,40 @@ class ReferenceTickerOutlookView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.REFERENCE_TICKER_OUTLOOK
 
 
-class ReferenceTickerProfileView(FMPBaseView):
-    """
-    Retrieve detailed company profile information by symbol.
+# class ReferenceTickerProfileView(FMPBaseView):
+#     """
+#     Retrieve detailed company profile information by symbol.
+# 
+#     App path:
+#         /api/v1/reference/ticker/{symbol}/profile/
+# 
+#     Provider path:
+#         /v3/profile/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol.
+#     """
+#     # COMMENTED: INTERNAL DUPLICATE - Use REFERENCE_TICKER
+#     # endpoint_from = EndpointFrom.REFERENCE_TICKER_PROFILE
+#     # endpoint_to = EndpointTo.FMP.REFERENCE_TICKER_PROFILE
 
-    App path:
-        /api/v1/reference/ticker/{symbol}/profile/
 
-    Provider path:
-        /v3/profile/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol.
-    """
-    endpoint_from = EndpointFrom.REFERENCE_TICKER_PROFILE
-    endpoint_to = EndpointTo.FMP.REFERENCE_TICKER_PROFILE
-
-
-class ReferenceTickerView(FMPBaseView):
-    """
-    Retrieve a company's basic reference profile by symbol.
-
-    App path:
-        /api/v1/reference/ticker/{symbol}/
-
-    Provider path:
-        /v3/profile/{symbol}
-
-    Parameters:
-        symbol (str): Ticker symbol, e.g., "AAPL".
-    """
-    endpoint_from = EndpointFrom.REFERENCE_TICKER
-    endpoint_to = EndpointTo.FMP.REFERENCE_TICKER
+# class ReferenceTickerView(FMPBaseView):
+#     """
+#     Retrieve a company's basic reference profile by symbol.
+# 
+#     App path:
+#         /api/v1/reference/ticker/{symbol}/
+# 
+#     Provider path:
+#         /v3/profile/{symbol}
+# 
+#     Parameters:
+#         symbol (str): Ticker symbol, e.g., "AAPL".
+#     """
+#     # COMMENTED: SIMILAR - Use STOCKS_REFERENCE_TICKER from Polygon
+#     # endpoint_from = EndpointFrom.REFERENCE_TICKER
+#     # endpoint_to = EndpointTo.FMP.REFERENCE_TICKER
 
 
 class ReferenceTickersView(FMPBaseView):
@@ -1086,9 +1123,356 @@ class UnemploymentView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.ECO_UNEMP
 
 
+ 
+
+
+class CompanyExecutivesView(FMPBaseView):
+    """
+    List company executives by ticker symbol, directly proxying to FMP and returning the provider JSON.
+
+    App path:
+        /api/v1/reference/ticker/{symbol}/company-executives/
+
+    Provider path:
+        /v3/company-executive/{symbol}
+
+    Path parameters:
+        symbol (str): Target ticker symbol.
+
+    GET Parameters:
+        None. Additional query parameters are forwarded unchanged.
+    """
+    endpoint_from = EndpointFrom.COMPANY_EXECUTIVES
+    endpoint_to = EndpointTo.FMP.COMPANY_EXECUTIVES
+
+
+class CompanyScreenerStableView(FMPBaseView):
+    """
+    Screen companies using the stable screener endpoint, forwarding filters to FMP and returning raw results.
+
+    App path:
+        /api/v1/fundamentals/screener/stable/
+
+    Provider path:
+        /stable/company-screener
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        Any screener filter supported by FMP. All parameters are forwarded unchanged.
+    
+    Examples:
+        /api/v1/fundamentals/screener/stable/?sector=Technology
+        /api/v1/fundamentals/screener/stable/?marketCapMoreThan=1000000000
+        /api/v1/fundamentals/screener/stable/?isActivelyTrading=true
+    """
+    endpoint_from = EndpointFrom.COMPANY_SCREENER_STABLE
+    endpoint_to = EndpointTo.FMP.COMPANY_SCREENER_STABLE
+    allowed_params = FMPParams.CompanyScreenerStable
+
+
+class EmployeeCountHistoricalView(FMPBaseView):
+    """
+    Return historical employee count entries for a company using FMP v4 endpoints.
+
+    App path:
+        /api/v1/reference/ticker/{symbol}/employee-count/historical/
+
+    Provider path:
+        /v4/employee_count_historical?symbol={symbol}
+
+    Path parameters:
+        symbol (str): Target ticker symbol.
+
+    GET Parameters:
+        None. Additional query parameters are forwarded unchanged.
+    """
+    endpoint_from = EndpointFrom.EMPLOYEE_COUNT_HISTORICAL
+    endpoint_to = EndpointTo.FMP.EMPLOYEE_COUNT_HISTORICAL
+
+
+class EmployeeCountView(FMPBaseView):
+    """
+    Return the most recent employee count for a company via FMP v4 endpoint.
+
+    App path:
+        /api/v1/reference/ticker/{symbol}/employee-count/
+
+    Provider path:
+        /v4/employee_count?symbol={symbol}
+
+    Path parameters:
+        symbol (str): Target ticker symbol.
+
+    GET Parameters:
+        None. Additional query parameters are forwarded unchanged.
+    """
+    endpoint_from = EndpointFrom.EMPLOYEE_COUNT
+    endpoint_to = EndpointTo.FMP.EMPLOYEE_COUNT
+
+
+class ExecutiveCompensationBenchmarkView(FMPBaseView):
+    """
+    Benchmark executive compensation for similar companies using FMP's benchmarking endpoint.
+
+    App path:
+        /api/v1/corporate/executive-compensation/benchmark/
+
+    Provider path:
+        /v4/executive-compensation-benchmark
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        symbol (str): Target ticker symbol to benchmark against peers.
+        year (int): Four-digit year to filter compensation records.
+    
+    Examples:
+        /api/v1/corporate/executive-compensation/benchmark/?symbol=AAPL
+        /api/v1/corporate/executive-compensation/benchmark/?year=2023
+    """
+    endpoint_from = EndpointFrom.EXEC_COMP_BENCHMARK
+    endpoint_to = EndpointTo.FMP.EXEC_COMP_BENCHMARK
+    allowed_params = FMPParams.ExecutiveCompensationBenchmark
+
+
+class ExecutiveCompensationView(FMPBaseView):
+    """
+    Return executive compensation records for a company and year directly from FMP.
+
+    App path:
+        /api/v1/corporate/executive-compensation/
+
+    Provider path:
+        /v4/executive-compensation
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        symbol (str): Target ticker symbol.
+        year (int): Four-digit year to filter results.
+    
+    Examples:
+        /api/v1/corporate/executive-compensation/?symbol=AAPL
+        /api/v1/corporate/executive-compensation/?year=2023
+    """
+    endpoint_from = EndpointFrom.EXEC_COMP
+    endpoint_to = EndpointTo.FMP.EXEC_COMP
+    allowed_params = FMPParams.ExecutiveCompensation
+
+
+class ExchangeVariantsView(FMPBaseView):
+    """
+    Return exchange variants for a given symbol across exchanges using FMP stable search.
+
+    App path:
+        /api/v1/reference/exchange-variants/
+
+    Provider path:
+        /stable/search-exchange-variants?symbol={symbol}
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        symbol (str): Base ticker symbol to search variants for.
+    
+    Examples:
+        /api/v1/reference/exchange-variants/?symbol=AAPL
+    """
+    endpoint_from = EndpointFrom.EXCHANGE_VARIANTS
+    endpoint_to = EndpointTo.FMP.EXCHANGE_VARIANTS
+    allowed_params = FMPParams.ExchangeVariants
+
+
+class MergersAcquisitionsSearchView(FMPBaseView):
+    """
+    Search mergers and acquisitions by keyword using FMP v4 search endpoint.
+
+    App path:
+        /api/v1/corporate/mergers-acquisitions/search/
+
+    Provider path:
+        /v4/mergers-acquisitions-search?query={query}
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        query (str): Search keyword to match M&A entries.
+        page (int): Optional page number (0-based).
+    
+    Examples:
+        /api/v1/corporate/mergers-acquisitions/search/?query=Apple
+        /api/v1/corporate/mergers-acquisitions/search/?page=2
+    """
+    endpoint_from = EndpointFrom.MERGERS_ACQUISITIONS_SEARCH
+    endpoint_to = EndpointTo.FMP.MERGERS_ACQUISITIONS_SEARCH
+    allowed_params = FMPParams.MergersAcquisitionsSearch
+
+
+class MergersAcquisitionsView(FMPBaseView):
+    """
+    Return the latest mergers and acquisitions feed with optional pagination.
+
+    App path:
+        /api/v1/corporate/mergers-acquisitions/
+
+    Provider path:
+        /v4/mergers-acquisitions?page={page}
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        page (int): Optional page number (default 0).
+    
+    Examples:
+        /api/v1/corporate/mergers-acquisitions/?page=3
+    """
+    endpoint_from = EndpointFrom.MERGERS_ACQUISITIONS
+    endpoint_to = EndpointTo.FMP.MERGERS_ACQUISITIONS
+    allowed_params = FMPParams.MergersAcquisitions
+
+
+class SearchCIKView(FMPBaseView):
+    """
+    Search companies by SEC CIK identifier using FMP stable search endpoint.
+
+    App path:
+        /api/v1/reference/search/cik/
+
+    Provider path:
+        /stable/search-cik?cik={cik}
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        cik (str): SEC Central Index Key.
+    
+    Examples:
+        /api/v1/reference/search/cik/?cik=0000320193
+    """
+    endpoint_from = EndpointFrom.SEARCH_CIK
+    endpoint_to = EndpointTo.FMP.SEARCH_CIK
+    allowed_params = FMPParams.SearchCIK
+
+
+class SearchCUSIPView(FMPBaseView):
+    """
+    Search securities by CUSIP code using FMP stable search endpoint.
+
+    App path:
+        /api/v1/reference/search/cusip/
+
+    Provider path:
+        /stable/search-cusip?cusip={cusip}
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        cusip (str): CUSIP security identifier.
+    
+    Examples:
+        /api/v1/reference/search/cusip/?cusip=037833100
+    """
+    endpoint_from = EndpointFrom.SEARCH_CUSIP
+    endpoint_to = EndpointTo.FMP.SEARCH_CUSIP
+    allowed_params = FMPParams.SearchCUSIP
+
+
+class SearchISINView(FMPBaseView):
+    """
+    Search securities by ISIN using FMP stable search endpoint.
+
+    App path:
+        /api/v1/reference/search/isin/
+
+    Provider path:
+        /stable/search-isin?isin={isin}
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        isin (str): International Securities Identification Number.
+    
+    Examples:
+        /api/v1/reference/search/isin/?isin=US0378331005
+    """
+    endpoint_from = EndpointFrom.SEARCH_ISIN
+    endpoint_to = EndpointTo.FMP.SEARCH_ISIN
+    allowed_params = FMPParams.SearchISIN
+
+
+class SharesFloatAllView(FMPBaseView):
+    """
+    Return shares float data for all tickers available via FMP.
+
+    App path:
+        /api/v1/reference/shares-float/all/
+
+    Provider path:
+        /v4/shares_float_all
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        None. Additional query parameters are forwarded unchanged.
+    """
+    endpoint_from = EndpointFrom.SHARES_FLOAT_ALL
+    endpoint_to = EndpointTo.FMP.SHARES_FLOAT_ALL
+
+
+class SharesFloatView(FMPBaseView):
+    """
+    Return shares float and outstanding shares for a specific ticker.
+
+    App path:
+        /api/v1/reference/ticker/{symbol}/shares-float/
+
+    Provider path:
+        /v4/shares_float?symbol={symbol}
+
+    Path parameters:
+        symbol (str): Target ticker symbol.
+
+    GET Parameters:
+        None. Additional query parameters are forwarded unchanged.
+    """
+    endpoint_from = EndpointFrom.SHARES_FLOAT
+    endpoint_to = EndpointTo.FMP.SHARES_FLOAT
+
+
+class SymbolChangeView(FMPBaseView):
+    """
+    List recent stock symbol changes as provided by FMP stable endpoint.
+
+    App path:
+        /api/v1/reference/symbol-change/
+
+    Provider path:
+        /stable/symbol-change
+
+    Path parameters:
+        None.
+
+    GET Parameters:
+        None. Additional query parameters are forwarded unchanged.
+    """
+    endpoint_from = EndpointFrom.SYMBOL_CHANGE
+    endpoint_to = EndpointTo.FMP.SYMBOL_CHANGE
+
+
 class ExampleFMPGainersView(FMPBaseView):
     """
-    Demonstration endpoint showcasing auth, pagination, and query validation.
+    Demonstration endpoint showcasing auth, pagination, and query validation using FMP gainers list.
 
     App path:
         /api/v1/examples/fmp/gainers/
@@ -1096,7 +1480,10 @@ class ExampleFMPGainersView(FMPBaseView):
     Provider path:
         /v3/gainers
 
-    Parameters:
+    Path parameters:
+        None.
+
+    GET Parameters:
         limit (int): Max items per page.
         page (int): Page number (1-based).
         market (str): Market filter, "stocks" or "etf".
@@ -1109,7 +1496,7 @@ class ExampleFMPGainersView(FMPBaseView):
     pagination_class = PageNumberPagination
     permission_classes = [IsAuthenticated, DailyLimitPermission]
     timeout = 15.0
-    
+
     class QuerySerializer(serializers.Serializer):
         limit = serializers.IntegerField(min_value=1, max_value=1000, required=False, default=50)
         page = serializers.IntegerField(min_value=1, required=False, default=1)
