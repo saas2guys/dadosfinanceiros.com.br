@@ -21,8 +21,8 @@ class ProviderAPIView(GenericAPIView):
 
     active: bool = True
     allowed_params: Enum | None = None
-    endpoint_from: str = ""
-    endpoint_to: str = ""
+    endpoint_from: Enum | None = None
+    endpoint_to: Enum | None = None
     pagination_class = None
     results_key: Optional[str] = "results"
 
@@ -231,7 +231,6 @@ class ProviderAPIView(GenericAPIView):
 
 class FMPBaseView(ProviderAPIView):
     base_url = getattr(settings, "FMP_BASE_URL", "https://financialmodelingprep.com")
-    api_key_param = getattr(settings, "FMP_API_KEY_PARAM", "apikey")
     api_key_value = getattr(settings, "FMP_API_KEY", "")
 
     class FMPSerializer(serializers.Serializer): ...
@@ -250,7 +249,6 @@ class FMPBaseView(ProviderAPIView):
 
 class PolygonBaseView(ProviderAPIView):
     base_url = getattr(settings, "POLYGON_BASE_URL", "https://api.polygon.io")
-    api_key_header = getattr(settings, "POLYGON_API_KEY_HEADER", "Authorization")
     api_key_value = getattr(settings, "POLYGON_API_KEY", "")
     serializer_class = ProviderAPIView.AnyParamsSerializer
 

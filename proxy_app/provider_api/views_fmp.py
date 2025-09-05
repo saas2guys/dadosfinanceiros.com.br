@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .base import FMPBaseView
-from .enums import CommonParams, EconomicParams, EndpointFrom, EndpointTo, FMPParams, NewsParams
+from .enums import EndpointFrom, EndpointTo, FMPParams
 from rest_framework import serializers
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -30,7 +30,8 @@ class AnalystEstimatesView(FMPBaseView):
         /api/v1/historical/AAPL/?serietype=line
     """
     endpoint_from = EndpointFrom.ANALYST_ESTIMATES
-    endpoint_to = EndpointTo.FMP.ANALYST_EST
+    endpoint_to = EndpointTo.FMP.ANALYST_ESTIMATES
+    allowed_params = FMPParams.AnalystEstimates
 
 
 class AnalystPriceTargetsView(FMPBaseView):
@@ -45,7 +46,7 @@ class AnalystPriceTargetsView(FMPBaseView):
 
     Parameters:
         symbol (str): Ticker symbol. Forwards other query params.
-    
+
     Examples:
         /api/v1/earnings/AAPL/calendar/?from=2024-01-01
         /api/v1/earnings/AAPL/calendar/?to=2024-03-31
@@ -72,7 +73,7 @@ class AnalystRecommendationsView(FMPBaseView):
         symbol (str): Ticker symbol.
     """
     endpoint_from = EndpointFrom.ANALYST_RECOMMENDATIONS
-    endpoint_to = EndpointTo.FMP.ANALYST_RECO
+    endpoint_to = EndpointTo.FMP.ANALYST_RECOMMENDATIONS
 
 
 class AnalystUpgradesDowngradesView(FMPBaseView):
@@ -111,8 +112,9 @@ class BalanceSheetView(FMPBaseView):
     Parameters:
         symbol (str): Ticker symbol.
     """
-    endpoint_from = EndpointFrom.FUND_BS
-    endpoint_to = EndpointTo.FMP.FUND_BS
+    endpoint_from = EndpointFrom.FUNDAMENTALS_BALANCE_SHEET
+    endpoint_to = EndpointTo.FMP.FUNDAMENTALS_BALANCE_SHEET
+    allowed_params = FMPParams.BalanceSheet
 
 
 class CashFlowView(FMPBaseView):
@@ -128,8 +130,9 @@ class CashFlowView(FMPBaseView):
     Parameters:
         symbol (str): Ticker symbol.
     """
-    endpoint_from = EndpointFrom.FUND_CF
-    endpoint_to = EndpointTo.FMP.FUND_CF
+    endpoint_from = EndpointFrom.FUNDAMENTALS_CASH_FLOW
+    endpoint_to = EndpointTo.FMP.FUNDAMENTALS_CASH_FLOW
+    allowed_params = FMPParams.CashFlow
 
 
 class CommoditiesAgriculturalView(FMPBaseView):
@@ -145,8 +148,8 @@ class CommoditiesAgriculturalView(FMPBaseView):
     Parameters:
         Forwards any query parameters to the provider unmodified.
     """
-    endpoint_from = EndpointFrom.COM_AGRI
-    endpoint_to = EndpointTo.FMP.COM_QUOTES
+    endpoint_from = EndpointFrom.COMMODITIES_AGRICULTURAL
+    endpoint_to = EndpointTo.FMP.COMMODITIES_LIST
 
 
 class CommoditiesEnergyView(FMPBaseView):
@@ -162,8 +165,8 @@ class CommoditiesEnergyView(FMPBaseView):
     Parameters:
         Forwards any query parameters to the provider unmodified.
     """
-    endpoint_from = EndpointFrom.COM_ENERGY
-    endpoint_to = EndpointTo.FMP.COM_QUOTES
+    endpoint_from = EndpointFrom.COMMODITIES_ENERGY
+    endpoint_to = EndpointTo.FMP.COMMODITIES_LIST
 
 
 class CommoditiesHistoricalView(FMPBaseView):
@@ -179,8 +182,9 @@ class CommoditiesHistoricalView(FMPBaseView):
     Parameters:
         symbol (str): Commodity symbol.
     """
-    endpoint_from = EndpointFrom.COM_HIST
-    endpoint_to = EndpointTo.FMP.COM_HIST
+    endpoint_from = EndpointFrom.COMMODITIES_HISTORICAL
+    endpoint_to = EndpointTo.FMP.HISTORICAL_PRICES
+    allowed_params = FMPParams.HistoricalPrices
 
 
 class CommoditiesMetalsView(FMPBaseView):
@@ -196,8 +200,8 @@ class CommoditiesMetalsView(FMPBaseView):
     Parameters:
         Forwards any query parameters to the provider unmodified.
     """
-    endpoint_from = EndpointFrom.COM_METALS
-    endpoint_to = EndpointTo.FMP.COM_QUOTES
+    endpoint_from = EndpointFrom.COMMODITIES_METALS
+    endpoint_to = EndpointTo.FMP.COMMODITIES_LIST
 
 
 class CryptoHistoricalView(FMPBaseView):
@@ -213,8 +217,9 @@ class CryptoHistoricalView(FMPBaseView):
     Parameters:
         symbol (str): Crypto ticker.
     """
-    endpoint_from = EndpointFrom.CRYPTO_HIST
-    endpoint_to = EndpointTo.FMP.CRYPTO_HIST
+    endpoint_from = EndpointFrom.CRYPTO_HISTORICAL
+    endpoint_to = EndpointTo.FMP.HISTORICAL_PRICES
+    allowed_params = FMPParams.HistoricalPrices
 
 
 class CryptoListView(FMPBaseView):
@@ -249,6 +254,7 @@ class CryptoQuoteView(FMPBaseView):
     """
     endpoint_from = EndpointFrom.CRYPTO_QUOTE
     endpoint_to = EndpointTo.FMP.CRYPTO_QUOTE
+    allowed_params = FMPParams.CryptoQuote
 
 
 class DCFView(FMPBaseView):
@@ -264,8 +270,9 @@ class DCFView(FMPBaseView):
     Parameters:
         symbol (str): Ticker symbol.
     """
-    endpoint_from = EndpointFrom.FUND_DCF
-    endpoint_to = EndpointTo.FMP.FUND_DCF
+    endpoint_from = EndpointFrom.FUNDAMENTALS_DCF
+    endpoint_to = EndpointTo.FMP.FUNDAMENTALS_DCF
+    allowed_params = FMPParams.FundamentalsDCF
 
 
 class DividendCalendarView(FMPBaseView):
@@ -283,6 +290,7 @@ class DividendCalendarView(FMPBaseView):
     """
     endpoint_from = EndpointFrom.EVENTS_DIVIDEND
     endpoint_to = EndpointTo.FMP.EVENTS_DIVIDEND
+    allowed_params = FMPParams.DividendsCalendar
 
 
 class EarningsCalendarView(FMPBaseView):
@@ -298,8 +306,8 @@ class EarningsCalendarView(FMPBaseView):
     Parameters:
         symbol (str): Ticker symbol. Forwards other query params.
     """
-    endpoint_from = EndpointFrom.EARNINGS_CAL
-    endpoint_to = EndpointTo.FMP.EARNINGS_CAL
+    endpoint_from = EndpointFrom.EARNINGS_CALENDAR
+    endpoint_to = EndpointTo.FMP.EARNINGS_CALENDAR
     allowed_params = FMPParams.EarningsCalendar
 
 
@@ -318,6 +326,7 @@ class EarningsHistoryView(FMPBaseView):
     """
     endpoint_from = EndpointFrom.EARNINGS_HISTORY
     endpoint_to = EndpointTo.FMP.EARNINGS_HISTORY
+    allowed_params = FMPParams.EarningsHistory
 
 
 class EarningsSurprisesView(FMPBaseView):
@@ -335,6 +344,7 @@ class EarningsSurprisesView(FMPBaseView):
     """
     endpoint_from = EndpointFrom.EARNINGS_SURPRISES
     endpoint_to = EndpointTo.FMP.EARNINGS_SURPRISES
+    allowed_params = FMPParams.EarningsSurprises
 
 
 class EarningsTranscriptsView(FMPBaseView):
@@ -352,18 +362,19 @@ class EarningsTranscriptsView(FMPBaseView):
     """
     endpoint_from = EndpointFrom.EARNINGS_TRANSCRIPTS
     endpoint_to = EndpointTo.FMP.EARNINGS_TRANSCRIPTS
+    allowed_params = FMPParams.EarningsTranscripts
 
 
 # class EnterpriseValueView(FMPBaseView):
 #     """
 #     Return enterprise value history for a company.
-# 
+#
 #     App path:
 #         /api/v1/fundamentals/{symbol}/enterprise-value/
-# 
+#
 #     Provider path:
 #         /v3/enterprise-values/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol.
 #     """
@@ -477,13 +488,13 @@ class GDPView(FMPBaseView):
 # class HistoricalDividendsView(FMPBaseView):
 #     """
 #     Return historical dividend events for a ticker.
-# 
+#
 #     App path:
 #         /api/v1/historical/{symbol}/dividends/
-# 
+#
 #     Provider path:
 #         /v3/historical-price-full/stock_dividend/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol.
 #     """
@@ -505,7 +516,7 @@ class HistoricalIntradayView(FMPBaseView):
     Parameters:
         symbol (str): Ticker symbol.
         interval (str): Bar interval, e.g., "1min", "5min".
-    
+
     Examples:
         /api/v1/historical/AAPL/intraday/?from=2024-01-01
         /api/v1/historical/AAPL/intraday/?to=2024-01-02
@@ -518,13 +529,13 @@ class HistoricalIntradayView(FMPBaseView):
 # class HistoricalSplitsView(FMPBaseView):
 #     """
 #     Return historical split events for a ticker.
-# 
+#
 #     App path:
 #         /api/v1/historical/{symbol}/splits/
-# 
+#
 #     Provider path:
 #         /v3/historical-price-full/stock_split/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol.
 #     """
@@ -536,13 +547,13 @@ class HistoricalIntradayView(FMPBaseView):
 # class HistoricalView(FMPBaseView):
 #     """
 #     Fetch end-of-day historical price series for a ticker.
-# 
+#
 #     App path:
 #         /api/v1/historical/{symbol}/
-# 
+#
 #     Provider path:
 #         /v3/historical-price-full/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol.
 #     """
@@ -658,13 +669,13 @@ class InternationalStocksView(FMPBaseView):
 # class IPOCalendarView(FMPBaseView):
 #     """
 #     List upcoming initial public offerings.
-# 
+#
 #     App path:
 #         /api/v1/events/ipo-calendar/
-# 
+#
 #     Provider path:
 #         /v3/ipo_calendar
-# 
+#
 #     Parameters:
 #         Forwards any query parameters to the provider unmodified.
 #     """
@@ -676,13 +687,13 @@ class InternationalStocksView(FMPBaseView):
 # class LosersView(FMPBaseView):
 #     """
 #     List top market losers for the current session.
-# 
+#
 #     App path:
 #         /api/v1/quotes/losers/
-# 
+#
 #     Provider path:
 #         /v3/losers
-# 
+#
 #     Parameters:
 #         Forwards any query parameters to the provider unmodified.
 #     """
@@ -711,13 +722,13 @@ class MetricsView(FMPBaseView):
 # class MostActiveView(FMPBaseView):
 #     """
 #     List most actively traded tickers by volume.
-# 
+#
 #     App path:
 #         /api/v1/quotes/most-active/
-# 
+#
 #     Provider path:
 #         /v3/actives
-# 
+#
 #     Parameters:
 #         Forwards any query parameters to the provider unmodified.
 #     """
@@ -763,13 +774,13 @@ class NewsSymbolView(FMPBaseView):
 # class NewsView(FMPBaseView):
 #     """
 #     Return latest stock market news items.
-# 
+#
 #     App path:
 #         /api/v1/news/
-# 
+#
 #     Provider path:
 #         /v3/stock_news
-# 
+#
 #     Parameters:
 #         Forwards any query parameters to the provider unmodified.
 #     """
@@ -832,13 +843,13 @@ class QuoteBatchView(FMPBaseView):
 # class QuoteView(FMPBaseView):
 #     """
 #     Return the latest real-time quote for a ticker.
-# 
+#
 #     App path:
 #         /api/v1/quotes/{symbol}/
-# 
+#
 #     Provider path:
 #         /v3/quote/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol.
 #     """
@@ -850,13 +861,13 @@ class QuoteBatchView(FMPBaseView):
 # class ReferenceExchangesView(FMPBaseView):
 #     """
 #     List supported stock exchanges.
-# 
+#
 #     App path:
 #         /api/v1/reference/exchanges/
-# 
+#
 #     Provider path:
 #         /v3/exchanges-list
-# 
+#
 #     Parameters:
 #         Forwards any query parameters to the provider unmodified.
 #     """
@@ -885,13 +896,13 @@ class ReferenceMarketCapView(FMPBaseView):
 # class ReferenceTickerExecutivesView(FMPBaseView):
 #     """
 #     List key executives for a company by symbol.
-# 
+#
 #     App path:
 #         /api/v1/reference/ticker/{symbol}/executives/
-# 
+#
 #     Provider path:
 #         /v3/key-executives/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol.
 #     """
@@ -920,13 +931,13 @@ class ReferenceTickerOutlookView(FMPBaseView):
 # class ReferenceTickerProfileView(FMPBaseView):
 #     """
 #     Retrieve detailed company profile information by symbol.
-# 
+#
 #     App path:
 #         /api/v1/reference/ticker/{symbol}/profile/
-# 
+#
 #     Provider path:
 #         /v3/profile/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol.
 #     """
@@ -938,13 +949,13 @@ class ReferenceTickerOutlookView(FMPBaseView):
 # class ReferenceTickerView(FMPBaseView):
 #     """
 #     Retrieve a company's basic reference profile by symbol.
-# 
+#
 #     App path:
 #         /api/v1/reference/ticker/{symbol}/
-# 
+#
 #     Provider path:
 #         /v3/profile/{symbol}
-# 
+#
 #     Parameters:
 #         symbol (str): Ticker symbol, e.g., "AAPL".
 #     """
@@ -1123,7 +1134,7 @@ class UnemploymentView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.ECO_UNEMP
 
 
- 
+
 
 
 class CompanyExecutivesView(FMPBaseView):
@@ -1161,7 +1172,7 @@ class CompanyScreenerStableView(FMPBaseView):
 
     GET Parameters:
         Any screener filter supported by FMP. All parameters are forwarded unchanged.
-    
+
     Examples:
         /api/v1/fundamentals/screener/stable/?sector=Technology
         /api/v1/fundamentals/screener/stable/?marketCapMoreThan=1000000000
@@ -1228,7 +1239,7 @@ class ExecutiveCompensationBenchmarkView(FMPBaseView):
     GET Parameters:
         symbol (str): Target ticker symbol to benchmark against peers.
         year (int): Four-digit year to filter compensation records.
-    
+
     Examples:
         /api/v1/corporate/executive-compensation/benchmark/?symbol=AAPL
         /api/v1/corporate/executive-compensation/benchmark/?year=2023
@@ -1254,7 +1265,7 @@ class ExecutiveCompensationView(FMPBaseView):
     GET Parameters:
         symbol (str): Target ticker symbol.
         year (int): Four-digit year to filter results.
-    
+
     Examples:
         /api/v1/corporate/executive-compensation/?symbol=AAPL
         /api/v1/corporate/executive-compensation/?year=2023
@@ -1279,7 +1290,7 @@ class ExchangeVariantsView(FMPBaseView):
 
     GET Parameters:
         symbol (str): Base ticker symbol to search variants for.
-    
+
     Examples:
         /api/v1/reference/exchange-variants/?symbol=AAPL
     """
@@ -1304,7 +1315,7 @@ class MergersAcquisitionsSearchView(FMPBaseView):
     GET Parameters:
         query (str): Search keyword to match M&A entries.
         page (int): Optional page number (0-based).
-    
+
     Examples:
         /api/v1/corporate/mergers-acquisitions/search/?query=Apple
         /api/v1/corporate/mergers-acquisitions/search/?page=2
@@ -1329,7 +1340,7 @@ class MergersAcquisitionsView(FMPBaseView):
 
     GET Parameters:
         page (int): Optional page number (default 0).
-    
+
     Examples:
         /api/v1/corporate/mergers-acquisitions/?page=3
     """
@@ -1353,7 +1364,7 @@ class SearchCIKView(FMPBaseView):
 
     GET Parameters:
         cik (str): SEC Central Index Key.
-    
+
     Examples:
         /api/v1/reference/search/cik/?cik=0000320193
     """
@@ -1377,7 +1388,7 @@ class SearchCUSIPView(FMPBaseView):
 
     GET Parameters:
         cusip (str): CUSIP security identifier.
-    
+
     Examples:
         /api/v1/reference/search/cusip/?cusip=037833100
     """
@@ -1401,7 +1412,7 @@ class SearchISINView(FMPBaseView):
 
     GET Parameters:
         isin (str): International Securities Identification Number.
-    
+
     Examples:
         /api/v1/reference/search/isin/?isin=US0378331005
     """

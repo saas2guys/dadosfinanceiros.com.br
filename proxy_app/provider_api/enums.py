@@ -141,6 +141,22 @@ class EndpointToFMP(Enum):
     SHARES_FLOAT = "/v4/shares_float"
     SHARES_FLOAT_ALL = "/v4/shares_float_all"
     SYMBOL_CHANGE = "/stable/symbol-change"
+    ANALYST_ESTIMATES = "/stable/analyst-estimates"
+    ANALYST_PRICE_TARGETS = "/stable/price-target-summary"
+    ANALYST_RECOMMENDATIONS = "/stable/rating-bulk"
+    ANALYST_UPGRADES = "/stable/grades"
+    FUNDAMENTALS_BALANCE_SHEET = "/stable/balance-sheet-statement"
+    FUNDAMENTALS_CASH_FLOW = "/stable/cash-flow-statement"
+    COMMODITIES_LIST = "/stable/commodities-list"
+    HISTORICAL_PRICES = "/stable/historical-price-eod/light"
+    CRYPTO_LIST = "/stable/cryptocurrency-list"
+    CRYPTO_QUOTE = "/stable/quote"
+    FUNDAMENTALS_DCF = "/stable/discounted-cash-flow"
+    EVENTS_DIVIDEND = "/stable/dividends-calendar"
+    EARNINGS_CALENDAR = "/stable/earnings-calendar"
+    EARNINGS_HISTORY = "/stable/earnings"
+    EARNINGS_SURPRISES = "/stable/earnings-surprises-bulk"
+    EARNINGS_TRANSCRIPTS = "/stable/earning-call-transcript-dates"
 
 
 class EndpointToPolygon(Enum):
@@ -375,13 +391,54 @@ class FMPParams:
     MergersAcquisitions/Search: Paging and query for M&A datasets.
     SearchCIK/CUSIP/ISIN: Identifier-based searches for companies/securities.
     """
-    class AnalystPriceTargets(Enum):
+
+    class AnalystEstimates(Enum):
+        symbol = "symbol"
+        period = "period"
         page = "page"
+        limit = "limit"
+
+
+    class AnalystPriceTargets(Enum):
+        symbol = "symbol"
 
     class AnalystUpgrades(Enum):
-        from_ = "from"
-        page = "page"
+        symbol = "symbol"
+
+    class BalanceSheet(Enum):
+        symbol = "symbol"
+        limit = "limit"
+        period = "period"
+
+    class CashFlow(Enum):
+        symbol = "symbol"
+        limit = "limit"
+        period = "period"
+
+    class HistoricalPrices(Enum):
+        symbol = "symbol"
+        from_= "from"
         to = "to"
+
+    class CryptoQuote(Enum):
+        symbol = "symbol"
+
+    class FundamentalsDCF(Enum):
+        symbol = "symbol"
+
+    class DividendsCalendar(Enum):
+        from_ = "from"
+        to = "to"
+
+    class EarningsHistory(Enum):
+        symbol = "symbol"
+        limit = "limit"
+
+    class EarningsSurprises(Enum):
+        year = "year"
+
+    class EarningsTranscripts(Enum):
+        symbol = "symbol"
 
     class CompanyScreenerStable(Enum):
         betaLowerThan = "betaLowerThan"
