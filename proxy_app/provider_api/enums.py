@@ -126,20 +126,19 @@ class EndpointFrom(Enum):
 
 
 class EndpointToFMP(Enum):
-    COMPANY_EXECUTIVES = "/v3/company-executive/{symbol}"
-    COMPANY_SCREENER_STABLE = "/stable/company-screener"
-    EMPLOYEE_COUNT = "/v4/employee_count"
-    EMPLOYEE_COUNT_HISTORICAL = "/v4/employee_count_historical"
-    EXEC_COMP = "/v4/executive-compensation"
-    EXEC_COMP_BENCHMARK = "/v4/executive-compensation-benchmark"
+    COMPANY_EXECUTIVES = "/stable/key-executives"
+    EMPLOYEE_COUNT = "/stable/employee_count"
+    EMPLOYEE_COUNT_HISTORICAL = "/stable/historical-employee-count"
+    EXEC_COMP = "/stable/governance-executive-compensation"
+    EXEC_COMP_BENCHMARK = "/stable/executive-compensation-benchmark"
     EXCHANGE_VARIANTS = "/stable/search-exchange-variants"
-    MERGERS_ACQUISITIONS = "/v4/mergers-acquisitions"
-    MERGERS_ACQUISITIONS_SEARCH = "/v4/mergers-acquisitions-search"
+    MERGERS_ACQUISITIONS = "/stable/mergers-acquisitions-latest"
+    MERGERS_ACQUISITIONS_SEARCH = "/stable/mergers-acquisitions-search"
     SEARCH_CIK = "/stable/search-cik"
     SEARCH_CUSIP = "/stable/search-cusip"
     SEARCH_ISIN = "/stable/search-isin"
-    SHARES_FLOAT = "/v4/shares_float"
-    SHARES_FLOAT_ALL = "/v4/shares_float_all"
+    SHARES_FLOAT = "/stable/shares_float"
+    SHARES_FLOAT_ALL = "/stable/shares_float_all"
     SYMBOL_CHANGE = "/stable/symbol-change"
     ANALYST_ESTIMATES = "/stable/analyst-estimates"
     ANALYST_PRICE_TARGETS = "/stable/price-target-summary"
@@ -157,6 +156,37 @@ class EndpointToFMP(Enum):
     EARNINGS_HISTORY = "/stable/earnings"
     EARNINGS_SURPRISES = "/stable/earnings-surprises-bulk"
     EARNINGS_TRANSCRIPTS = "/stable/earning-call-transcript-dates"
+    ETF_HOLDINGS = "stable/etf/holdings"
+    ETF_PERFORMANCE = "/stable/etf/info"
+    FOREX_PAIR = "/stable/quote"
+    FOREX_RATES = "/stable/forex-list"
+    ECO_GDP = "/stable/economic-indicators"
+    ECO_CPI = "/stable/economic-indicators"
+    ECO_UNEMP = "/stable/economic-indicators"
+    ECO_TREASURY = "/stable/treasury-rates"
+
+    FUND_IS = "/stable/income-statement"
+    FUND_METRICS = "/stable/key-metrics"
+    FUND_SCREENER = "/stable/company-screener"
+
+    HISTORICAL_INTRADAY = "/stable/historical-chart"
+
+    INST_13F = "/stable/institutional-ownership/symbol-positions-summary"
+    INST_HOLDERS = "/stable/institutional-ownership/extract-analytics/holder"
+    INST_INSIDER = "/stable/insider-trading/search"
+
+    INT_EXCHANGES = "/stable/available-exchanges"
+    INT_STOCKS = "/stable/stock-list"
+
+    NEWS_PR = "/stable/news/press-releases-latest"
+    NEWS_SYMBOL_PR = "/stable/news/press-releases"
+
+    QUOTES_GAINERS = "/stable/biggest-gainers"
+    QUOTES_BATCH = "/stable/batch-quote"
+
+    REFERENCE_MARKET_CAP = "/stable/market-capitalization"
+
+    SEC_FILINGS = "/stable/sec-filings-search/symbol"
 
 
 class EndpointToPolygon(Enum):
@@ -440,32 +470,169 @@ class FMPParams:
     class EarningsTranscripts(Enum):
         symbol = "symbol"
 
-    class CompanyScreenerStable(Enum):
-        betaLowerThan = "betaLowerThan"
-        betaMoreThan = "betaMoreThan"
-        country = "country"
-        dividendLowerThan = "dividendLowerThan"
-        dividendMoreThan = "dividendMoreThan"
-        exchange = "exchange"
-        includeAllShareClasses = "includeAllShareClasses"
-        industry = "industry"
-        isActivelyTrading = "isActivelyTrading"
-        isEtf = "isEtf"
-        isFund = "isFund"
+    class ETFHoldings(Enum):
+        symbol = "symbol"
+
+    class SymbolChange(Enum):
+        invalid = "invalid"
         limit = "limit"
+
+    class ETFPerformance(Enum):
+        symbol = "symbol"
+
+    class ForexPair(Enum):
+        symbol = "symbol"
+
+    class EconomicIndicators(Enum):
+        name = "name"
+        from_ = "from"
+        to = "to"
+
+    class TreasuryRates(Enum):
+        from_ = "from"
+        to = "to"
+
+    class IPOCalendar(Enum):
+        from_ = "from"
+        to = "to"
+        page = "page"
+        limit = "limit"
+
+    class IncomeStatement(Enum):
+        symbol = "symbol"
+        limit = "limit"
+        period = "period"
+
+    class EnterpriseValues(Enum):
+        symbol = "symbol"
+        limit = "limit"
+        period = "period"
+
+    class KeyMetrics(Enum):
+        symbol = "symbol"
+        limit = "limit"
+        period = "period"
+
+    class DividendsCompany(Enum):
+        symbol = "symbol"
+        from_ = "from"
+        to = "to"
+        page = "page"
+        limit = "limit"
+
+    class Splits(Enum):
+        symbol = "symbol"
+        from_ = "from"
+        to = "to"
+        page = "page"
+        limit = "limit"
+
+    class InstitutionalOwnership(Enum):
+        symbol = "symbol"
+        cik = "cik"
+        year = "year"
+        quarter = "quarter"
+        page = "page"
+        limit = "limit"
+        date = "date"
+
+    class InstitutionalHolders(Enum):
+        symbol = "symbol"
+        year = "year"
+        quarter = "quarter"
+        page = "page"
+        limit = "limit"
+
+    class InsiderTrading(Enum):
+        symbol = "symbol"
+        page = "page"
+        limit = "limit"
+        reportingCik = "reportingCik"
+        companyCik = "companyCik"
+        transactionType = "transactionType"
+
+    class ExchangeList(Enum):
+        page = "page"
+        limit = "limit"
+
+    class StockList(Enum):
+        exchange = "exchange"
+        page = "page"
+        limit = "limit"
+
+    class GeneralNews(Enum):
+        page = "page"
+        limit = "limit"
+        from_ = "from"
+        to = "to"
+        symbols = "symbols"
+
+    class PressReleases(Enum):
+        from_ = "from"
+        to = "to"
+        page = "page"
+        limit = "limit"
+
+    class PressReleasesSymbol(Enum):
+        symbols = "symbols"
+        from_ = "from"
+        to = "to"
+        page = "page"
+        limit = "limit"
+
+    class CompanyExecutives(Enum):
+        symbol = "symbol"
+        active = "active"
+
+    class ProfileParams(Enum):
+        symbol = "symbol"
+
+    class QuoteBatch(Enum):
+        symbols = "symbols"
+
+    class MarketCapitalization(Enum):
+        symbol = "symbol"
+
+    class SharesFloatAll(Enum):
+        limit = "limit"
+        page = "page"
+
+    class SharesFloat(Enum):
+        symbol = "symbol"
+
+    class CompanyScreenerStable(Enum):
         marketCapLowerThan = "marketCapLowerThan"
         marketCapMoreThan = "marketCapMoreThan"
+        sector = "sector"
+        industry = "industry"
+        betaLowerThan = "betaLowerThan"
+        betaMoreThan = "betaMoreThan"
         priceLowerThan = "priceLowerThan"
         priceMoreThan = "priceMoreThan"
-        sector = "sector"
+        dividendLowerThan = "dividendLowerThan"
+        dividendMoreThan = "dividendMoreThan"
         volumeLowerThan = "volumeLowerThan"
         volumeMoreThan = "volumeMoreThan"
+        exchange = "exchange"
+        country = "country"
+        isEtf = "isEtf"
+        isFund = "isFund"
+        includeAllShareClasses = "includeAllShareClasses"
+        isActivelyTrading = "isActivelyTrading"
+        limit = "limit"
+
+    class Unemployment(Enum):
+        name = "name"
+        from_ = "from"
+        to = "to"
 
     class EarningsCalendar(Enum):
         from_ = "from"
         to = "to"
 
     class HistoricalIntraday(Enum):
+        symbol = "symbol"
+        nonadjusted = "nonadjusted"
         from_ = "from"
         to = "to"
 
@@ -475,12 +642,30 @@ class FMPParams:
         timeseries = "timeseries"
         to = "to"
 
-    class ExecutiveCompensation(Enum):
+    class EmployeeCount(Enum):
+        symbol = "symbol"
+        limit = "limit"
+
+    class EmployeeCountHistorical(Enum):
+        symbol = "symbol"
+        limit = "limit"
+
+    class ThirteenFFilings(Enum):
         symbol = "symbol"
         year = "year"
+        quarter = "quarter"
+
+    class ExecutiveCompensation(Enum):
+        symbol = "symbol"
+
+    class SECFilings(Enum):
+        symbol = "symbol"
+        from_ = "from"
+        to = "to"
+        page = "page"
+        limit = "limit"
 
     class ExecutiveCompensationBenchmark(Enum):
-        symbol = "symbol"
         year = "year"
 
     class ExchangeVariants(Enum):
@@ -488,13 +673,14 @@ class FMPParams:
 
     class MergersAcquisitions(Enum):
         page = "page"
+        limit = "limit"
 
     class MergersAcquisitionsSearch(Enum):
-        page = "page"
-        query = "query"
+        name = "name"
 
     class SearchCIK(Enum):
         cik = "cik"
+        limit = "limit"
 
     class SearchCUSIP(Enum):
         cusip = "cusip"
