@@ -110,7 +110,7 @@ POLYGON_BASE_URL = config("POLYGON_BASE_URL", default="https://api.polygon.io")
 POLYGON_API_KEY = config("POLYGON_API_KEY", default="your-polygon-api-key-here")
 
 # FMP Ultimate API Configuration
-FMP_BASE_URL = config("FMP_BASE_URL", default="https://financialmodelingprep.com/api")
+FMP_BASE_URL = config("FMP_BASE_URL", default="https://financialmodelingprep.com")
 FMP_API_KEY = config("FMP_API_KEY", default="your-fmp-api-key-here")
 
 PROXY_TIMEOUT = config("PROXY_TIMEOUT", default=30, cast=int)

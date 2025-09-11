@@ -22,12 +22,8 @@ class AnalystEstimatesView(FMPBaseView):
 
     Parameters:
         symbol (str): Ticker symbol.
-    
-    Examples:
-        /api/v1/historical/AAPL/?from=2023-01-01
-        /api/v1/historical/AAPL/?to=2023-12-31
-        /api/v1/historical/AAPL/?timeseries=365
-        /api/v1/historical/AAPL/?serietype=line
+        period (str): Annual, quarter
+
     """
     endpoint_from = EndpointFrom.ANALYST_ESTIMATES
     endpoint_to = EndpointTo.FMP.ANALYST_ESTIMATES

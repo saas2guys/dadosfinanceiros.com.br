@@ -61,7 +61,7 @@ class ProviderAPIView(GenericAPIView):
             raw = raw.value
         route = str(raw).lstrip("/")
         route = re.sub(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", r"<str:\1>", route)
-        name = cls.name or cls.__name__.removesuffix("View").lower()
+        name = getattr(cls, "name", None) or cls.__name__.removesuffix("View").lower()
         return path(route, cls.as_view(), name=name)
 
     # ---- Request param handling ----
@@ -145,7 +145,7 @@ class ProviderAPIView(GenericAPIView):
 
     # ---- Upstream call ----
     def _perform_upstream(self, url: str, params: list[tuple[str, str]]):
-        resp = self.request("GET", url, params=params)
+        resp = self.perform_request("GET", url, params=params)
         resp.raise_for_status()
         return resp
 
@@ -159,7 +159,7 @@ class ProviderAPIView(GenericAPIView):
                 return resp.text, resp.status_code
         return resp.text, resp.status_code
 
-    def request(
+    def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
     ) -> httpx.Response:
         raise NotImplementedError
@@ -232,12 +232,13 @@ class ProviderAPIView(GenericAPIView):
 class FMPBaseView(ProviderAPIView):
     base_url = getattr(settings, "FMP_BASE_URL", "https://financialmodelingprep.com")
     api_key_value = getattr(settings, "FMP_API_KEY", "")
+    api_key_param = "apikey"
 
     class FMPSerializer(serializers.Serializer): ...
 
     serializer_class = FMPSerializer
 
-    def request(
+    def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
     ) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
@@ -250,16 +251,18 @@ class FMPBaseView(ProviderAPIView):
 class PolygonBaseView(ProviderAPIView):
     base_url = getattr(settings, "POLYGON_BASE_URL", "https://api.polygon.io")
     api_key_value = getattr(settings, "POLYGON_API_KEY", "")
+    api_key_param = "apikey"
+
     serializer_class = ProviderAPIView.AnyParamsSerializer
 
     def _headers(self) -> dict:
         if not self.api_key_value:
             return {}
-        if self.api_key_header.lower() == "authorization":
+        if self.api_key_param.lower() == "authorization":
             return {"Authorization": f"Bearer {self.api_key_value}"}
-        return {self.api_key_header: self.api_key_value}
+        return {self.api_key_param: self.api_key_value}
 
-    def request(
+    def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
     ) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
