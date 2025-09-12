@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 import re
+import logging
 from typing import Optional, Any
 
 import httpx
@@ -15,6 +16,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
+
+logger = logging.getLogger(__name__)
 
 
 class ProviderAPIView(GenericAPIView):
@@ -165,6 +168,7 @@ class ProviderAPIView(GenericAPIView):
         raise NotImplementedError
 
     def get(self, request, *args, **kwargs):
+        logger.debug(f"DEBUG: GET method called for {self.__class__.__name__}")
         if not self.active:
             return Response(
                 {"detail": "endpoint disabled"}, status=status.HTTP_404_NOT_FOUND
@@ -199,6 +203,7 @@ class ProviderAPIView(GenericAPIView):
             )
 
         data, status_code = self._parse_response(resp)
+        logger.debug(f"DEBUG: Status Code: {status_code}, Class: {self.__class__.__name__}")  # Log do status code para debug
         if self.pagination_class is None:
             return Response(data, status=status_code)
 

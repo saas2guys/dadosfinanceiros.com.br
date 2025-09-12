@@ -482,7 +482,7 @@ class GDPView(FMPBaseView):
         name (str): Economic series name, e.g., "GDP".
     """
     endpoint_from = EndpointFrom.ECONOMY_GDP
-    endpoint_to = EndpointTo.FMP.ECO_GDP
+    endpoint_to = EndpointTo.FMP.ECO_INDICATORS
 
 
 # class HistoricalDividendsView(FMPBaseView):
@@ -586,7 +586,7 @@ class InflationView(FMPBaseView):
     Return CPI/inflation series by name.
 
     App path:
-        /api/v1/economy/inflation/
+        /api/v1/economy/{name}/inflation/
 
     Provider path:
         /stable/economic-indicators
@@ -595,7 +595,7 @@ class InflationView(FMPBaseView):
         name (str): Series name, e.g., "CPIAUCSL".
     """
     endpoint_from = EndpointFrom.ECONOMY_INFLATION
-    endpoint_to = EndpointTo.FMP.ECO_CPI
+    endpoint_to = EndpointTo.FMP.ECO_INDICATORS
     allowed_params = FMPParams.EconomicIndicators
 
 class InsiderTradingView(FMPBaseView):
@@ -1133,7 +1133,7 @@ class UnemploymentView(FMPBaseView):
         name (str): Series name, e.g., "UNRATE".
     """
     endpoint_from = EndpointFrom.ECONOMY_UNEMPLOYMENT
-    endpoint_to = EndpointTo.FMP.ECO_UNEMP
+    endpoint_to = EndpointTo.FMP.ECO_INDICATORS
     allowed_params = FMPParams.Unemployment
 
 class CompanyExecutivesView(FMPBaseView):
