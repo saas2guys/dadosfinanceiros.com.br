@@ -4,6 +4,7 @@ from enum import Enum
 import re
 import logging
 from typing import Optional, Any
+from urllib.parse import urlparse, urljoin
 
 import httpx
 from django.conf import settings
@@ -18,6 +19,69 @@ from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
 
 logger = logging.getLogger(__name__)
+
+
+class URLRewriterSerializer(serializers.BaseSerializer):
+    def __init__(self, provider_base_url: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.provider_base_url = provider_base_url
+        self.financialdata_base_url = getattr(settings, 'FINANCIALDATA_BASE_URL', 'https://financialdata.online')
+    
+    def to_representation(self, data):
+        if isinstance(data, dict):
+            return self._rewrite_dict_urls(data)
+        elif isinstance(data, list):
+            return [self._rewrite_dict_urls(item) if isinstance(item, dict) else item for item in data]
+        return data
+    
+    def _rewrite_dict_urls(self, data: dict) -> dict:
+        result = {}
+        for key, value in data.items():
+            if isinstance(value, str) and self._is_url(value):
+                result[key] = self._rewrite_url(value)
+            elif isinstance(value, dict):
+                result[key] = self._rewrite_dict_urls(value)
+            elif isinstance(value, list):
+                result[key] = [
+                    self._rewrite_dict_urls(item) if isinstance(item, dict) 
+                    else (self._rewrite_url(item) if isinstance(item, str) and self._is_url(item) else item)
+                    for item in value
+                ]
+            else:
+                result[key] = value
+        return result
+    
+    def _is_url(self, value: str) -> bool:
+        try:
+            parsed = urlparse(value)
+            return bool(parsed.scheme and parsed.netloc)
+        except Exception:
+            return False
+    
+    def _rewrite_url(self, url: str) -> str:
+        try:
+            parsed = urlparse(url)
+            provider_parsed = urlparse(self.provider_base_url)
+            
+            if parsed.netloc == urlparse(self.financialdata_base_url).netloc:
+                return url
+            
+            if parsed.netloc == provider_parsed.netloc:
+                path = parsed.path
+                if path.startswith(provider_parsed.path):
+                    path = path[len(provider_parsed.path):]
+                
+                new_url = urljoin(self.financialdata_base_url, path)
+                if parsed.query:
+                    new_url += f"?{parsed.query}"
+                if parsed.fragment:
+                    new_url += f"#{parsed.fragment}"
+                
+                return new_url
+            
+            return url
+        except Exception:
+            return url
 
 
 class ProviderAPIView(GenericAPIView):
@@ -157,7 +221,10 @@ class ProviderAPIView(GenericAPIView):
         content_type = resp.headers.get("content-type", "").lower()
         if "application/json" in content_type:
             try:
-                return resp.json(), resp.status_code
+                data = resp.json()
+                if hasattr(self, 'url_rewriter') and self.url_rewriter:
+                    data = self.url_rewriter.to_representation(data)
+                return data, resp.status_code
             except ValueError:
                 return resp.text, resp.status_code
         return resp.text, resp.status_code
@@ -243,6 +310,10 @@ class FMPBaseView(ProviderAPIView):
 
     serializer_class = FMPSerializer
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_rewriter = URLRewriterSerializer(self.base_url)
+
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
     ) -> httpx.Response:
@@ -260,21 +331,15 @@ class PolygonBaseView(ProviderAPIView):
 
     serializer_class = ProviderAPIView.AnyParamsSerializer
 
-    def _headers(self) -> dict:
-        if not self.api_key_value:
-            return {}
-        if self.api_key_param.lower() == "authorization":
-            return {"Authorization": f"Bearer {self.api_key_value}"}
-        return {self.api_key_param: self.api_key_value}
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_rewriter = URLRewriterSerializer(self.base_url)
 
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
     ) -> httpx.Response:
         full_url = f"{self.base_url.rstrip('/')}{url}"
-        return httpx.request(
-            method,
-            full_url,
-            params=list(params or []),
-            headers=self._headers(),
-            timeout=self.timeout,
-        )
+        pairs: list[tuple[str, str]] = list(params or [])
+        if self.api_key_value:
+            pairs.append((self.api_key_param, self.api_key_value))
+        return httpx.request(method, full_url, params=pairs, timeout=self.timeout)
