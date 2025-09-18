@@ -680,6 +680,23 @@ class FMPParams:
     class SearchISIN(Enum):
         isin = "isin"
 
+class DeniedHosts(Enum):
+    """
+    Enum containing provider base URLs that should be filtered from responses.
+    These URLs will be detected and removed/rewritten by the ProviderResponseSerializer.
+    """
+    FMP_BASE_URL = "https://financialmodelingprep.com"
+    POLYGON_BASE_URL = "https://api.polygon.io"
+    
+    # Alternative domains that might appear in responses
+    FMP_ALT_DOMAIN = "financialmodelingprep.com"
+    POLYGON_ALT_DOMAIN = "api.polygon.io"
+    
+    # Polygon subdomains and CDN URLs
+    POLYGON_S3_DOMAIN = "s3.polygon.io"
+    POLYGON_CDN_DOMAIN = "polygon.io"
+
+
 class EndpointTo:
     FMP = EndpointToFMP
     Polygon = EndpointToPolygon
