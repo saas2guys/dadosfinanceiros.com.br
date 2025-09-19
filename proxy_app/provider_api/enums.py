@@ -697,6 +697,24 @@ class DeniedHosts(Enum):
     POLYGON_CDN_DOMAIN = "polygon.io"
 
 
+class DeniedParameters(Enum):
+    """
+    Enum containing parameter names that should be filtered from responses.
+    These parameters contain URLs that cannot be accessed by clients or should be hidden.
+    """
+    # Polygon-specific parameters that contain inaccessible URLs
+    LOGO_URL = "logo_url"
+    FAVICON_URL = "favicon_url"
+    
+    # FMP-specific parameters (if any)
+    # Add FMP-specific denied parameters here if needed
+    
+    # Common parameters that might contain problematic URLs
+    IMAGE_URL = "image_url"  # If it points to provider CDNs
+    THUMBNAIL_URL = "thumbnail_url"
+    ICON_URL = "icon_url"
+
+
 class EndpointTo:
     FMP = EndpointToFMP
     Polygon = EndpointToPolygon

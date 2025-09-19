@@ -5,7 +5,7 @@ from typing import Any
 from urllib.parse import urlparse
 from rest_framework import serializers
 from django.conf import settings
-from .enums import DeniedHosts
+from .enums import DeniedHosts, DeniedParameters
 
 
 class ProviderResponseSerializer(serializers.BaseSerializer):
@@ -31,6 +31,9 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
                 self._denied_netlocs.add(host)
         self._financialdata_netloc = urlparse(self.financialdata_base_url).netloc
         
+        # Cache denied parameters for performance
+        self._denied_parameters = [param.value for param in DeniedParameters]
+        
         # Compile regex patterns for provider URL detection
         self._provider_url_patterns = self._compile_provider_patterns()
     
@@ -46,13 +49,17 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
     
     def _process_data(self, data: dict) -> dict:
         """
-        Single-pass processing: URL filtering + provider transformations.
+        Single-pass processing: URL filtering + parameter filtering + provider transformations.
         """
         if not isinstance(data, dict):
             return data
             
         result = {}
         for key, value in data.items():
+            # Filter out denied parameters
+            if key in self._denied_parameters:
+                continue  # Skip this parameter entirely
+            
             if isinstance(value, str):
                 result[key] = self._process_string(value)
             elif isinstance(value, dict):
