@@ -248,44 +248,44 @@ class IndicatorSMAView(PolygonBaseView):
     allowed_params = [PolygonParams.Common, PolygonParams.IndicatorCommon]
 
 
-class LastNBBOView(PolygonBaseView):
-    """
-    Return the last NBBO quote for a stock.
+# class LastNBBOView(PolygonBaseView):
+#     """
+#     Return the last NBBO quote for a stock.
+#
+#     App path:
+#         /api/v1/stocks/last-quote/{stocksTicker}/
+#
+#     Provider path:
+#         /v2/last/nbbo/stocks/{stocksTicker}
+#
+#     Path parameters:
+#         stocksTicker (str): Target stock ticker symbol.
+#
+#     GET Parameters:
+#         None: Direct passthrough.
+#     """
+#     endpoint_from = EndpointFrom.STOCKS_LAST_NBBO
+#     endpoint_to = EndpointTo.Polygon.LAST_NBBO
 
-    App path:
-        /api/v1/stocks/last-quote/{stocksTicker}/
 
-    Provider path:
-        /v2/last/nbbo/stocks/{stocksTicker}
-
-    Path parameters:
-        stocksTicker (str): Target stock ticker symbol.
-
-    GET Parameters:
-        None: Direct passthrough.
-    """
-    endpoint_from = EndpointFrom.STOCKS_LAST_NBBO
-    endpoint_to = EndpointTo.Polygon.LAST_NBBO
-
-
-class LastTradeView(PolygonBaseView):
-    """
-    Return the last trade for a stock.
-
-    App path:
-        /api/v1/stocks/last-trade/{stocksTicker}/
-
-    Provider path:
-        /v2/last/trade/stocks/{stocksTicker}
-
-    Path parameters:
-        stocksTicker (str): Target stock ticker symbol.
-
-    GET Parameters:
-        None: Direct passthrough.
-    """
-    endpoint_from = EndpointFrom.STOCKS_LAST_TRADE
-    endpoint_to = EndpointTo.Polygon.LAST_TRADE
+# class LastTradeView(PolygonBaseView):
+#     """
+#     Return the last trade for a stock.
+#
+#     App path:
+#         /api/v1/stocks/last-trade/{stocksTicker}/
+#
+#     Provider path:
+#         /v2/last/trade/stocks/{stocksTicker}
+#
+#     Path parameters:
+#         stocksTicker (str): Target stock ticker symbol.
+#
+#     GET Parameters:
+#         None: Direct passthrough.
+#     """
+#     endpoint_from = EndpointFrom.STOCKS_LAST_TRADE
+#     endpoint_to = EndpointTo.Polygon.LAST_TRADE
 
 
 class MarketHolidaysView(PolygonBaseView):
@@ -545,40 +545,40 @@ class ReferenceFinancialsView(PolygonBaseView):
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceFinancials]
 
 
-class ReferenceIPOsView(PolygonBaseView):
-    """
-    List IPOs with filters.
-
-    App path:
-        /api/v1/stocks/reference/ipos/
-
-    Provider path:
-        /v3/reference/ipos
-
-    Path parameters:
-        None.
-
-    GET Parameters:
-        isin (str): ISIN filter.
-        ticker (str): Ticker filter.
-        us_code (str): US code filter.
-        listing_date (str): Listing date filter.
-        limit (int): Max results.
-        order (str): Sort order.
-        sort (str): Sort field.
-    
-    Examples:
-        /api/v1/stocks/reference/ipos/?ticker=AAPL
-        /api/v1/stocks/reference/ipos/?isin=US0378331005
-        /api/v1/stocks/reference/ipos/?us_code=US
-        /api/v1/stocks/reference/ipos/?listing_date=2024-01-05
-        /api/v1/stocks/reference/ipos/?limit=50
-        /api/v1/stocks/reference/ipos/?order=desc
-        /api/v1/stocks/reference/ipos/?sort=listing_date
-    """
-    endpoint_from = EndpointFrom.STOCKS_REFERENCE_IPOS
-    endpoint_to = EndpointTo.Polygon.REFERENCE_IPOS
-    allowed_params = [PolygonParams.Common, PolygonParams.ReferenceIPOs]
+# class ReferenceIPOsView(PolygonBaseView):
+#     """
+#     List IPOs with filters.
+#
+#     App path:
+#         /api/v1/stocks/reference/ipos/
+#
+#     Provider path:
+#         /v3/reference/ipos
+#
+#     Path parameters:
+#         None.
+#
+#     GET Parameters:
+#         isin (str): ISIN filter.
+#         ticker (str): Ticker filter.
+#         us_code (str): US code filter.
+#         listing_date (str): Listing date filter.
+#         limit (int): Max results.
+#         order (str): Sort order.
+#         sort (str): Sort field.
+#
+#     Examples:
+#         /api/v1/stocks/reference/ipos/?ticker=AAPL
+#         /api/v1/stocks/reference/ipos/?isin=US0378331005
+#         /api/v1/stocks/reference/ipos/?us_code=US
+#         /api/v1/stocks/reference/ipos/?listing_date=2024-01-05
+#         /api/v1/stocks/reference/ipos/?limit=50
+#         /api/v1/stocks/reference/ipos/?order=desc
+#         /api/v1/stocks/reference/ipos/?sort=listing_date
+#     """
+#     endpoint_from = EndpointFrom.STOCKS_REFERENCE_IPOS
+#     endpoint_to = EndpointTo.Polygon.REFERENCE_IPOS
+#     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceIPOs]
 
 
 class ReferenceNewsView(PolygonBaseView):

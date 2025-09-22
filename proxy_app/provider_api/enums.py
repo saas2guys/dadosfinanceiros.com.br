@@ -16,15 +16,15 @@ class EndpointFrom(Enum):
     STOCKS_INDICATOR_MACD = "/stocks/indicators/macd/{stockTicker}/"
     STOCKS_INDICATOR_RSI = "/stocks/indicators/rsi/{stockTicker}/"
     STOCKS_INDICATOR_SMA = "/stocks/indicators/sma/{stockTicker}/"
-    STOCKS_LAST_NBBO = "/stocks/last-quote/{stocksTicker}/"
-    STOCKS_LAST_TRADE = "/stocks/last-trade/{stocksTicker}/"
+    # STOCKS_LAST_NBBO = "/stocks/last-quote/{stocksTicker}/"
+    # STOCKS_LAST_TRADE = "/stocks/last-trade/{stocksTicker}/"
     STOCKS_OPEN_CLOSE = "/stocks/open-close/{stocksTicker}/{date}/"
-    STOCKS_QUOTES = "/stocks/quotes/{stockTicker}/"
+    STOCKS_QUOTES = "/stocks/quotes/{stockTicker}/" # Paid
     STOCKS_REFERENCE_CONDITIONS = "/stocks/reference/conditions/"
     STOCKS_REFERENCE_DIVIDENDS = "/stocks/reference/dividends/"
     STOCKS_REFERENCE_EXCHANGES = "/stocks/reference/exchanges/"
     STOCKS_REFERENCE_FINANCIALS = "/stocks/reference/financials/"
-    STOCKS_REFERENCE_IPOS = "/stocks/reference/ipos/"
+    # STOCKS_REFERENCE_IPOS = "/stocks/reference/ipos/"
     STOCKS_REFERENCE_MARKET_HOLIDAYS = "/stocks/reference/market-holidays/"
     STOCKS_REFERENCE_MARKET_STATUS = "/stocks/reference/market-status/"
     STOCKS_REFERENCE_NEWS = "/stocks/reference/news/"
@@ -34,13 +34,13 @@ class EndpointFrom(Enum):
     STOCKS_REFERENCE_TICKER_TYPES = "/stocks/reference/tickers/types/"
     STOCKS_REFERENCE_TICKERS = "/stocks/reference/tickers/"
     STOCKS_RELATED_COMPANIES = "/stocks/related-companies/{ticker}/"
-    STOCKS_SNAPSHOT_MARKET = "/stocks/snapshot/tickers/"
-    STOCKS_SNAPSHOT_MOVERS = "/stocks/snapshot/movers/{direction}/"
+    STOCKS_SNAPSHOT_MARKET = "/stocks/snapshot/tickers/" # Paid
+    STOCKS_SNAPSHOT_MOVERS = "/stocks/snapshot/movers/{direction}/" # Paid
     STOCKS_SNAPSHOT_TICKER = "/stocks/snapshot/tickers/{stocksTicker}/"
-    STOCKS_SNAPSHOT_UNIFIED = "/snapshot/"
+    STOCKS_SNAPSHOT_UNIFIED = "/snapshot/" # Paid
     STOCKS_SHORT_INTEREST = "/stocks/short-interest/"
     STOCKS_SHORT_VOLUME = "/stocks/short-volume/"
-    STOCKS_TRADES = "/stocks/trades/{stockTicker}/"
+    STOCKS_TRADES = "/stocks/trades/{stockTicker}/" # Paid
 
 
     # FMP app endpoints
@@ -57,9 +57,9 @@ class EndpointFrom(Enum):
     CRYPTO_LIST = "/crypto/list/"
     CRYPTO_QUOTE = "/crypto/{symbol}/"
     ECONOMY_INFLATION = "/economy/{name}/inflation/"
-    ECONOMY_GDP = "/economy/gdp/" #-
+    # ECONOMY_GDP = "/economy/gdp/" #-
     ECONOMY_TREASURY_RATES = "/economy/treasury-rates/"
-    ECONOMY_UNEMPLOYMENT = "/economy/unemployment/" #-
+    # ECONOMY_UNEMPLOYMENT = "/economy/unemployment/" #-
     EARNINGS_CALENDAR = "/earnings/calendar/"
     EARNINGS_HISTORY = "/earnings/{symbol}/history/"
     EARNINGS_SURPRISES = "/earnings/{symbol}/surprises/" #paid
@@ -705,9 +705,9 @@ class DeniedParameters(Enum):
     # Polygon-specific parameters that contain inaccessible URLs
     LOGO_URL = "logo_url"
     FAVICON_URL = "favicon_url"
-    
-    # FMP-specific parameters (if any)
-    # Add FMP-specific denied parameters here if needed
+
+    # Request ID from Polygon
+    REQUEST_ID = "request_id"
     
     # Common parameters that might contain problematic URLs
     IMAGE_URL = "image_url"  # If it points to provider CDNs

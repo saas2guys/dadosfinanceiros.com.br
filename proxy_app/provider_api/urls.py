@@ -7,8 +7,6 @@ from .views_polygon import (
     IndicatorMACDView,
     IndicatorRSIView,
     IndicatorSMAView,
-    LastNBBOView,
-    LastTradeView,
     MarketHolidaysView,
     MarketStatusView,
     OpenCloseView,
@@ -17,7 +15,6 @@ from .views_polygon import (
     ReferenceDividendsView,
     ReferenceExchangesView,
     ReferenceFinancialsView,
-    ReferenceIPOsView,
     ReferenceNewsView,
     ReferenceSplitsView,
     ReferenceTickerEventsView,
@@ -65,7 +62,6 @@ from .views_fmp import (
     ExecutiveCompensationView,
     ForexPairView,
     ForexRatesView,
-    GDPView,
     HistoricalIntradayView,
     InflationView,
     IncomeStatementView,
@@ -90,7 +86,6 @@ from .views_fmp import (
     SymbolChangeView,
     ThirteenFView,
     TreasuryRatesView,
-    UnemploymentView,
 )
 
 urlpatterns = []
@@ -125,7 +120,6 @@ urlpatterns += [
     ExecutiveCompensationView.as_path(),
     ForexPairView.as_path(),
     ForexRatesView.as_path(),
-    GDPView.as_path(),
     HistoricalIntradayView.as_path(),
     InflationView.as_path(),
     IncomeStatementView.as_path(),
@@ -151,7 +145,6 @@ urlpatterns += [
     SymbolChangeView.as_path(),
     ThirteenFView.as_path(),
     TreasuryRatesView.as_path(),
-    UnemploymentView.as_path(),
 ]
 
 urlpatterns += [
@@ -162,8 +155,6 @@ urlpatterns += [
     IndicatorMACDView.as_path(),
     IndicatorRSIView.as_path(),
     IndicatorSMAView.as_path(),
-    LastNBBOView.as_path(),
-    LastTradeView.as_path(),
     MarketHolidaysView.as_path(),
     MarketStatusView.as_path(),
     OpenCloseView.as_path(),
@@ -172,7 +163,6 @@ urlpatterns += [
     ReferenceDividendsView.as_path(),
     ReferenceExchangesView.as_path(),
     ReferenceFinancialsView.as_path(),
-    ReferenceIPOsView.as_path(),
     ReferenceNewsView.as_path(),
     ReferenceSplitsView.as_path(),
     ReferenceTickerEventsView.as_path(),

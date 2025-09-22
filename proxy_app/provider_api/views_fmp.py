@@ -467,22 +467,22 @@ class ForexRatesView(FMPBaseView):
     endpoint_from = EndpointFrom.FOREX_RATES
     endpoint_to = EndpointTo.FMP.FOREX_RATES
 
-
-class GDPView(FMPBaseView):
-    """
-    Return GDP series by name filter.
-
-    App path:
-        /api/v1/economy/gdp/
-
-    Provider path:
-        /stable/economic-indicators
-
-    Parameters:
-        name (str): Economic series name, e.g., "GDP".
-    """
-    endpoint_from = EndpointFrom.ECONOMY_GDP
-    endpoint_to = EndpointTo.FMP.ECO_INDICATORS
+#
+# class GDPView(FMPBaseView):
+#     """
+#     Return GDP series by name filter.
+#
+#     App path:
+#         /api/v1/economy/gdp/
+#
+#     Provider path:
+#         /stable/economic-indicators
+#
+#     Parameters:
+#         name (str): Economic series name, e.g., "GDP".
+#     """
+#     endpoint_from = EndpointFrom.ECONOMY_GDP
+#     endpoint_to = EndpointTo.FMP.ECO_INDICATORS
 
 
 # class HistoricalDividendsView(FMPBaseView):
@@ -1119,22 +1119,22 @@ class TreasuryRatesView(FMPBaseView):
     endpoint_to = EndpointTo.FMP.ECO_TREASURY
     allowed_params = FMPParams.TreasuryRates
 
-class UnemploymentView(FMPBaseView):
-    """
-    Return unemployment rate series by name.
-
-    App path:
-        /api/v1/economy/unemployment/
-
-    Provider path:
-        /stable/economic-indicators
-
-    Parameters:
-        name (str): Series name, e.g., "UNRATE".
-    """
-    endpoint_from = EndpointFrom.ECONOMY_UNEMPLOYMENT
-    endpoint_to = EndpointTo.FMP.ECO_INDICATORS
-    allowed_params = FMPParams.Unemployment
+# class UnemploymentView(FMPBaseView):
+#     """
+#     Return unemployment rate series by name.
+#
+#     App path:
+#         /api/v1/economy/unemployment/
+#
+#     Provider path:
+#         /stable/economic-indicators
+#
+#     Parameters:
+#         name (str): Series name, e.g., "UNRATE".
+#     """
+#     endpoint_from = EndpointFrom.ECONOMY_UNEMPLOYMENT
+#     endpoint_to = EndpointTo.FMP.ECO_INDICATORS
+#     allowed_params = FMPParams.Unemployment
 
 class CompanyExecutivesView(FMPBaseView):
     """
