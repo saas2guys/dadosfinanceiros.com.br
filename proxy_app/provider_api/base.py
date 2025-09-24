@@ -268,7 +268,7 @@ class PolygonBaseView(ProviderAPIView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.response_serializer = ProviderResponseSerializer(self.base_url, "polygon")
+        self.response_serializer = ProviderResponseSerializer(self.base_url, "polygon", current_view=self)
 
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None

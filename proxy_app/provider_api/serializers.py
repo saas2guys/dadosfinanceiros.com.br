@@ -5,8 +5,10 @@ from typing import Any
 from urllib.parse import urlparse
 from rest_framework import serializers
 from django.conf import settings
-from .enums import DeniedHosts, DeniedParameters
+from .enums import DeniedHosts, DeniedParameters, EndpointTo, EndpointFrom
+import logging
 
+logger = logging.getLogger(__name__)
 
 class ProviderResponseSerializer(serializers.BaseSerializer):
     """
@@ -14,10 +16,11 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
     Handles URL filtering and provider-specific transformations in a single pass.
     """
     
-    def __init__(self, provider_base_url: str, provider_name: str, *args, **kwargs):
+    def __init__(self, provider_base_url: str, provider_name: str, current_view=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.provider_name = provider_name.lower()
         self.financialdata_base_url = getattr(settings, 'FINANCIALDATA_BASE_URL', 'https://financialdata.online')
+        self.current_view = current_view
         
         # Cache denied hosts and parsed URLs for performance
         self._denied_hosts = [host.value for host in DeniedHosts]
@@ -195,6 +198,52 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
         from datetime import datetime
         return datetime.utcnow().isoformat() + 'Z'
     
+    def _process_next_url(self, next_url: str) -> str:
+        """
+        Process next_url to replace provider URL with our URL.
+        Maps Polygon paths to our API paths and preserves query parameters.
+        """
+        if not isinstance(next_url, str):
+            return next_url
+        
+        try:
+            parsed = urlparse(next_url)
+            
+            # Map Polygon paths to our API paths
+            polygon_path = parsed.path
+            our_path = self._map_polygon_path_to_our_path(polygon_path, self.current_view)
+            query = f"?{parsed.query}" if parsed.query else ""
+            
+            # Build our URL with the mapped path and query
+            # Remove trailing slash before query parameters
+            if our_path.endswith('/') and query.startswith('?'):
+                our_path = our_path.rstrip('/')
+            return f"{self.financialdata_base_url}{our_path}{query}"
+        except Exception:
+            # If parsing fails, return a fallback URL
+            return f"{self.financialdata_base_url}/api/v1/error/url"
+    
+    def _map_polygon_path_to_our_path(self, polygon_path: str, current_view=None) -> str:
+        """
+        Map Polygon API paths to our API paths using current view context.
+        """
+        base = EndpointFrom.PREFIX_ENDPOINT.value
+        
+        # If we have the current view context, use its endpoint mapping
+        if current_view and hasattr(current_view, 'endpoint_from') and hasattr(current_view, 'endpoint_to'):
+            try:
+                # Get the current view's endpoint_from path
+                our_path = current_view.endpoint_from.value
+                result = f"{base}{our_path}"
+                logger.debug(f"Using view context: {polygon_path} -> {result}")
+                return result
+            except Exception as e:
+                logger.debug(f"Failed to use view context: {e}")
+        
+        # If no view context, return generic base URL without endpoint
+        logger.debug(f"No view context, returning base URL: {base}")
+        return base
+    
     def _standardize_response_format(self, data: dict) -> dict:
         """
         Standardize response format to ensure consistency between FMP and Polygon.
@@ -242,7 +291,9 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
                 if 'count' not in data:
                     data['count'] = len(data['results'])
                 
-                # No next_url for FMP returns
+                # Process next_url if present - replace provider URL with our URL
+                if 'next_url' in data:
+                    data['next_url'] = self._process_next_url(data['next_url'])
             else:
                 # Single object in results - wrap it in a list for consistency
                 # Single objects typically don't need pagination or count

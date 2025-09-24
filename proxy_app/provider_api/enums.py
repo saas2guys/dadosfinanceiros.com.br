@@ -8,6 +8,8 @@ class EndpointFrom(Enum):
     EXAMPLE_POLYGON_TRADES = "/examples/polygon/{symbol}/trades/"
     EXAMPLE_FMP_GAINERS = "/examples/fmp/gainers/"
 
+    PREFIX_ENDPOINT = "/api/v1"
+
     # Polygon stock API endpoints (app routes)
     STOCKS_AGGREGATE_CUSTOM_RANGE = "/stocks/aggs/{stocksTicker}/range/{multiplier}/{timespan}/{from}/{to}/"
     STOCKS_AGGREGATE_GROUPED_DAILY = "/stocks/aggs/grouped/{date}/"
@@ -275,9 +277,8 @@ class PolygonParams:
     """
     # Shared/common params across many Polygon endpoints
     class Common(Enum):
-        limit = "limit"
-        order = "order"
-        sort = "sort"
+        cursor = "cursor"
+
     class ReferenceTickers(Enum):
         active = "active"
         cik = "cik"
