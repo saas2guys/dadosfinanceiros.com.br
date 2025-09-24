@@ -44,7 +44,9 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
         if isinstance(data, dict):
             return self._process_data(data)
         elif isinstance(data, list):
-            return [self._process_data(item) if isinstance(item, dict) else item for item in data]
+            # FMP often returns arrays directly - standardize them
+            processed_list = [self._process_data(item) if isinstance(item, dict) else item for item in data]
+            return self._standardize_array_response(processed_list)
         return data
     
     def _process_data(self, data: dict) -> dict:
@@ -72,6 +74,9 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
                 ]
             else:
                 result[key] = value
+        
+        # Standardize response format based on provider
+        result = self._standardize_response_format(result)
         
         # Add provider metadata to results if present
         if 'results' in result and isinstance(result['results'], list):
@@ -190,3 +195,116 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
         """
         from datetime import datetime
         return datetime.utcnow().isoformat() + 'Z'
+    
+    def _standardize_response_format(self, data: dict) -> dict:
+        """
+        Standardize response format to ensure consistency between FMP and Polygon.
+        
+        Rules:
+        1. If data is a list (FMP style), wrap it in a standardized format
+        2. If data has 'results' key (Polygon style), keep it but ensure consistency
+        3. Add next_url for pagination ONLY when it makes sense (list endpoints with pagination)
+        4. Ensure all responses have consistent structure
+        """
+        if not isinstance(data, dict):
+            return data
+        
+        if len(data) == 1 and isinstance(list(data.values())[0], list):
+            # This is likely a wrapped FMP array response
+            key, value = list(data.items())[0]
+            if key in ['data', 'results'] or not key.startswith('_'):
+                # Standardize to 'results' format
+                standardized = {
+                    'results': value
+                }
+                
+                # Only add count and next_url for lists with multiple items
+                if isinstance(value, list) and len(value) > 1:
+                    standardized['count'] = len(value)
+                    standardized['next_url'] = self._generate_next_url()
+                elif isinstance(value, list) and len(value) == 1:
+                    # Single item - no count needed (redundant)
+                    pass
+                
+                return standardized
+        
+        # For Polygon-style responses (already have 'results' key)
+        if 'results' in data:
+            if isinstance(data['results'], list):
+                # Ensure count is present - use existing count if available (total records)
+                # or fall back to current results length
+                if 'count' not in data:
+                    data['count'] = len(data['results'])
+                
+                # Only add next_url if it makes sense for this type of endpoint
+                if 'next_url' not in data and self._should_add_next_url(data['results']):
+                    data['next_url'] = self._generate_next_url()
+            else:
+                # Single object in results - wrap it in a list for consistency
+                # Single objects typically don't need pagination or count
+                data['results'] = [data['results']]
+                # No count for single objects (redundant)
+                # No next_url for single objects
+        
+        # For single object responses, wrap in results format for consistency
+        elif not any(key in data for key in ['results', 'count', 'next_url']):
+            # This is likely a single object response
+            standardized = {
+                'results': [data]
+            }
+            # No count for single objects (redundant)
+            # No next_url for single objects
+            return standardized
+        
+        return data
+    
+    def _standardize_array_response(self, data: list) -> dict:
+        """
+        Standardize array responses (typical FMP format) to consistent format.
+        """
+        if not isinstance(data, list):
+            return data
+        
+        standardized = {
+            'results': data
+        }
+        
+        # Only add count and next_url for lists with multiple items
+        if len(data) > 1:
+            standardized['count'] = len(data)
+            standardized['next_url'] = self._generate_next_url()
+        # Single item - no count needed (redundant)
+        
+        return standardized
+    
+    def _should_add_next_url(self, data: list) -> bool:
+        """
+        Determine if next_url should be added based on the data and endpoint type.
+        
+        Rules:
+        1. Only add next_url for list endpoints that typically support pagination
+        2. Don't add for single object responses
+        3. Don't add for small lists that are likely complete results
+        4. Consider the provider and typical pagination patterns
+        """
+        if not isinstance(data, list) or len(data) == 0:
+            return False
+        
+        # For now, use a simple heuristic:
+        # - If list has more than 1 item, it might be paginated
+        
+        # TODO:
+        # 1. Check the current endpoint being called
+        # 2. Look up if that endpoint supports pagination
+        # 3. Check if the current response looks like a partial result
+        # 4. Consider provider-specific pagination patterns
+        
+        return len(data) > 1
+    
+    def _generate_next_url(self) -> str:
+        """
+        Generate a next_url for pagination consistency.
+        This creates a placeholder URL that can be used for pagination.
+        """
+        # For now, return a placeholder.
+        return f"{self.financialdata_base_url}/api/v1/temporary/test/url"

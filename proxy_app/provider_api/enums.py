@@ -709,6 +709,12 @@ class DeniedParameters(Enum):
     # Request ID from Polygon
     REQUEST_ID = "request_id"
     
+    # Status from Polygon
+    STATUS = "status"
+    
+    # Provider metadata
+    _SOURCE = "_source"
+    
     # Common parameters that might contain problematic URLs
     IMAGE_URL = "image_url"  # If it points to provider CDNs
     THUMBNAIL_URL = "thumbnail_url"
