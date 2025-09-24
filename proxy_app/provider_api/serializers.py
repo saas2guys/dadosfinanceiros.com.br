@@ -42,7 +42,13 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
         Processes data received from providers in a single pass.
         """
         if isinstance(data, dict):
-            return self._process_data(data)
+            processed_data = self._process_data(data)
+            # Standardize response format based on provider
+            standardized_data = self._standardize_response_format(processed_data)
+            # Add provider metadata to results if present
+            if 'results' in standardized_data and isinstance(standardized_data['results'], list):
+                self._add_provider_metadata(standardized_data['results'])
+            return standardized_data
         elif isinstance(data, list):
             # FMP often returns arrays directly - standardize them
             processed_list = [self._process_data(item) if isinstance(item, dict) else item for item in data]
@@ -74,13 +80,6 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
                 ]
             else:
                 result[key] = value
-        
-        # Standardize response format based on provider
-        result = self._standardize_response_format(result)
-        
-        # Add provider metadata to results if present
-        if 'results' in result and isinstance(result['results'], list):
-            self._add_provider_metadata(result['results'])
         
         return result
     
@@ -187,7 +186,7 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
         for item in results:
             if isinstance(item, dict):
                 item['_processed_at'] = timestamp
-                item['_source'] = self.provider_name
+                # _source is filtered out by DeniedParameters, so don't add it here
     
     def _get_current_timestamp(self) -> str:
         """
@@ -203,25 +202,32 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
         Rules:
         1. If data is a list (FMP style), wrap it in a standardized format
         2. If data has 'results' key (Polygon style), keep it but ensure consistency
-        3. Add next_url for pagination ONLY when it makes sense (list endpoints with pagination)
+        3. No next_url for FMP returns (pagination removed)
         4. Ensure all responses have consistent structure
         """
         if not isinstance(data, dict):
             return data
         
+        # Check if this is a wrapped FMP array response (single key with list value)
+        # But only if it's NOT already a Polygon-style response with 'results' key
         if len(data) == 1 and isinstance(list(data.values())[0], list):
-            # This is likely a wrapped FMP array response
             key, value = list(data.items())[0]
+            # If the key is 'results', this is already a Polygon-style response, don't wrap it
+            if key == 'results':
+                # This is already a Polygon-style response, just ensure count is present
+                if 'count' not in data:
+                    data['count'] = len(value)
+                return data
+            # This is likely a wrapped FMP array response
             if key in ['data', 'results'] or not key.startswith('_'):
                 # Standardize to 'results' format
                 standardized = {
                     'results': value
                 }
                 
-                # Only add count and next_url for lists with multiple items
+                # Only add count for lists with multiple items
                 if isinstance(value, list) and len(value) > 1:
                     standardized['count'] = len(value)
-                    standardized['next_url'] = self._generate_next_url()
                 elif isinstance(value, list) and len(value) == 1:
                     # Single item - no count needed (redundant)
                     pass
@@ -236,9 +242,7 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
                 if 'count' not in data:
                     data['count'] = len(data['results'])
                 
-                # Only add next_url if it makes sense for this type of endpoint
-                if 'next_url' not in data and self._should_add_next_url(data['results']):
-                    data['next_url'] = self._generate_next_url()
+                # No next_url for FMP returns
             else:
                 # Single object in results - wrap it in a list for consistency
                 # Single objects typically don't need pagination or count
@@ -269,42 +273,10 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
             'results': data
         }
         
-        # Only add count and next_url for lists with multiple items
+        # Only add count for lists with multiple items
         if len(data) > 1:
             standardized['count'] = len(data)
-            standardized['next_url'] = self._generate_next_url()
         # Single item - no count needed (redundant)
         
         return standardized
     
-    def _should_add_next_url(self, data: list) -> bool:
-        """
-        Determine if next_url should be added based on the data and endpoint type.
-        
-        Rules:
-        1. Only add next_url for list endpoints that typically support pagination
-        2. Don't add for single object responses
-        3. Don't add for small lists that are likely complete results
-        4. Consider the provider and typical pagination patterns
-        """
-        if not isinstance(data, list) or len(data) == 0:
-            return False
-        
-        # For now, use a simple heuristic:
-        # - If list has more than 1 item, it might be paginated
-        
-        # TODO:
-        # 1. Check the current endpoint being called
-        # 2. Look up if that endpoint supports pagination
-        # 3. Check if the current response looks like a partial result
-        # 4. Consider provider-specific pagination patterns
-        
-        return len(data) > 1
-    
-    def _generate_next_url(self) -> str:
-        """
-        Generate a next_url for pagination consistency.
-        This creates a placeholder URL that can be used for pagination.
-        """
-        # For now, return a placeholder.
-        return f"{self.financialdata_base_url}/api/v1/temporary/test/url"
