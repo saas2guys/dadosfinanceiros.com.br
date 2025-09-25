@@ -16,9 +16,8 @@ class BaseResponseSerializer(serializers.BaseSerializer):
     Handles common URL filtering and transformations.
     """
     
-    def __init__(self, provider_base_url: str, provider_name: str, current_view=None, *args, **kwargs):
+    def __init__(self, current_view=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.provider_name = provider_name.lower()
         self.financialdata_base_url = getattr(settings, 'FINANCIALDATA_BASE_URL', 'https://financialdata.online')
         self.current_view = current_view
         
@@ -189,7 +188,6 @@ class BaseResponseSerializer(serializers.BaseSerializer):
         for item in results:
             if isinstance(item, dict):
                 item['_processed_at'] = timestamp
-                # _source is filtered out by DeniedParameters, so don't add it here
     
     def _get_current_timestamp(self) -> str:
         """

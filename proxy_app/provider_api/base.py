@@ -161,12 +161,14 @@ class ProviderAPIView(GenericAPIView):
         if "application/json" in content_type:
             try:
                 data = resp.json()
-                if hasattr(self, 'response_serializer') and self.response_serializer:
-                    data = self.response_serializer.to_representation(data)
-                return data, resp.status_code
+                return self._serialize_response(data), resp.status_code
             except ValueError:
                 return resp.text, resp.status_code
         return resp.text, resp.status_code
+    
+    def _serialize_response(self, data):
+        serializer = self.response_serializer_class(current_view=self)
+        return serializer.to_representation(data)
 
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
@@ -244,10 +246,7 @@ class FMPBaseView(ProviderAPIView):
     base_url = getattr(settings, "FMP_BASE_URL", "https://financialmodelingprep.com")
     api_key_value = getattr(settings, "FMP_API_KEY", "")
     api_key_param = "apikey"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.response_serializer = FMPResponseSerializer(self.base_url, "fmp")
+    response_serializer_class = FMPResponseSerializer
 
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
@@ -263,12 +262,8 @@ class PolygonBaseView(ProviderAPIView):
     base_url = getattr(settings, "POLYGON_BASE_URL", "https://api.polygon.io")
     api_key_value = getattr(settings, "POLYGON_API_KEY", "")
     api_key_param = "apikey"
+    response_serializer_class = PolygonResponseSerializer
 
-    serializer_class = ProviderAPIView.AnyParamsSerializer
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.response_serializer = PolygonResponseSerializer(self.base_url, "polygon", current_view=self)
 
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
