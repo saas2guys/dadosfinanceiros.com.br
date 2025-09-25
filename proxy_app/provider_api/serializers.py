@@ -10,10 +10,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class ProviderResponseSerializer(serializers.BaseSerializer):
+class BaseResponseSerializer(serializers.BaseSerializer):
     """
-    Optimized serializer for processing data received from providers.
-    Handles URL filtering and provider-specific transformations in a single pass.
+    Base serializer for processing data received from providers.
+    Handles common URL filtering and transformations.
     """
     
     def __init__(self, provider_base_url: str, provider_name: str, current_view=None, *args, **kwargs):
@@ -198,6 +198,54 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
         from datetime import datetime
         return datetime.utcnow().isoformat() + 'Z'
     
+    
+    
+    def _standardize_array_response(self, data: list) -> dict:
+        """
+        Standardize array responses (typical FMP format) to consistent format.
+        """
+        if not isinstance(data, list):
+            return data
+        
+        standardized = {
+            'results': data
+        }
+        
+        # Only add count for lists with multiple items
+        if len(data) > 1:
+            standardized['count'] = len(data)
+        # Single item - no count needed (redundant)
+        
+        return standardized
+
+
+class PolygonResponseSerializer(BaseResponseSerializer):
+    """
+    Serializer for Polygon API responses.
+    Handles Polygon-specific transformations and pagination.
+    """
+    
+    def _map_polygon_path_to_our_path(self, polygon_path: str, current_view=None) -> str:
+        """
+        Map Polygon API paths to our API paths using current view context.
+        """
+        base = EndpointFrom.PREFIX_ENDPOINT.value
+        
+        # If we have the current view context, use its endpoint mapping
+        if current_view and hasattr(current_view, 'endpoint_from') and hasattr(current_view, 'endpoint_to'):
+            try:
+                # Get the current view's endpoint_from path
+                our_path = current_view.endpoint_from.value
+                result = f"{base}{our_path}"
+                logger.debug(f"Using view context: {polygon_path} -> {result}")
+                return result
+            except Exception as e:
+                logger.debug(f"Failed to use view context: {e}")
+        
+        # If no view context, return generic base URL without endpoint
+        logger.debug(f"No view context, returning base URL: {base}")
+        return base
+    
     def _process_next_url(self, next_url: str) -> str:
         """
         Process next_url to replace provider URL with our URL.
@@ -221,113 +269,90 @@ class ProviderResponseSerializer(serializers.BaseSerializer):
             return f"{self.financialdata_base_url}{our_path}{query}"
         except Exception:
             # If parsing fails, return a fallback URL
-            return f"{self.financialdata_base_url}/api/v1/error/url"
-    
-    def _map_polygon_path_to_our_path(self, polygon_path: str, current_view=None) -> str:
-        """
-        Map Polygon API paths to our API paths using current view context.
-        """
-        base = EndpointFrom.PREFIX_ENDPOINT.value
-        
-        # If we have the current view context, use its endpoint mapping
-        if current_view and hasattr(current_view, 'endpoint_from') and hasattr(current_view, 'endpoint_to'):
-            try:
-                # Get the current view's endpoint_from path
-                our_path = current_view.endpoint_from.value
-                result = f"{base}{our_path}"
-                logger.debug(f"Using view context: {polygon_path} -> {result}")
-                return result
-            except Exception as e:
-                logger.debug(f"Failed to use view context: {e}")
-        
-        # If no view context, return generic base URL without endpoint
-        logger.debug(f"No view context, returning base URL: {base}")
-        return base
+            return f"{self.financialdata_base_url}/api/v1/error/"
     
     def _standardize_response_format(self, data: dict) -> dict:
         """
-        Standardize response format to ensure consistency between FMP and Polygon.
-        
-        Rules:
-        1. If data is a list (FMP style), wrap it in a standardized format
-        2. If data has 'results' key (Polygon style), keep it but ensure consistency
-        3. No next_url for FMP returns (pagination removed)
-        4. Ensure all responses have consistent structure
+        Standardize response format for Polygon responses.
         """
         if not isinstance(data, dict):
             return data
         
-        # Check if this is a wrapped FMP array response (single key with list value)
-        # But only if it's NOT already a Polygon-style response with 'results' key
-        if len(data) == 1 and isinstance(list(data.values())[0], list):
+        if len(data) == 1 and isinstance(list(data.values())[0], list) and 'results' not in data:
             key, value = list(data.items())[0]
-            # If the key is 'results', this is already a Polygon-style response, don't wrap it
             if key == 'results':
-                # This is already a Polygon-style response, just ensure count is present
                 if 'count' not in data:
                     data['count'] = len(value)
                 return data
-            # This is likely a wrapped FMP array response
             if key in ['data', 'results'] or not key.startswith('_'):
-                # Standardize to 'results' format
                 standardized = {
                     'results': value
                 }
                 
-                # Only add count for lists with multiple items
                 if isinstance(value, list) and len(value) > 1:
                     standardized['count'] = len(value)
-                elif isinstance(value, list) and len(value) == 1:
-                    # Single item - no count needed (redundant)
-                    pass
                 
                 return standardized
         
-        # For Polygon-style responses (already have 'results' key)
         if 'results' in data:
             if isinstance(data['results'], list):
-                # Ensure count is present - use existing count if available (total records)
-                # or fall back to current results length
                 if 'count' not in data:
                     data['count'] = len(data['results'])
                 
-                # Process next_url if present - replace provider URL with our URL
                 if 'next_url' in data:
                     data['next_url'] = self._process_next_url(data['next_url'])
             else:
-                # Single object in results - wrap it in a list for consistency
-                # Single objects typically don't need pagination or count
                 data['results'] = [data['results']]
-                # No count for single objects (redundant)
-                # No next_url for single objects
         
-        # For single object responses, wrap in results format for consistency
         elif not any(key in data for key in ['results', 'count', 'next_url']):
-            # This is likely a single object response
             standardized = {
                 'results': [data]
             }
-            # No count for single objects (redundant)
-            # No next_url for single objects
             return standardized
         
         return data
+
+
+class FMPResponseSerializer(BaseResponseSerializer):
+    """
+    Serializer for FMP API responses.
+    Handles FMP-specific transformations without pagination.
+    """
     
-    def _standardize_array_response(self, data: list) -> dict:
+    def _standardize_response_format(self, data: dict) -> dict:
         """
-        Standardize array responses (typical FMP format) to consistent format.
+        Standardize response format for FMP responses.
         """
-        if not isinstance(data, list):
+        if not isinstance(data, dict):
             return data
         
-        standardized = {
-            'results': data
-        }
+        if len(data) == 1 and isinstance(list(data.values())[0], list):
+            key, value = list(data.items())[0]
+            if key in ['data', 'results'] or not key.startswith('_'):
+                standardized = {
+                    'results': value
+                }
+                
+                if isinstance(value, list) and len(value) > 1:
+                    standardized['count'] = len(value)
+                
+                return standardized
         
-        # Only add count for lists with multiple items
-        if len(data) > 1:
-            standardized['count'] = len(data)
-        # Single item - no count needed (redundant)
+        if 'results' in data:
+            if isinstance(data['results'], list):
+                if 'count' not in data:
+                    data['count'] = len(data['results'])
+            else:
+                data['results'] = [data['results']]
         
-        return standardized
+        elif not any(key in data for key in ['results', 'count', 'next_url']):
+            standardized = {
+                'results': [data]
+            }
+            return standardized
+        
+        return data
+
+
+ProviderResponseSerializer = BaseResponseSerializer
     

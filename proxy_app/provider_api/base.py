@@ -18,7 +18,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.authentication import RequestTokenAuthentication
 from users.permissions import DailyLimitPermission
 
-from .serializers import ProviderResponseSerializer
+from .serializers import PolygonResponseSerializer, FMPResponseSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -247,7 +247,7 @@ class FMPBaseView(ProviderAPIView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.response_serializer = ProviderResponseSerializer(self.base_url, "fmp")
+        self.response_serializer = FMPResponseSerializer(self.base_url, "fmp")
 
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
@@ -268,7 +268,7 @@ class PolygonBaseView(ProviderAPIView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.response_serializer = ProviderResponseSerializer(self.base_url, "polygon", current_view=self)
+        self.response_serializer = PolygonResponseSerializer(self.base_url, "polygon", current_view=self)
 
     def perform_request(
         self, method: str, url: str, *, params: list[tuple[str, str]] | None = None
