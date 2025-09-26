@@ -211,7 +211,7 @@ class ProviderAPIView(GenericAPIView):
             )
 
         data, status_code = self._parse_response(resp)
-        logger.debug(f"DEBUG: Status Code: {status_code}, Class: {self.__class__.__name__}")  # Log do status code para debug
+        logger.debug(f"DEBUG: Status Code: {status_code}, Class: {self.__class__.__name__}")  # Log status code for debugging
         if self.pagination_class is None:
             return Response(data, status=status_code)
 
