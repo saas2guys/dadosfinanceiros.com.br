@@ -196,10 +196,53 @@ def regenerate_token(request):
     return redirect("profile")
 
 
-@api_view(["GET", "POST"])
-@permission_classes([permissions.AllowAny])
 def register_user(request):
-    return redirect("waiting_list")
+    """Handle user registration for web interface"""
+    if request.method == "POST":
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        errors = []
+        
+        if not email:
+            errors.append("Email is required.")
+        elif User.objects.filter(email=email).exists():
+            errors.append("Email already exists.")
+            
+        if not password1:
+            errors.append("Password is required.")
+        elif len(password1) < 8:
+            errors.append("Password must be at least 8 characters long.")
+            
+        if password1 != password2:
+            errors.append("Passwords don't match.")
+        
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+        else:
+            try:
+                user = User.objects.create_user(
+                    email=email,
+                    password=password1,
+                    first_name=first_name,
+                    last_name=last_name
+                )
+                messages.success(
+                    request,
+                    "Registration successful! You can now log in to your account."
+                )
+                return redirect("login")
+            except Exception as e:
+                messages.error(
+                    request,
+                    "There was an issue creating your account. Please try again."
+                )
+    
+    return render(request, "register.html")
 
 
 def waiting_list(request):
