@@ -295,10 +295,10 @@ ASGI_APPLICATION = "proxy_project.asgi.application"
 DATABASE_URL = config("DATABASE_URL", default=None)
 
 if DATABASE_URL:
-    DATABASES = {"default": dj_database_url.parse(DATABASE_URL, conn_max_age=600, conn_health_checks=True)}
-    DATABASES["default"]["OPTIONS"] = {
-        "sslmode": "require",
-    }
+    db_config = dj_database_url.parse(DATABASE_URL, conn_max_age=0, conn_health_checks=True)
+    db_config['OPTIONS'] = {'sslmode': 'require'}
+    db_config['DISABLE_SERVER_SIDE_CURSORS'] = True
+    DATABASES = {'default': db_config}
     print(f"Using database URL: {DATABASE_URL}")
 else:
     DATABASES = {
