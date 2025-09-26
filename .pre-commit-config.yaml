@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff (uvx)
+        entry: uvx --python 3.13.2 --from ruff ruff check
+        language: system
+        types_or: [python]
+        args: ["--fix", "--force-exclude"]
+      - id: black
+        name: black (uvx)
+        entry: uvx --python 3.13.2 --from black black
+        language: system
+        types_or: [python]
+        args: ["--quiet"]
