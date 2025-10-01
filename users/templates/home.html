@@ -172,6 +172,7 @@
 {% endblock %}
 
 {% block content %}
+    {% csrf_token %}
     <div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
         <div class="pt-16 pb-20 text-center">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -501,161 +502,126 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script>
-        let currentBillingCycle = 'monthly';
+<script>
+let currentBillingCycle = 'monthly';
 
-        function toggleBillingCycle(cycle) {
-            currentBillingCycle = cycle;
-            
-
-            document.getElementById('monthly-toggle').className = cycle === 'monthly' 
-                ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
-                : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
-            
-            document.getElementById('yearly-toggle').className = cycle === 'yearly'
-                ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
-                : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
-            
-
-            document.querySelectorAll('.plan-card').forEach(card => {
-                const monthlyPrice = card.querySelector('.monthly-price');
-                const yearlyPrice = card.querySelector('.yearly-price');
-                const monthlyPeriod = card.querySelector('.monthly-period');
-                const yearlyPeriod = card.querySelector('.yearly-period');
-                const yearlySavings = card.querySelector('.yearly-savings');
-                
-                if (cycle === 'monthly') {
-                    monthlyPrice.classList.remove('hidden');
-                    yearlyPrice.classList.add('hidden');
-                    monthlyPeriod.classList.remove('hidden');
-                    yearlyPeriod.classList.add('hidden');
-                    if (yearlySavings) yearlySavings.classList.add('hidden');
-                } else {
-                    monthlyPrice.classList.add('hidden');
-                    yearlyPrice.classList.remove('hidden');
-                    monthlyPeriod.classList.add('hidden');
-                    yearlyPeriod.classList.remove('hidden');
-                    if (yearlySavings) yearlySavings.classList.remove('hidden');
-                }
-            });
-            
-
-            const selectedCard = document.querySelector('.plan-card.border-blue-500');
-            if (selectedCard) {
-                const planName = selectedCard.getAttribute('data-plan');
-                const planId = selectedCard.getAttribute('data-plan-id');
-                const monthlyPrice = selectedCard.getAttribute('data-monthly-price');
-                const yearlyPrice = selectedCard.getAttribute('data-yearly-price');
-                const price = cycle === 'monthly' ? monthlyPrice : yearlyPrice;
-                selectPlan(planName, planId, price, cycle);
-            }
+function toggleBillingCycle(cycle) {
+    currentBillingCycle = cycle;
+    
+    document.getElementById('monthly-toggle').className = cycle === 'monthly' 
+        ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
+        : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
+    
+    document.getElementById('yearly-toggle').className = cycle === 'yearly'
+        ? 'px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold'
+        : 'px-4 py-2 bg-gray-600 text-gray-300 rounded-lg font-semibold';
+    
+    document.querySelectorAll('.plan-card').forEach(card => {
+        const monthlyPrice = card.querySelector('.monthly-price');
+        const yearlyPrice = card.querySelector('.yearly-price');
+        const monthlyPeriod = card.querySelector('.monthly-period');
+        const yearlyPeriod = card.querySelector('.yearly-period');
+        const yearlySavings = card.querySelector('.yearly-savings');
+        
+        if (cycle === 'monthly') {
+            monthlyPrice.classList.remove('hidden');
+            yearlyPrice.classList.add('hidden');
+            monthlyPeriod.classList.remove('hidden');
+            yearlyPeriod.classList.add('hidden');
+            if (yearlySavings) yearlySavings.classList.add('hidden');
+        } else {
+            monthlyPrice.classList.add('hidden');
+            yearlyPrice.classList.remove('hidden');
+            monthlyPeriod.classList.add('hidden');
+            yearlyPeriod.classList.remove('hidden');
+            if (yearlySavings) yearlySavings.classList.remove('hidden');
         }
+    });
+    
+    const selectedCard = document.querySelector('.plan-card.border-blue-500');
+    if (selectedCard) {
+        const planName = selectedCard.getAttribute('data-plan');
+        const planId = selectedCard.getAttribute('data-plan-id');
+        const monthlyPrice = selectedCard.getAttribute('data-monthly-price');
+        const yearlyPrice = selectedCard.getAttribute('data-yearly-price');
+        const price = cycle === 'monthly' ? monthlyPrice : yearlyPrice;
+        selectPlan(planName, planId, price, cycle);
+    }
+}
 
-        function selectPlan(planName, planId, planPrice, billingCycle = 'monthly') {
-            document.querySelectorAll('.plan-card').forEach(card => {
-                card.classList.remove('border-blue-500');
-                if (card.getAttribute('data-plan') === planName) {
-                    card.classList.add('border-blue-500');
-                }
-            });
-            
-            const period = billingCycle === 'monthly' ? 'month' : 'year';
-            // Commented out subscribe functionality - replaced with waiting list
-            /*
-            let html = `
-                <div class="flex flex-col items-center mt-4">
-                    <button id="subscribe-btn" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition">Subscribe to ${planName} - USD ${planPrice}/${period}</button>
-                </div>
-            `;
-            document.getElementById('subscribe-btn-container').innerHTML = html;
-
-            setTimeout(function() {
-                const btn = document.getElementById('subscribe-btn');
-                if (btn) {
-                    btn.onclick = async function(e) {
-                        e.preventDefault();
-                        btn.disabled = true;
-                        btn.textContent = 'Redirecting...';
-
-                        try {
-                            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-                            const checkoutUrl = '/api/create-checkout-session/';
-
-                            console.log('Making request to:', checkoutUrl);
-
-                            const response = await fetch(checkoutUrl, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': csrfToken,
-                                },
-                                body: JSON.stringify({
-                                    plan_id: planId,
-                                    billing_cycle: billingCycle,
-                                })
-                            });
-
-                            console.log('Response status:', response.status);
-
-                            if (!response.ok) {
-                                const errorText = await response.text();
-                                console.error('Server response:', errorText);
-                                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                            }
-
-                            const contentType = response.headers.get('content-type');
-                            if (!contentType || !contentType.includes('application/json')) {
-                                const responseText = await response.text();
-                                console.error('Non-JSON response:', responseText);
-                                throw new Error('Server returned non-JSON response');
-                            }
-
-                            const data = await response.json();
-
-                            if (data.checkout_url) {
-                                window.location.href = data.checkout_url;
-                            } else if (data.link) {
-                                window.location.href = data.link;
-                            } else {
-                                alert('Error creating checkout: ' + (data.error || 'Unknown error.'));
-                                btn.disabled = false;
-                                btn.textContent = `Subscribe to ${planName} - USD ${planPrice}/${period}`;
-                            }
-                        } catch (err) {
-                            console.error('Full error:', err);
-                            alert('Error creating checkout: ' + err.message);
-                            btn.disabled = false;
-                            btn.textContent = `Subscribe to ${planName} - USD ${planPrice}/${period}`;
-                        }
-                    };
-                }
-            }, 100);
-            */
-            
-            // Replace with join waiting list button
-            let html = `
-                <div class="flex flex-col items-center mt-4">
-                    <a href="{% url 'waiting_list' %}" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition inline-block">Join Waiting List for ${planName}</a>
-                </div>
-            `;
-            document.getElementById('subscribe-btn-container').innerHTML = html;
+function selectPlan(planName, planId, planPrice) {
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.classList.remove('border-blue-500');
+        if (card.getAttribute('data-plan') === planName) {
+            card.classList.add('border-blue-500');
         }
+    });
+    
+    let html = `
+        <div class="flex flex-col items-center mt-4">
+            <button id="subscribe-btn" class="bg-indigo-700 text-white px-8 py-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md transition">Subscribe to ${planName} - US$${planPrice}/month</button>
+        </div>
+    `;
+    document.getElementById('subscribe-btn-container').innerHTML = html;
 
-        window.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('monthly-toggle').addEventListener('click', () => toggleBillingCycle('monthly'));
-            document.getElementById('yearly-toggle').addEventListener('click', () => toggleBillingCycle('yearly'));
+    setTimeout(function() {
+        const btn = document.getElementById('subscribe-btn');
+        if (btn) {
+            btn.onclick = async function(e) {
+                e.preventDefault();
+                const userId = '{{ user.id|default:"" }}';
+                if (!userId) {
+                    alert('You need to be logged to subscribe to a plan');
+                    window.location.href = '{% url "login" %}';
+                    return;
+                }
+                btn.disabled = true;
+                btn.textContent = 'Redirecting...';
+                try {
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    const response = await fetch('{% url "create-checkout-session" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                        },
+                        body: JSON.stringify({
+                            plan_id: planId,
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.checkout_url) {
+                        window.location.href = data.checkout_url;
+                    } else if (data.link) {
+                        window.location.href = data.link;
+                    } else {
+                        alert('Error creating checkout: ' + (data.error || 'Unknown error.'));
+                        btn.disabled = false;
+                        btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
+                    }
+                } catch (err) {
+                    alert('Error creating checkout: ' + err);
+                    btn.disabled = false;
+                    btn.textContent = `Subscribe to ${planName} - US$${planPrice}/month`;
+                }
+            };
+        }
+    }, 100);
+}
 
-            document.querySelectorAll('.plan-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const planName = card.getAttribute('data-plan');
-                    const planId = card.getAttribute('data-plan-id');
-                    const monthlyPrice = card.getAttribute('data-monthly-price');
-                    const yearlyPrice = card.getAttribute('data-yearly-price');
-                    const price = currentBillingCycle === 'monthly' ? monthlyPrice : yearlyPrice;
-                    selectPlan(planName, planId, price, currentBillingCycle);
-                });
-            });
+window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('monthly-toggle').addEventListener('click', () => toggleBillingCycle('monthly'));
+    document.getElementById('yearly-toggle').addEventListener('click', () => toggleBillingCycle('yearly'));
+
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const planName = card.getAttribute('data-plan');
+            const planId = card.getAttribute('data-plan-id');
+            const priceText = card.querySelector('.text-5xl')?.textContent || '';
+            const planPrice = priceText.replace(/[^\d.]/g, '');
+            selectPlan(planName, planId, planPrice);
         });
-    </script>
+    });
+});
+</script>
 {% endblock %}

@@ -206,20 +206,24 @@ def register_user(request):
         password2 = request.POST.get('password2')
 
         errors = []
-        
+
         if not email:
             errors.append("Email is required.")
         elif User.objects.filter(email=email).exists():
             errors.append("Email already exists.")
-            
+
         if not password1:
             errors.append("Password is required.")
         elif len(password1) < 8:
             errors.append("Password must be at least 8 characters long.")
-            
+        elif not any(c.isalpha() for c in password1):
+            errors.append("Password must contain at least one letter.")
+        elif not any(c.isdigit() for c in password1):
+            errors.append("Password must contain at least one number.")
+
         if password1 != password2:
             errors.append("Passwords don't match.")
-        
+
         if errors:
             for error in errors:
                 messages.error(request, error)
@@ -241,7 +245,7 @@ def register_user(request):
                     request,
                     "There was an issue creating your account. Please try again."
                 )
-    
+
     return render(request, "register.html")
 
 
@@ -383,6 +387,10 @@ def create_checkout_session(request):
             plan_id = request.POST.get("plan_id")
 
         plan = get_object_or_404(Plan, id=plan_id, is_active=True)
+        
+        # Debug: Log the plan details
+        logger.info(f"Plan found: {plan.name}, Stripe Price ID: {plan.stripe_price_id}")
+        logger.info(f"Stripe API Key: {settings.STRIPE_SECRET_KEY[:10]}...")
 
         if plan.is_free:
             request.user.upgrade_to_plan(plan)
