@@ -14,7 +14,6 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, APITestCase
 
-from proxy_app.views import PolygonProxyView
 from users.models import Plan
 from users.permissions import DailyLimitPermission
 

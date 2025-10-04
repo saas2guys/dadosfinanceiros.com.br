@@ -378,19 +378,19 @@ def create_checkout_session(request):
             )
         else:
             messages.error(request, "Service temporarily unavailable. Please try again later.")
-            return redirect("home") + "pricing"
+            return redirect(reverse("home") + "#pricing")
     except stripe.error.AuthenticationError as e:
         if is_api_request:
             return JsonResponse({"error": "Authentication error with payment service."}, status=500)
         else:
             messages.error(request, "Payment service error. Please try again later.")
-            return redirect("home") + "pricing"
+            return redirect(reverse("home") + "#pricing")
     except stripe.error.StripeError as e:
         if is_api_request:
             return JsonResponse({"error": f"Payment service error: {str(e)}"}, status=400)
         else:
             messages.error(request, f"Payment error: {str(e)}")
-            return redirect("home") + "#pricing"
+            return redirect(reverse("home") + "#pricing")
     except Http404:
         raise
     except Exception as e:

@@ -134,6 +134,7 @@ subscription_urls = [
 # Other content pages
 content_urls = [
     path("", views.home, name="home"),
+    path("plans/", views.plans_view, name="plans"),
     path("products/", TemplateView.as_view(template_name="products.html"), name="products"),
     path("faq/", TemplateView.as_view(template_name="faq.html"), name="faq"),
     path("blog/", TemplateView.as_view(template_name="blog.html"), name="blog"),
