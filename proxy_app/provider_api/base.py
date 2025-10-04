@@ -350,10 +350,7 @@ class ProviderAPIView(GenericAPIView):
         # Ensure DRF pagination helpers have access to the request even when
         # tests call get() directly instead of dispatching via as_view().
         # DRF normally sets self.request in dispatch; we mirror that here.
-        try:
-            self.request = request  # type: ignore[assignment]
-        except Exception:
-            pass
+        self.request = request  # type: ignore[assignment]
         if not self.active:
             return Response({"detail": "endpoint disabled"}, status=status.HTTP_404_NOT_FOUND)
         if not self.endpoint_to:

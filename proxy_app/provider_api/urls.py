@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .views_fmp import (
     AnalystEstimatesView,
     AnalystPriceTargetsView,

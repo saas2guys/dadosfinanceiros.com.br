@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from rest_framework import serializers
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
