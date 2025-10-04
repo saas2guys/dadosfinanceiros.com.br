@@ -210,20 +210,20 @@ def waiting_list(request):
             try:
                 # Save the form data
                 waiting_list_entry = form.save(commit=False)
-                
+
                 # Handle the custom desired_endpoints checkboxes
                 desired_endpoints = request.POST.getlist('desired_endpoints')
                 waiting_list_entry.desired_endpoints = desired_endpoints
-                
+
                 # Handle the custom desired_plan radio button
                 desired_plan = request.POST.get('desired_plan')
                 waiting_list_entry.desired_plan = desired_plan
                 # Handle the custom desired_billing_cycle radio button
                 desired_billing_cycle = request.POST.get('desired_billing_cycle')
                 waiting_list_entry.desired_billing_cycle = desired_billing_cycle
-                
+
                 waiting_list_entry.save()
-                
+
                 messages.success(
                     request,
                     "Thank you for your interest! You've been added to our waiting list. "

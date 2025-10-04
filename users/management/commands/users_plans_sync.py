@@ -1,7 +1,7 @@
 import logging
 
-from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
 
 from users.management.plan_feature_config import FEATURES, PLANS
 from users.models import Feature, Plan
@@ -115,5 +115,3 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS('Plans and features synchronized.'))
         logger.info('Completed users_plans_sync command')
-
-

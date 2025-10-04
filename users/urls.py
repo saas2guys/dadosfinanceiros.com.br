@@ -33,53 +33,42 @@ seo_landing_pages = [
     path("stock-market-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="stock_market_api"),
     path("stocks-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="stocks_api"),
     path("equity-data-api/", TemplateView.as_view(template_name="stock_market_api.html"), name="equity_data_api"),
-    
     # Forex API
     path("forex-api/", TemplateView.as_view(template_name="forex_api.html"), name="forex_api"),
     path("currency-api/", TemplateView.as_view(template_name="forex_api.html"), name="currency_api"),
     path("fx-api/", TemplateView.as_view(template_name="forex_api.html"), name="fx_api"),
-    
     # Crypto API
     path("crypto-api/", TemplateView.as_view(template_name="crypto_api.html"), name="crypto_api"),
     path("cryptocurrency-api/", TemplateView.as_view(template_name="crypto_api.html"), name="cryptocurrency_api"),
     path("bitcoin-api/", TemplateView.as_view(template_name="crypto_api.html"), name="bitcoin_api"),
     path("digital-assets-api/", TemplateView.as_view(template_name="crypto_api.html"), name="digital_assets_api"),
-    
     # Options API
     path("options-api/", TemplateView.as_view(template_name="options_api.html"), name="options_api"),
     path("derivatives-api/", TemplateView.as_view(template_name="options_api.html"), name="derivatives_api"),
-    
     # Indices API
     path("indices-api/", TemplateView.as_view(template_name="indices_api.html"), name="indices_api"),
     path("index-api/", TemplateView.as_view(template_name="indices_api.html"), name="index_api"),
     path("market-indices-api/", TemplateView.as_view(template_name="indices_api.html"), name="market_indices_api"),
-    
     # Futures API
     path("futures-api/", TemplateView.as_view(template_name="futures_api.html"), name="futures_api"),
-    
     # Commodities API
     path("commodities-api/", TemplateView.as_view(template_name="commodities_api.html"), name="commodities_api"),
     path("commodity-data-api/", TemplateView.as_view(template_name="commodities_api.html"), name="commodity_data_api"),
-    
     # Economic Indicators API
     path("economic-indicators-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="economic_indicators_api"),
     path("economic-data-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="economic_data_api"),
     path("macro-data-api/", TemplateView.as_view(template_name="economic_indicators_api.html"), name="macro_data_api"),
-    
     # Fundamentals API
     path("fundamentals-api/", TemplateView.as_view(template_name="fundamentals_api.html"), name="fundamentals_api"),
     path("financial-statements-api/", TemplateView.as_view(template_name="fundamentals_api.html"), name="financial_statements_api"),
-    
     # News API
     path("news-api/", TemplateView.as_view(template_name="news_api.html"), name="news_api"),
     path("news-sentiment-api/", TemplateView.as_view(template_name="news_api.html"), name="news_sentiment_api"),
     path("financial-news-api/", TemplateView.as_view(template_name="news_api.html"), name="financial_news_api"),
-    
     # Technical Analysis API
     path("technical-analysis-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="technical_analysis_api"),
     path("technical-indicators-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="technical_indicators_api"),
     path("ta-api/", TemplateView.as_view(template_name="technical_analysis_api.html"), name="ta_api"),
-    
     # Earnings API
     path("earnings-api/", TemplateView.as_view(template_name="earnings_api.html"), name="earnings_api"),
     path("earnings-calendar-api/", TemplateView.as_view(template_name="earnings_api.html"), name="earnings_calendar_api"),
@@ -156,11 +145,11 @@ legacy_api_urls = [
 ]
 
 urlpatterns = (
-    content_urls +
-    seo_landing_pages +
-    user_management_urls +
-    auth_urls +
-    subscription_urls +
-    legacy_api_urls +
-    [path("api/", include((api_urlpatterns, "api"), namespace="api"))]
+    content_urls
+    + seo_landing_pages
+    + user_management_urls
+    + auth_urls
+    + subscription_urls
+    + legacy_api_urls
+    + [path("api/", include((api_urlpatterns, "api"), namespace="api"))]
 )

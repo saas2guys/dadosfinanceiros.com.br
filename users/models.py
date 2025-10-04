@@ -287,11 +287,9 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         if not self.current_plan:
-            try:
-                free_plan = Plan.objects.get(is_free=True, is_active=True)
+            free_plan = Plan.objects.filter(is_free=True, is_active=True).first()
+            if free_plan is not None:
                 self.current_plan = free_plan
-            except Plan.DoesNotExist:
-                pass
 
         if not self.token_never_expires and not self.request_token_expires:
             self.request_token_expires = timezone.now() + timedelta(days=self.token_validity_days)
@@ -649,7 +647,7 @@ class WaitingList(models.Model):
         ('501-1000', '501-1000 employees'),
         ('1000+', '1000+ employees'),
     ]
-    
+
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=150, blank=True)

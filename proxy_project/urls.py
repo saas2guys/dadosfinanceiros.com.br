@@ -2,32 +2,25 @@ from aiohttp.web_response import json_response
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns, set_language
 from django.contrib import admin
-from django.contrib.sitemaps.views import sitemap
-from django.http import HttpResponse
-from django.shortcuts import redirect
 from django.urls import include, path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
-from django.http import JsonResponse
 
 import users.views
 from proxy_app.views import api_documentation
-from sitemaps import sitemaps
 from users.views import stripe_webhook
-
-
 
 urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("set_language/", set_language, name="set_language"),
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path(
-        'robots.txt',
-        lambda r: HttpResponse("User-agent: *\nAllow: /\nSitemap: https://api.financialdata.online/sitemap.xml", content_type="text/plain"),
-    ),
+    # path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    # path(
+    #     'robots.txt',
+    #     lambda r: HttpResponse("User-agent: *\nAllow: /\nSitemap: https://api.financialdata.online/sitemap.xml", content_type="text/plain"),
+    # ),
     # API Documentation - accessible without language prefix
     path("api/docs/", api_documentation, name="api_docs_direct"),
     # Stripe webhooks should not have language prefix
