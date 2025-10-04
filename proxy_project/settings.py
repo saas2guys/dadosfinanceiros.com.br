@@ -337,9 +337,14 @@ else:
             "OPTIONS": {
                 "MAX_ENTRIES": 100000,  # Prevent unlimited growth
                 "CULL_FREQUENCY": 10,  # Clean old entries regularly
+            },
         },
     }
-}
+
+# Silence django-ratelimit system checks and disable ratelimiting during tests
+if 'test' in sys.argv:
+    SILENCED_SYSTEM_CHECKS = ['django_ratelimit.E003', 'django_ratelimit.W001']
+    RATELIMIT_ENABLE = False
 
 # Explicitly point django-ratelimit to use the default cache
 RATELIMIT_USE_CACHE = "default"
@@ -409,6 +414,14 @@ REST_FRAMEWORK = {
         ("rest_framework.permissions.AllowAny" if ENV == "local" else "rest_framework.permissions.IsAuthenticated"),
     ],
     "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
+    "DEFAULT_PAGINATION_CLASS": "proxy_app.provider_api.pagination.ResultsKeyPagination",
+    "PAGE_SIZE": 50,
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.ScopedRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "default": "1000/day",
+    },
 }
 
 AUTH_USER_MODEL = "users.User"

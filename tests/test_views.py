@@ -5,18 +5,18 @@ Tests authentication, permissions, API endpoints, error handling, and edge cases
 import json
 from datetime import datetime, timedelta
 from decimal import Decimal
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import MagicMock, Mock, patch
 
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from django.test import Client, TestCase, override_settings, RequestFactory
+from django.test import Client, RequestFactory, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-from proxy_app.providers import PolygonProvider, FMPProvider
+from proxy_app.providers import FMPProvider, PolygonProvider
 from users.models import Plan
 
 from .factories import (
@@ -581,18 +581,12 @@ class UnifiedFinancialAPITests(TestCase):
     @patch("proxy_app.views.requests.Session.request")
     def test_reference_tickers_list(self, mock_request):
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "results": [{"ticker": "AAPL"}, {"ticker": "MSFT"}],
-            "status": "OK"
-        }
+        mock_response.json.return_value = {"results": [{"ticker": "AAPL"}, {"ticker": "MSFT"}], "status": "OK"}
         mock_response.status_code = 200
         mock_response.content = b'{"results": [{"ticker": "AAPL"}, {"ticker": "MSFT"}], "status": "OK"}'
         mock_request.return_value = mock_response
 
-        response = self.client.get(
-            "/api/v1/reference/tickers",
-            {"apiKey": self.api_key}
-        )
+        response = self.client.get("/api/v1/reference/tickers", {"apiKey": self.api_key})
         self.assertEqual(response.status_code, 200)
         self.assertIn("results", response.json())
         self.assertEqual(response.json()["results"][0]["ticker"], "AAPL")
@@ -600,18 +594,12 @@ class UnifiedFinancialAPITests(TestCase):
     @patch("proxy_app.views.requests.Session.request")
     def test_reference_ticker_details(self, mock_request):
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "results": {"ticker": "AAPL", "name": "Apple Inc"},
-            "status": "OK"
-        }
+        mock_response.json.return_value = {"results": {"ticker": "AAPL", "name": "Apple Inc"}, "status": "OK"}
         mock_response.status_code = 200
         mock_response.content = b'{"results": {"ticker": "AAPL", "name": "Apple Inc"}, "status": "OK"}'
         mock_request.return_value = mock_response
 
-        response = self.client.get(
-            "/api/v1/reference/tickers/AAPL",
-            {"apiKey": self.api_key}
-        )
+        response = self.client.get("/api/v1/reference/tickers/AAPL", {"apiKey": self.api_key})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["results"]["ticker"], "AAPL")
 
@@ -619,55 +607,37 @@ class UnifiedFinancialAPITests(TestCase):
     def test_aggregates_range(self, mock_request):
         """Test the correct endpoint for aggregates/OHLC data"""
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "results": [{"c": 178.85, "o": 177.5, "h": 179.0, "l": 177.0, "v": 1000000}],
-            "status": "OK"
-        }
+        mock_response.json.return_value = {"results": [{"c": 178.85, "o": 177.5, "h": 179.0, "l": 177.0, "v": 1000000}], "status": "OK"}
         mock_response.status_code = 200
         mock_response.content = b'{"results": [{"c": 178.85, "o": 177.5}], "status": "OK"}'
         mock_request.return_value = mock_response
 
         # Use the correct endpoint format that exists in the mapping
-        response = self.client.get(
-            "/api/v1/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-02",
-            {"apiKey": self.api_key}
-        )
+        response = self.client.get("/api/v1/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-02", {"apiKey": self.api_key})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["results"][0]["c"], 178.85)
 
     @patch("proxy_app.views.requests.Session.request")  # Fixed patch
     def test_trades(self, mock_request):
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "results": [{"p": 178.9, "s": 100}],
-            "status": "OK"
-        }
+        mock_response.json.return_value = {"results": [{"p": 178.9, "s": 100}], "status": "OK"}
         mock_response.status_code = 200
         mock_response.content = b'{"results": [{"p": 178.9, "s": 100}], "status": "OK"}'
         mock_request.return_value = mock_response
 
-        response = self.client.get(
-            "/api/v1/ticks/AAPL/trades",
-            {"apiKey": self.api_key}
-        )
+        response = self.client.get("/api/v1/ticks/AAPL/trades", {"apiKey": self.api_key})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["results"][0]["p"], 178.9)
 
     @patch("proxy_app.views.requests.Session.request")
     def test_error_handling(self, mock_request):
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "error": "Unauthorized",
-            "status": "ERROR"
-        }
+        mock_response.json.return_value = {"error": "Unauthorized", "status": "ERROR"}
         mock_response.status_code = 401
         mock_response.content = b'{"error": "Unauthorized", "status": "ERROR"}'
         mock_request.return_value = mock_response
 
-        response = self.client.get(
-            "/api/v1/reference/tickers",
-            {"apiKey": "wrong_key"}
-        )
+        response = self.client.get("/api/v1/reference/tickers", {"apiKey": "wrong_key"})
         self.assertEqual(response.status_code, 401)
         self.assertIn("error", response.json())
 
@@ -675,20 +645,12 @@ class UnifiedFinancialAPITests(TestCase):
     def test_quotes_endpoint(self, mock_request):
         """Test the quotes endpoint (FMP provider)"""
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "symbol": "AAPL",
-            "price": 178.85,
-            "change": -0.15,
-            "changesPercentage": -0.0843
-        }
+        mock_response.json.return_value = {"symbol": "AAPL", "price": 178.85, "change": -0.15, "changesPercentage": -0.0843}
         mock_response.status_code = 200
         mock_response.content = b'{"symbol": "AAPL", "price": 178.85}'
         mock_request.return_value = mock_response
 
-        response = self.client.get(
-            "/api/v1/quotes/AAPL",
-            {"apiKey": self.api_key}
-        )
+        response = self.client.get("/api/v1/quotes/AAPL", {"apiKey": self.api_key})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["symbol"], "AAPL")
 
@@ -696,19 +658,11 @@ class UnifiedFinancialAPITests(TestCase):
     def test_historical_data(self, mock_request):
         """Test historical data endpoint"""
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "symbol": "AAPL",
-            "historical": [
-                {"date": "2023-01-01", "open": 177.5, "close": 178.85}
-            ]
-        }
+        mock_response.json.return_value = {"symbol": "AAPL", "historical": [{"date": "2023-01-01", "open": 177.5, "close": 178.85}]}
         mock_response.status_code = 200
         mock_response.content = b'{"symbol": "AAPL", "historical": []}'
         mock_request.return_value = mock_response
 
-        response = self.client.get(
-            "/api/v1/historical/AAPL",
-            {"apiKey": self.api_key}
-        )
+        response = self.client.get("/api/v1/historical/AAPL", {"apiKey": self.api_key})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["symbol"], "AAPL")

@@ -82,5 +82,3 @@ PLANS = {
         'is_metered': False,
     },
 }
-
-

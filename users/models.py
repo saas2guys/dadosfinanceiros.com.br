@@ -649,7 +649,7 @@ class WaitingList(models.Model):
         ('501-1000', '501-1000 employees'),
         ('1000+', '1000+ employees'),
     ]
-    
+
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=150, blank=True)

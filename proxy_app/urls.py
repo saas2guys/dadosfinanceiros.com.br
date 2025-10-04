@@ -6,8 +6,10 @@ from .views_new import HealthView
 
 app_name = "proxy_app"
 
+
 def root():
     return JsonResponse({"status": "ok"}, status=200)
+
 
 urlpatterns = [
     path("", root, name="root"),

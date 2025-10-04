@@ -1,3 +1,1 @@
 from .urls import urlpatterns
-
-
