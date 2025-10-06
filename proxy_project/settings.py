@@ -144,10 +144,8 @@ INSTALLED_APPS = [
 
 
 if DEBUG:
-    try:
-        import django_extensions
-        import livereload
-
+    import importlib
+    if importlib.util.find_spec("django_extensions") and importlib.util.find_spec("livereload"):
         INSTALLED_APPS += ["django_extensions", "livereload"]
         SHELL_PLUS_PRE_IMPORTS = [
             ("pprint", ["pprint", "pformat"]),
@@ -156,13 +154,10 @@ if DEBUG:
 
         SHELL_PLUS_PRINT_SQL = True
         SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000
-    except ImportError:
-        pass
 
     if 'test' not in sys.argv:
-        try:
-            import debug_toolbar
-
+        import importlib
+        if importlib.util.find_spec("debug_toolbar"):
             INSTALLED_APPS += ["debug_toolbar"]
 
             INTERNAL_IPS = [
@@ -194,8 +189,6 @@ if DEBUG:
                 "debug_toolbar.panels.redirects.RedirectsPanel",
                 "debug_toolbar.panels.profiling.ProfilingPanel",
             ]
-        except ImportError:
-            pass
 if DEBUG:
     MIDDLEWARE = [
         "django.middleware.security.SecurityMiddleware",
@@ -226,16 +219,13 @@ else:
         "django.middleware.locale.LocaleMiddleware",
     ]
 if DEBUG and 'test' not in sys.argv:
-    try:
-        import debug_toolbar
-        import livereload
-
-        MIDDLEWARE += [
-            "debug_toolbar.middleware.DebugToolbarMiddleware",
-            "livereload.middleware.LiveReloadScript",
-        ]
-    except ImportError:
-        pass
+    import importlib
+    middlewares = []
+    if importlib.util.find_spec("debug_toolbar"):
+        middlewares.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+    if importlib.util.find_spec("livereload"):
+        middlewares.append("livereload.middleware.LiveReloadScript")
+    MIDDLEWARE += middlewares
 
 if not DEBUG:
     MIDDLEWARE.insert(1, "csp.middleware.CSPMiddleware")
@@ -337,9 +327,14 @@ else:
             "OPTIONS": {
                 "MAX_ENTRIES": 100000,  # Prevent unlimited growth
                 "CULL_FREQUENCY": 10,  # Clean old entries regularly
+            },
         },
     }
-}
+
+# Silence django-ratelimit system checks and disable ratelimiting during tests
+if 'test' in sys.argv:
+    SILENCED_SYSTEM_CHECKS = ['django_ratelimit.E003', 'django_ratelimit.W001']
+    RATELIMIT_ENABLE = False
 
 # Explicitly point django-ratelimit to use the default cache
 RATELIMIT_USE_CACHE = "default"
@@ -409,6 +404,14 @@ REST_FRAMEWORK = {
         ("rest_framework.permissions.AllowAny" if ENV == "local" else "rest_framework.permissions.IsAuthenticated"),
     ],
     "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
+    "DEFAULT_PAGINATION_CLASS": "proxy_app.provider_api.pagination.ResultsKeyPagination",
+    "PAGE_SIZE": 50,
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.ScopedRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "default": "1000/day",
+    },
 }
 
 AUTH_USER_MODEL = "users.User"

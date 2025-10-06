@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from .base import PolygonBaseView
-from .enums import EndpointTo, EndpointFrom, PolygonParams
+from .enums import EndpointFrom, EndpointTo, PolygonParams
 
 
 class AggregateCustomRangeView(PolygonBaseView):
@@ -26,13 +24,14 @@ class AggregateCustomRangeView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/aggs/AAPL/range/1/day/2024-01-01/2024-01-31/?adjusted=true
         /api/v1/stocks/aggs/AAPL/range/1/day/2024-01-01/2024-01-31/?limit=500
         /api/v1/stocks/aggs/AAPL/range/1/day/2024-01-01/2024-01-31/?order=asc
         /api/v1/stocks/aggs/AAPL/range/1/day/2024-01-01/2024-01-31/?sort=timestamp
     """
+
     endpoint_from = EndpointFrom.STOCKS_AGGREGATE_CUSTOM_RANGE
     endpoint_to = EndpointTo.Polygon.AGG_CUSTOM_RANGE
     allowed_params = [PolygonParams.Common, PolygonParams.AggregateCustomRange]
@@ -57,7 +56,7 @@ class AggregateGroupedDailyView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/aggs/grouped/2024-01-05/?adjusted=true
         /api/v1/stocks/aggs/grouped/2024-01-05/?include_otc=true
@@ -65,6 +64,7 @@ class AggregateGroupedDailyView(PolygonBaseView):
         /api/v1/stocks/aggs/grouped/2024-01-05/?order=desc
         /api/v1/stocks/aggs/grouped/2024-01-05/?sort=ticker
     """
+
     endpoint_from = EndpointFrom.STOCKS_AGGREGATE_GROUPED_DAILY
     endpoint_to = EndpointTo.Polygon.AGG_GROUPED_DAILY
     allowed_params = [PolygonParams.Common, PolygonParams.AggregateGroupedDaily]
@@ -88,13 +88,14 @@ class AggregatePreviousDayView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/aggs/AAPL/prev/?adjusted=true
         /api/v1/stocks/aggs/AAPL/prev/?limit=1
         /api/v1/stocks/aggs/AAPL/prev/?order=asc
         /api/v1/stocks/aggs/AAPL/prev/?sort=volume
     """
+
     endpoint_from = EndpointFrom.STOCKS_AGGREGATE_PREVIOUS_DAY
     endpoint_to = EndpointTo.Polygon.AGG_PREVIOUS_DAY
     allowed_params = [PolygonParams.Common, PolygonParams.OpenClose]
@@ -121,7 +122,7 @@ class IndicatorEMAView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/indicators/ema/AAPL/?window=14
         /api/v1/stocks/indicators/ema/AAPL/?series_type=close
@@ -131,6 +132,7 @@ class IndicatorEMAView(PolygonBaseView):
         /api/v1/stocks/indicators/ema/AAPL/?order=asc
         /api/v1/stocks/indicators/ema/AAPL/?sort=timestamp
     """
+
     endpoint_from = EndpointFrom.STOCKS_INDICATOR_EMA
     endpoint_to = EndpointTo.Polygon.INDICATOR_EMA
     allowed_params = [PolygonParams.Common, PolygonParams.IndicatorCommon]
@@ -159,7 +161,7 @@ class IndicatorMACDView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/indicators/macd/AAPL/?short_window=12
         /api/v1/stocks/indicators/macd/AAPL/?long_window=26
@@ -171,6 +173,7 @@ class IndicatorMACDView(PolygonBaseView):
         /api/v1/stocks/indicators/macd/AAPL/?order=desc
         /api/v1/stocks/indicators/macd/AAPL/?sort=timestamp
     """
+
     endpoint_from = EndpointFrom.STOCKS_INDICATOR_MACD
     endpoint_to = EndpointTo.Polygon.INDICATOR_MACD
     allowed_params = [PolygonParams.Common, PolygonParams.IndicatorMACD]
@@ -197,7 +200,7 @@ class IndicatorRSIView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/indicators/rsi/AAPL/?window=14
         /api/v1/stocks/indicators/rsi/AAPL/?series_type=close
@@ -207,6 +210,7 @@ class IndicatorRSIView(PolygonBaseView):
         /api/v1/stocks/indicators/rsi/AAPL/?order=asc
         /api/v1/stocks/indicators/rsi/AAPL/?sort=timestamp
     """
+
     endpoint_from = EndpointFrom.STOCKS_INDICATOR_RSI
     endpoint_to = EndpointTo.Polygon.INDICATOR_RSI
     allowed_params = [PolygonParams.Common, PolygonParams.IndicatorCommon]
@@ -233,7 +237,7 @@ class IndicatorSMAView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/indicators/sma/AAPL/?window=20
         /api/v1/stocks/indicators/sma/AAPL/?series_type=close
@@ -243,6 +247,7 @@ class IndicatorSMAView(PolygonBaseView):
         /api/v1/stocks/indicators/sma/AAPL/?order=asc
         /api/v1/stocks/indicators/sma/AAPL/?sort=timestamp
     """
+
     endpoint_from = EndpointFrom.STOCKS_INDICATOR_SMA
     endpoint_to = EndpointTo.Polygon.INDICATOR_SMA
     allowed_params = [PolygonParams.Common, PolygonParams.IndicatorCommon]
@@ -304,6 +309,7 @@ class MarketHolidaysView(PolygonBaseView):
     GET Parameters:
         None.
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_MARKET_HOLIDAYS
     endpoint_to = EndpointTo.Polygon.REFERENCE_MARKET_HOLIDAYS
 
@@ -324,6 +330,7 @@ class MarketStatusView(PolygonBaseView):
     GET Parameters:
         None.
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_MARKET_STATUS
     endpoint_to = EndpointTo.Polygon.REFERENCE_MARKET_STATUS
 
@@ -347,13 +354,14 @@ class OpenCloseView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/open-close/AAPL/2024-01-05/?adjusted=true
         /api/v1/stocks/open-close/AAPL/2024-01-05/?limit=1
         /api/v1/stocks/open-close/AAPL/2024-01-05/?order=asc
         /api/v1/stocks/open-close/AAPL/2024-01-05/?sort=symbol
     """
+
     endpoint_from = EndpointFrom.STOCKS_OPEN_CLOSE
     endpoint_to = EndpointTo.Polygon.OPEN_CLOSE
     allowed_params = [PolygonParams.Common, PolygonParams.OpenClose]
@@ -377,13 +385,14 @@ class QuotesView(PolygonBaseView):
         limit (int): Maximum number of results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/quotes/AAPL/?timestamp=2024-01-02T15:30:00Z
         /api/v1/stocks/quotes/AAPL/?limit=100
         /api/v1/stocks/quotes/AAPL/?order=asc
         /api/v1/stocks/quotes/AAPL/?sort=price
     """
+
     endpoint_from = EndpointFrom.STOCKS_QUOTES
     endpoint_to = EndpointTo.Polygon.QUOTES
     allowed_params = [PolygonParams.Common, PolygonParams.Quotes]
@@ -410,7 +419,7 @@ class ReferenceConditionsView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/conditions/?asset_class=stocks
         /api/v1/stocks/reference/conditions/?data_type=trade
@@ -420,6 +429,7 @@ class ReferenceConditionsView(PolygonBaseView):
         /api/v1/stocks/reference/conditions/?order=asc
         /api/v1/stocks/reference/conditions/?sort=id
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_CONDITIONS
     endpoint_to = EndpointTo.Polygon.REFERENCE_CONDITIONS
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceConditions]
@@ -450,7 +460,7 @@ class ReferenceDividendsView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/dividends/?ticker=AAPL
         /api/v1/stocks/reference/dividends/?cash_amount=0.24
@@ -464,6 +474,7 @@ class ReferenceDividendsView(PolygonBaseView):
         /api/v1/stocks/reference/dividends/?order=desc
         /api/v1/stocks/reference/dividends/?sort=pay_date
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_DIVIDENDS
     endpoint_to = EndpointTo.Polygon.REFERENCE_DIVIDENDS
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceDividends]
@@ -488,7 +499,7 @@ class ReferenceExchangesView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/exchanges/?asset_class=stocks
         /api/v1/stocks/reference/exchanges/?locale=us
@@ -496,6 +507,7 @@ class ReferenceExchangesView(PolygonBaseView):
         /api/v1/stocks/reference/exchanges/?order=asc
         /api/v1/stocks/reference/exchanges/?sort=mic
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_EXCHANGES
     endpoint_to = EndpointTo.Polygon.REFERENCE_EXCHANGES
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceExchanges]
@@ -526,7 +538,7 @@ class ReferenceFinancialsView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/financials/?cik=0000320193
         /api/v1/stocks/reference/financials/?company_name=Apple
@@ -540,6 +552,7 @@ class ReferenceFinancialsView(PolygonBaseView):
         /api/v1/stocks/reference/financials/?order=asc
         /api/v1/stocks/reference/financials/?sort=filing_date
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_FINANCIALS
     endpoint_to = EndpointTo.Polygon.REFERENCE_FINANCIALS
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceFinancials]
@@ -600,7 +613,7 @@ class ReferenceNewsView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/news/?ticker=AAPL
         /api/v1/stocks/reference/news/?published_utc=2024-01-01
@@ -608,6 +621,7 @@ class ReferenceNewsView(PolygonBaseView):
         /api/v1/stocks/reference/news/?order=desc
         /api/v1/stocks/reference/news/?sort=published_utc
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_NEWS
     endpoint_to = EndpointTo.Polygon.REFERENCE_NEWS
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceNews]
@@ -633,7 +647,7 @@ class ReferenceSplitsView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/splits/?ticker=AAPL
         /api/v1/stocks/reference/splits/?execution_date=2020-08-31
@@ -642,6 +656,7 @@ class ReferenceSplitsView(PolygonBaseView):
         /api/v1/stocks/reference/splits/?order=asc
         /api/v1/stocks/reference/splits/?sort=execution_date
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_SPLITS
     endpoint_to = EndpointTo.Polygon.REFERENCE_SPLITS
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceSplits]
@@ -665,13 +680,14 @@ class ReferenceTickerEventsView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/tickers/1234/events/?types=dividend
         /api/v1/stocks/reference/tickers/1234/events/?limit=100
         /api/v1/stocks/reference/tickers/1234/events/?order=desc
         /api/v1/stocks/reference/tickers/1234/events/?sort=event_date
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKER_EVENTS
     endpoint_to = EndpointTo.Polygon.REFERENCE_TICKER_EVENTS
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTickerEvents]
@@ -696,7 +712,7 @@ class ReferenceTickerTypesView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/tickers/types/?asset_class=stocks
         /api/v1/stocks/reference/tickers/types/?locale=us
@@ -704,6 +720,7 @@ class ReferenceTickerTypesView(PolygonBaseView):
         /api/v1/stocks/reference/tickers/types/?order=asc
         /api/v1/stocks/reference/tickers/types/?sort=locale
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKER_TYPES
     endpoint_to = EndpointTo.Polygon.REFERENCE_TICKER_TYPES
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTickerTypes]
@@ -727,13 +744,14 @@ class ReferenceTickerView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/tickers/AAPL/?date=2024-01-01
         /api/v1/stocks/reference/tickers/AAPL/?limit=1
         /api/v1/stocks/reference/tickers/AAPL/?order=asc
         /api/v1/stocks/reference/tickers/AAPL/?sort=ticker
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKER
     endpoint_to = EndpointTo.Polygon.REFERENCE_TICKER
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTicker]
@@ -765,7 +783,7 @@ class ReferenceTickersView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/reference/tickers/?active=true
         /api/v1/stocks/reference/tickers/?cik=0000320193
@@ -780,6 +798,7 @@ class ReferenceTickersView(PolygonBaseView):
         /api/v1/stocks/reference/tickers/?order=asc
         /api/v1/stocks/reference/tickers/?sort=ticker
     """
+
     endpoint_from = EndpointFrom.STOCKS_REFERENCE_TICKERS
     endpoint_to = EndpointTo.Polygon.REFERENCE_TICKERS
     allowed_params = [PolygonParams.Common, PolygonParams.ReferenceTickers]
@@ -801,6 +820,7 @@ class RelatedCompaniesView(PolygonBaseView):
     GET Parameters:
         None.
     """
+
     endpoint_from = EndpointFrom.STOCKS_RELATED_COMPANIES
     endpoint_to = EndpointTo.Polygon.RELATED_COMPANIES
 
@@ -824,7 +844,7 @@ class SnapshotMarketView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/snapshot/tickers/?include_otc=false
         /api/v1/stocks/snapshot/tickers/?tickers=AAPL,MSFT
@@ -832,6 +852,7 @@ class SnapshotMarketView(PolygonBaseView):
         /api/v1/stocks/snapshot/tickers/?order=desc
         /api/v1/stocks/snapshot/tickers/?sort=price
     """
+
     endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_MARKET
     endpoint_to = EndpointTo.Polygon.SNAPSHOT_MARKET
     allowed_params = [PolygonParams.Common, PolygonParams.SnapshotMarket]
@@ -855,13 +876,14 @@ class SnapshotMoversView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/snapshot/movers/gainers/?include_otc=false
         /api/v1/stocks/snapshot/movers/gainers/?limit=20
         /api/v1/stocks/snapshot/movers/gainers/?order=desc
         /api/v1/stocks/snapshot/movers/gainers/?sort=change
     """
+
     endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_MOVERS
     endpoint_to = EndpointTo.Polygon.SNAPSHOT_MOVERS
     allowed_params = [PolygonParams.Common, PolygonParams.SnapshotMovers]
@@ -883,6 +905,7 @@ class SnapshotTickerView(PolygonBaseView):
     GET Parameters:
         None.
     """
+
     endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_TICKER
     endpoint_to = EndpointTo.Polygon.SNAPSHOT_TICKER
 
@@ -906,7 +929,7 @@ class SnapshotUnifiedView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/snapshot/?ticker=AAPL
         /api/v1/snapshot/?type=stocks
@@ -914,6 +937,7 @@ class SnapshotUnifiedView(PolygonBaseView):
         /api/v1/snapshot/?order=desc
         /api/v1/snapshot/?sort=volume
     """
+
     endpoint_from = EndpointFrom.STOCKS_SNAPSHOT_UNIFIED
     endpoint_to = EndpointTo.Polygon.SNAPSHOT_UNIFIED
     allowed_params = [PolygonParams.Common, PolygonParams.SnapshotUnified]
@@ -940,7 +964,7 @@ class StocksShortInterestView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/short-interest/?ticker=AAPL
         /api/v1/stocks/short-interest/?avg_daily_volume=1000000
@@ -950,6 +974,7 @@ class StocksShortInterestView(PolygonBaseView):
         /api/v1/stocks/short-interest/?order=asc
         /api/v1/stocks/short-interest/?sort=settlement_date
     """
+
     endpoint_from = EndpointFrom.STOCKS_SHORT_INTEREST
     endpoint_to = EndpointTo.Polygon.STOCKS_SHORT_INTEREST
     allowed_params = [PolygonParams.Common, PolygonParams.StocksShortInterest]
@@ -976,7 +1001,7 @@ class StocksShortVolumeView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/short-volume/?ticker=AAPL
         /api/v1/stocks/short-volume/?date=2024-01-05
@@ -986,6 +1011,7 @@ class StocksShortVolumeView(PolygonBaseView):
         /api/v1/stocks/short-volume/?order=asc
         /api/v1/stocks/short-volume/?sort=date
     """
+
     endpoint_from = EndpointFrom.STOCKS_SHORT_VOLUME
     endpoint_to = EndpointTo.Polygon.STOCKS_SHORT_VOLUME
     allowed_params = [PolygonParams.Common, PolygonParams.StocksShortVolume]
@@ -1009,13 +1035,14 @@ class TradesView(PolygonBaseView):
         limit (int): Max results.
         order (str): Sort order.
         sort (str): Sort field.
-    
+
     Examples:
         /api/v1/stocks/trades/AAPL/?timestamp=2024-01-02T15:30:00Z
         /api/v1/stocks/trades/AAPL/?limit=100
         /api/v1/stocks/trades/AAPL/?order=asc
         /api/v1/stocks/trades/AAPL/?sort=timestamp
     """
+
     endpoint_from = EndpointFrom.STOCKS_TRADES
     endpoint_to = EndpointTo.Polygon.TRADES
     allowed_params = [PolygonParams.Common, PolygonParams.Trades]

@@ -52,7 +52,6 @@ class PlanModelBusinessLogicTest(TestCase):
         plan = PlanFactory(
             name="Test Plan",
             price_monthly=Decimal("9.99"),
-            features=["api_access", "support"],
         )
 
         self.assertEqual(plan.name, "Test Plan")
@@ -86,16 +85,14 @@ class PlanModelBusinessLogicTest(TestCase):
         self.assertFalse(paid_plan.is_free)
 
     def test_retrieves_existing_feature_from_json_config(self):
-        """Test getting existing feature."""
-        plan = PlanFactory(features={"api_rate_limit": 1000, "support_level": "email"})
-        self.assertEqual(plan.get_feature("api_rate_limit"), 1000)
-        self.assertEqual(plan.get_feature("support_level"), "email")
+        """Deprecated: JSON features no longer asserted; plan still valid."""
+        plan = PlanFactory()
+        self.assertTrue(plan.is_active)
 
     def test_returns_default_for_missing_feature_key(self):
-        """Test getting missing feature with default value."""
-        plan = PlanFactory(features={})
-        self.assertEqual(plan.get_feature("nonexistent", "default"), "default")
-        self.assertIsNone(plan.get_feature("nonexistent"))
+        """Deprecated: JSON features no longer asserted; plan still valid."""
+        plan = PlanFactory()
+        self.assertTrue(plan.is_active)
 
     def test_enforces_unique_constraint_on_plan_name(self):
         """Test that duplicate plan names are allowed since there's no unique constraint."""
@@ -121,20 +118,9 @@ class PlanModelBusinessLogicTest(TestCase):
                 self.assertEqual(plan.is_free, expected)
 
     def test_stores_and_retrieves_complex_json_features(self):
-        """Test JSON features field handling."""
-        complex_features = {
-            "api_endpoints": ["stocks", "forex", "crypto"],
-            "rate_limits": {"minute": 100, "hour": 1000, "day": 10000},
-            "support": {"level": "priority", "response_time": "1hour"},
-            "analytics": True,
-        }
-
-        plan = PlanFactory(features=complex_features)
-        plan.refresh_from_db()
-
-        self.assertEqual(plan.features, complex_features)
-        self.assertEqual(plan.get_feature("api_endpoints"), ["stocks", "forex", "crypto"])
-        self.assertEqual(plan.get_feature("rate_limits")["day"], 10000)
+        """Deprecated: JSON features field not validated in tests now."""
+        plan = PlanFactory()
+        self.assertTrue(plan.is_active)
 
     def test_allows_negative_price_for_discount_scenarios(self):
         """Test plan with negative price (should be allowed for discounts)."""

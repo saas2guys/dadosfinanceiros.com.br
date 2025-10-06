@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'API Documentation - Financial Data API' %}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <h1 class="text-3xl font-bold text-white mb-8">{% trans 'API Endpoints' %}</h1>
+
+  {% if api_endpoints %}
+    <div class="bg-gray-800 rounded-lg p-6">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-700">
+            <th class="text-left py-2 text-gray-300">{% trans 'Method' %}</th>
+            <th class="text-left py-2 text-gray-300">{% trans 'Path' %}</th>
+            <th class="text-left py-2 text-gray-300">{% trans 'Name' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ep in api_endpoints %}
+            <tr class="border-b border-gray-700">
+              <td class="py-2"><span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-medium">{{ ep.method }}</span></td>
+              <td class="py-2 text-blue-400 font-mono">{{ ep.path }}</td>
+              <td class="py-2 text-gray-300">{{ ep.name }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="bg-gray-800 rounded-lg p-6 text-gray-300">
+      {% trans 'No endpoints found. Ensure provider URLs are configured.' %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

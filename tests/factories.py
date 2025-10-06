@@ -69,7 +69,6 @@ class PlanFactory(factory.django.DjangoModelFactory):
     daily_request_limit = 1000
     price_monthly = Decimal("9.99")
     stripe_price_id = factory.LazyFunction(lambda: f"price_{uuid.uuid4().hex[:16]}")
-    features = factory.LazyFunction(dict)
     is_active = True
 
 

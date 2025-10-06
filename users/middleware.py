@@ -115,23 +115,17 @@ class DatabaseRateLimitMiddleware:
 
         # Try RequestTokenAuthentication
         request_token_auth = RequestTokenAuthentication()
-        try:
-            auth_result = request_token_auth.authenticate(request)
-            if auth_result:
-                user, token = auth_result
-                return user
-        except Exception:
-            pass
+        auth_result = request_token_auth.authenticate(request)
+        if auth_result:
+            user, token = auth_result
+            return user
 
         # Try JWT Authentication
         jwt_auth = JWTAuthentication()
-        try:
-            auth_result = jwt_auth.authenticate(request)
-            if auth_result:
-                user, token = auth_result
-                return user
-        except Exception:
-            pass
+        auth_result = jwt_auth.authenticate(request)
+        if auth_result:
+            user, token = auth_result
+            return user
 
         # Return the current user (might be anonymous)
         return request.user
@@ -358,35 +352,31 @@ class DatabaseRateLimitMiddleware:
 
     def track_usage_async(self, request, response, start_time):
         """Track detailed usage data asynchronously"""
-        try:
-            # Check if response is a proper response object
-            if not hasattr(response, 'status_code'):
-                logger.warning(f"Response object does not have status_code attribute: {type(response)}")
-                return
+        # Check if response is a proper response object
+        if not hasattr(response, 'status_code'):
+            logger.warning(f"Response object does not have status_code attribute: {type(response)}")
+            return
 
-            # Calculate response time
-            response_time_ms = int((time.time() - start_time) * 1000)
+        # Calculate response time
+        response_time_ms = int((time.time() - start_time) * 1000)
 
-            # Prepare usage data
-            usage_data = {
-                'endpoint': self.get_endpoint_name(request),
-                'method': request.method,
-                'response_status': response.status_code,
-                'response_time_ms': response_time_ms,
-                'ip_address': self.get_client_ip(request),
-                'user_agent': request.META.get('HTTP_USER_AGENT', '')[:500],  # Truncate long user agents
-                'timestamp': timezone.now(),
-            }
+        # Prepare usage data
+        usage_data = {
+            'endpoint': self.get_endpoint_name(request),
+            'method': request.method,
+            'response_status': response.status_code,
+            'response_time_ms': response_time_ms,
+            'ip_address': self.get_client_ip(request),
+            'user_agent': request.META.get('HTTP_USER_AGENT', '')[:500],  # Truncate long user agents
+            'timestamp': timezone.now(),
+        }
 
-            # Add user if authenticated
-            if hasattr(request, 'user') and request.user.is_authenticated:
-                usage_data['user'] = request.user
+        # Add user if authenticated
+        if hasattr(request, 'user') and request.user.is_authenticated:
+            usage_data['user'] = request.user
 
-            # Create usage record (this could be made async with Celery)
-            APIUsage.objects.create(**usage_data)
-
-        except Exception as e:
-            logger.error(f"Failed to track usage: {e}")
+        # Create usage record (this could be made async with Celery)
+        APIUsage.objects.create(**usage_data)
 
 
 class RateLimitHeaderMiddleware(MiddlewareMixin):
