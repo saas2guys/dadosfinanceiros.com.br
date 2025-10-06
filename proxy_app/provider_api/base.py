@@ -205,7 +205,7 @@ class ProviderAPIView(GenericAPIView):
         """
         if self.param_builder is None:
             self.param_builder = SerializerParamBuilder()
-        return self.param_builder.build(self, request)
+            return self.param_builder.build(self, request)
 
     # ---- URL formatting ----
     def _format_endpoint_to(self, request, kwargs: dict) -> tuple[str, Optional[Response]]:
@@ -226,7 +226,7 @@ class ProviderAPIView(GenericAPIView):
         """
         if self.endpoint_formatter is None:
             self.endpoint_formatter = CurlyPlaceholderFormatter()
-        return self.endpoint_formatter.format(self, request, kwargs)
+            return self.endpoint_formatter.format(self, request, kwargs)
 
     # ---- Upstream call ----
     def _perform_upstream(self, url: str, params: list[tuple[str, str]]):
@@ -268,7 +268,7 @@ class ProviderAPIView(GenericAPIView):
         """
         if self.response_parser is None:
             self.response_parser = JsonOrTextParser()
-        return self.response_parser.parse(self, resp)
+            return self.response_parser.parse(self, resp)
 
     def _get_used_placeholders(self, formatted_to: str) -> set[str]:
         """Extract placeholder names used in a formatted provider path.

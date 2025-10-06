@@ -454,20 +454,20 @@ class PolygonBaseViewUnitTests(TestCase):
         captured = {}
 
         def fake_perform_request(self, method: str, url: str, *, params=None):
-            captured["method"] = method
-            captured["url"] = url
-            captured["params"] = list(params or [])
-            mock_resp = MagicMock(spec=httpx.Response)
-            mock_resp.status_code = 200
-            mock_resp.headers = {"content-type": "application/json"}
-            mock_resp.json.return_value = {
-                "results": [{"value": 123, "logo_url": "https://api.polygon.io/logo.png"}],
-                "next_url": "https://api.polygon.io/v3/foo?page=2",
-            }
-            mock_resp.text = ""
-            mock_resp.raise_for_status.return_value = None
-            mock_resp.request = httpx.Request(method, url)
-            return mock_resp
+                captured["method"] = method
+                captured["url"] = url
+                captured["params"] = list(params or [])
+                mock_resp = MagicMock(spec=httpx.Response)
+                mock_resp.status_code = 200
+                mock_resp.headers = {"content-type": "application/json"}
+                mock_resp.json.return_value = {
+                    "results": [{"value": 123, "logo_url": "https://api.polygon.io/logo.png"}],
+                    "next_url": "https://api.polygon.io/v3/foo?page=2",
+                }
+                mock_resp.text = ""
+                mock_resp.raise_for_status.return_value = None
+                mock_resp.request = httpx.Request(method, url)
+                return mock_resp
 
         bind_perform_request(view, fake_perform_request)
 
@@ -497,7 +497,7 @@ class PolygonBaseViewUnitTests(TestCase):
         """
 
         def fake_perform_request(self, method: str, url: str, *, params=None):
-            raise httpx.HTTPError("boom")
+                raise httpx.HTTPError("boom")
 
         view = PolygonEmaView()
         bind_perform_request(view, fake_perform_request)
@@ -515,13 +515,13 @@ class PolygonBaseViewUnitTests(TestCase):
         view = PolygonEmaView()
 
         def fake_perform_request(self, method: str, url: str, *, params=None):
-            mock_resp = MagicMock(spec=httpx.Response)
-            mock_resp.status_code = 200
-            mock_resp.headers = {"content-type": "text/plain"}
-            mock_resp.text = "OK"
-            mock_resp.raise_for_status.return_value = None
+                mock_resp = MagicMock(spec=httpx.Response)
+                mock_resp.status_code = 200
+                mock_resp.headers = {"content-type": "text/plain"}
+                mock_resp.text = "OK"
+                mock_resp.raise_for_status.return_value = None
             mock_resp.request = httpx.Request(method, url)
-            return mock_resp
+                return mock_resp
 
         bind_perform_request(view, fake_perform_request)
         response = view.get(Request(self.factory.get("/x")), stockTicker="AAPL")

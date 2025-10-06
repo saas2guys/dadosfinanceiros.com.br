@@ -1,4 +1,3 @@
-from aiohttp.web_response import json_response
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns, set_language
 from django.contrib import admin

@@ -8,7 +8,7 @@ This repository now includes **automated DNS management** for DigitalOcean App P
 
 ### 🎯 What the DNS Automation Does
 
-- **Manages 4 domains**: `financialdata.online`, `financialdata.digital`, `dadosfinanceiros.com`, `dadosfinanceiros.com.br`
+- **Manages domains**: `financialdata.online`, `financialdata.digital`
 - **High Availability**: Uses DigitalOcean's static ingress IPs with redundancy
 - **IPv6 Support**: Full IPv4 and IPv6 DNS records for modern browsers
 - **Auto-deployment**: Changes deploy automatically when you push code
@@ -52,10 +52,8 @@ After DNS records are created, add domains to your [App Platform app](https://cl
    - `www.financialdata.online`
    - `financialdata.digital`
    - `www.financialdata.digital`
-   - `dadosfinanceiros.com`
-   - `www.dadosfinanceiros.com`
-   - `dadosfinanceiros.com.br`
-   - `www.dadosfinanceiros.com.br`
+   - `financialdata.online`
+   - `www.financialdata.online`
 
 ### 🔄 How the Automation Works
 

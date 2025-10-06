@@ -79,9 +79,9 @@ pip install -r requirements.txt
 ```bash
 # Create PostgreSQL database
 sudo -u postgres psql
-CREATE DATABASE dadosfinanceiros;
+CREATE DATABASE financialdata;
 CREATE USER dbuser WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE dadosfinanceiros TO dbuser;
+GRANT ALL PRIVILEGES ON DATABASE financialdata TO dbuser;
 \q
 
 # Run migrations
@@ -142,7 +142,7 @@ WorkingDirectory=/path/to/your/project
 Environment=PATH=/path/to/your/project/venv/bin
 Environment=DEBUG=False
 Environment=SECRET_KEY=your-secret-key
-Environment=DATABASE_URL=postgresql://username:password@localhost:5432/dadosfinanceiros
+Environment=DATABASE_URL=postgresql://username:password@localhost:5432/financialdata
 ExecStart=/path/to/your/project/venv/bin/gunicorn proxy_project.wsgi:application --bind 127.0.0.1:8000 --workers 3
 Restart=always
 
@@ -153,9 +153,9 @@ WantedBy=multi-user.target
 ```bash
 # Enable and start the service
 sudo systemctl daemon-reload
-sudo systemctl enable dadosfinanceiros
-sudo systemctl start dadosfinanceiros
-sudo systemctl status dadosfinanceiros
+sudo systemctl enable financialdata
+sudo systemctl start financialdata
+sudo systemctl status financialdata
 ```
 
 ## Testing CSRF Protection
